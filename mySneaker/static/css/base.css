@@ -1,0 +1,8 @@
+@import url(var.css);
+
+body{
+    
+    background-color: var(--bodyBackgroundColor);
+}
+
+

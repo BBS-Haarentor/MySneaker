@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/home.css'%}">
+  {% endblock %}
+
+{% block content %}  
+    {% load static %}
+
+    <div class="background" style="  
+    background-image: url({% static 'img/Shoes.jpg'%});">
+
+        <h1>CURRENT SZENARIO display hier</h1>
+    </div>
+
+  
+    {% endblock %}
