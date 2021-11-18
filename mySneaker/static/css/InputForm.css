@@ -1,0 +1,70 @@
+@import url(var.css);
+
+.spreadsheet {
+
+    border-style: solid;
+    margin: auto;
+    border: 1px solid var(--loginSubmitBackgroundColor);
+    border-collapse: collapse;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.spreadsheet td, .spreadsheet th {
+    color: white;
+    border: 1px solid var(--loginSubmitBackgroundColor);
+}
+
+.spreadsheet caption {
+    font-size: larger;
+    font-weight: bold;
+    background-color: var(--loginInputBackgroundColor);
+    color:  white;
+    padding:  0.4em 0 0.4em 0;
+    caption-side: bottom;
+}
+
+.spreadsheet th {
+    border: 1px solid var(--loginSubmitBackgroundColor);
+    background-color:var(--loginInputBackgroundColor);
+    font-weight: bold;
+    text-align: center;
+    padding:  0.2em;
+}
+
+
+.spreadsheet td {
+    border: 1px solid var(--loginSubmitBackgroundColor);
+    padding: 0.2em 0.4em;
+}
+
+
+.spreadsheet tbody tr:nth-child(2n) {
+    background-color: var(--loginInputBackgroundColor); 
+}
+
+
+.spreadsheet tbody tr:nth-child(2n + 1) {
+    background-color: var(--loginInputBackgroundColor); 
+}
+
+
+.spreadsheet tbody tr td:nth-last-child(-n + 3) {
+    text-align: right;
+}
+
+.spreadsheet tbody tr:hover {
+    background-color: var(--loginInputHoverBackgroundColor);
+    color: white;
+}
+
+.input{
+    border-style: none;
+    color: white;
+    background-color: var(--loginInputBackgroundColor);
+}
+.input:active{
+    border-style: none;
+}
+body{
+    height: 100vh;
+}

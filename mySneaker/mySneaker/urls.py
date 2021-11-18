@@ -18,9 +18,11 @@ from django.urls import path
 
 from pages.views import login_view
 from pages.views import home_view
+from pages.views import InputForm_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_view.as_view(), name="login"),
     path('', home_view, name="home_view"),
+    path('form/', InputForm_view, name="InputForm_view"),
 ]

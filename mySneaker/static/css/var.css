@@ -1,6 +1,6 @@
 :root {
     --loginBorderRadus: 0.25rem;
-    --loginColor: #eee;
+    --loginColor: rgb(0, 200, 0);
   
     --loginInputBackgroundColor: #3b4148;
     --loginInputHoverBackgroundColor: #434a52;
