@@ -2,61 +2,28 @@ import Container from "./Container"
 import Lager from "./Lager"
 import SideNavBar from "./SideNavBar"
 import {useState, useEffect} from "react";
+import LoginPage from "./LoginPage";
 
 const MainPage = () => {
- const [data, setData] = useState({
-    "0": {
-        "row": [  
-          1,  
-          1,  
-          1,
-          1,
-          1
-        ]
-      },
-      "1": {
-        "row": [
-          1,
-          0,
-          0,
-          3,
-          1
-        ]
-      },
-      "2": {
-        "row": [
-          1,  
-          1,
-          0,
-          1,
-          1
-        ]
-      },
-      "3": {
-        "row": [
-          1,
-          41,
-          0,
-          1,
-          1
-        ]
-      },
-      "4": {
-        "row": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ]
-      }
+
+
     
-    
-     })
+     const[state,setState] = useState("Beschaffung")
+     const OnClick = (text) =>{
+      console.log(text)
+      setState(text)
+
+  }
+
     return (
         <div className="h-screen w-screen bg-[#f7fafc] flex" >
-           <SideNavBar></SideNavBar>
-           <Container data={data}/>
+           <SideNavBar OnClick={OnClick} state={state}/>
+
+           {{
+              'Beschaffung':<Container/>,
+              'Login':<LoginPage/>
+           }[state]
+           }
         </div>
     )
 }
