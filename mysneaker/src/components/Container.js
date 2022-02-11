@@ -1,20 +1,33 @@
-import React from 'react';
+import React from 'react'
+import Beschaffung from './Beschaffung'
+import {useState, useEffect} from "react";
 
-const Container = ({data}) => {
-  return <div className='w-fit h-fit p-4 bg-orange-400 rounded-3xl'>
-     <table>
-        <tbody>
-            <tr className='p-4'> 
-                   <td className='p-4'><a>test</a></td>
-                   <td className='p-4'><a>test</a></td>
-            </tr>
-            <tr className='p-4'> 
-                   <td className='p-4'><a>test</a></td>
-                   <td className='p-4'><a>test</a></td>
-            </tr>
-        </tbody>
-    </table>
-  </div>;
-};
 
-export default Container;
+const Container = () => {
+    
+const [data, setData] = useState({
+    SneakerEinstandsPreis : 60,
+    FarbenEinstandsPreis : 10,
+    SneakerEinkaufMenge : 0,
+    FarbenEinkaufMenge : 0,
+})
+useEffect(() => {
+    const getData = async () => {
+        const dataFromServer = await fetchData()
+        setData(dataFromServer)
+    }
+    getData()
+}, [])
+
+const fetchData = async () => {
+    const res = await fetch('http://127.0.0.1:8000/playlist')
+    const data = await res.json()
+
+    return data
+}
+  return (
+    <Beschaffung data={data}/>
+  )
+}
+
+export default Container

@@ -1,8 +1,8 @@
-import Container from "./Container"
-import Lager from "./Lager"
+
 import SideNavBar from "./SideNavBar"
 import {useState, useEffect} from "react";
 import LoginPage from "./LoginPage";
+import Container from "./Container";
 
 const DashBoardPage = () => {
 
@@ -19,11 +19,7 @@ const DashBoardPage = () => {
         <div className="h-screen w-screen bg-[#f7fafc] flex" >
            <SideNavBar OnClick={OnClick} state={state}/>
 
-           {{
-              'Beschaffung':<Container/>,
-              'Login':<LoginPage/>
-           }[state]
-           }
+           {state =="Login" ? <LoginPage/> : <Container/> }
         </div>
     )
 }
