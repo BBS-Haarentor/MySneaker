@@ -38,6 +38,8 @@ const Container = () => {
     const FarbenKosten = data.beschaffungUndLager.beschaffung.einstandspreis.farben * FarbenEinkaufMenge
     const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
     const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
+    const [Werbung, setWerbung] = useState(0)
+    const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(0)
 
     var ProduktionFarben = parseInt(FarbenEinkaufMenge/2) 
     var Produktionskapazität = 200;
@@ -253,6 +255,34 @@ return (
                         <td></td>
                     </tr>
                     
+                </tbody>
+             </table>
+        </div>
+        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Marketing</th>
+                    </tr>
+                    <tr>
+                        <td>Werbung</td>
+                        <td><input min="0" type="number" onChange={(e)=> setWerbung(e.target.value)} value={Werbung}></input></td>
+                    </tr>
+                </tbody>
+             </table>
+        </div>
+        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Forschung und Entwickelung</th>
+                    </tr>
+                    <tr>
+                        <td>Verbesserung der Maschinen</td>
+                        <td><input min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input></td>
+                    </tr>
                 </tbody>
              </table>
         </div>
