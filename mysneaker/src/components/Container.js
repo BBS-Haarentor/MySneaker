@@ -40,6 +40,11 @@ const Container = () => {
     const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
     const [Werbung, setWerbung] = useState(0)
     const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(0)
+    const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
+    const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
+    const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(0)
+    const [Gesamtproduktion, setGesamtproduktion] = useState(0)
+    const [GesamtproduktionMöglich, setGesamtproduktionMöglich] = useState(0)
 
     var ProduktionFarben = parseInt(FarbenEinkaufMenge/2) 
     var Produktionskapazität = 200;
@@ -282,6 +287,36 @@ return (
                     <tr>
                         <td>Verbesserung der Maschinen</td>
                         <td><input min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input></td>
+                    </tr>
+                </tbody>
+             </table>
+        </div>
+        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Planung Umsatzerlöse</th>
+                    </tr>
+                    <tr>
+                        <td>Geplante Produktion</td>
+                        <td><input min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                    </tr>
+                    <tr>
+                        <td>Maximal Entnahme aus Lager</td>
+                        <td><input min="0" type="number" onChange={(e)=> setMaximaleEntnahmeAusLager(e.target.value)} value={MaximaleEntnahmeAusLager}></input></td>
+                    </tr>
+                    <tr>
+                        <td>Entnahme aus dem Lager</td>
+                        <td><input min="0" type="number" onChange={(e)=> setEntnahmeAusDemLager(e.target.value)} value={EntnahmeAusDemLager}></input></td>
+                    </tr>
+                    <tr>
+                        <td>Gesamtproduktion</td>
+                        <td><input min="0" type="number" onChange={(e)=> setGesamtproduktion(e.target.value)} value={Gesamtproduktion}></input></td>
+                    </tr>
+                    <tr>
+                        <td>Geplanteproduktion möglich</td>
+                        <td><input min="0" type="number" onChange={(e)=> setGesamtproduktionMöglich(e.target.value)} value={GesamtproduktionMöglich}></input></td>
                     </tr>
                 </tbody>
              </table>
