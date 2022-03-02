@@ -40,14 +40,13 @@ const Container = () => {
     const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
     const [Werbung, setWerbung] = useState(0)
     const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(0)
-    const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
     const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(0)
     const [Gesamtproduktion, setGesamtproduktion] = useState(0)
     const [GesamtproduktionMöglich, setGesamtproduktionMöglich] = useState(0)
     const [MarktSoll, setMarktSoll] = useState(0)
     const [MarktIst, setMarktIst] = useState(0)
-    const [AusschreibungSoll, AussetschreibungSoll] = useState(0)
+    const [AusschreibungSoll, setAussetschreibungSoll] = useState(0)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [GesamtIst, setGesamtIst] = useState(0)
@@ -80,10 +79,10 @@ const fetchData = async () => {
 
 return (
     <>
-        <form className='grid grid-cols-1 xl:grid-cols-2 gap-6'>
+        <form className='grid grid-cols-1 xl:grid-cols-3'>
 
        
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 xl:col-span-2 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
@@ -113,7 +112,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className="p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
              <table>
                 <tbody>
                     <tr>
@@ -186,7 +185,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className="p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
              <table>
                 <tbody>
                     <tr>
@@ -271,7 +270,177 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className="p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Sneakerbox 200</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Produktionskapazität</td>
+                        <td>{Produktionskapazität}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Maschinenkosten p. Per.</td>
+                        <td>{Maschinenkosten}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Fertigungskosten pro Stück</td>
+                        <td>60€</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Fertigungskosten pro Stück (F&E)</td>
+                        <td>{FertigungskostenProStückFE}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Rationalisierung</td>
+                        <td>100%</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Geplante Produktion</td>
+                        <td><input min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Produktionsprüfung (Werkstoffe)</td>
+                        <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion/1 ? "ja":"Keine ausreichenden Werkstoffe"}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Benötigte Mitarbeiter</td>
+                        <td>{Math.ceil(GeplanteProduktion / 20)}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Zugeteilte Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Produktionsprüfung (Mitarbeiter)</td>
+                        <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "ja":"Keine passende Mitarbeiteranzahl"}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Auslastung</td>
+                        <td>{Math.round((GeplanteProduktion/1)/Produktionskapazität * 100)}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gesamtkosten Produktion</td>
+                        <td>{Maschinenkosten+ FertigungskostenProStückFE * GeplanteProduktion}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    
+                </tbody>
+             </table>
+        </div>
+        <div className="p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Sneakerbox 200</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Produktionskapazität</td>
+                        <td>{Produktionskapazität}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Maschinenkosten p. Per.</td>
+                        <td>{Maschinenkosten}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Fertigungskosten pro Stück</td>
+                        <td>60€</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Fertigungskosten pro Stück (F&E)</td>
+                        <td>{FertigungskostenProStückFE}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Rationalisierung</td>
+                        <td>100%</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Geplante Produktion</td>
+                        <td><input min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Produktionsprüfung (Werkstoffe)</td>
+                        <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion/1 ? "ja":"Keine ausreichenden Werkstoffe"}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Benötigte Mitarbeiter</td>
+                        <td>{Math.ceil(GeplanteProduktion / 20)}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Zugeteilte Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Produktionsprüfung (Mitarbeiter)</td>
+                        <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "ja":"Keine passende Mitarbeiteranzahl"}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Auslastung</td>
+                        <td>{Math.round((GeplanteProduktion/1)/Produktionskapazität * 100)}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gesamtkosten Produktion</td>
+                        <td>{Maschinenkosten+ FertigungskostenProStückFE * GeplanteProduktion}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    
+                </tbody>
+             </table>
+        </div>
+        <div className=" p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
@@ -282,12 +451,6 @@ return (
                         <td>Werbung</td>
                         <td><input min="0" type="number" onChange={(e)=> setWerbung(e.target.value)} value={Werbung}></input></td>
                     </tr>
-                </tbody>
-             </table>
-        </div>
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
-             <table>
-                <tbody>
                     <tr>
                         <th></th>
                         <th>Forschung und Entwickelung</th>
@@ -299,7 +462,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
@@ -329,7 +492,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
@@ -342,7 +505,7 @@ return (
                     </tr>
                     <tr>
                         <td>Ausschreibung</td>
-                        <td><input min="0" type="number" onChange={(e)=> setAusschreibungSoll(e.target.value)} value={AusschreibungSoll}></input></td>
+                        <td><input min="0" type="number" onChange={(e)=> setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input></td>
                     </tr>
                     <tr>
                         <td>Gesamt</td>
@@ -355,7 +518,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
@@ -368,7 +531,7 @@ return (
                     </tr>
                     <tr>
                         <td>Ausschreibung</td>
-                        <td><input min="0" type="number" onChange={(e)=> setAusschreibungIst(e.target.value)} value={AussetschreibungIst}></input></td>
+                        <td><input min="0" type="number" onChange={(e)=> setAusschreibungIst(e.target.value)} value={AusschreibungIst}></input></td>
                     </tr>
                     <tr>
                         <td>Gesamt</td>
