@@ -1,9 +1,14 @@
 import React from 'react'
 
+
 const MainPage = () => {
   return (
-    <div><p>MainPage</p>
-    <a href='/DashBoard'>DashBoard</a></div>
+    <div className='flex justify-items-center items-center w-screen h-screen '>
+        <div className='h-fit w-fit m-auto'>
+          <h1 className='text-[#4fd1c5] text-[100px]'>MySneaker</h1>
+          <a href='/DashBoard'>DashBoard</a>
+        </div>
+    </div>
   )
 }
 

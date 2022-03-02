@@ -5,30 +5,47 @@ import {useState, useEffect} from "react";
 
 const Container = () => {
     const [data, setData] = useState({
-        SneakerEinstandsPreis : 60,
-        FarbenEinstandsPreis : 10,
-        SneakerEinkaufMenge : 0,
-        FarbenEinkaufMenge : 0,
-        SneakerVorperiode : 0,
-        FarbenVorperiode : 0,
-        FertigeSneakerVorperiode : 0,
-        GeplanteProduktion: 0,
-        Maschine1 :{
-            name: "Sneakerbox 200",
-            Produktionskapazität: 200,
-            Maschinenkosten:4000,
-            FertigungskostenProStück:60,
-
+        "vorperiode":{
+          "lager":{
+            "sneaker":0,
+            "farben":0,
+            "fertigeSneaker":0
+          },
+          "finanzen":{
+            "kontostand":15000,
+            "darlehenstand":0
+          }
+        },
+        "beschaffungUndLager":{
+          "beschaffung":{
+            "einstandspreis":{
+              "sneaker":60,
+              "farben":10
+            }
+          },
+          "lager":{
+            "lagerVorperiode":{
+                "sneaker":0,
+                "farben":0,
+                "fertigeSneaker":0
+            }
+          }
         }
-    })
-    const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState('')
-    const [FarbenEinkaufMenge, setFarbenEinkaufMenge] = useState('')
-    const SneakerKosten = data.SneakerEinstandsPreis * SneakerEinkaufMenge
-    const FarbenKosten = data.FarbenEinstandsPreis * FarbenEinkaufMenge
+      })
+    const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState(0)
+    const [FarbenEinkaufMenge, setFarbenEinkaufMenge] = useState(0)
+    const SneakerKosten = data.beschaffungUndLager.beschaffung.einstandspreis.sneaker * SneakerEinkaufMenge
+    const FarbenKosten = data.beschaffungUndLager.beschaffung.einstandspreis.farben * FarbenEinkaufMenge
+    const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
+    const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
 
+    var ProduktionFarben = parseInt(FarbenEinkaufMenge/2) 
+    var Produktionskapazität = 200;
+    var FertigungskostenProStückFE = 60;
+    var Maschinenkosten = 4000;
+    var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
 
-
-
+  
     
     useEffect(() => {
         const getData = async () => {
@@ -36,9 +53,6 @@ const Container = () => {
             setData(dataFromServer)
         }
         getData()
-
-        setFarbenEinkaufMenge(data.FarbenEinkaufMenge)
-        setSneakerEinkaufMenge(data.SneakerEinkaufMenge)
         
     }, [])
 
@@ -51,10 +65,10 @@ const fetchData = async () => {
 
 return (
     <>
-        <form className='grid grid-flow-col-dense'>
+        <form className='grid grid-cols-1 xl:grid-cols-2 gap-6'>
 
        
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
@@ -64,13 +78,13 @@ return (
                     </tr>
                     <tr>
                         <td>Einstandspreis</td>
-                        <td>{data.SneakerEinstandsPreis}</td>
-                        <td>{data.FarbenEinstandsPreis}</td>
+                        <td>{data.beschaffungUndLager.beschaffung.einstandspreis.sneaker}</td>
+                        <td>{data.beschaffungUndLager.beschaffung.einstandspreis.farben}</td>
                     </tr>
                     <tr>
                         <td>Einkauf (Menge)</td>
-                        <td><input type="number" onChange={(e)=> setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
-                        <td><input type="number" onChange={(e)=> setFarbenEinkaufMenge(e.target.value)} value={FarbenEinkaufMenge}></input></td>
+                        <td><input min="0" type="number" onChange={(e)=> setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
+                        <td><input min="0" type="number" onChange={(e)=> setFarbenEinkaufMenge(e.target.value)} value={FarbenEinkaufMenge}></input></td>
                     </tr>
                     <tr>
                         <td>Kosten pro Werkstoff</td>
@@ -95,9 +109,9 @@ return (
                     </tr>
                     <tr>
                         <td>Lager (Vorperiode)</td>
-                        <td>{data.SneakerVorperiode}</td>
-                        <td>{data.FarbenVorperiode}</td>
-                        <td>{data.FertigeSneakerVorperiode}</td>
+                        <td>{data.vorperiode.lager.sneaker}</td>
+                        <td>{data.vorperiode.lager.farben}</td>
+                        <td>{data.vorperiode.lager.fertigeSneaker}</td>
                     </tr>
                     <tr>
                         <td>Aktuelle Beschaffung</td>
@@ -107,9 +121,9 @@ return (
                     </tr>
                     <tr>
                         <td>Gesamte Verfügbarkeit</td>
-                        <td>{data.SneakerVorperiode + parseInt(SneakerEinkaufMenge)}</td>
-                        <td>{data.FarbenVorperiode + parseInt(FarbenEinkaufMenge)}</td>
-                        <td>{data.GeplanteProduktion}</td>
+                        <td>{data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge)}</td>
+                        <td>{data.vorperiode.lager.farben + parseInt(FarbenEinkaufMenge)}</td>
+                        <td>{data.vorperiode.lager.fertigeSneaker }</td>
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (PLAN)</td>
@@ -157,25 +171,88 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="  p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className="p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>{data.Maschine1.name}</th>
+                        <th>Sneakerbox 200</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <tr>
                         <td>Produktionskapazität</td>
-                        <td>{data.Maschine1.Produktionskapazität}</td>
+                        <td>{Produktionskapazität}</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Maschinenkosten p. Per.</td>
-                        <td>{data.Maschine1.Maschinenkosten}</td>
+                        <td>{Maschinenkosten}</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Fertigungskosten pro Stück</td>
-                        <td>{data.Maschine1.FertigungskostenProStück}</td>
+                        <td>60€</td>
+                        <td></td>
+                        <td></td>
                     </tr>
+                    <tr>
+                        <td>Fertigungskosten pro Stück (F&E)</td>
+                        <td>{FertigungskostenProStückFE}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Rationalisierung</td>
+                        <td>100%</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Geplante Produktion</td>
+                        <td><input min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Produktionsprüfung (Werkstoffe)</td>
+                        <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion/1 ? "ja":"Keine ausreichenden Werkstoffe"}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Benötigte Mitarbeiter</td>
+                        <td>{Math.ceil(GeplanteProduktion / 20)}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Zugeteilte Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Produktionsprüfung (Mitarbeiter)</td>
+                        <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "ja":"Keine passende Mitarbeiteranzahl"}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Auslastung</td>
+                        <td>{Math.round((GeplanteProduktion/1)/Produktionskapazität * 100)}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gesamtkosten Produktion</td>
+                        <td>{Maschinenkosten+ FertigungskostenProStückFE * GeplanteProduktion}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    
                 </tbody>
              </table>
         </div>
