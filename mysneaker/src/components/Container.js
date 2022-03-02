@@ -45,7 +45,7 @@ const Container = () => {
 
     const [Werbung, setWerbung] = useState(0)
     const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(0)
-    const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
+    
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
     const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(0)
     const [Gesamtproduktion, setGesamtproduktion] = useState(0)
