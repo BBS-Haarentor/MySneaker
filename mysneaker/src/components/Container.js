@@ -56,8 +56,9 @@ const Container = () => {
     var FertigungskostenProStückFE = 60;
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
+    var PersonalnebenkostenInP = Personalnebenkosten / 100 + 1 
 
-
+    console.log(PersonalnebenkostenInP)
 
     useEffect(() => {
         const getData = async () => {
@@ -248,7 +249,7 @@ const Container = () => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) && (Mitarbeiter - ZugeteilteMitarbeiter) >=0 ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -323,7 +324,7 @@ const Container = () => {
                             </tr>
                             <tr>
                                 <td>Mitarbeiter nächste Periode</td>
-                                <td>{Mitarbeiter + Neueinstellungen - Kündigungen}</td>
+                                <td>{parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen}</td>
 
 
                             </tr>
@@ -339,12 +340,12 @@ const Container = () => {
                             </tr>
                             <tr>
                                 <td>Personalkosten akt. Periode</td>
-                                <td>{Mitarbeiter * (500 * (Personalnebenkosten + 1))}</td>
+                                <td>{Mitarbeiter * (500 * (PersonalnebenkostenInP))}</td>
 
                             </tr>
                             <tr>
                                 <td>Personalkosten folg. Periode</td>
-                                <td>{(Mitarbeiter + Neueinstellungen - Kündigungen) * (500 * (Personalnebenkosten + 1))}</td>
+                                <td>{(parseInt(Mitarbeiter) + parseInt(Neueinstellungen)  - Kündigungen) * (500 * (PersonalnebenkostenInP))}</td>
                             </tr>
                         </tbody>
                     </table>
