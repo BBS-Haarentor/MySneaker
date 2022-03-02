@@ -78,10 +78,10 @@ const Container = () => {
 
     return (
         <>
-            <form className='grid grid-cols-1 xl:grid-cols-2 gap-6'>
+            <form className='grid grid-cols-1 xl:grid-cols-3'>
 
 
-                <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+                <div className=" p-4 w-fit h-fit border-[#4FD1C5]  xl:col-span-2 border-2 rounded-3xl m-2 bg-white flex justify-center  ">
                     <table>
                         <tbody>
                             <tr>
@@ -111,7 +111,7 @@ const Container = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+                <div className="p-4  row-span-2 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
                     <table>
                         <tbody>
                             <tr>
@@ -184,7 +184,92 @@ const Container = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+                <div className="p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th></th>
+                                <th>Sneakerbox 200</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Produktionskapazität</td>
+                                <td><input min="0" type="number" onChange={(e) => setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Maschinenkosten p. Per.</td>
+                                <td>{Maschinenkosten}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Fertigungskosten pro Stück</td>
+                                <td>60€</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Fertigungskosten pro Stück (F&E)</td>
+                                <td>{FertigungskostenProStückFE}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Rationalisierung</td>
+                                <td>100%</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Geplante Produktion</td>
+                                <td><input min="0" type="number" onChange={(e) => setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Produktionsprüfung (Werkstoffe)</td>
+                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Benötigte Mitarbeiter</td>
+                                <td>{Math.ceil(GeplanteProduktion / 20)}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Zugeteilte Mitarbeiter</td>
+                                <td><input min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Produktionsprüfung (Mitarbeiter)</td>
+                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) && (Mitarbeiter - ZugeteilteMitarbeiter) >=0 ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Auslastung</td>
+                                <td>{Math.round((GeplanteProduktion / 1) / Produktionskapazität * 100)}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Gesamtkosten Produktion</td>
+                                <td>{Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div className="p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
                     <table>
                         <tbody>
                             <tr>
@@ -270,7 +355,94 @@ const Container = () => {
                     </table>
                 </div>
 
-                <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+                <div className="p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th></th>
+                                <th>Sneakerbox 200</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Produktionskapazität</td>
+                                <td><input min="0" type="number" onChange={(e) => setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Maschinenkosten p. Per.</td>
+                                <td>{Maschinenkosten}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Fertigungskosten pro Stück</td>
+                                <td>60€</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Fertigungskosten pro Stück (F&E)</td>
+                                <td>{FertigungskostenProStückFE}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Rationalisierung</td>
+                                <td>100%</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Geplante Produktion</td>
+                                <td><input min="0" type="number" onChange={(e) => setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Produktionsprüfung (Werkstoffe)</td>
+                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Benötigte Mitarbeiter</td>
+                                <td>{Math.ceil(GeplanteProduktion / 20)}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Zugeteilte Mitarbeiter</td>
+                                <td><input min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Produktionsprüfung (Mitarbeiter)</td>
+                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) && (Mitarbeiter - ZugeteilteMitarbeiter) >=0 ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Auslastung</td>
+                                <td>{Math.round((GeplanteProduktion / 1) / Produktionskapazität * 100)}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Gesamtkosten Produktion</td>
+                                <td>{Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div className=" p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
                     <table>
                         <tbody>
                             <tr>
@@ -350,7 +522,7 @@ const Container = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+                <div className="p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
                     <table>
                         <tbody>
                     <tr>
@@ -361,12 +533,6 @@ const Container = () => {
                         <td>Werbung</td>
                         <td><input min="0" type="number" onChange={(e) => setWerbung(e.target.value)} value={Werbung}></input></td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
-            <table>
-                <tbody>
                     <tr>
                         <th></th>
                         <th>Forschung und Entwickelung</th>
@@ -378,7 +544,7 @@ const Container = () => {
                 </tbody>
             </table>
         </div>
-        <div className=" p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
