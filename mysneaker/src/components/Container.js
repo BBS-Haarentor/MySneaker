@@ -38,7 +38,11 @@ const Container = () => {
     const FarbenKosten = data.beschaffungUndLager.beschaffung.einstandspreis.farben * FarbenEinkaufMenge
     const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
     const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
-
+    const [Mitarbeiter, setMitarbeiter] = useState(8)
+    const [Neueinstellungen, setNeueinstellungen] = useState(0)
+    const [Kündigungen, setKündigungen] = useState(0)
+    const [Personalnebenkosten, setPersonalnebenkosten] = useState(20)
+    
     var ProduktionFarben = parseInt(FarbenEinkaufMenge/2) 
     var Produktionskapazität = 200;
     var FertigungskostenProStückFE = 60;
@@ -182,7 +186,7 @@ return (
                     </tr>
                     <tr>
                         <td>Produktionskapazität</td>
-                        <td>{Produktionskapazität}</td>
+                        <td><input min="0" type="number" onChange={(e)=> setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -251,6 +255,88 @@ return (
                         <td>{Maschinenkosten+ FertigungskostenProStückFE * GeplanteProduktion}</td>
                         <td></td>
                         <td></td>
+                    </tr>
+                    
+                </tbody>
+             </table>
+        </div>
+        <div className="p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Personal</th>
+                    </tr>
+                    <tr>
+                        <td>Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setMitarbeiter(e.target.value)} value={Mitarbeiter}></input></td>
+                    
+                    </tr>
+                    <tr>
+                        <td>Grundkapazität Stück je MA</td>
+                        <td>20</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Verfügbare Kapazität (MA)</td>
+                        <td>{Mitarbeiter - ZugeteilteMitarbeiter}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>benötigte MA </td>
+                        <td>{ZugeteilteMitarbeiter}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Auslastung </td>
+                        <td>{Math.round((ZugeteilteMitarbeiter/1)/Mitarbeiter * 100)}</td>
+                     
+                    </tr>
+                    <tr>
+                        <td>Neueinstellungen</td>
+                        <td><input min="0" type="number" onChange={(e)=> setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input></td>
+                  
+                    </tr>
+                    <tr>
+                        <td>Kosten Neueinstellung</td>
+                        <td>100,00€</td>
+                 
+                    </tr>
+                    <tr>
+                        <td>Kündigungen/Rente/ etc.</td>
+                        <td><input min="0" type="number" onChange={(e)=> setKündigungen(e.target.value)} value={Kündigungen}></input></td>
+                   
+                    </tr>
+                    <tr>
+                        <td>Zugeteilte Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                
+                    </tr>
+                    <tr>
+                        <td>Mitarbeiter nächste Periode</td>
+                        <td>{Mitarbeiter + Neueinstellungen - Kündigungen}</td>
+                       
+                        
+                    </tr>
+                    <tr>
+                        <td>Kosten pro MA</td>
+                        <td>500</td>
+
+                    </tr>
+                    <tr>
+                        <td>Personalnebenkosten</td>
+                        <td><input min="0" type="number" onChange={(e)=> setPersonalnebenkosten(e.target.value)} value={Personalnebenkosten}></input></td>
+                    
+                    </tr>
+                    <tr>
+                        <td>Personalkosten akt. Periode</td>
+                        <td>{Mitarbeiter * (500*(Personalnebenkosten +1))}</td>
+                    
+                    </tr>
+                    <tr>
+                        <td>Personalkosten folg. Periode</td>
+                        <td>{(Mitarbeiter + Neueinstellungen - Kündigungen) * (500*(Personalnebenkosten +1))}</td>
+                    
                     </tr>
                     
                 </tbody>
