@@ -483,11 +483,11 @@ return (
                     </tr>
                     <tr>
                         <td>Gesamtproduktion</td>
-                        <td>{Math.round(GeplanteProduktion + EntnahmeAusDemLager)}</td>
+                        <td>{Math.round(parseInt(GeplanteProduktion )+ parseInt(EntnahmeAusDemLager))}</td>
                     </tr>
                     <tr>
                         <td>Geplanteproduktion möglich</td>
-                        <td>{EntnahmeAusDemLager > MaximaleEntnahmeAusLager? "Nein":"Ja"}</td>
+                        <td>{EntnahmeAusDemLager > MaximaleEntnahmeAusLager/1? "Nein":"Ja"}</td>
                     </tr>
                 </tbody>
              </table>
