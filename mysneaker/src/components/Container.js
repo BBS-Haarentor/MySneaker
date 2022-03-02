@@ -52,12 +52,18 @@ const Container = () => {
     const [GesamtIst, setGesamtIst] = useState(0)
     const [GesamtproduktionMöglichSoll, setGesamtproduktionMöglichSoll] = useState(0)
     const [GesamtproduktionMöglichIst, setGesamtproduktionMöglichIst] = useState(0)
+    const [Mitarbeiter, setMitarbeiter] = useState(8)
+    const [Neueinstellungen, setNeueinstellungen] = useState(0)
+    const [Kündigungen, setKündigungen] = useState(0)
+    const [Personalnebenkosten, setPersonalnebenkosten] = useState(20)
 
     var ProduktionFarben = parseInt(FarbenEinkaufMenge/2) 
     var Produktionskapazität = 200;
     var FertigungskostenProStückFE = 60;
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
+
+    var PersonalnebenkostenInP = Personalnebenkosten/100 +1
 
   
     
@@ -79,10 +85,10 @@ const fetchData = async () => {
 
 return (
     <>
-        <form className='grid grid-cols-1 xl:grid-cols-3'>
+        <form className='grid grid-cols-1 xl:grid-cols-3 overflow-y-scroll'>
 
        
-        <div className=" p-4 xl:col-span-2 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4  h-fit xl:col-span-3 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
@@ -112,7 +118,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className="p-4 border-[#4FD1C5]  border-2 rounded-3xl m-2 bg-white">
              <table>
                 <tbody>
                     <tr>
@@ -541,6 +547,88 @@ return (
                         <td>Gesamtverkauf Möglich</td>
                         <td><input min="0" type="number" onChange={(e)=> setGesamtproduktionMöglichIst(e.target.value)} value={GesamtproduktionMöglichIst}></input></td>
                     </tr>
+                </tbody>
+             </table>
+        </div>
+        <div className="p-4 w-fit h-fit border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Personal</th>
+                    </tr>
+                    <tr>
+                        <td>Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setMitarbeiter(e.target.value)} value={Mitarbeiter}></input></td>
+                    
+                    </tr>
+                    <tr>
+                        <td>Grundkapazität Stück je MA</td>
+                        <td>20</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Verfügbare Kapazität (MA)</td>
+                        <td>{Mitarbeiter - ZugeteilteMitarbeiter}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>benötigte MA </td>
+                        <td>{ZugeteilteMitarbeiter}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Auslastung </td>
+                        <td>{Math.round((ZugeteilteMitarbeiter/1)/Mitarbeiter * 100)}</td>
+                     
+                    </tr>
+                    <tr>
+                        <td>Neueinstellungen</td>
+                        <td><input min="0" type="number" onChange={(e)=> setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input></td>
+                  
+                    </tr>
+                    <tr>
+                        <td>Kosten Neueinstellung</td>
+                        <td>100,00€</td>
+                 
+                    </tr>
+                    <tr>
+                        <td>Kündigungen/Rente/ etc.</td>
+                        <td><input min="0" type="number" onChange={(e)=> setKündigungen(e.target.value)} value={Kündigungen}></input></td>
+                   
+                    </tr>
+                    <tr>
+                        <td>Zugeteilte Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                
+                    </tr>
+                    <tr>
+                        <td>Mitarbeiter nächste Periode</td>
+                        <td>{parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen}</td>
+                       
+                        
+                    </tr>
+                    <tr>
+                        <td>Kosten pro MA</td>
+                        <td>500</td>
+
+                    </tr>
+                    <tr>
+                        <td>Personalnebenkosten</td>
+                        <td><input min="0" type="number" onChange={(e)=> setPersonalnebenkosten(e.target.value)} value={Personalnebenkosten}></input></td>
+                    
+                    </tr>
+                    <tr>
+                        <td>Personalkosten akt. Periode</td>
+                        <td>{Mitarbeiter * (500*(PersonalnebenkostenInP))}</td>
+                    
+                    </tr>
+                    <tr>
+                        <td>Personalkosten folg. Periode</td>
+                        <td>{(parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen) * (500*(PersonalnebenkostenInP))}</td>
+                    
+                    </tr>
+                    
                 </tbody>
              </table>
         </div>
