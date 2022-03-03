@@ -45,6 +45,10 @@ const Container = () => {
     const [MarktIst, setMarktIst] = useState(0)
     const [AusschreibungSoll, setAussetschreibungSoll] = useState(0)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
+    const [GesamtSoll, setGesamtSoll] = useState(0)
+    const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
+    const [Gesamtproduktion, setGesamtproduktion] = useState(0)
+
 
     var ProduktionFarben = parseInt(FarbenEinkaufMenge/2) 
     var Produktionskapazität = 200;
