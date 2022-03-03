@@ -504,7 +504,7 @@ return (
                     </tr>
                     <tr>
                         <td>Gesamt</td>
-                        <td>{Math.round(parseInt(MarktSoll)/parseInt(AusschreibungSoll))}</td>
+                        <td>{Math.round(parseInt(MarktSoll)+parseInt(AusschreibungSoll))}</td>
                     </tr>
                     <tr>
                         <td>Gesamtverkauf Möglich</td>
