@@ -40,18 +40,11 @@ const Container = () => {
     const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
     const [Werbung, setWerbung] = useState(0)
     const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(0)
-    const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
     const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(0)
-    const [Gesamtproduktion, setGesamtproduktion] = useState(0)
-    const [GesamtproduktionMöglich, setGesamtproduktionMöglich] = useState(0)
     const [MarktSoll, setMarktSoll] = useState(0)
     const [MarktIst, setMarktIst] = useState(0)
     const [AusschreibungSoll, setAussetschreibungSoll] = useState(0)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
-    const [GesamtSoll, setGesamtSoll] = useState(0)
-    const [GesamtIst, setGesamtIst] = useState(0)
-    const [GesamtproduktionMöglichSoll, setGesamtproduktionMöglichSoll] = useState(0)
-    const [GesamtproduktionMöglichIst, setGesamtproduktionMöglichIst] = useState(0)
 
     var ProduktionFarben = parseInt(FarbenEinkaufMenge/2) 
     var Produktionskapazität = 200;
@@ -471,11 +464,9 @@ return (
                     </tr>
                     <tr>
                         <td>Geplante Produktion</td>
-                        <td><input min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
                     </tr>
                     <tr>
                         <td>Maximal Entnahme aus Lager</td>
-                        <td><input min="0" type="number" onChange={(e)=> setMaximaleEntnahmeAusLager(e.target.value)} value={MaximaleEntnahmeAusLager}></input></td>
                     </tr>
                     <tr>
                         <td>Entnahme aus dem Lager</td>
@@ -509,11 +500,11 @@ return (
                     </tr>
                     <tr>
                         <td>Gesamt</td>
-                        <td><input min="0" type="number" onChange={(e)=> setGesamtSoll(e.target.value)} value={GesamtSoll}></input></td>
+                        <td>{Math.round(parseInt(MarktSoll)/parseInt(AusschreibungSoll))}</td>
                     </tr>
                     <tr>
                         <td>Gesamtverkauf Möglich</td>
-                        <td><input min="0" type="number" onChange={(e)=> setGesamtproduktionMöglichSoll(e.target.value)} value={GesamtproduktionMöglichSoll}></input></td>
+                        <td>{GesamtSoll > Gesamtproduktion/1? "Nein":"Ja"}</td>
                     </tr>
                 </tbody>
              </table>
@@ -535,11 +526,7 @@ return (
                     </tr>
                     <tr>
                         <td>Gesamt</td>
-                        <td><input min="0" type="number" onChange={(e)=> setGesamtIst(e.target.value)} value={GesamtIst}></input></td>
-                    </tr>
-                    <tr>
-                        <td>Gesamtverkauf Möglich</td>
-                        <td><input min="0" type="number" onChange={(e)=> setGesamtproduktionMöglichIst(e.target.value)} value={GesamtproduktionMöglichIst}></input></td>
+                        <td>{Math.round(parseInt(MarktIst)/parseInt(AusschreibungIst))}</td>
                     </tr>
                 </tbody>
              </table>
