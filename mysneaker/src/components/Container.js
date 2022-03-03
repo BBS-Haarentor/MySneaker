@@ -530,7 +530,7 @@ return (
                     </tr>
                     <tr>
                         <td>Gesamt</td>
-                        <td>{Math.round(parseInt(MarktIst)/parseInt(AusschreibungIst))}</td>
+                        <td>{Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst))}</td>
                     </tr>
                 </tbody>
              </table>
