@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import sha256 from 'crypto-js/sha256';
+import Cookies from "js-cookie";
 
 const LoginPage = () => {
     const [userName, setUserName] = useState('')
@@ -22,6 +23,11 @@ const LoginPage = () => {
        
 
     }
+
+    if(Cookies.get("session") === undefined){
+        Cookies.set("session",[])
+    }
+
     const putData = async (json) => {
         const requestOptions = {
           method: 'PUT',
