@@ -1,0 +1,6 @@
+.git
+.venv
+venv
+venv38
+__pycache__
+.legacy

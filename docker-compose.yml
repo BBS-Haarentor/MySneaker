@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    command: uvicorn app.entrypoint:api --host 0.0.0.0
+    volumes:
+      - .:/app
+    ports:
+      - 8008:8000
+    depends_on:
+      - db
+    networks:
+      - default
+  db:
+    image: postgres:14.2-alpine
+    volumes:
+      - postgres_data_storage:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    environment:
+      - "POSTGRES_USER=${DATABASE_USER}"
+      - "POSTGRES_PASSWORD=${DATABASE_PASSWORD}"
+      - "POSTGRES_DB=${DATABASE_NAME}"
+    networks:
+      - default
+
+volumes:
+  postgres_data_storage:
+
+
+  
