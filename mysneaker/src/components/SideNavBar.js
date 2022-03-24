@@ -13,7 +13,7 @@ const [token, setToken] = useState();
           <img className='max-w-[20px] max-h-[20px]' src="https://img.icons8.com/ios/50/000000/sneakers.png"/>
           <h1 className='text-black ml-2 font-bold '>MySneaker</h1>
         </div>
-        <Spacer></Spacer>
+        {token === undefined ?  <NavBarButton text="Login" state={state} onClick={OnClick}></NavBarButton> : <> <Spacer></Spacer>
         <NavBarButton text="Lager" state={state} onClick={OnClick} ></NavBarButton>
         <NavBarButton text="Beschaffung" state={state} onClick={OnClick}></NavBarButton>
         <NavBarButton text="Absatz" state={state} onClick={OnClick}></NavBarButton>
@@ -21,8 +21,7 @@ const [token, setToken] = useState();
         <NavBarButton text="Personal" state={state} onClick={OnClick}></NavBarButton>
         <NavBarButton text="Marketing" state={state} onClick={OnClick}></NavBarButton>
         <NavBarButton text="Finanzen" state={state} onClick={OnClick}></NavBarButton>
-        <Spacer></Spacer>
-        {token === undefined ? <NavBarButton text="Login" state={state} onClick={OnClick}></NavBarButton> :<NavBarButton text="Logout" state={state} onClick={OnClick}></NavBarButton> }
+        <Spacer></Spacer><NavBarButton text="Logout" state={state} onClick={OnClick}></NavBarButton></> }
         
     </div>;
 };
