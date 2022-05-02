@@ -2,7 +2,7 @@ import React from 'react'
 
 const Klassen = ({name,date}) => {
   return (
-    <div>
+    <div className=''>
         <p>{name}</p>
         <p>{date}</p>
     </div>

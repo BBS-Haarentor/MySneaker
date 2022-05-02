@@ -13,7 +13,7 @@ const DashBoardPage = () => {
       setState(text)
 
   }
-  t
+  
   if(Cookies.get("session") === undefined){
     Cookies.set("session",[])
   }
