@@ -32,8 +32,8 @@ console.log(data)
   return (
     <div >
         <h1>Lehrer Panal</h1>
-        <div className='flex justify-items-center items-center w-screen h-screen ' >
-          <div>
+        <div className='flex justify-items-center items-center h-screen'>
+          <div className='grid grid-cols-2 gap-4 place-items-center w-screen h-[50%]' > 
             {data.map(({name,date},index)=>
               <Klassen key={index} name={name} date={date}></Klassen>
             )}

@@ -58,7 +58,7 @@ const LoginPage = () => {
                         <input className="text-[#a3b1c2] mb-3 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={userName} placeholder="Your email adress" onChange={(e)=> setUserName(e.target.value)} type="email" ></input>
                         <p className="px-11 py-3">Password</p>
                         <input autoComplete="password" className="text-[#a3b1c2] mb-2 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={password} placeholder="Your password"onChange={(e)=> setPassword(e.target.value)} type="password"></input>
-                        <input className="bg-[#4fd1c5] p-3 mx-11 rounded-3xl mt-10" type="submit"></input>
+                        <input className="bg-[#4fd1c5] p-3 mx-11 rounded-3xl mt-10 text-white" type="submit"></input>
                     </div>
                 </form>
             </div>

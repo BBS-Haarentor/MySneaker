@@ -76,16 +76,16 @@ const fetchData = async () => {
 
 return (
     <>
-        <form className='grid grid-cols-1 xl:grid-cols-3'>
+        <form className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidden'>
 
        
-        <div className=" p-4 xl:col-span-2 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Sneaker</th>
-                        <th>Farben</th>
+                        <th className='text-[#4fd1c5]'>Sneaker</th>
+                        <th className='text-[#4fd1c5]'>Farben</th>
                     </tr>
                     <tr>
                         <td>Einstandspreis</td>
@@ -109,14 +109,14 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Sneaker</th>
-                        <th>Farben</th>
-                        <th>Fertige Sneaker</th>
+                        <th className='text-[#4fd1c5]'>Sneaker</th>
+                        <th className='text-[#4fd1c5]'>Farben</th>
+                        <th className='text-[#4fd1c5]'>Fertige Sneaker</th>
                     </tr>
                     <tr>
                         <td>Lager (Vorperiode)</td>
@@ -182,12 +182,12 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Sneakerbox 200</th>
+                        <th className='text-[#4fd1c5]'>Sneakerbox 200</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -267,12 +267,12 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Sneakerbox 200</th>
+                        <th className='text-[#4fd1c5]'>Sneakerbox 200</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -352,12 +352,12 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white">
+        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Sneakerbox 200</th>
+                        <th className='text-[#4fd1c5]'>Sneakerbox 200</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -437,12 +437,12 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Marketing</th>
+                        <th className='text-[#4fd1c5]'>Marketing</th>
                     </tr>
                     <tr>
                         <td>Werbung</td>
@@ -459,12 +459,12 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4  border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Planung Umsatzerlöse</th>
+                        <th className='text-[#4fd1c5]'>Planung Umsatzerlöse</th>
                     </tr>
                     <tr>
                         <td>Geplante Produktion</td>
@@ -487,12 +487,12 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Verkauf (Soll)</th>
+                        <th className='text-[#4fd1c5]'   >Verkauf (Soll)</th>
                     </tr>
                     <tr>
                         <td>Markt</td>
@@ -513,12 +513,12 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 border-[#4FD1C5] border-2 rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
              <table>
                 <tbody>
                     <tr>
                         <th></th>
-                        <th>Verkauf (Ist)</th>
+                        <th className='text-[#4fd1c5]'>Verkauf (Ist)</th>
                     </tr>
                     <tr>
                         <td>Markt</td>
