@@ -5,4 +5,6 @@ sqlmodel==0.0.6
 uvicorn==0.17.6
 asyncpg==0.25.0
 aiosqlite==0.17.0
-fastapi-login==1.8.0
+alembic==1.7.7
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==1.15.0

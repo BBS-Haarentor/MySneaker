@@ -3,13 +3,15 @@ from typing import Optional
 from sqlmodel import SQLModel
 
 class DummyBase(SQLModel):
-    id: int
-    date: Optional[datetime]
+    id: int | None
+    date: datetime | None
     dumdum: str
+
 
 class DummyPost(DummyBase):
-    dumdum: str
+    pass
 
-class DummyUpdate(DummyBase):
+class DummyPatch(DummyBase):
     id: int
     dumdum: str
+    

@@ -7,6 +7,6 @@ from app.schemas.dummy import DummyBase
 
 class Dummy(DummyBase, table=True):
     __tablename__ = 'dummy'
-    id: Optional[int] = Field(default=None, primary_key=True)
-    date: Optional[datetime] = Field(datetime.now())
+    id: int | None = Field(default=None, primary_key=True)
+    date: datetime | None = Field(datetime.now()) 
     dumdum: str

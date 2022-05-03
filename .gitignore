@@ -2,5 +2,5 @@
 .venv
 venv
 venv38
+venv310
 __pycache__
-.legacy
