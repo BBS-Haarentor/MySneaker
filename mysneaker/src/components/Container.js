@@ -76,7 +76,7 @@ const fetchData = async () => {
 
 return (
     <>
-        <form className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidden'>
+        <form className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar'>
 
        
         <div className=" p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">

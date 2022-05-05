@@ -5,7 +5,7 @@ import {useState, useEffect} from "react";
 
 
 const SideNavBar = ({OnClick , state}) => {
-const [token, setToken] = useState();
+const [token, setToken] = useState("test");
 
 
   return <div className=' h-screen min-w-[300px] '>
