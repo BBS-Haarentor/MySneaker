@@ -7,7 +7,9 @@ from sqlmodel import SQLModel, Session, select
 from app.api.auth.api_key_auth import get_api_key
 from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user
 from app.crud.dummy import create_dummy, get_single_dummy, remove_dummy, update_dummy
+from app.crud.groups import check_user_in_group
 from app.db.session import get_session, get_async_session
+from app.models.groups import AdminGroup, TeacherGroup
 from app.models.user import User
 from app.models.dummy import Dummy
 from app.schemas.dummy import DummyPatch, DummyPost
@@ -43,9 +45,17 @@ async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_ses
     else:
         return result
 
+@router.get("/duf", status_code=status.HTTP_202_ACCEPTED)
+@admin_auth_required
+async def duf(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> User | None:
+    result: User | None = await check_user_in_group(session=session, user_id=current_user.id, target_group=AdminGroup())
+
+    return result
+
+
 @router.patch("/patch", status_code=status.HTTP_200_OK)
 @admin_auth_required
-async def patch_dummy(dummy_data: DummyPatch, session: AsyncSession = Depends(get_async_session)):
+async def patch_dummy(dummy_data: DummyPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result = await update_dummy(update_data=dummy_data, session=session)
     return result
 
