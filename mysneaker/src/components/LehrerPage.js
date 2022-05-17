@@ -31,16 +31,17 @@ const LehrerPage = () => {
   console.log(data)
   return (
     <div className='grid grid-cols-2 w-screen h-screen'>
-        <div className=' border-2 border-[#4fd1c5] w-[90%] h-[90%] rounded-3xl my-auto mx-12  '>
+        <div className=' shadow-lg bg-white w-[90%] h-[90%] rounded-3xl my-auto mx-12  '>
           {data.map(({ name, date }, index) =>
               <Klassen key={index} name={name} date={date}></Klassen>
           )}
         </div>
       <div className='flex flex-col justify-center'>
-        <button className='my-6 mx-16 border-2 rounded-3xl border-[#4fd1c5] p-4'>hinzufügen</button>
-        <button className=' my-6 mx-16 border-2 rounded-3xl border-[#4fd1c5] p-4'>hin     zufügen</button>
-        <button className='my-6 mx-16 mb-2 border-2 rounded-3xl border-[#4fd1c5] p-4'>hinzufügen</button>
-        <div className=' border-2 border-[#4fd1c5]  rounded-3xl mx-16  h-60'>
+        <button className='my-6 mx-16 bg-white rounded-3xl shadow-lg p-4'>hinzufügen</button>
+        <button className=' my-6 mx-16 bg-white rounded-3xl shadow-lg p-4'>hin - - - - zufügen</button>
+        <button className='my-6 mx-16 bg-white mb-2 shadow-lg rounded-3xl  p-4'>hinzufügen</button>
+        <div className=' shadow-lg bg-white rounded-3xl mx-16 my-auto
+          h-[50%]'>
           {data.map(({ name, date }, index) =>
              <p className=''>name</p>
           )}

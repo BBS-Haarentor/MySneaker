@@ -76,10 +76,10 @@ const fetchData = async () => {
 
 return (
     <>
-        <form className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar'>
+        <form className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar snap-y'>
 
        
-        <div className=" p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start ">
              <table>
                 <tbody>
                     <tr>
@@ -109,7 +109,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white">
+        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white  snap-start">
              <table>
                 <tbody>
                     <tr>
@@ -182,7 +182,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white">
+        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
              <table>
                 <tbody>
                     <tr>
@@ -267,7 +267,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white">
+        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
              <table>
                 <tbody>
                     <tr>
@@ -352,7 +352,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white">
+        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
              <table>
                 <tbody>
                     <tr>
@@ -437,7 +437,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center  snap-start ">
              <table>
                 <tbody>
                     <tr>
@@ -459,7 +459,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start">
              <table>
                 <tbody>
                     <tr>
@@ -487,7 +487,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center  snap-start">
              <table>
                 <tbody>
                     <tr>
@@ -513,7 +513,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center  ">
+        <div className=" p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start ">
              <table>
                 <tbody>
                     <tr>
