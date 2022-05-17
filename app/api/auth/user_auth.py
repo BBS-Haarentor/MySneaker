@@ -1,6 +1,3 @@
-
-
-
 from datetime import timedelta, datetime
 from functools import wraps
 import logging
