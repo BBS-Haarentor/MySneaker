@@ -117,8 +117,8 @@ async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_cu
     raise NotImplementedError
 
 @router.post("/new_admin", status_code=status.HTTP_202_ACCEPTED)
-async def new_admin_user(new_user: UserPost, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)):
+async def new_admin_user(new_user: UserPost, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> int | None:
     new_admin_user = UserPost(name=SETTINGS.ADMIN_USER_NAME, hashed_pw=SETTINGS.ADMIN_USER_HASHED_PW)
     admin_id = await create_user(user_post=new_admin_user, session=session)
-    result: AdminGroup = await add_user_to_admingroup(session=session, user_id=new_admin_user.id)
+    result: User | None = await add_user_to_admingroup(session=session, user_id=admin_id)
     return result.user_id

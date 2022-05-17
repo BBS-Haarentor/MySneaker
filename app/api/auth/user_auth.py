@@ -7,7 +7,7 @@ import jwt
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
-from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup
+from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
 from app.crud.user import get_user_by_name
 from app.db.session import get_async_session
 from jose import JWTError, jwt
@@ -43,11 +43,11 @@ def base_auth_required(func):
         return await func(current_user,session,*args,**kwargs)
     return decorated
 
-def elevated_auth_required(func):
+def teacher_auth_required(func):
     @wraps(func)
-    async def decorated(current_user: User, *args, **kwargs):
-        role_int = ordered_roles.get(current_user.role)
-        if role_int < 2:
+    async def decorated(current_user: User, session: AsyncSession, *args, **kwargs):
+        role_check = await check_user_in_teachergroup(session=session, user_id=current_user.id)
+        if not isinstance(role_check, User):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient Credentials")
         return await func(current_user,*args,**kwargs)
     return decorated

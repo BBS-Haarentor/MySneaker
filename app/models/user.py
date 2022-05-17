@@ -16,6 +16,7 @@ class User(UserBase, table=True):
     email: str | None = Field(default=None)
     hashed_pw: str
     is_active: bool | None = Field(default=True)
+    game_id: int | None = Field(default=None)
 
 
 class GroupPatch(SQLModel):

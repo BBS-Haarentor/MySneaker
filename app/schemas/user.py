@@ -10,7 +10,7 @@ class UserBase(SQLModel):
     email: str | None
     hashed_pw: str
     is_active: bool | None
-
+    game_id: int | None
 
 class UserPost(UserBase):
     pass
