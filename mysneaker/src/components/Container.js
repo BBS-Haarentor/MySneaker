@@ -46,6 +46,7 @@ const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,P
     const [Kündigungen, setKündigungen] = useState(0)
     const [Personalnebenkosten, setPersonalnebenkosten] = useState(20)
     const [AufnahmeDarlehen, setAufnahmeDarlehen] = useState(0)
+    const [RueckzahlungDarlehen, setRueckzahlungDarlehen] = useState(0)
 
 
     var PersonalnebenkostenInP = Personalnebenkosten/100 +1 
@@ -139,15 +140,15 @@ return (
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (PLAN)</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{GeplanteProduktion}</td>
+                        <td>{GeplanteProduktion*0,2}</td>
+                        <td>{Gesamtproduktion}</td>
                     </tr>
                     <tr>
                         <td>Lager Periodenende (PLAN)</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{(data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge))-GeplanteProduktion}</td>
+                        <td>{(data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge))-GeplanteProduktion*0,2}</td>
+                        <td>{(data.vorperiode.lager.fertigeSneaker- GesamtSoll)}</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten pro Stück</td>
@@ -157,9 +158,9 @@ return (
                     </tr>
                     <tr>
                         <td>Lagerkosten (PLAN)</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{((data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge))-GeplanteProduktion)*4}</td>
+                        <td>{((data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge))-GeplanteProduktion*0,2)*1}</td>
+                        <td>{((data.vorperiode.lager.fertigeSneaker- GesamtSoll))*8}</td>
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (IST)</td>
@@ -656,7 +657,107 @@ return (
                         <td>{data.vorperiode.finanzen.darlehenstand}</td>
                         <td>{data.vorperiode.finanzen.darlehenstand}</td>
                     </tr>
-                    
+                    <tr>
+                        <td>Einkauf Sneaker</td>
+                        <td>{SneakerEinkaufMenge}</td>
+                        <td>{SneakerEinkaufMenge}</td>
+                    </tr>
+                    <tr>
+                        <td>Einkauf Farben</td>
+                        <td>{FarbenEinkaufMenge}</td>
+                        <td>{FarbenEinkaufMenge}</td>
+                    </tr>
+                    <tr>
+                        <td>Lagerkosten Fertige Erz.</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Lagerkosten Sneaker</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Lagerkosten Farben</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Maschinenkosten</td>
+                        <td>{Maschinenkosten}</td>
+                        <td>{Maschinenkosten}</td>
+                    </tr>
+                    <tr>
+                        <td>Produktionskosten</td>
+                        <td>{Maschinenkosten}</td>
+                        <td>{Maschinenkosten}</td>
+                    </tr>
+                    <tr>
+                        <td>Maschinenkauf</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Kosten Neueinstellung</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Löhne/Gehälter</td>
+                        <td>{Mitarbeiter * (500*(PersonalnebenkostenInP))}</td>
+                        <td>{Mitarbeiter * (500*(PersonalnebenkostenInP))}</td>
+                    </tr>
+                    <tr>
+                        <td>Werbekosten</td>
+                        <td>{Werbung}</td>
+                        <td>{Werbung}</td>
+                    </tr>
+                    <tr>
+                        <td>Rationalisierung</td>
+                        <td>{<input min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input>}</td>
+                        <td>{<input min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input>}</td>
+                    </tr>
+                    <tr>
+                        <td>Zinsen (Darlehen)</td>
+                        <td>{}</td>                      
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Rückzahlung Darlehen</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Umsatzerlöse</td>
+                        <td>{<input min="0" type="number" onChange={(e)=> setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
+                        <td>{<input min="0" type="number" onChange={(e)=> setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
+                    </tr>
+                    <tr>
+                        <td>Umsatzerlöse</td>
+                        <td>{GesamtSoll}</td>
+                        <td>{Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst))}</td>
+                    </tr>
+                    <tr>
+                        <td>Saldo</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Höhe Kontokorrentkredit</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Zinsen (Kontokorrentkredit)</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+                    <tr>
+                        <td>Kontostand</td>
+                        <td>{}</td>
+                        <td>{}</td>
+                    </tr>
+
                 </tbody>
              </table>
         </div>
