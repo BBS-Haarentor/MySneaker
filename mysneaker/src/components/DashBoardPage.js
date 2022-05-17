@@ -23,7 +23,7 @@ const DashBoardPage = () => {
     }else if(text === "Personal"){
       PersonalRef.current?.scrollIntoView({ behavior: 'smooth' });
     }else if(text === "Produktion"){
-      PersonalRef.current?.scrollIntoView({ behavior: 'smooth' });
+      ProductionRef.current?.scrollIntoView({ behavior: 'smooth' });
     }else if(text === "Marketing"){
       MarketingRef.current?.scrollIntoView({ behavior: 'smooth' });
     }else if(text === "Absatz"){

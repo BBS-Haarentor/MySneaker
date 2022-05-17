@@ -13,7 +13,7 @@ const KlassenDetailPage = () => {
           </div>
         </div>
         <div className='grid grid-cols-3 w-[90%] h-[25%] mx-12 overflow-hidden'>
-          <div className='inline-block border-2 border-[#4fd1c5] w-[170%] overflow-y-auto rounded-3xl my-12'>
+          <div className='inline-block border-2 border-[#4fd1c5] w-[170%] mx-12 overflow-y-auto rounded-3xl my-12'>
             <ul>
               <li className='p-3 text-lg'>
                 <a>Test</a>
@@ -39,7 +39,7 @@ const KlassenDetailPage = () => {
             </ul>
           </div>
           <div></div>
-          <button className='inline-block border-2 border-[#4fd1c5] w-[100%]  rounded-3xl my-12'>
+          <button className='inline-block border-2 border-[#4fd1c5] w-[82%]  rounded-3xl my-12'>
             Abschließen
           </button>
         </div>

@@ -45,6 +45,7 @@ const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,P
     const [Neueinstellungen, setNeueinstellungen] = useState(0)
     const [Kündigungen, setKündigungen] = useState(0)
     const [Personalnebenkosten, setPersonalnebenkosten] = useState(20)
+    const [AufnahmeDarlehen, setAufnahmeDarlehen] = useState(0)
 
 
     var PersonalnebenkostenInP = Personalnebenkosten/100 +1 
@@ -182,7 +183,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4 w-fit h-fit  shadow-lg rounded-3xl m-2 bg-white" ref={PersonalRef}>
+        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white snap-start" ref={PersonalRef}>
              <table>
                 <tbody>
                     <tr>
@@ -614,6 +615,48 @@ return (
                         <td>Gesamt</td>
                         <td>{Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst))}</td>
                     </tr>
+                </tbody>
+             </table>
+        </div>
+        <div className=" p-4 shadow-lg xl:col-span-2 rounded-3xl m-2 bg-white flex justify-center snap-start ">
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th className='text-[#4fd1c5]'>Finanzen</th>
+                        
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>PLAN</td>
+                        <td>IST</td>
+                    </tr>
+                    <tr>
+                        <td>Kontostand</td>
+                        <td>{data.vorperiode.finanzen.kontostand}</td>
+                        <td>{data.vorperiode.finanzen.kontostand}</td>
+                    </tr>
+                    <tr>
+                        <td>Maximale Darlehenshöhe</td>
+                        <td>50.000€</td>
+                        <td>50.000€</td>
+                    </tr>
+                    <tr>
+                        <td>Darlehensstand (Beginn Periode)</td>
+                        <td>{data.vorperiode.finanzen.darlehenstand}</td>
+                        <td>{data.vorperiode.finanzen.darlehenstand}</td>
+                    </tr>
+                    <tr>
+                        <td>Aufnahme Darlehen</td>
+                        <td><input min="0" type="number" onChange={(e)=> setAufnahmeDarlehen(e.target.value)} value={AufnahmeDarlehen}></input></td>
+                        <td>AufnahmeDarlehen</td>
+                    </tr>
+                    <tr>
+                        <td>Darlehensstand (Ende Periode)</td>
+                        <td>{data.vorperiode.finanzen.darlehenstand}</td>
+                        <td>{data.vorperiode.finanzen.darlehenstand}</td>
+                    </tr>
+                    
                 </tbody>
              </table>
         </div>
