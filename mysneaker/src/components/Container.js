@@ -1,9 +1,9 @@
 import React from 'react'
 import Beschaffung from './Beschaffung'
-import {useState, useEffect} from "react";
+import {useState, useEffect,useRef} from "react";
 
 
-const Container = () => {
+const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,PersonalRef,AbsatzRef}) => {
     const [data, setData] = useState({
         "vorperiode":{
           "lager":{
@@ -23,13 +23,6 @@ const Container = () => {
               "farben":10
             }
           },
-          "lager":{
-            "lagerVorperiode":{
-                "sneaker":0,
-                "farben":0,
-                "fertigeSneaker":0
-            }
-          }
         }
       })
     const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState(0)
@@ -48,14 +41,21 @@ const Container = () => {
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
     const [Gesamtproduktion, setGesamtproduktion] = useState(0)
+    const [Mitarbeiter, setMitarbeiter] = useState(8)
+    const [Neueinstellungen, setNeueinstellungen] = useState(0)
+    const [Kündigungen, setKündigungen] = useState(0)
+    const [Personalnebenkosten, setPersonalnebenkosten] = useState(20)
 
 
+    var PersonalnebenkostenInP = Personalnebenkosten/100 +1 
     var ProduktionFarben = parseInt(FarbenEinkaufMenge/2) 
     var Produktionskapazität = 200;
     var FertigungskostenProStückFE = 60;
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
 
+ 
+  
   
     
     useEffect(() => {
@@ -79,7 +79,7 @@ return (
         <form className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar snap-y'>
 
        
-        <div className=" p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start ">
+        <div className=" p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
              <table>
                 <tbody>
                     <tr>
@@ -182,7 +182,89 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
+        <div className="p-4 w-fit h-fit  shadow-lg rounded-3xl m-2 bg-white" ref={PersonalRef}>
+             <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th className='text-[#4fd1c5]'>Personal</th>
+                    </tr>
+                    <tr>
+                        <td>Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setMitarbeiter(e.target.value)} value={Mitarbeiter}></input></td>
+
+                    </tr>
+                    <tr>
+                        <td>Grundkapazität Stück je MA</td>
+                        <td>20</td>
+
+                    </tr>
+                    <tr>
+                        <td>Verfügbare Kapazität (MA)</td>
+                        <td>{Mitarbeiter - ZugeteilteMitarbeiter}</td>
+
+                    </tr>
+                    <tr>
+                        <td>benötigte MA </td>
+                        <td>{ZugeteilteMitarbeiter}</td>
+
+                    </tr>
+                    <tr>
+                        <td>Auslastung </td>
+                        <td>{Math.round((ZugeteilteMitarbeiter/1)/Mitarbeiter * 100)}</td>
+
+                    </tr>
+                    <tr>
+                        <td>Neueinstellungen</td>
+                        <td><input min="0" type="number" onChange={(e)=> setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input></td>
+
+                    </tr>
+                    <tr>
+                        <td>Kosten Neueinstellung</td>
+                        <td>100,00€</td>
+
+                    </tr>
+                    <tr>
+                        <td>Kündigungen/Rente/ etc.</td>
+                        <td><input min="0" type="number" onChange={(e)=> setKündigungen(e.target.value)} value={Kündigungen}></input></td>
+
+                    </tr>
+                    <tr>
+                        <td>Zugeteilte Mitarbeiter</td>
+                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+
+                    </tr>
+                    <tr>
+                        <td>Mitarbeiter nächste Periode</td>
+                        <td>{parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen}</td>
+
+
+                    </tr>
+                    <tr>
+                        <td>Kosten pro MA</td>
+                        <td>500</td>
+
+                    </tr>
+                    <tr>
+                        <td>Personalnebenkosten</td>
+                        <td><input min="0" type="number" onChange={(e)=> setPersonalnebenkosten(e.target.value)} value={Personalnebenkosten}></input></td>
+
+                    </tr>
+                    <tr>
+                        <td>Personalkosten akt. Periode</td>
+                        <td>{Mitarbeiter * (500*(PersonalnebenkostenInP))}</td>
+
+                    </tr>
+                    <tr>
+                        <td>Personalkosten folg. Periode</td>
+                        <td>{(parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen) * (500*(PersonalnebenkostenInP))}</td>
+
+                    </tr>
+
+                </tbody>
+             </table>
+        </div>
+        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
              <table>
                 <tbody>
                     <tr>
@@ -437,7 +519,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center  snap-start ">
+        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center  snap-start " ref={MarketingRef}>
              <table>
                 <tbody>
                     <tr>
@@ -450,7 +532,7 @@ return (
                     </tr>
                     <tr>
                         <th></th>
-                        <th>Forschung und Entwickelung</th>
+                        <th className='text-[#4fd1c5]'>Forschung und Entwickelung</th>
                     </tr>
                     <tr>
                         <td>Verbesserung der Maschinen</td>
@@ -459,7 +541,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start">
+        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
              <table>
                 <tbody>
                     <tr>
