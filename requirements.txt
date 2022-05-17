@@ -7,6 +7,4 @@ asyncpg==0.25.0
 aiosqlite==0.17.0
 alembic==1.7.7
 passlib[bcrypt]==1.7.4
-python-jose[cryptography]==3.3.0
-pyjwt==2.3.0
-fastapi-users==9.3.1
+python-jose[cryptography]==1.15.0

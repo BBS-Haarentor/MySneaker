@@ -1,4 +1,5 @@
 from datetime import timedelta
+from re import S
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
@@ -60,8 +61,24 @@ async def patch_dummy(dummy_data: UserPatch, session: AsyncSession = Depends(get
     result = await update_user(update_data=dummy_data, session=session)
     return result
 
-@router.delete("/", status_code=status.HTTP_200_OK)
-async def delete_dummy(id: int, session: AsyncSession = Depends(get_async_session), api_key: APIKey = Depends(get_api_key)):
+@router.put("/toggle_active", status_code=status.HTTP_202_ACCEPTED)
+async def toggle_active(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    user: None | User = await get_user_by_id(id=user_id, session=session)
+    if isinstance(user, NoneType):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="error while toggling activity status")
+    old_status = user.is_active
+    user.is_active = not old_status
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    if user.is_active is not old_status:
+        return True
+    else:
+        return False
+    
+
+@router.delete("/{id}", status_code=status.HTTP_200_OK)
+async def delete_user(to_be_deleted_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session), api_key: APIKey = Depends(get_api_key)):
     result: bool | None = await remove_user(id=id, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)

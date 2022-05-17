@@ -1,5 +1,6 @@
 
 
+from datetime import datetime
 import logging
 from types import NoneType
 from fastapi import Depends
@@ -49,6 +50,18 @@ async def update_user(update_data: UserPatch, session: AsyncSession) -> User | N
         return to_be_updated_dummy
     else:
         return None
+
+async def update_last_login(user: User, session: AsyncSession) -> bool:
+    now = datetime.now()
+    user.last_login = now
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    if user.last_login == now:
+        return True
+    else:
+        return False
+
 
 async def remove_user(id: int, session: AsyncSession) -> bool | None:
     result = await session.exec(select(User).where(User.id == id))

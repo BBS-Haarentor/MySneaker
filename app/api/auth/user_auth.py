@@ -11,7 +11,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
-from app.crud.user import get_user_by_name
+from app.crud.user import get_user_by_name, update_last_login
 from app.db.session import get_async_session
 from jose import JWTError, jwt
 
@@ -28,18 +28,24 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
 
 
 async def authenticate_user(session: AsyncSession, username: str, password: str) -> User | bool :
+    # check user exists
     result: User | None = await get_user_by_name(search_name=username, session=session)
     if isinstance(result, NoneType):
-        return False
+        return None
+    # check if pw correct
     if not pwd_context.verify(password, result.hashed_pw):
         return False
-    return result
-
+    # log newest login for user
+    update_login_succeeded = await update_last_login(user=result, session=session)
+    if update_last_login == True:
+        return result
+    else:
+        return False
 
 # function decorator for authentication requirement and check, right now only checking implicitly
 def base_auth_required(func):
     @wraps(func)
-    async def decorated(current_user: User, session:AsyncSession, *args, **kwargs):
+    async def decorated(current_user: User, session: AsyncSession, *args, **kwargs):
         role_check = await check_user_in_basegroup(session=session, user_id=current_user.id)
         if not isinstance(role_check, User):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient Credentials")
