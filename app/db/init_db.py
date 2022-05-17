@@ -15,13 +15,13 @@ async def init_db() -> None:
 
 async def init_async_db() -> None:
     async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.drop_all)
+        #await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)
 
-
+'''
 async def init_admin_user() -> None:
     session:AsyncSession = get_async_session()
     new_admin_user = UserPost(name=SETTINGS.ADMIN_USER_NAME, hashed_pw=SETTINGS.ADMIN_USER_HASHED_PW)
     admin_id: int = await create_user(user_post=new_admin_user, session=session)
     #logging.info(f"{admin_id=}")
-    
+    '''

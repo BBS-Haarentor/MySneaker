@@ -3,14 +3,14 @@ from functools import wraps
 import logging
 from types import NoneType
 from fastapi import Depends, HTTPException, Request
-import jwt
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
 from app.crud.user import get_user_by_name, update_last_login
 from app.db.session import get_async_session
-from jose import JWTError, jwt
+from jose import JWTError
+import jwt
 
 from app.models.user import User
 from app.schemas.token import TokenData
@@ -84,7 +84,7 @@ async def get_current_active_user(token: str = Depends(oauth2_scheme), session: 
         if username is None:
             raise credentials_exception
         token_data = TokenData(username=username)
-    except JWTError:
+    except Exception:
         raise credentials_exception
     current_user: User | None = await get_user_by_name(search_name=token_data.username, session=session)
     #user = get_user(fake_users_db, username=token_data.username)

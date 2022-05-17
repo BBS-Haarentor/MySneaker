@@ -2,9 +2,6 @@
 from contextlib import contextmanager
 from typing import AsyncGenerator
 from fastapi import Depends
-#from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
-from fastapi_users.db import SQLAlchemyUserDatabase
-#from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -28,7 +25,7 @@ engine_async_sqlite = create_async_engine(f"{sqlite_async_schema}://{SETTINGS.DA
 engine_sqlite = create_engine(f"sqlite://{SETTINGS.DATABASE_URL_SQLITE}", echo=True)
 
 
-
+#engine = engine_async_postgres
 engine = engine_async_sqlite
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:

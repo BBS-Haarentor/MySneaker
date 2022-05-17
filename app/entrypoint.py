@@ -6,8 +6,9 @@ from fastapi import FastAPI, Request
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.v1.api import v1_router
 from app.api.auth.endpoints.user import router as user_router
+from app.api.auth.endpoints.group import router as group_router
 from app.core.config import SETTINGS, Settings
-from app.db.init_db import init_admin_user, init_async_db, init_db
+from app.db.init_db import init_async_db, init_db
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 
@@ -24,6 +25,7 @@ api.include_router(v1_router, prefix="/api/v1", tags=["v1"])
 
 api.include_router(user_router, prefix="/user", tags=["user"])
 
+#api.include_router(group_router, prefix="/group", tags=["group"])
 
 # middleware to add a process-time field in the response-header
 @api.middleware("http")
