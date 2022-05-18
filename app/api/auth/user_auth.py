@@ -5,7 +5,7 @@ from datetime import timedelta, datetime
 from functools import wraps
 import logging
 from types import NoneType
-from fastapi import Depends, HTTPException, Request
+from fastapi import Depends, HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS
@@ -77,7 +77,7 @@ def admin_auth_required(func):
 
 
 
-async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session))-> User | None:
+async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session)) -> User | None:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

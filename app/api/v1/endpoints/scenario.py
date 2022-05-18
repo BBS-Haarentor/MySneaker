@@ -16,4 +16,7 @@ async def get_scenario_by_letter(letter: str) -> Scenario:
     # crud call
     #return scenariodata
     raise NotImplementedError
-    
+
+@router.get("/get_all_scenarios", status_code=status.HTTP_200_OK)
+async def get_all_scenarios() -> list[str]:
+    raise NotImplementedError    

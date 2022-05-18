@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.api.auth.user_auth import get_current_active_user, teacher_auth_required
+#from app.api.auth.user_auth import get_current_active_user
 from app.crud.game import create_game
 from app.db.session import get_async_session
 from app.models.user import User

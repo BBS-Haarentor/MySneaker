@@ -15,6 +15,17 @@ class UserBase(SQLModel):
 class UserPost(UserBase):
     pass
 
+class UserPostStudent(UserBase):
+    name: str
+    hashed_pw: str
+    game_id: int
+    
+class UserPostTeacher(UserBase):
+    name: str
+    hashed_pw: str
+    
+
+
 
 class UserPatch(UserBase):
     id: int | None

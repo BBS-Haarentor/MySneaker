@@ -3,16 +3,23 @@
 from datetime import datetime
 import logging
 from types import NoneType
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from sqlmodel import or_, select
+from app.api.v1.endpoints.game import get_game_by_id
 from app.db.session import get_async_session
+from app.models.game import Game
 from app.models.user import User
 from sqlmodel.ext.asyncio.session import AsyncSession
-
+from starlette import status
 from app.schemas.user import UserPost, UserPatch
 
 
 async def create_user(user_post: UserPost, session: AsyncSession) -> int:
+    result: Game | None = await get_game_by_id(user_post.game_id)
+    if isinstance(result, NoneType):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    if result.signup_enabled == False:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     new_user = User(name=user_post.name, hashed_pw=user_post.hashed_pw)
     session.add(new_user)
     await session.commit()

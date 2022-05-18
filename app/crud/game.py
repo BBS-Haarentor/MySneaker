@@ -35,3 +35,8 @@ async def toggle_game_state(id: int, session: AsyncSession) -> bool:
 async def start_new_cycle() -> int | None:
     raise NotImplementedError
 
+async def delete_game() -> bool:
+    raise NotImplementedError
+
+
+

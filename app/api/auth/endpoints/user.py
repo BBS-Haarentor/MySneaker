@@ -11,7 +11,7 @@ from app.db.session import get_async_session
 from app.models.groups import AdminGroup, BaseGroup
 from app.models.user import GroupPatch, User
 from app.schemas.token import TokenData
-from app.schemas.user import UserPatch, UserPost
+from app.schemas.user import StudentUserPost, UserPatch, UserPost
 from starlette import status
 from sqlmodel import Session as SQLSession, select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -21,19 +21,25 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
 
+
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_user_root():
     return { "HAHA": "du banane, userroot hier" }
 
-@router.post("/create", status_code=status.HTTP_201_CREATED)
+
+@router.post("/create/student", status_code=status.HTTP_201_CREATED)
+async def post_user(user_post: StudentUserPost, session: AsyncSession = Depends(get_async_session)):
+    new_user_id = await create_user(user_post, session)
+    
+    return { f"Student user created with {new_user_id}"}
+
+
+@router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
 async def post_user(user_post: UserPost, session: AsyncSession = Depends(get_async_session)):
-    new_dummy_id = await create_user(user_post, session)
-    #new_dummy = Dummy(dumdum=dummy_post)
-    #session.add(new_dummy)
-    #await session.commit()
-    #await session.refresh(new_dummy)
-    #logging.info(f"created new Dummy with id: {new_dummy.id}")
-    return { f"Dummy created with {new_dummy_id}"}
+    new_user_id = await create_user(user_post, session)
+    # add user to teacher group
+    return { f"Teacher user created with {new_user_id}"}
+
 
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
 async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_session)):
