@@ -1,3 +1,6 @@
+
+
+
 from datetime import timedelta, datetime
 from functools import wraps
 import logging
@@ -9,8 +12,7 @@ from app.core.config import SETTINGS, ordered_roles
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
 from app.crud.user import get_user_by_name, update_last_login
 from app.db.session import get_async_session
-from jose import JWTError
-import jwt
+from jose import JWTError, jwt
 
 from app.models.user import User
 from app.schemas.token import TokenData
@@ -52,8 +54,9 @@ def base_auth_required(func):
 def teacher_auth_required(func):
     @wraps(func)
     async def decorated(current_user: User, session: AsyncSession, *args, **kwargs):
-        role_check = await check_user_in_teachergroup(session=session, user_id=current_user.id)
-        if not isinstance(role_check, User):
+        role_check_teacher = await check_user_in_teachergroup(session=session, user_id=current_user.id)
+        role_check_admin = await check_user_in_admingroup(session=session, user_id=current_user.id)
+        if isinstance(role_check_teacher, NoneType) and isinstance(role_check_admin, NoneType):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient Credentials")
         return await func(current_user,*args,**kwargs)
     return decorated
@@ -84,7 +87,7 @@ async def get_current_active_user(token: str = Depends(oauth2_scheme), session: 
         if username is None:
             raise credentials_exception
         token_data = TokenData(username=username)
-    except Exception:
+    except JWTError:
         raise credentials_exception
     current_user: User | None = await get_user_by_name(search_name=token_data.username, session=session)
     #user = get_user(fake_users_db, username=token_data.username)

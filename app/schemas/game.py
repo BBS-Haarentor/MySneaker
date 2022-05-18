@@ -11,6 +11,10 @@ class GameBase(SQLModel):
     is_active: bool
     scenario_order: str | None
 
+class GameInit(GameBase):
+    grade_name: str
+    owner_id: int | None
+    scenario_order: str | None
 
 
 class GameCreate(GameBase):

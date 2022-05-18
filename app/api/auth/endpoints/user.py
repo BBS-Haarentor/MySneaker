@@ -47,7 +47,7 @@ async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_ses
 
 
 @router.get("/get_by_name/{username}", status_code=status.HTTP_200_OK)
-async def get_user_id(username: str, session: AsyncSession = Depends(get_async_session)):
+async def get_usery_id(username: str, session: AsyncSession = Depends(get_async_session)):
     #result = await session.exec(select(Dummy).where(Dummy.id == id))
     #filtered: Dummy = result.one_or_none()
     result = await get_user_by_id_or_name(id = None, name = username, session = session)
