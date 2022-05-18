@@ -68,6 +68,6 @@ def turnover_simple(value_dict : dict) ->dict:
 
     #VerkaufDurchWerbung = 
 
-def turnover_simple(value_dict : dict) ->dict:
-    UnternehmenVerkaufOhneWerbung = 
+#def turnover_simple(value_dict : dict) ->dict:
+#    UnternehmenVerkaufOhneWerbung = 
  
