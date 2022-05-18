@@ -40,11 +40,14 @@ async def post_user(user_post: UserPostTeacher, session: AsyncSession = Depends(
     # add user to teacher group
     return { f"Teacher user created with {new_user_id}"}
 
+@router.post("/create/admin", status_code=status.HTTP_201_CREATED)
+async def new_admin_user(new_user: UserPost, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> int | None:
+    admin_id = await create_user(user_post=new_user, session=session)
+    result: User | None = await add_user_to_admingroup(session=session, user_id=admin_id)
+    return result.user_id
 
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
 async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_session)):
-    #result = await session.exec(select(Dummy).where(Dummy.id == id))
-    #filtered: Dummy = result.one_or_none()
     result = await get_user_by_id_or_name(id = id, name = None, session = session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -54,8 +57,6 @@ async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_ses
 
 @router.get("/get_by_name/{username}", status_code=status.HTTP_200_OK)
 async def get_usery_id(username: str, session: AsyncSession = Depends(get_async_session)):
-    #result = await session.exec(select(Dummy).where(Dummy.id == id))
-    #filtered: Dummy = result.one_or_none()
     result = await get_user_by_id_or_name(id = None, name = username, session = session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -139,9 +140,4 @@ async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_cu
     '''
     raise NotImplementedError
 
-@router.post("/new_admin", status_code=status.HTTP_202_ACCEPTED)
-async def new_admin_user(new_user: UserPost, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> int | None:
-    new_admin_user = UserPost(name=SETTINGS.ADMIN_USER_NAME, hashed_pw=SETTINGS.ADMIN_USER_HASHED_PW)
-    admin_id = await create_user(user_post=new_admin_user, session=session)
-    result: User | None = await add_user_to_admingroup(session=session, user_id=admin_id)
-    return result.user_id
+
