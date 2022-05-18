@@ -1,6 +1,7 @@
 # API backend for the MySneaker Project
 
 ## Setup
+Please note that this code works only with a python3.10 interpreter
 ### sqlite-version
 set up a virtual environment (venv)
 ``` 

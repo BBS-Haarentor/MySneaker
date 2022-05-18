@@ -34,12 +34,14 @@ async def authenticate_user(session: AsyncSession, username: str, password: str)
     # check if pw correct
     if not pwd_context.verify(password, result.hashed_pw):
         return False
-    # log newest login for user
-    update_login_succeeded = await update_last_login(user=result, session=session)
-    if update_last_login == True:
-        return result
     else:
-        return False
+        return result
+    # log newest login for user
+    #update_login_succeeded = await update_last_login(user=result, session=session)
+    #if update_last_login == True:
+    #    return result
+    #else:
+    #    return False
 
 # function decorator for authentication requirement and check, right now only checking implicitly
 def base_auth_required(func):
