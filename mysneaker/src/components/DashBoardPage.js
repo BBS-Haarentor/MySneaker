@@ -28,6 +28,8 @@ const DashBoardPage = () => {
       MarketingRef.current?.scrollIntoView({ behavior: 'smooth' });
     }else if(text === "Absatz"){
       AbsatzRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }else if(text === "Finanzen"){
+      FinanzenRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
       
 

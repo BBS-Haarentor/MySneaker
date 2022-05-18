@@ -1,45 +1,39 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
+import { useState, useEffect } from "react";
 
 const KlassenDetailPage = () => {
   let { name } = useParams()
 
+  const [companies, setCompanies] = useState([
+    {
+      name: "test"
+    },
+    {
+      name: "test"
+    },
+  ])
+
+  const changeCompanie = (name) => {
+    console.log(name)
+  }
+
   return (
     <>
-      <div className='h-screen my-12'>
-        <div className='grid grid-cols-1 w-[90%] h-[60%] mx-12'>
-          <div className=' border-2 border-[#4fd1c5]  rounded-3xl mx-12  '>
-
-          </div>
+      <div className='h-screen mt-12'>
+        <div className='p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
+          <h1 className='text-center'>Test</h1>
         </div>
-        <div className='grid grid-cols-3 w-[90%] h-[25%] mx-12 overflow-hidden'>
-          <div className='inline-block border-2 border-[#4fd1c5] w-[170%] mx-12 overflow-y-auto rounded-3xl my-12'>
+        <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[25%] mx-12 overflow-hidden'>
+          <div className='inline-block shadow-lg rounded-3xl m-2 bg-white w-[160%] overflow-y-auto my-12'>
             <ul>
-              <li className='p-3 text-lg'>
-                <a>Test</a>
-              </li>
-              <li className='p-3 text-lg'>
-                <a>Test</a>
-              </li>
-              <li className='p-3 text-lg'>
-                <a>Test</a>
-              </li>
-              <li className='p-3 text-lg'>
-                <a>Test</a>
-              </li>
-              <li className='p-3 text-lg'>
-                <a>Test</a>
-              </li>
-              <li className='p-3 text-lg'>
-                <a>Test</a>
-              </li>
-              <li className='p-3 text-lg'>
-                <a>Test</a>
-              </li>
+              {companies.map(({name}) =>
+                <li className='p-3 text-lg' onClick={() => changeCompanie(name)}><a>{name}</a></li>
+              )}
             </ul>
           </div>
           <div></div>
-          <button className='inline-block border-2 border-[#4fd1c5] w-[82%]  rounded-3xl my-12'>
+          <button className='inline-block shadow-lg rounded-3xl m-2 bg-white w-[82%] my-12'>
             Abschließen
           </button>
         </div>
