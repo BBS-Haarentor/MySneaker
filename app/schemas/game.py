@@ -27,3 +27,9 @@ class GamePatch(GameBase):
     current_cycle_id: int
 
     
+class GameResponse(GameBase):
+    id: int
+    grade_name: str
+    owner_id: int
+    current_cycle_id: int
+    scenario_order: str 
