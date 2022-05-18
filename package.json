@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "crypto-js": "^4.1.1",
-    "cryptojs": "^2.5.3",
-    "js-cookie": "^3.0.1"
-  }
-}
