@@ -11,7 +11,7 @@ from app.db.session import get_async_session
 from app.models.groups import AdminGroup, BaseGroup
 from app.models.user import GroupPatch, User
 from app.schemas.token import TokenData
-from app.schemas.user import StudentUserPost, UserPatch, UserPost
+from app.schemas.user import UserPatch, UserPost, UserPostStudent, UserPostTeacher
 from starlette import status
 from sqlmodel import Session as SQLSession, select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -28,14 +28,14 @@ async def get_user_root():
 
 
 @router.post("/create/student", status_code=status.HTTP_201_CREATED)
-async def post_user(user_post: StudentUserPost, session: AsyncSession = Depends(get_async_session)):
+async def post_user(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)):
     new_user_id = await create_user(user_post, session)
     
     return { f"Student user created with {new_user_id}"}
 
 
 @router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
-async def post_user(user_post: UserPost, session: AsyncSession = Depends(get_async_session)):
+async def post_user(user_post: UserPostTeacher, session: AsyncSession = Depends(get_async_session)):
     new_user_id = await create_user(user_post, session)
     # add user to teacher group
     return { f"Teacher user created with {new_user_id}"}
