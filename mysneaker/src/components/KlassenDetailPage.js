@@ -1,6 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from "react";
+import Modal from './Modal';
+import { useState, useEffect, useRef } from "react";
+import QRCodeStyling from "qr-code-styling";
 
 const KlassenDetailPage = () => {
   let { name } = useParams()
@@ -14,14 +16,80 @@ const KlassenDetailPage = () => {
     },
   ])
 
-  
+  const [register, setRegister] = useState(false)
 
   const changeCompanie = (name) => {
     console.log(name)
   }
 
+
+  const qrCode = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    image:
+      "https://www.bbs-haarentor.de/typo3conf/ext/bbs/Resources/Public/Images/bbs-haarentor-logo.png",
+    dotsOptions: {
+      color: "#4fd1c5",
+      type: "classy-rounded"
+    },
+    imageOptions: {
+      crossOrigin: "anonymous",
+      margin: 20
+    }
+  });
+
+  const [url, setUrl] = useState("http://localhost/DashBoard");
+  const [showModal, setShowModal] = useState(false)
+  const ref = useRef(null);
+
+  useEffect(() => {
+    qrCode.update({
+      data: url
+    });
+  }, [url]);
+
+
+
+  const onClickRegister = () => {
+    qrCode.append(ref.current);
+    setShowModal(true)
+    if (!register) {
+      setRegister(true)
+    } else {
+      setRegister(false)
+    }
+
+  }
+
+  const disableModal = () => {
+    setShowModal(false)
+  }
+
+
   return (
     <>
+   
+    <div className={showModal ? "block" : "hidden"}>
+        <div
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+          id="my-modal"
+        ></div>
+        <div 
+          className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+          <div
+            className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+  
+            <span className="font-bold block text-xl mb-3">Test</span>
+            <div className='flex'>
+              <div className='block text-xl m-auto justify-center' ref={ref}/>
+            </div>
+            <div className="text-right space-x-5 mt-5">
+              <button onClick={disableModal} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <div className='h-screen  overflow-hidden'>
         <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
           <h1 className='text-center'>Test</h1>
@@ -29,15 +97,20 @@ const KlassenDetailPage = () => {
         <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
           <div className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[160%] overflow-y-auto my-12'>
             <ul>
-              {companies.map(({name}) =>
+              {companies.map(({ name }) =>
                 <li className='p-3 text-lg' onClick={() => changeCompanie(name)}><a>{name}</a></li>
               )}
             </ul>
           </div>
+          <div className='absolute m-auto' />
           <div></div>
+          <button className={'inline-block border-2 shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12 '} onClick={() => onClickRegister()}>
+            Register Freischalten
+          </button>
           <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'>
             Abschließen
           </button>
+
         </div>
       </div>
     </>
