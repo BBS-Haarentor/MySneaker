@@ -37,7 +37,7 @@ const KlassenDetailPage = () => {
     }
   });
 
-  const [url, setUrl] = useState("http://localhost/DashBoard");
+  const [url, setUrl] = useState("http://localhost:3000/register/1");
   const [showModal, setShowModal] = useState(false)
   const ref = useRef(null);
 
