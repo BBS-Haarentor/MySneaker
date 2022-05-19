@@ -3,17 +3,22 @@
 from datetime import datetime
 import logging
 from types import NoneType
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from sqlmodel import or_, select
+from app.api.v1.endpoints.game import get_game_by_id
 from app.db.session import get_async_session
+from app.models.game import Game
 from app.models.user import User
 from sqlmodel.ext.asyncio.session import AsyncSession
+from starlette import status
+from app.schemas.user import UserBase, UserPatch
 
-from app.schemas.user import UserPost, UserPatch
 
-
-async def create_user(user_post: UserPost, session: AsyncSession) -> int:
-    new_user = User(name=user_post.name, hashed_pw=user_post.hashed_pw)
+async def create_user(user_post: UserBase, session: AsyncSession) -> int:
+    if user_post.game_id is not None:
+        new_user = User(name=user_post.name, hashed_pw=user_post.hashed_pw, game_id=user_post.game_id)
+    else:
+        new_user = User(name=user_post.name, hashed_pw=user_post.hashed_pw)
     session.add(new_user)
     await session.commit()
     await session.refresh(new_user)

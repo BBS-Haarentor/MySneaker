@@ -4,6 +4,7 @@ from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
 from app.api.auth.user_auth import admin_auth_required, authenticate_user, create_access_token, get_current_active_user
+<<<<<<< HEAD
 from app.core.config import SETTINGS, cls_factory
 from app.crud.groups import add_user_to_admingroup, check_user_in_group
 from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
@@ -12,6 +13,18 @@ from app.models.groups import AdminGroup, BaseGroup
 from app.models.user import GroupPatch, User
 from app.schemas.token import TokenData
 from app.schemas.user import UserPatch, UserPost
+=======
+from app.api.v1.endpoints.game import get_game_by_id
+from app.core.config import SETTINGS, cls_factory
+from app.crud.groups import add_user_to_admingroup, add_user_to_teachergroup, check_user_in_group
+from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
+from app.db.session import get_async_session
+from app.models.game import Game
+from app.models.groups import AdminGroup, BaseGroup
+from app.models.user import GroupPatch, User
+from app.schemas.token import TokenData
+from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent
+>>>>>>> Feature_postgres_userauth
 from starlette import status
 from sqlmodel import Session as SQLSession, select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -25,20 +38,35 @@ router = APIRouter()
 async def get_user_root():
     return { "HAHA": "du banane, userroot hier" }
 
-@router.post("/create", status_code=status.HTTP_201_CREATED)
-async def post_user(user_post: UserPost, session: AsyncSession = Depends(get_async_session)):
-    new_dummy_id = await create_user(user_post, session)
-    #new_dummy = Dummy(dumdum=dummy_post)
-    #session.add(new_dummy)
-    #await session.commit()
-    #await session.refresh(new_dummy)
-    #logging.info(f"created new Dummy with id: {new_dummy.id}")
-    return { f"Dummy created with {new_dummy_id}"}
+
+@router.post("/create/student", status_code=status.HTTP_201_CREATED)
+async def post_user(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)):
+    result: Game | None = await get_game_by_id(user_post.game_id)
+    if isinstance(result, NoneType):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    if result.signup_enabled == False:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    new_user_id = await create_user(user_post, session)
+    
+    return { f"Student user created with {new_user_id}"}
+
+
+@router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
+async def post_user(user_post: UserPostElevated, session: AsyncSession = Depends(get_async_session)):
+    new_user_id = await create_user(user_post, session)
+    result: User | None = await add_user_to_teachergroup(user_id=new_user_id, session=session)
+    return { f"Teacher user created with {new_user_id}"}
+
+
+@router.post("/create/admin", status_code=status.HTTP_201_CREATED)
+async def new_admin_user(new_user: UserPostElevated, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)):
+    new_user_id = await create_user(user_post=new_user, session=session)
+    result: User | None = await add_user_to_admingroup(session=session, user_id=new_user_id)
+    return { f"Admin user created with {new_user_id}"}
+
 
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
 async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_session)):
-    #result = await session.exec(select(Dummy).where(Dummy.id == id))
-    #filtered: Dummy = result.one_or_none()
     result = await get_user_by_id_or_name(id = id, name = None, session = session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -48,8 +76,6 @@ async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_ses
 
 @router.get("/get_by_name/{username}", status_code=status.HTTP_200_OK)
 async def get_usery_id(username: str, session: AsyncSession = Depends(get_async_session)):
-    #result = await session.exec(select(Dummy).where(Dummy.id == id))
-    #filtered: Dummy = result.one_or_none()
     result = await get_user_by_id_or_name(id = None, name = username, session = session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -133,9 +159,3 @@ async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_cu
     '''
     raise NotImplementedError
 
-@router.post("/new_admin", status_code=status.HTTP_202_ACCEPTED)
-async def new_admin_user(new_user: UserPost, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> int | None:
-    new_admin_user = UserPost(name=SETTINGS.ADMIN_USER_NAME, hashed_pw=SETTINGS.ADMIN_USER_HASHED_PW)
-    admin_id = await create_user(user_post=new_admin_user, session=session)
-    result: User | None = await add_user_to_admingroup(session=session, user_id=admin_id)
-    return result.user_id

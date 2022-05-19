@@ -11,12 +11,14 @@ class AddToGroup(SQLModel):
     user_id: int
 
 
-class AdminBase(GroupBase):
-    pass
+class AdminBase(SQLModel):
+    entry_id: int | None
+    user_id: int | None
 
-class TeacherBase(GroupBase):
-    pass
-
-class BaseGroupBase(GroupBase):
-    pass
+class TeacherBase(SQLModel):
+    entry_id: int | None
+    user_id: int | None
+class BaseGroupBase(SQLModel):
+    entry_id: int | None
+    user_id: int | None
 

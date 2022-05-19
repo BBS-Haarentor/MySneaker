@@ -5,10 +5,17 @@ from datetime import timedelta, datetime
 from functools import wraps
 import logging
 from types import NoneType
+<<<<<<< HEAD
 from fastapi import Depends, HTTPException, Request
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
+=======
+from fastapi import Depends, HTTPException
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from app.core.config import SETTINGS
+>>>>>>> Feature_postgres_userauth
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
 from app.crud.user import get_user_by_name, update_last_login
 from app.db.session import get_async_session
@@ -38,7 +45,7 @@ async def authenticate_user(session: AsyncSession, username: str, password: str)
         return result
     # log newest login for user
     #update_login_succeeded = await update_last_login(user=result, session=session)
-    #if update_last_login == True:
+    #if update_login_succeeded == True:
     #    return result
     #else:
     #    return False
@@ -56,11 +63,10 @@ def base_auth_required(func):
 def teacher_auth_required(func):
     @wraps(func)
     async def decorated(current_user: User, session: AsyncSession, *args, **kwargs):
-        role_check_teacher = await check_user_in_teachergroup(session=session, user_id=current_user.id)
-        role_check_admin = await check_user_in_admingroup(session=session, user_id=current_user.id)
-        if isinstance(role_check_teacher, NoneType) and isinstance(role_check_admin, NoneType):
+        role_check = await check_user_in_teachergroup(session=session, user_id=current_user.id)
+        if not isinstance(role_check, User):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient Credentials")
-        return await func(current_user,*args,**kwargs)
+        return await func(current_user,session,*args,**kwargs)
     return decorated
 
 def admin_auth_required(func):
@@ -76,7 +82,11 @@ def admin_auth_required(func):
 
 
 
+<<<<<<< HEAD
 async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session))-> User | None:
+=======
+async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session)) -> User | None:
+>>>>>>> Feature_postgres_userauth
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

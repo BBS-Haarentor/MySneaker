@@ -15,5 +15,5 @@ class Game(GameBase, table=True):
     owner_id: int | None = Field(default=None, foreign_key="user.id")
     current_cycle_id: int = Field(default=0)
     is_active: bool = Field(default=True)
-
-
+    scenario_order: str = Field(default="ABCDEFGHIJ")
+    signup_enabled: bool
