@@ -5,17 +5,10 @@ from datetime import timedelta, datetime
 from functools import wraps
 import logging
 from types import NoneType
-<<<<<<< HEAD
-from fastapi import Depends, HTTPException, Request
-from sqlmodel.ext.asyncio.session import AsyncSession
-
-from app.core.config import SETTINGS, ordered_roles
-=======
 from fastapi import Depends, HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS
->>>>>>> Feature_postgres_userauth
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
 from app.crud.user import get_user_by_name, update_last_login
 from app.db.session import get_async_session
@@ -31,6 +24,9 @@ from app.core.config import SETTINGS, RolesEnums
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
+
+def hash_pw(unhashed_pw: str):
+    return pwd_context.hash(unhashed_pw)
 
 
 async def authenticate_user(session: AsyncSession, username: str, password: str) -> User | bool :
@@ -82,11 +78,7 @@ def admin_auth_required(func):
 
 
 
-<<<<<<< HEAD
-async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session))-> User | None:
-=======
 async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session)) -> User | None:
->>>>>>> Feature_postgres_userauth
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
