@@ -186,7 +186,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white snap-start" ref={PersonalRef}>
+        <div className="p-4  shadow-lg rounded-3xl m-2 col-span-3 bg-white snap-start" ref={PersonalRef}>
              <table>
                 <tbody>
                     <tr>

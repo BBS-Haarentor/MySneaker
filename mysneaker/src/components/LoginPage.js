@@ -9,14 +9,10 @@ const LoginPage = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const msgUint8 = new TextEncoder().encode(password);                           // encode as (utf-8) Uint8Array
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
-        const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
-
+        
         var json = {
             "username": userName,
-            "hashed_password":hashHex
+            "password":password
         }
         
         putData(json)
@@ -38,8 +34,7 @@ const LoginPage = () => {
       /* fetch('http://localhost:8000/validate/', requestOptions) 
        .then(response => response.json())
        .then(data => setPlayFieldData(data.moves));*/
-    
-        const res = await fetch("localhost:8000/user/login", requestOptions)
+        const res = await fetch("http://172.17.176.1:8008/user/login", requestOptions)
         const rawData = await res.json()
     
     }

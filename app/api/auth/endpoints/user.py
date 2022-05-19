@@ -4,16 +4,6 @@ from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
 from app.api.auth.user_auth import admin_auth_required, authenticate_user, create_access_token, get_current_active_user
-<<<<<<< HEAD
-from app.core.config import SETTINGS, cls_factory
-from app.crud.groups import add_user_to_admingroup, check_user_in_group
-from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
-from app.db.session import get_async_session
-from app.models.groups import AdminGroup, BaseGroup
-from app.models.user import GroupPatch, User
-from app.schemas.token import TokenData
-from app.schemas.user import UserPatch, UserPost
-=======
 from app.api.v1.endpoints.game import get_game_by_id
 from app.core.config import SETTINGS, cls_factory
 from app.crud.groups import add_user_to_admingroup, add_user_to_teachergroup, check_user_in_group
@@ -24,7 +14,6 @@ from app.models.groups import AdminGroup, BaseGroup
 from app.models.user import GroupPatch, User
 from app.schemas.token import TokenData
 from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent
->>>>>>> Feature_postgres_userauth
 from starlette import status
 from sqlmodel import Session as SQLSession, select
 from sqlmodel.ext.asyncio.session import AsyncSession

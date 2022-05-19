@@ -1,6 +1,5 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
-import Modal from './Modal';
 import { useState, useEffect, useRef } from "react";
 import QRCodeStyling from "qr-code-styling";
 
@@ -79,7 +78,7 @@ const KlassenDetailPage = () => {
           <div
             className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
   
-            <span className="font-bold block text-xl mb-3">Test</span>
+            <span className="font-bold block text-xl mb-3">Register QRCode</span>
             <div className='flex'>
               <div className='block text-xl m-auto justify-center' ref={ref}/>
             </div>
