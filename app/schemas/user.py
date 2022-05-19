@@ -17,7 +17,8 @@ class UserPost(UserBase):
 
 class UserPostStudent(UserBase):
     name: str
-    hashed_pw: str
+    unhashed_pw: str
+    hashed_pw: str | None
     game_id: int
     
 class UserPostElevated(UserPostStudent):

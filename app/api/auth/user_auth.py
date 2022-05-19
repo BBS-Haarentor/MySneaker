@@ -25,6 +25,9 @@ from app.core.config import SETTINGS, RolesEnums
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
 
+def hash_pw(unhashed_pw: str):
+    return pwd_context.hash(unhashed_pw)
+
 
 async def authenticate_user(session: AsyncSession, username: str, password: str) -> User | bool :
     # check user exists
