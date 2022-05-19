@@ -56,12 +56,10 @@ def base_auth_required(func):
 def teacher_auth_required(func):
     @wraps(func)
     async def decorated(current_user: User, session: AsyncSession, *args, **kwargs):
-        role_check_teacher = await check_user_in_teachergroup(session=session, user_id=current_user.id)
-        role_check_admin = await check_user_in_admingroup(session=session, user_id=current_user.id)
-        if not role_check_teacher or not role_check_admin:
-        #if isinstance(role_check_teacher, NoneType) or isinstance(role_check_admin, NoneType):
+        role_check = await check_user_in_teachergroup(session=session, user_id=current_user.id)
+        if not isinstance(role_check, User):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient Credentials")
-        return await func(current_user,*args,**kwargs)
+        return await func(current_user,session,*args,**kwargs)
     return decorated
 
 def admin_auth_required(func):

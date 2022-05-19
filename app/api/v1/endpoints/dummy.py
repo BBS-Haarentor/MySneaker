@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 #from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import SQLModel, Session, select
 from app.api.auth.api_key_auth import get_api_key
-from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user
+from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user, teacher_auth_required
 from app.crud.dummy import create_dummy, get_single_dummy, remove_dummy, update_dummy
 from app.crud.groups import check_user_in_group
 from app.db.session import get_session, get_async_session
@@ -25,9 +25,9 @@ async def get_dummy_root():
     return { "HAHA": "du dummy, dummyroot hier" }
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
-@base_auth_required
-async def post_new_dummy(request: str, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): #, creating_user: User = Depends(get_current_active_user)
-    new_dummy_id = await create_dummy(request, session)
+@teacher_auth_required
+async def post_new_dummy(dummy_data: DummyPost, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): #, creating_user: User = Depends(get_current_active_user)
+    new_dummy_id = await create_dummy(dummy_post=dummy_data, session=session)
     #new_dummy = Dummy(dumdum=dummy_post)
     #session.add(new_dummy)
     #await session.commit()
