@@ -42,7 +42,7 @@ for i = 1 in UnternehmenAnzahl:
         StückzahlNachWerbeverkauf = UnternehmenGeboteneStückzahl - VerkaufDurchWerbung
 
     def turnover_simple(value_dict : dict) ->dict:
-        if NachfrageAufdemMarkt<VerkaufDurchWerbung
+        if NachfrageAufdemMarkt < VerkaufDurchWerbung
             UnternehmenVerkaufOhneWerbung = NachfrageAufdemMarkt
         else
             UnternehmenVerkaufOhneWerbung = StückzahlNachWerbeverkauf
