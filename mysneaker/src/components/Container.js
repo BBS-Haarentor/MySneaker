@@ -186,12 +186,12 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white snap-start" ref={PersonalRef}>
-             <table>
+        <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={PersonalRef}>
+             <table  >
                 <tbody>
                     <tr>
-                        <th></th>
-                        <th className='text-[#4fd1c5]'>Personal</th>
+                        <th className='xl:w-96'></th>
+                        <th className='text-[#4fd1c5] xl:w-96'>Personal</th>
                     </tr>
                     <tr>
                         <td>Mitarbeiter</td>
@@ -267,6 +267,8 @@ return (
 
                 </tbody>
              </table>
+             <img src="/img/Personal.png" className='h-96 w-96'></img>
+           
         </div>
         <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
              <table>
