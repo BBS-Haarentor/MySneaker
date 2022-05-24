@@ -15,6 +15,11 @@ class GameBase(SQLModel):
 class GameCreate(GameBase):
     pass
 
+class GameInit(GameBase):
+    grade_name: str
+    owner_id: int 
+    scenario_order: str | None
+
 class GamePatch(GameBase):
     id: int
     grade_name: str

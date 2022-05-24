@@ -8,7 +8,7 @@ from app.crud.game import create_game, get_all_game_ids, get_game_by_id
 from app.db.session import get_async_session
 from app.models.user import User
 from app.models.game import Game
-from app.schemas.game import GamePatch, GameResponse, GameCreate
+from app.schemas.game import GameInit, GamePatch, GameResponse
 
 
 
@@ -21,9 +21,7 @@ async def get_game_root():
 
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
-@teacher_auth_required
-async def post_new_game(game_init_data: GameCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
-    game_init_data.owner_id = current_user.id
+async def post_new_game(game_init_data: GameInit, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
     new_game_id = await create_game(game_init_data, session)
     return { f"Game created with {new_game_id}"}
 
