@@ -6,7 +6,7 @@ class GameBase(SQLModel):
     id: int | None
     creation_date: datetime | None
     grade_name: str
-    owner_id: int
+    owner_id: int 
     current_cycle_id: int | None
     is_active: bool | None
     scenario_order: str | None

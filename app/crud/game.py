@@ -22,6 +22,12 @@ async def get_game_by_id(id: int, session: AsyncSession) -> Game | None:
     return result.one_or_none()
 
 
+async def get_all_game_ids(user_id: int, session: AsyncSession) -> list[int]:
+    ids= await session.exec(select(Game.id).where(Game.owner_id == user_id))
+    result: list[int] = ids.all()
+    return result
+
+
 async def toggle_game_state(id: int, session: AsyncSession) -> bool:
     game: Game | None = await get_game_by_id(id=id, session=session)
     old_status = game.is_active

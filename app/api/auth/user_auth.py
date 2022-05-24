@@ -10,7 +10,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
-from app.crud.user import get_user_by_name, update_last_login
+from app.crud.user import get_user_by_name
 from app.db.session import get_async_session
 from jose import JWTError, jwt
 

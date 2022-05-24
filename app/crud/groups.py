@@ -7,12 +7,12 @@ from app.schemas.group import GroupBase
 
 
 async def check_user_in_basegroup(session: AsyncSession, user_id: int) -> User | None :
-    result = await session.exec(select(User).join(BaseGroup).where(User.id == user_id))
+    result = await session.exec(select(User).join(BaseGroup).where(BaseGroup.user_id == user_id))
     validated_user: User | None = result.one_or_none()
     return validated_user
 
 async def check_user_in_teachergroup(session: AsyncSession, user_id: int) -> User | None :
-    result = await session.exec(select(User).join(TeacherGroup).where(User.id == user_id))
+    result = await session.exec(select(User).join(TeacherGroup).where(TeacherGroup.user_id == user_id))
     validated_user: User | None = result.one_or_none()
     return validated_user
 

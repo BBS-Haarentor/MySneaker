@@ -5,12 +5,8 @@ import logging
 from types import NoneType
 from fastapi import Depends, HTTPException
 from sqlmodel import or_, select
-from app.api.v1.endpoints.game import get_game_by_id
-from app.db.session import get_async_session
-from app.models.game import Game
 from app.models.user import User
 from sqlmodel.ext.asyncio.session import AsyncSession
-from starlette import status
 from app.schemas.user import UserBase, UserPatch
 
 

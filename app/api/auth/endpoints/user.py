@@ -3,19 +3,15 @@ from re import S
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
-from app.api.auth.user_auth import admin_auth_required, authenticate_user, create_access_token, get_current_active_user, hash_pw
-from app.api.v1.endpoints.game import get_game_by_id
 from app.core.config import SETTINGS, cls_factory
-from app.crud.groups import add_user_to_admingroup, add_user_to_teachergroup, check_user_in_group
+from app.api.auth.user_auth import get_current_active_user, admin_auth_required, authenticate_user, create_access_token, hash_pw, teacher_auth_required
+from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_group
 from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
 from app.db.session import get_async_session
-from app.models.game import Game
-from app.models.groups import AdminGroup, BaseGroup
 from app.models.user import GroupPatch, User
-from app.schemas.token import TokenData
 from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent
 from starlette import status
-from sqlmodel import Session as SQLSession, select
+from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi.security.api_key import APIKey
 from fastapi.security import OAuth2PasswordRequestForm
@@ -29,20 +25,16 @@ async def get_user_root():
 
 
 @router.post("/create/student", status_code=status.HTTP_201_CREATED)
-async def post_user(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)):
-    #result: Game | None = await get_game_by_id(user_post.game_id)
-    #if isinstance(result, NoneType):
-    #    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    #if result.signup_enabled == False:
-    #    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)):
     user_post.hashed_pw = hash_pw(user_post.unhashed_pw)
     new_user_id = await create_user(user_post, session)
-    
+    result: User | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
     return { f"Student user created with {new_user_id}"}
 
 
 @router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
-async def post_user(user_post: UserPostElevated, session: AsyncSession = Depends(get_async_session)):
+@admin_auth_required
+async def post_teacheruser(user_post: UserPostElevated, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     user_post.hashed_pw = hash_pw(user_post.unhashed_pw)
     new_user_id = await create_user(user_post, session)
     result: User | None = await add_user_to_teachergroup(user_id=new_user_id, session=session)
@@ -50,7 +42,7 @@ async def post_user(user_post: UserPostElevated, session: AsyncSession = Depends
 
 
 @router.post("/create/admin", status_code=status.HTTP_201_CREATED)
-async def new_admin_user(new_user: UserPostElevated, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)):
+async def post_adminuser(new_user: UserPostElevated, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)):
     new_user.hashed_pw = hash_pw(new_user.unhashed_pw)
     new_user_id = await create_user(user_post=new_user, session=session)
     result: User | None = await add_user_to_admingroup(session=session, user_id=new_user_id)
@@ -58,7 +50,8 @@ async def new_admin_user(new_user: UserPostElevated, api_key: APIKey = Depends(g
 
 
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
-async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_session)):
+@teacher_auth_required
+async def get_dummy_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result = await get_user_by_id_or_name(id = id, name = None, session = session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -67,7 +60,8 @@ async def get_dummy_by_id(id: int, session: AsyncSession = Depends(get_async_ses
 
 
 @router.get("/get_by_name/{username}", status_code=status.HTTP_200_OK)
-async def get_usery_id(username: str, session: AsyncSession = Depends(get_async_session)):
+@teacher_auth_required
+async def get_usery_id(username: str, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result = await get_user_by_id_or_name(id = None, name = username, session = session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -75,11 +69,13 @@ async def get_usery_id(username: str, session: AsyncSession = Depends(get_async_
         return result
 
 @router.patch("/patch", status_code=status.HTTP_200_OK)
-async def patch_dummy(dummy_data: UserPatch, session: AsyncSession = Depends(get_async_session)):
+@teacher_auth_required
+async def patch_dummy(dummy_data: UserPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result = await update_user(update_data=dummy_data, session=session)
     return result
 
 @router.put("/toggle_active", status_code=status.HTTP_202_ACCEPTED)
+@teacher_auth_required
 async def toggle_active(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
     user: None | User = await get_user_by_id(id=user_id, session=session)
     if isinstance(user, NoneType):
@@ -96,6 +92,7 @@ async def toggle_active(user_id: int, current_user: User = Depends(get_current_a
     
 
 @router.delete("/{id}", status_code=status.HTTP_200_OK)
+@admin_auth_required
 async def delete_user(to_be_deleted_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session), api_key: APIKey = Depends(get_api_key)):
     result: bool | None = await remove_user(id=id, session=session)
     if isinstance(result, NoneType):

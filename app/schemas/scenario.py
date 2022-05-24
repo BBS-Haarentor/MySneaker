@@ -2,6 +2,7 @@ from sqlmodel import SQLModel
 
 class ScenarioBase(SQLModel):
     id: int | None
+    char: str | None
     sneaker_price: float
     paint_price: float
 
@@ -12,6 +13,7 @@ class ScenarioCreate(ScenarioBase):
 
 class ScenarioPatch(ScenarioBase):
     id: int
-    sneaker_price: float
-    paint_price: float
+    char: str | None
+    sneaker_price: float | None
+    paint_price: float | None
     
