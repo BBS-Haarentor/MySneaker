@@ -27,11 +27,10 @@ class UserPostElevated(UserPostStudent):
 
 
 class UserPatch(UserBase):
-    id: int | None
+    id: int
     name: str | None
-    change_name: str | None
-    change_email: str | None
-    change_roles: int | None
+    email: str | None
+
 
 
 class UserLogin(UserBase):

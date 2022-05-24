@@ -41,20 +41,16 @@ async def get_user_by_name(search_name: str, session: AsyncSession) -> User | No
 
 
 async def update_user(update_data: UserPatch, session: AsyncSession) -> User | None:
-    raise NotImplementedError
-    result = await session.exec(select(User).where(User.id == update_data.id))
-    to_be_updated_dummy: User | None = result.one_or_none()
-    if isinstance(to_be_updated_dummy, NoneType):
-        return to_be_updated_dummy
-    to_be_updated_dummy.dumdum = update_data.dumdum
-    session.add(to_be_updated_dummy)
+    to_be_updated_user: User | None = await get_user_by_id(id=update_data.id, session=session)
+    if isinstance(to_be_updated_user, NoneType):
+        return to_be_updated_user
+    to_be_updated_user.name = update_data.name
+    to_be_updated_user.email = update_data.email
+    session.add(to_be_updated_user)
     await session.commit()
-    await session.refresh(to_be_updated_dummy)
-    # check whether update successful
-    if to_be_updated_dummy.dumdum == update_data.dumdum:
-        return to_be_updated_dummy
-    else:
-        return None
+    await session.refresh(to_be_updated_user)
+
+    return to_be_updated_user
 
 async def update_last_login(user: User, session: AsyncSession) -> bool:
     now = datetime.now()

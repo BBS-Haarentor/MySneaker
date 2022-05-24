@@ -29,3 +29,13 @@ make sure the engine-object in session.py is correctly set for postgres interact
 ```
 docker-compose up -d
 ```
+
+
+
+## Test accounts in sqlitedb
+
+login: teacher
+pw: teacher
+
+login: admin
+pw: admin

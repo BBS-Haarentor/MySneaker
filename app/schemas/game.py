@@ -7,13 +7,8 @@ class GameBase(SQLModel):
     creation_date: datetime | None
     grade_name: str
     owner_id: int
-    current_cycle_id: int
-    is_active: bool
-    scenario_order: str | None
-
-class GameInit(GameBase):
-    grade_name: str
-    owner_id: int | None
+    current_cycle_id: int | None
+    is_active: bool | None
     scenario_order: str | None
 
 

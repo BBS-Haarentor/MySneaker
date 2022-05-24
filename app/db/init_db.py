@@ -4,7 +4,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import SQLModel
 from app.core.config import SETTINGS
 from app.crud.user import create_user
-
+  
 from app.db.session import engine, get_async_session
 from app.models.user import User
 from app.schemas.user import UserPost
