@@ -39,3 +39,12 @@ pw: teacher
 
 login: admin
 pw: admin
+
+
+valid game_create body:
+
+{
+  "grade_name": "FA1A-B",
+  "owner_id": 2,
+  "scenario_order": "NEWORDER"
+}

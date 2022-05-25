@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import get_current_active_user
@@ -26,14 +26,12 @@ async def post_new_game(game_init_data: GameInit, current_user: User = Depends(g
     return { f"Game created with {new_game_id}"}
 
 @router.get("/get_all_ids",status_code=status.HTTP_200_OK)
-@teacher_auth_required
 async def get_all_my_game_ids(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[int]:
     all_game_ids: list[int] = await get_all_game_ids(user_id=current_user.id, session=session)
     return all_game_ids
     
 @router.get("/get_by_id/{game_id}", status_code=status.HTTP_200_OK)
-@teacher_auth_required
-async def get_by_id(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session))-> Game | None:
+async def get_by_id(game_id: int,current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session))-> Game | None:
     result: Game | None = await get_game_by_id(id=game_id, session=session)
     return result
 
