@@ -33,3 +33,14 @@ async def add_new_scenario(new_scenario_data: ScenarioCreate, session: AsyncSess
     await session.refresh(scenario)
        
     return scenario
+
+async def get_all_scenario_chars(session: AsyncSession) -> list[str]:
+    result = await session.exec(select(Scenario.char))
+    char_list: list[str] = result.all()
+    return char_list
+
+
+async def get_all_scenarios(session: AsyncSession) -> list[Scenario]:
+    result = await session.exec(select(Scenario))
+    scenario_list: list[Scenario] = result.all()
+    return scenario_list
