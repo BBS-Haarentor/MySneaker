@@ -4,6 +4,7 @@ import logging
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models.game import Game
+from app.models.user import User
 from app.schemas.game import GameCreate
 
 
@@ -107,11 +108,15 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int | None
     await session.refresh(game)
     if game.current_cycle_index == current_index + 1:
         return game.current_cycle_index
-    # get next cycle char
+    else:
+        return None
+
+async def get_all_user_ids_for_game(game_id: int, session: AsyncSession) -> list[User]:
+    game: Game = await get_game_by_id(id=game_id, session=session)
+    result = await session.exec(select(User).where(User.game_id == game_id))
+    user_list = result.all()
     
-    raise NotImplementedError
-
-
+    return user_list
 
 async def delete_game() -> bool:
     raise NotImplementedError

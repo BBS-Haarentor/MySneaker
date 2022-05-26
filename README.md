@@ -87,7 +87,17 @@ id: 2
 login: admin
 pw: admin
 
-  
+student accs:
+
+id: 3
+login: s1
+pw: s1
+
+id: 4
+login: s2
+pw: s2
+
+
   
 
 valid game_create body:
