@@ -10,7 +10,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
-from app.crud.user import get_user_by_name
+from app.crud.user import get_user_by_name, update_last_login
 from app.db.session import get_async_session
 from jose import JWTError, jwt
 
@@ -38,13 +38,12 @@ async def authenticate_user(session: AsyncSession, username: str, password: str)
     if not pwd_context.verify(password, result.hashed_pw):
         return False
     else:
-        return result
-    # log newest login for user
-    #update_login_succeeded = await update_last_login(user=result, session=session)
-    #if update_login_succeeded == True:
-    #    return result
-    #else:
-    #    return False
+        update_login_succeeded = await update_last_login(user=result, session=session)
+        if update_login_succeeded:
+            return result
+        else:
+            return False
+
 
 # function decorator for authentication requirement and check, right now only checking implicitly
 def base_auth_required(func):

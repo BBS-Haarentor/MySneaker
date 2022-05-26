@@ -19,3 +19,8 @@ async def new_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> int:
     await session.refresh(new_cycle)
     logging.info(f"Created new Cycle with ID: {new_cycle.id}")
     return new_cycle.id
+
+
+async def patch_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> Cycle:
+    cycle: Cycle = await get_cycle_entry_by_id(cycle_id=cycle_data.id, session=session)
+    raise NotImplementedError

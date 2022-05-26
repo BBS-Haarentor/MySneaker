@@ -15,8 +15,6 @@ class CycleCreate(CycleBase):
     pass
 
 class CylcePost(CycleBase):
-    id: int
-    current_cycle_index: int
     game_id: int
     company_id: int
     buy_sneaker: int
@@ -24,3 +22,9 @@ class CylcePost(CycleBase):
     planned_production: int 
     planned_personelle: int
     
+class CyclePatch(CycleBase):
+    id: int
+    buy_sneaker: int
+    buy_paint: int
+    planned_production: int 
+    planned_personelle: int
