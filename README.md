@@ -30,7 +30,7 @@ Entrypoints:
 - /api/v1/
 - /user
 
-For the automatically generated Swagger docs visit localhost.8000/docs
+For the automatically generated Swagger docs visit localhost:8000/docs
 ### docker-version
 make sure the engine-object in session.py is correctly set for postgres interaction
 ```
