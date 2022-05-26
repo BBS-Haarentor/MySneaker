@@ -13,6 +13,6 @@ class Cycle(CycleBase, table=True):
     entry_date: datetime = Field(datetime.now()) 
     game_id: int = Field(foreign_key="game.id")
     company_id: int = Field(foreign_key="user.id") # NutzerID
-    buy_sneaker: int
-    buy_paint: int
-
+    buy_sneaker: int = Field(default=0)
+    buy_paint: int = Field(default=0)
+    planned_production: int = Field(default=0)

@@ -7,7 +7,7 @@ class GameBase(SQLModel):
     creation_date: datetime | None
     grade_name: str
     owner_id: int 
-    current_cycle_id: int | None
+    current_cycle_index: int | None
     is_active: bool | None
     scenario_order: str | None
 
@@ -24,12 +24,13 @@ class GamePatch(GameBase):
     id: int
     grade_name: str
     owner_id: int
-    current_cycle_id: int
+    current_cycle_index: int
+
 
     
 class GameResponse(GameBase):
     id: int
     grade_name: str
     owner_id: int
-    current_cycle_id: int
+    current_cycle_index: int
     scenario_order: str 

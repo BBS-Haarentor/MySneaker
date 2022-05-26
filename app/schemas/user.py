@@ -37,3 +37,10 @@ class UserLogin(UserBase):
     name: str
     hashed_pw: str
 
+class UserResponse(UserBase):
+    id: int
+    name: str
+    last_login: datetime | None
+    email: str | None
+    is_active: bool | None
+    game_id: int | None

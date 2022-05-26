@@ -44,6 +44,28 @@ async def start_new_cycle(game_id: int, session: AsyncSession) -> int | None:
     # cycle index or id?
     raise NotImplementedError
 
+async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int | None:
+    # check if game is active
+    game: Game = await get_game_by_id(id=game_id)
+    if game.is_active == False:
+        return None
+    # increase cycle_index by 1
+    current_index = game.current_cycle_index
+    # last scenario reached?
+    if current_index >= len(game.scenario_order) - 1:
+        return None
+    game.current_cycle_index = current_index + 1
+    session.add(game)
+    await session.commit()
+    await session.refresh(game)
+    if game.current_cycle_index == current_index + 1:
+        return game.current_cycle_index
+    # get next cycle char
+    
+    raise NotImplementedError
+
+
+
 async def delete_game() -> bool:
     raise NotImplementedError
 

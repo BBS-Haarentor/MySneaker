@@ -1,7 +1,7 @@
 from os import stat
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException, Request
-from app.crud.cycle import get_cycle_by_id, new_cycle_entry
+from app.crud.cycle import get_cycle_entry_by_id, new_cycle_entry
 from app.db.session import get_async_session
 from app.models.cycle import Cycle
 from app.schemas.cycle import CycleCreate
@@ -19,6 +19,6 @@ async def create_new_cycle_entry(cycle_data: CycleCreate, session: AsyncSession 
 
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
 async def get_by_id(id: int, session: AsyncSession = Depends(get_async_session)) -> Cycle:
-    result: Cycle | None = await get_cycle_by_id(id=id, session=session)
+    result: Cycle | None = await get_cycle_entry_by_id(id=id, session=session)
     return result
 
