@@ -9,11 +9,11 @@ class CycleBase(SQLModel):
     buy_sneaker: int
     buy_paint: int
     Mitarbeiter_Neachste_Periode: int
-    Verbesserung_der_Maschienen: int    #Prozente
+    Verbesserung_der_Maschienen: float    #Prozente
     Kontostand: float
     Höhe_Kontokorrentkredit: float
-
-
+    Nachfrage_auf_dem_Markt: int
+    Verkauf_Durch_werbung_in_procenten: float
 
 class CycleCreate(CycleBase):
     pass

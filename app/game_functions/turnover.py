@@ -2,20 +2,10 @@
 # Workers, 
 # Next_Period_Workers, Consern_Quantity_offered, Consern_advertisement_payed, Consern_share_of_adventisement, Demand_in_the_market, sale_through_advertising_
 # Werbung_Bezalt
-## UnternehmenAnzahl
 
 from app.models.scenario import Scenario
 from app.models.stock import Stock
 from app.models.cycle import Cycle
-
-#def mock_turnover(scenario_dict: dict, stock_dict: dict, cycle_dict: dict) -> dict:
-#    result_dict = {}
-#    
-#    ask_sneakers = scenario_dict["ask_sneakers"]
-#    sales_ads = scenario_dict["sales_ads"]
-#
-#    result_dict["real_sales"] = sales_ads * ask_sneakers
-#    return result_dict  
 
 #def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
 #    stock_output = []
@@ -25,16 +15,15 @@ from app.models.cycle import Cycle
 
 #mySneaker_Spieledatein Daten für Lehrkraft
 
-def turnover_simple() -> int:
-UnternehmenAnzahl = dict["UnternehmenAnzahl"]
+#def turnover_simple() -> int:
+#UnternehmenAnzahl = dict["UnternehmenAnzahl"]
 #Sortieren nach Preise(nitrigster zu erst).
 #anzahl der id durchzählen
 
-def turnover_Rechnungen(scenario_dict: dict, stock_dict: dict, cycle_list: list) -> dict:
-    result_dict = {}
+def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
 
-    NachfrageAufdemMarkt = dict["Demand_in_the_market"]
-    VerkaufDurchWerbungMax = NachfrageAufdemMarkt / 100 * Dict["sale_through_advertising_%"]
+    NachfrageAufdemMarkt = cycle_list[i].Nachfrage_auf_dem_Markt
+    VerkaufDurchWerbungMax = NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
     NachfrageAufdemMarkt = NachfrageAufdemMarkt - VerkaufDurchWerbungMax  
 
 #for i = 1 in UnternehmenAnzahl:
@@ -44,8 +33,8 @@ def turnover_Rechnungen(scenario_dict: dict, stock_dict: dict, cycle_list: list)
     StückzahlAusschreibung = dict["Tender_Planned_quantity"]             #Vertrieb und Absatz!D20
     PreisAusschreibung = dict["Tender_Price_Pro_Unit_Offer"]             #Vertrieb und Absatz!E20
 
-    Rationalisierung = dict["Research_and_development_costs"]            #'Marketing  F&E'!E12
-    Werbung = dict["Plan_Publicity_expenditure"]                         #Statistik & Finanzen'!D42
+    Rationalisierung = stock_list[i].         #'Marketing  F&E'!E12
+    Werbung = stock_list[i].                         #Statistik & Finanzen'!D42
 
     lAenderungenderMA =  - dict["Workers"]                               #Personal!D18-Personal!D10         bis heir weiter gegeben
 
