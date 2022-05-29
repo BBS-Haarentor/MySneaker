@@ -19,7 +19,8 @@ async def create_game(new_game_data: GameCreate, session: AsyncSession) -> int:
             Returns:
                     new_game.id (int): New game_id
     '''
-    new_game = Game(grade_name=new_game_data.grade_name, owner_id=new_game_data.owner_id, scenario_order=new_game_data.scenario_order)
+    new_game = Game.from_orm(new_game_data)
+    #new_game = Game(grade_name=new_game_data.grade_name, owner_id=new_game_data.owner_id, scenario_order=new_game_data.scenario_order)
     session.add(new_game)
     await session.commit()
     await session.refresh(new_game)
@@ -94,9 +95,12 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int | None
             
     '''     
     # check if game is active
-    game: Game = await get_game_by_id(id=game_id)
+    game: Game = await get_game_by_id(id=game_id, session=session)
     if game.is_active == False:
         return None
+    
+    # save new stock entry for end of game cycle
+    
     # increase cycle_index by 1
     current_index = game.current_cycle_index
     # last scenario reached?

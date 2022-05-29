@@ -27,7 +27,7 @@ async def get_scenario_by_index(game_id: int, session: AsyncSession) -> Scenario
 
 
 async def add_new_scenario(new_scenario_data: ScenarioCreate, session: AsyncSession) -> Scenario:
-    scenario = Scenario(new_scenario_data)
+    scenario = Scenario.from_orm(new_scenario_data)
     session.add(scenario)
     await session.commit()
     await session.refresh(scenario)

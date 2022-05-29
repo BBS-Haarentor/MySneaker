@@ -7,18 +7,16 @@ class GameBase(SQLModel):
     creation_date: datetime | None
     grade_name: str
     owner_id: int 
-    current_cycle_index: int | None
+    current_cycle_index: int  | None
     is_active: bool | None
-    scenario_order: str | None
+    scenario_order: str 
+    signup_enabled: bool | None
 
 
 class GameCreate(GameBase):
     pass
 
-class GameInit(GameBase):
-    grade_name: str
-    owner_id: int 
-    scenario_order: str | None
+
 
 class GamePatch(GameBase):
     id: int

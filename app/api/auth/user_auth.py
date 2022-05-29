@@ -9,10 +9,12 @@ from fastapi import Depends, HTTPException, Request
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
+from app.crud.game import get_game_by_id
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
 from app.crud.user import get_user_by_name, update_last_login
 from app.db.session import get_async_session
 from jose import JWTError, jwt
+from app.models.game import Game
 
 from app.models.user import User
 from app.schemas.token import TokenData
@@ -79,7 +81,10 @@ def admin_auth_required(func):
     return decorated
 
 
-
+async def game_owner_check(user_id: int, game_id: int, session: AsyncSession) -> bool:
+    game: Game = await get_game_by_id(id=game_id, session=session)
+    
+    return game.owner_id == user_id
 
 
 async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session))-> User | None:

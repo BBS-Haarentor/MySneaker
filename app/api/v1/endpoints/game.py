@@ -12,7 +12,7 @@ from app.crud.groups import check_user_in_admingroup
 from app.db.session import get_async_session
 from app.models.user import User
 from app.models.game import Game
-from app.schemas.game import GameInit, GamePatch, GameResponse
+from app.schemas.game import GameCreate, GamePatch, GameResponse
 from app.schemas.user import UserResponse
 
 
@@ -27,7 +27,7 @@ async def get_game_root():
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 @teacher_auth_required
-async def post_new_game(game_init_data: GameInit, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
+async def post_new_game(game_init_data: GameCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
     new_game_id = await create_game(game_init_data, session)
     return { f"Game created with {new_game_id}"}
 
@@ -43,9 +43,9 @@ async def get_by_id(game_id: int,current_user: User = Depends(get_current_active
     result: Game | None = await get_game_by_id(id=game_id, session=session)
     return result
 
-@router.get("/get_all_games_by_user/{user_id}",status_code=status.HTTP_200_OK)
+@router.get("/get_all_games_by_teacher/{user_id}",status_code=status.HTTP_200_OK)
 @admin_auth_required
-async def get_all_games_by_user_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[GameResponse]:
+async def get_all_games_by_user_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[int]:
     all_game_ids: list[int] = await get_all_game_ids(user_id=current_user.id, session=session)
     # do stuff
     return all_game_ids
@@ -85,7 +85,7 @@ async def game_patch(game_patch: GamePatch, session: AsyncSession = Depends(get_
 async def close_game(game_id: int, session: AsyncSession = Depends(get_async_session)) -> bool:
     raise NotImplementedError
 
-@router.get("/get_all_user_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 async def get_all_users_for_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User] :
     user_list: list[User] = await get_all_user_ids_for_game(game_id=game_id, session=session)
     # parse user_list to list[UserResponse]
