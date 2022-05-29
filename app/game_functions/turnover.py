@@ -13,6 +13,12 @@
 #    result_dict["real_sales"] = sales_ads * ask_sneakers
 #    return result_dict  
 
+#def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
+#    stock_output = []
+#    sneaker_price = scenario.sneaker_price
+#    sneaker_count = stock_list[0].sneaker_count
+#    return stock_output
+
 #mySneaker_Spieledatein Daten für Lehrkraft
 
 def turnover_simple() -> int:
