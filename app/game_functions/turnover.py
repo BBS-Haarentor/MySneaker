@@ -3,6 +3,14 @@
 # Workers, Next_Period_Workers
 #
 #
+def mock_turnover(scenario_dict: dict, stock_dict: dict, cycle_dict: dict) -> dict:
+    result_dict = {}
+    
+    ask_sneakers = scenario_dict["ask_sneakers"]
+    sales_ads = scenario_dict["sales_ads"]
+
+    result_dict["real_sales"] = sales_ads * ask_sneakers
+    return result_dict     
 
 #def turnover_simple(value_dict: dict) -> dict:
     #SneakerKostenProWerkstoffe = dict["sneaker_price"] * dict["sneaker_quantities"]
@@ -71,3 +79,5 @@ def turnover_simple(value_dict : dict) ->dict:
 #def turnover_simple(value_dict : dict) ->dict:
 #    UnternehmenVerkaufOhneWerbung = 
  
+ 
+
