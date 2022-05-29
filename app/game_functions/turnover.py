@@ -4,13 +4,25 @@
 # Werbung_Bezalt
 ## UnternehmenAnzahl
 
+#def mock_turnover(scenario_dict: dict, stock_dict: dict, cycle_dict: dict) -> dict:
+#    result_dict = {}
+#    
+#    ask_sneakers = scenario_dict["ask_sneakers"]
+#    sales_ads = scenario_dict["sales_ads"]
+#
+#    result_dict["real_sales"] = sales_ads * ask_sneakers
+#    return result_dict  
+
 #mySneaker_Spieledatein Daten für Lehrkraft
+
 def turnover_simple() -> int:
 UnternehmenAnzahl = dict["UnternehmenAnzahl"]
 #Sortieren nach Preise(nitrigster zu erst).
 #anzahl der id durchzählen
 
-def turnover_Rechnungen(value_dict: dict) -> dict:
+def turnover_Rechnungen(scenario_dict: dict, stock_dict: dict, cycle_list: list) -> dict:
+    result_dict = {}
+
     NachfrageAufdemMarkt = dict["Demand_in_the_market"]
     VerkaufDurchWerbungMax = NachfrageAufdemMarkt / 100 * Dict["sale_through_advertising_%"]
     NachfrageAufdemMarkt = NachfrageAufdemMarkt - VerkaufDurchWerbungMax  
@@ -57,3 +69,4 @@ def turnover_Rechnungen(value_dict: dict) -> dict:
     if Buget(Kumuliert) >= 10000
         StuffeFierEntwickelung = true
     if Buget(Kumuliert) >= 12500
+        StuffeFeunfEntwickelung = true
