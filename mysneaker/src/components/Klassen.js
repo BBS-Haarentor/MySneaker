@@ -1,6 +1,9 @@
 import React from 'react'
 
 const Klassen = ({ name, date }) => {
+
+  console.log(name)
+
   return (
     <a href={'/ler/' + name}>
       <div className='flex border-[#4fd1c5] border-solid border-2 rounded-2xl w-[90%] h-30 m-[5%]'>
