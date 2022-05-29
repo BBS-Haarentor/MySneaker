@@ -8,6 +8,11 @@ class CycleBase(SQLModel):
     company_id: int
     buy_sneaker: int
     buy_paint: int
+    Mitarbeiter_Neachste_Periode: int
+    Verbesserung_der_Maschienen: int    #Prozente
+    Kontostand: float
+    Höhe_Kontokorrentkredit: float
+
 
 
 class CycleCreate(CycleBase):

@@ -14,4 +14,5 @@ class ScenarioPatch(ScenarioBase):
     id: int
     sneaker_price: float
     paint_price: float
+    kosten_Pro_MA: float
     
