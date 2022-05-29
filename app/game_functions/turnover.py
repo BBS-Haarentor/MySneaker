@@ -4,6 +4,10 @@
 # Werbung_Bezalt
 ## UnternehmenAnzahl
 
+from app.models.scenario import Scenario
+from app.models.stock import Stock
+from app.models.cycle import Cycle
+
 #def mock_turnover(scenario_dict: dict, stock_dict: dict, cycle_dict: dict) -> dict:
 #    result_dict = {}
 #    
