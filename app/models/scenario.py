@@ -11,5 +11,7 @@ class Scenario(ScenarioBase, table=True):
     storage_fee_sneaker: float = Field(default=4.00)
     storage_fee_paint: float = Field(default=1.00)
     storage_fee_finished_sneaker: float = Field(default=8.00)
+    employee_count_modifier: int = Field(default=0)
+    
 
 

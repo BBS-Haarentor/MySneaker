@@ -1,12 +1,16 @@
 
 
 import logging
+from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models.game import Game
 from app.models.user import User
-from app.schemas.game import GameCreate
+from app.models.cycle import Cycle
+from app.models.stock import Stock
 
+from app.schemas.game import GameCreate
+from starlette import status
 
 async def create_game(new_game_data: GameCreate, session: AsyncSession) -> int:
     '''
@@ -24,7 +28,9 @@ async def create_game(new_game_data: GameCreate, session: AsyncSession) -> int:
     session.add(new_game)
     await session.commit()
     await session.refresh(new_game)
-    logging.info(f"created new Dummy with id: {new_game.id}")
+
+    # create first stock entry for games
+    
     return new_game.id
 
 
@@ -106,14 +112,23 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int | None
     # last scenario reached?
     if current_index >= len(game.scenario_order) - 1:
         return None
+
+    cycle_result = await session.exec(select(Cycle).where(Cycle.current_cycle_index == game.current_cycle_index)._and_where(Cycle.game_id == game.id))
+    unsorted_cycle_list: list[Cycle] = cycle_result.all()
+    
+    stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index)._and_where(Stock.game_id == game.id))
+    unsorted_stock_list: list[Stock] = stock_result.all()
+    
+    
+    
     game.current_cycle_index = current_index + 1
     session.add(game)
     await session.commit()
     await session.refresh(game)
     if game.current_cycle_index == current_index + 1:
-        return game.current_cycle_index
-    else:
-        return None
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="error while increasing index")
+    
+    raise NotImplementedError
 
 async def get_all_user_ids_for_game(game_id: int, session: AsyncSession) -> list[User]:
     game: Game = await get_game_by_id(id=game_id, session=session)
@@ -121,6 +136,8 @@ async def get_all_user_ids_for_game(game_id: int, session: AsyncSession) -> list
     user_list = result.all()
     
     return user_list
+
+
 
 async def delete_game() -> bool:
     raise NotImplementedError

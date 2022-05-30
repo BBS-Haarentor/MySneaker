@@ -69,8 +69,8 @@ async def get_usery_id(username: str, current_user: User = Depends(get_current_a
 
 @router.patch("/patch", status_code=status.HTTP_200_OK)
 @teacher_auth_required
-async def patch_dummy(dummy_data: UserPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    result = await update_user(update_data=dummy_data, session=session)
+async def patch_dummy(user_data: UserPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+    result = await update_user(update_data=user_data, session=session)
     return result
 
 @router.put("/toggle_active", status_code=status.HTTP_202_ACCEPTED)

@@ -12,14 +12,16 @@ router = APIRouter()
 async def get_scenario_root():
     return { "HAHA": "scenarioroot hier" }
 
-@router.get("/get_by_char/{char}", status_code=status.HTTP_200_OK)
+
+@router.get("/get_by_char/{char}", status_code=status.HTTP_200_OK, response_model=Scenario)
 async def get_scenario_by_character(char: str, session =Depends(get_async_session)) -> Scenario | None:
     if len(char) != 1:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
     scenario: Scenario | None = await get_scenario_by_char(char=char, session=session)
     return scenario
 
-@router.get("/get_all_scenarios", status_code=status.HTTP_200_OK)
+
+@router.get("/get_all_scenarios", status_code=status.HTTP_200_OK, response_model=list[Scenario])
 async def get_all_scenarios_as_list(session =Depends(get_async_session)) -> list[Scenario]:
     scenario_list: list[Scenario] = await get_all_scenarios(session=session)
     return scenario_list

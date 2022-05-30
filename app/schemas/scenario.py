@@ -8,8 +8,12 @@ class ScenarioBase(SQLModel):
     storage_fee_sneaker: float
     storage_fee_paint: float
     storage_fee_finished_sneaker: float
-
-
+    employee_count_modifier: int
+    interest_rate: float
+    employee_salary: float
+    machine_purchase_allowed: bool
+    sneaker_ask: int
+    percentage_ad_take: float
 
 class ScenarioCreate(ScenarioBase):
     pass
@@ -22,4 +26,4 @@ class ScenarioPatch(ScenarioBase):
     storage_fee_sneaker: float | None
     storage_fee_paint: float | None
     storage_fee_finished_sneaker: float | None
-    
+    employee_count_modifier: int | None

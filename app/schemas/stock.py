@@ -12,6 +12,13 @@ class StockBase(SQLModel):
     sneaker_count: int
     paint_count: int
     finished_sneaker_count: int
+    employees_count: int
+    research_budget: float
+    account_balance: float
+    credit_taken: float
+    machine_count: int
+    real_sales: int
+    income_from_sales: float
     
 
 class StockCreate(StockBase): 
@@ -27,3 +34,5 @@ class StockResponse(StockBase):
     sneaker_count: int
     paint_count: int
     finished_sneaker_count: int
+    employees_count: int
+    research_budget: float

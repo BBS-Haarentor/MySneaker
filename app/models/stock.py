@@ -14,5 +14,6 @@ class Stock(StockBase, table=True):
     sneaker_count: int = Field(default=0)
     paint_count: int = Field(default=0)
     finished_sneaker_count: int = Field(default=0)
-    
+    employees_count: int = Field(default=8)
+
     
