@@ -15,10 +15,7 @@ from app.models.cycle import Cycle
 
 #mySneaker_Spieledatein Daten für Lehrkraft
 
-#def turnover_simple() -> int:
-#UnternehmenAnzahl = dict["UnternehmenAnzahl"]
 #Sortieren nach Preise(nitrigster zu erst).
-#anzahl der id durchzählen
 
 def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
 
@@ -30,8 +27,8 @@ def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list:
     #
     StückzahlMarkt = dict["Market_Planned_quantity"]                     #Vertrieb und Absatz!D19
     PreisMarkt = dict["Market_Price_Pro_Unit_Offer"]                     #Vertrieb und Absatz!E19
-    StückzahlAusschreibung = dict["Tender_Planned_quantity"]             #Vertrieb und Absatz!D20
-    PreisAusschreibung = dict["Tender_Price_Pro_Unit_Offer"]             #Vertrieb und Absatz!E20
+    StückzahlAusschreibung = dict["Tennned_quantity"]             #Vertrieb und Absatz!D20
+    PreisAusschreibung = dict["Tender_Price_Pro_Unit_der_PlaOffer"]             #Vertrieb und Absatz!E20
 
     Rationalisierung = stock_list[i].         #'Marketing  F&E'!E12
     Werbung = stock_list[i].                         #Statistik & Finanzen'!D42
@@ -67,5 +64,5 @@ def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list:
         StuffeDreiEntwickelung = true
     if Buget(Kumuliert) >= 10000
         StuffeFierEntwickelung = true
-    if Buget(Kumuliert) >= 12500
-        StuffeFeunfEntwickelung = true
+    #if Buget(Kumuliert) >= 12500
+    #    StuffeFeunfEntwickelung = true
