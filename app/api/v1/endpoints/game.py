@@ -7,7 +7,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import admin_auth_required, get_current_active_user
 
 from app.api.auth.user_auth import teacher_auth_required
-from app.crud.game import create_game, get_all_game_ids, get_all_user_ids_for_game, get_game_by_id, toggle_game_state, turnover_next_cycle
+from app.crud.game import create_game, get_all_game_ids, get_all_games_by_user, get_all_user_ids_for_game, get_game_by_id, toggle_game_state, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.db.session import get_async_session
 from app.models.user import User
@@ -50,7 +50,12 @@ async def get_all_games_by_user_id(user_id: int, current_user: User = Depends(ge
     # do stuff
     return all_game_ids
     
-
+@router.get("/my_games",status_code=status.HTTP_200_OK)
+@teacher_auth_required
+async def get_all_games_by_user_id(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
+    game_list: list[Game] = await get_all_games_by_user(user_id=current_user.id, session=session)
+    return game_list
+    
 
 @router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK) # Umschlagsrechnung
 @teacher_auth_required
