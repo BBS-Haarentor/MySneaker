@@ -142,6 +142,8 @@ async def get_all_games_by_user(user_id: int, session: AsyncSession) -> list[Gam
     result = await session.exec(select(Game).where(Game.owner_id == user_id))
     return result.all()
 
+
+
 async def delete_game() -> bool:
     raise NotImplementedError
 

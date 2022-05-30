@@ -43,17 +43,23 @@ async def get_by_id(game_id: int,current_user: User = Depends(get_current_active
     result: Game | None = await get_game_by_id(id=game_id, session=session)
     return result
 
-@router.get("/get_all_games_by_teacher/{user_id}",status_code=status.HTTP_200_OK)
+@router.get("/get_all_game_ids_by_teacher/{user_id}",status_code=status.HTTP_200_OK)
 @admin_auth_required
-async def get_all_games_by_user_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[int]:
+async def get_all_game_ids_by_user_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[int]:
     all_game_ids: list[int] = await get_all_game_ids(user_id=current_user.id, session=session)
     # do stuff
     return all_game_ids
     
 @router.get("/my_games",status_code=status.HTTP_200_OK)
 @teacher_auth_required
-async def get_all_games_by_user_id(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
+async def get_all_my_games(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
     game_list: list[Game] = await get_all_games_by_user(user_id=current_user.id, session=session)
+    return game_list
+    
+@router.get("/all_games_by_teacher",status_code=status.HTTP_200_OK)
+@admin_auth_required
+async def get_all_games_by_user_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
+    game_list: list[Game] = await get_all_games_by_user(user_id=user_id, session=session)
     return game_list
     
 
