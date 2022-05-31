@@ -23,27 +23,27 @@ def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list:
     VerkaufDurchWerbungMax = NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
     NachfrageAufdemMarkt = NachfrageAufdemMarkt - VerkaufDurchWerbungMax  
 
-#for i = 1 in UnternehmenAnzahl:
+#for i = 1 in UnternehmenAnzahl:            #bekomme sotierte unternehmen
     #
-    StückzahlMarkt = dict["Market_Planned_quantity"]                     #Vertrieb und Absatz!D19
-    PreisMarkt = scenario[i].sneaker_price                     #Vertrieb und Absatz!E19
-    StückzahlAusschreibung = dict["Tennned_quantity"]             #Vertrieb und Absatz!D20
-    PreisAusschreibung = dict["Tender_Price_Pro_Unit_der_PlaOffer"]             #Vertrieb und Absatz!E20
+    cycle_list[i].planned_production_1
+    StückzahlMarkt = cycle_list[i].planned_production_1+cycle_list[i].planned_production_2cycle_list[i].planned_production_3                   #Vertrieb und Absatz!D19
+    StückzahlAusschreibung = cycle_list[i].tender_offer_count            #Vertrieb und Absatz!D20
+    PreisAusschreibung = cycle_list[i].tender_offer_price             #Vertrieb und Absatz!E20
 
     Rationalisierung = stock_list[i].         #'Marketing  F&E'!E12
     Werbung = stock_list[i].                         #Statistik & Finanzen'!D42
 
-    lAenderungenderMA =  - dict["Workers"]                               #Personal!D18-Personal!D10         bis heir weiter gegeben
+    #lAenderungenderMA =  - dict["Workers"]                               #Personal!D18-Personal!D10         bis heir weiter gegeben
 
-    Darlehenstand = dict["Next_Period_Workers"]                          #Statistik & Finanzen'!E30
+    Darlehenstand =  cycle_list[i].take_credit                         #Statistik & Finanzen'!E30
     #Verkauf
-    UnternehmenGeboteneStückzahl = dict["Consern_Quantity_offered"]
-    UnternehmenPreise = dict["Consern_price"]
+    UnternehmenGeboteneStückzahl = #cycle_list[i].tender_offer_count
+    UnternehmenPreise = scenario[i].sneaker_price
     #werbung
-    UnternehmenGebotenWerbung = dict["Werbung_Bezalt"]
+    UnternehmenGebotenWerbung = cycle_list[i].ad_invest
 
-    Werbeanteil = round(100/VerkaufDurchWerbungMax*dict["Werbung_Bezalt"])
-    VerkaufDurchWerbung = round(VerkaufDurchWerbungMax/100*Werbeanteil, 0)
+    Werbeanteil = round(100/VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
+    VerkaufDurchWerbung = round(VerkaufDurchWerbungMax/100*Werbeanteil, 0)             #Mximal?
     StückzahlNachWerbeverkauf = UnternehmenGeboteneStückzahl - VerkaufDurchWerbung
     #Verkauf der Firma
     if NachfrageAufdemMarkt < VerkaufDurchWerbung
@@ -55,7 +55,7 @@ def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list:
     Umsatz = UnternehmenPreise * GesamterVerkauf
 
     #Entwickelung
-    Buget(Kumuliert) = dict["Paid_Entwickelung"]                                            #int SpilereEingabe
+    Buget(Kumuliert) = cycle_list[i].research_invest                                       #int SpilereEingabe
     if Buget(Kumuliert) >= 2500
         StuffeEinsEntwickelung = true                                                       #Warhetiswert
     if Buget(Kumuliert) >= 5000
