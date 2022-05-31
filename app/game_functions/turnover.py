@@ -26,7 +26,7 @@ def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list:
 #for i = 1 in UnternehmenAnzahl:
     #
     StückzahlMarkt = dict["Market_Planned_quantity"]                     #Vertrieb und Absatz!D19
-    PreisMarkt = dict["Market_Price_Pro_Unit_Offer"]                     #Vertrieb und Absatz!E19
+    PreisMarkt = scenario[i].sneaker_price                     #Vertrieb und Absatz!E19
     StückzahlAusschreibung = dict["Tennned_quantity"]             #Vertrieb und Absatz!D20
     PreisAusschreibung = dict["Tender_Price_Pro_Unit_der_PlaOffer"]             #Vertrieb und Absatz!E20
 
