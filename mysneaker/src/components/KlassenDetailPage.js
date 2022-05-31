@@ -2,9 +2,10 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react";
 import QRCodeStyling from "qr-code-styling";
+import Cookies from 'js-cookie';
 
 const KlassenDetailPage = () => {
-  let { name } = useParams()
+  let { id } = useParams()
 
   const [companies, setCompanies] = useState([
     {
@@ -37,7 +38,7 @@ const KlassenDetailPage = () => {
     }
   });
 
-  const [url, setUrl] = useState("http://localhost:3000/register/1");
+  const [url, setUrl] = useState("http://localhost:3000/register/" + id);
   const [showModal, setShowModal] = useState(false)
   const ref = useRef(null);
 
@@ -46,6 +47,24 @@ const KlassenDetailPage = () => {
       data: url
     });
   }, [url]);
+
+  const toggleTurnover = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch('http://127.0.0.1:8008/api/v1/game/turnover/' + id, requestOptions)
+      .then(async (element) => {
+        return
+      })
+
+  }
 
 
 
@@ -67,20 +86,20 @@ const KlassenDetailPage = () => {
 
   return (
     <>
-   
-    <div className={showModal ? "block" : "hidden"}>
+
+      <div className={showModal ? "block" : "hidden"}>
         <div
           className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
           id="my-modal"
         ></div>
-        <div 
+        <div
           className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
           <div
             className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
-  
+
             <span className="font-bold block text-xl mb-3">Register QRCode</span>
             <div className='flex'>
-              <div className='block text-xl m-auto justify-center' ref={ref}/>
+              <div className='block text-xl m-auto justify-center' ref={ref} />
             </div>
             <div className="text-right space-x-5 mt-5">
               <button onClick={disableModal} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
@@ -88,7 +107,7 @@ const KlassenDetailPage = () => {
           </div>
         </div>
       </div>
-      
+
       <div className='h-screen  overflow-hidden'>
         <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
           <h1 className='text-center'>Test</h1>
@@ -106,7 +125,7 @@ const KlassenDetailPage = () => {
           <button className={'inline-block border-2 shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12 '} onClick={() => onClickRegister()}>
             Register Freischalten
           </button>
-          <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'>
+          <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => toggleTurnover()}>
             Abschließen
           </button>
 

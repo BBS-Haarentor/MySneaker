@@ -16,7 +16,7 @@ function App() {
           <Route path='/' element={<MainPage />} />
           <Route path='/tutorial' element={<Tutorial />} />
           <Route path='/ler' element={<LehrerPage />} />
-          <Route path='/ler/:name' element={<KlassenDetailPage />} />
+          <Route path='/ler/:id' element={<KlassenDetailPage />} />
           <Route path='/register/:id' element={<RegisterPage />} />
         </Routes>
       </Router>
