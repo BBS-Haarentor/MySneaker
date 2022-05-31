@@ -5,67 +5,73 @@ import Cookies from 'js-cookie';
 
 const LehrerPage = () => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
-    setLoading(true)
-    const fetchData = async () => {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
 
-      var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-      };
+    let mounted = true;
+  
+    
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
 
-      fetch('http://127.0.0.1:8008/api/v1/game/get_all_ids', requestOptions)
-        .then(element => {
-          return element.json();
-        })
-        .then(element => {
-          let klasses = [];
-
-          element.forEach(element1 => {
-            fetch('http://127.0.0.1:8008/api/v1/game/get_by_id/' + element1, requestOptions)
-              .then(element2 => {
-                return element2.json()
-              })
-              .then(element => {
-
-                klasses.push({
-                  name: element.grade_name,
-                  date: element.creation_date,
-                  id: element1
-                })
-              })
-          })
-          return klasses;
-        }).then(klasses => {
-          setData(klasses)
-          setLoading(false)
-        })
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
     };
-    fetchData()
+
+    const d1 = fetch('http://127.0.0.1:8008/api/v1/game/get_all_ids', requestOptions)
+      .then(async (element) => {
+        let klasses = [];
+        let elementArray = await element.json()
+
+
+        await elementArray.forEach(element1 => {
+          const d = fetch('http://127.0.0.1:8008/api/v1/game/get_by_id/' + element1, requestOptions)
+            .then(element3 => {
+              return element3.json()
+            })
+
+            d.then((d1) => {
+              console.log(d1)
+              klasses.push({
+                name: d1.grade_name,
+                date: d1.creation_date,
+                id: element1
+              })
+            })
+        })
+
+
+
+        if(mounted){
+          await setData(klasses)
+        }
+      })
+   
+
+    return () => mounted = false;
+
   }, [])
 
-  const derrest = () => {
+  if (data) {
     return (
       <div className='grid grid-cols-2 w-screen h-screen'>
         <div className='shadow-lg bg-white w-[90%] h-[90%] rounded-3xl my-auto mx-12'>
-          {data.forEach((element) => {
-            <a href={'/ler/' + element.id}>
-              <div className='flex border-[#4fd1c5] border-solid border-2 rounded-2xl w-[90%] h-30 m-[5%]'>
-                <div className='text-5xl self-center justify-center m-auto text-[#4fd1c5]'>
-                  <p>{element.name}</p>
-                  <p className='text-3xl m-auto text-[#a3b1c2]'>Erstellt am: {element.date}</p>
+          {console.log(data)}
+          {data.map((d6, index) => {
+            console.log(d6)
+            return (
+              <a key={index} href={'/ler/' + d6.id}>
+                <div className='flex border-[#4fd1c5] border-solid border-2 rounded-2xl w-[90%] h-30 m-[5%]'>
+                  <div className='text-5xl self-center justify-center m-auto text-[#4fd1c5]'>
+                    <p>{d6.name}</p>
+                    <p className='text-3xl m-auto text-[#a3b1c2]'>Erstellt am: {d6.date}</p>
+                  </div>
                 </div>
-              </div>
-            </a>
-            { console.log(element) }
-            { console.log(loading) }
+              </a>)
+
           })}
         </div>
         <div className='flex flex-col justify-center'>
@@ -75,20 +81,17 @@ const LehrerPage = () => {
           <div className=' shadow-lg bg-white rounded-3xl mx-16 my-auto
           h-[50%]'>
             {data.map(({ name, date }, index) =>
-              <p className=''>name</p>
+              <p key={index} className=''>name</p>
             )}
           </div>
         </div>
       </div>
     )
+  } else {
+    return (
+      <></>
+    );
   }
-
-  return (
-    <>
-      {loading ? <p></p> : derrest()}
-
-    </>
-  )
 }
 
 export default LehrerPage
