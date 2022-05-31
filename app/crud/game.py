@@ -119,8 +119,10 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int | None
     stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index)._and_where(Stock.game_id == game.id))
     unsorted_stock_list: list[Stock] = stock_result.all()
     
-    
-    
+    # sort lists
+
+
+    # if all successful then increase index by 1     
     game.current_cycle_index = current_index + 1
     session.add(game)
     await session.commit()

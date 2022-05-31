@@ -50,13 +50,17 @@ async def get_all_game_ids_by_user_id(user_id: int, current_user: User = Depends
     # do stuff
     return all_game_ids
     
-@router.get("/my_games",status_code=status.HTTP_200_OK)
+    
+@router.get("/student/my_game")
+
+
+@router.get("/teacher/my_games",status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def get_all_my_games(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
     game_list: list[Game] = await get_all_games_by_user(user_id=current_user.id, session=session)
     return game_list
     
-@router.get("/all_games_by_teacher",status_code=status.HTTP_200_OK)
+@router.get("/all_games_by_teacher/{user_id}",status_code=status.HTTP_200_OK)
 @admin_auth_required
 async def get_all_games_by_user_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
     game_list: list[Game] = await get_all_games_by_user(user_id=user_id, session=session)
@@ -108,3 +112,5 @@ async def get_all_users_for_game(game_id: int, current_user: User = Depends(get_
     for user in user_list:
         response_list.add(UserResponse.from_orm(user))
     return response_list
+
+
