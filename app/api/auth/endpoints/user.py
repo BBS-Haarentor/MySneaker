@@ -4,10 +4,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
 from app.core.config import SETTINGS, cls_factory
 from app.api.auth.user_auth import get_current_active_user, admin_auth_required, authenticate_user, create_access_token, hash_pw, teacher_auth_required
+from app.crud.game import get_game_by_id
 from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_group
 from app.crud.stock import new_stock_entry
 from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
 from app.db.session import get_async_session
+from app.models.game import Game
 from app.models.groups import BaseGroup
 from app.models.stock import Stock
 from app.models.user import GroupPatch, User
@@ -30,6 +32,11 @@ async def get_user_root():
 @router.post("/create/student", status_code=status.HTTP_201_CREATED)
 async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)) -> int:
     user_post.hashed_pw = hash_pw(user_post.unhashed_pw)
+    user_post.unhashed_pw = ""
+    # check game signup enabled
+    game: Game = await get_game_by_id(id=user_post.game_id, session=session)
+    if not game.signup_enabled or not game.is_active: 
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Game is not active or signup is disabled")
     new_user_id = await create_user(user_post, session)
     user_group_entry: BaseGroup | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
     # create init stock for student
