@@ -5,10 +5,11 @@ from app.models.cycle import Cycle
 # Workers, Next_Period_Workers
 #
 #
-def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
+async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
     stock_output = []
+    for stock in stock_list:
+        stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
     # mock
-    stock_output.append(stock_list)
     return stock_output
   
 

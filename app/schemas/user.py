@@ -44,3 +44,4 @@ class UserResponse(UserBase):
     email: str | None
     is_active: bool 
     game_id: int | None
+

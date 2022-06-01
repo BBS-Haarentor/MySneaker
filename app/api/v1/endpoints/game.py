@@ -83,7 +83,7 @@ async def turnover(game_id: int, current_user: User = Depends(get_current_active
         if isinstance(check_admin, NoneType):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient credentials")
         
-    new_index: int = turnover_next_cycle(game_id=game_id, session=session)
+    new_index: int = await turnover_next_cycle(game_id=game_id, session=session)
     
     
     if isinstance(new_index, NoneType):
@@ -109,14 +109,10 @@ async def toggle_active(game_id: int, session: AsyncSession = Depends(get_async_
     return result
 
 
-@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[UserResponse])
 async def get_all_users_for_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User] :
     user_list: list[User] = await get_all_user_ids_for_game(game_id=game_id, session=session)
     # parse user_list to list[UserResponse]
-    #return user_list
-    response_list = list[UserResponse]
-    for user in user_list:
-        response_list.add(UserResponse.from_orm(user))
-    return response_list
+    return user_list
 
 

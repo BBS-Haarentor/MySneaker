@@ -53,9 +53,9 @@ schema: UserPostStudent
 example_minimal: 
 ```
 {
-  "name": "Timmy",
-  "game_id": 3,
-  "unhashed_pw": "berrysecurepw"
+  "name": "s1",
+  "game_id": 1,
+  "unhashed_pw": "s1"
 }
 
 ```
@@ -94,8 +94,63 @@ schema: GameCreate
 
 ```
 {
-    'grade_name': 'FA1A-B',
-    'owner_id': 2,
-    'scenario_order': 'ABDCDCDC'
+    "grade_name": "FA1A-B",
+    "owner_id": 1
+    "scenario_order": "AAA"
+}
+```
+```
+{
+  "grade_name": "FA1A-B",
+  "scenario_order": "AAA"
+}
+```
+
+
+### example body Scenario
+
+```
+{
+  "char": "A",
+  "sneaker_price": 0,
+  "paint_price": 0,
+  "storage_fee_sneaker": 0,
+  "storage_fee_paint": 0,
+  "storage_fee_finished_sneaker": 0,
+  "employee_count_modifier": 0,
+  "factor_interest_rate": 0,
+  "employee_salary": 0,
+  "machine_purchase_allowed": true,
+  "sneaker_ask": 0,
+  "factor_ad_take": 0
+}
+```
+
+### example body Cycle
+
+```
+{
+  "game_id": 1,
+  "current_cycle_index": 0,
+  "company_id": 2,
+  "buy_sneaker": 0,
+  "buy_paint": 0,
+  "planned_production_1": 0,
+  "planned_production_2": 0,
+  "planned_production_3": 0,
+  "planned_workers_1": 0,
+  "planned_workers_2": 0,
+  "planned_workers_3": 0,
+  "include_from_stock": 0,
+  "sales_planned": 0,
+  "sales_bid": 0,
+  "tender_offer_count": 0,
+  "tender_offer_price": 0,
+  "research_invest": 0,
+  "ad_invest": 0,
+  "take_credit": 0,
+  "payback_credit": 0,
+  "new_employees": 0,
+  "buy_new_machine": true
 }
 ```

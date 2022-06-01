@@ -13,7 +13,7 @@ async def get_cycle_entry_by_id(cycle_id: int, session: AsyncSession) -> Cycle |
     return result
 
 async def new_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> int:
-    new_cycle = Cycle(cycle_data)
+    new_cycle = Cycle.from_orm(cycle_data)
     session.add(new_cycle)
     await session.commit()
     await session.refresh(new_cycle)

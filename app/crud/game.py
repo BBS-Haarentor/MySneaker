@@ -118,32 +118,33 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
         return None
 
     # get current scenario
-    current_scenario: Scenario = await get_scenario_by_char(char=game.scenario_order[current_index])
+    current_scenario: Scenario = await get_scenario_by_char(char=game.scenario_order[current_index], session=session)
 
-    cycle_result = await session.exec(select(Cycle).where(Cycle.current_cycle_index == game.current_cycle_index)._and_where(Cycle.game_id == game.id))
+    cycle_result = await session.exec(select(Cycle).where(Cycle.current_cycle_index == game.current_cycle_index).where(Cycle.game_id == game.id))
     unsorted_cycle_list: list[Cycle] = cycle_result.all()
-    
-    stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index)._and_where(Stock.game_id == game.id))
+
+    stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index).where(Stock.game_id == game.id))
     unsorted_stock_list: list[Stock] = stock_result.all()
+    
+    if unsorted_cycle_list.size() != unsorted_stock_list.size():
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="not all users have submitted new cycle data")
     
     # check every user has valid cycle and stock data
     
     
     # sort lists TODO: sort
-    sorted_stock_list = unsorted_stock_list.sort()
-    sorted_cycle_list = unsorted_cycle_list.sort()
-
+    sorted_stock_list = unsorted_stock_list
+    sorted_cycle_list = unsorted_cycle_list
     
     ################################
     # turnover logic here
-    new_stocks: list[Stock] = mock_turnover(scenario=current_scenario, stock_list=sorted_stock_list, cycle_list=sorted_cycle_list)
-    
+    new_stocks: list[Stock] = await mock_turnover(scenario=current_scenario, stock_list=sorted_stock_list, cycle_list=sorted_cycle_list)
+    #return new_stocks
     # add new stocks to db
-    for s in new_stocks:
-        session.add(s)
-        await session.commit()
-        await session.refresh(s)
-        if isinstance(s.id, NoneType):
+    session.add_all(new_stocks)
+    await session.commit()
+    await session.flush()
+    if isinstance(new_stocks[0].id, NoneType):
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="error while adding new Stocks for turnover")
     ################################
 
@@ -152,8 +153,8 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     session.add(game)
     await session.commit()
     await session.refresh(game)
-    if game.current_cycle_index == current_index + 1:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="error while increasing index")
+    #if game.current_cycle_index == current_index + 1:
+    #    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="error while increasing index")
     
     return game.current_cycle_index
 

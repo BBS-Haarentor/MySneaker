@@ -1,4 +1,3 @@
-from os import stat
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException, Request
 from app.api.auth.user_auth import get_current_active_user
