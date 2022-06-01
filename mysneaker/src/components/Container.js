@@ -267,7 +267,7 @@ return (
 
                 </tbody>
              </table>
-             <img src="/img/Personal.png" className='h-96 w-96'></img>
+             <img src="/img/personal.svg" className='h-96 w-96'></img>
            
         </div>
         <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>

@@ -13,18 +13,17 @@ const RegisterPage = () => {
         e.preventDefault();
 
         var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-        var urlencoded = new URLSearchParams();
-        urlencoded.append("username", userName);
-        urlencoded.append("unhashed_pw", password);
-        urlencoded.append("is_active", false);
-        urlencoded.append("game_id", id);
+        myHeaders.append("Content-Type", "application/json");
 
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
-            body: urlencoded,
+            body: JSON.stringify({
+                name: userName,
+                unhashed_pw: password,
+                is_active: false,
+                game_id: id
+            }),
             redirect: 'follow'
         };
 

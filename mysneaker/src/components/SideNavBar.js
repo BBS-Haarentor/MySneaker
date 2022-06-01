@@ -2,10 +2,17 @@ import React from 'react';
 import NavBarButton from './NavBarComponents/NavBarButton';
 import Spacer from './NavBarComponents/Spacer';
 import {useState, useEffect} from "react";
+import Cookies from 'js-cookie';
 
 
 const SideNavBar = ({OnClick , state}) => {
-const [token, setToken] = useState("test");
+const [token, setToken] = useState();
+
+  useEffect(() => {
+    if(Cookies.get("session")) {
+      setToken(Cookies.get("session"))
+    }
+  })
 
 
   return <div className=' h-screen min-w-[300px] '>

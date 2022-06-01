@@ -6,6 +6,7 @@ import Tutorial from './components/tutorial';
 import LehrerPage from './components/LehrerPage';
 import KlassenDetailPage from './components/KlassenDetailPage'
 import RegisterPage from './components/RegisterPage';
+import Logout from './components/Logout';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path='/ler' element={<LehrerPage />} />
           <Route path='/ler/:id' element={<KlassenDetailPage />} />
           <Route path='/register/:id' element={<RegisterPage />} />
+          <Route path='/logout' element={<Logout />} />
         </Routes>
       </Router>
   );

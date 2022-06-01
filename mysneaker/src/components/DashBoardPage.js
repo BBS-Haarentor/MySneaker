@@ -13,7 +13,7 @@ const DashBoardPage = () => {
   const ProductionRef = useRef(null);
   const AbsatzRef = useRef(null);
 
-  const [state, setState] = useState("Login")
+  const [state, setState] = useState((Cookies.get("session") === undefined ? "Login" : "Lager/Beschaffung"))
 
   const OnClick = (text) => {
     console.log(text)
@@ -30,14 +30,13 @@ const DashBoardPage = () => {
       AbsatzRef.current?.scrollIntoView({ behavior: 'smooth' });
     }else if(text === "Finanzen"){
       FinanzenRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }else if(text === "Logout"){
+      window.location.href = "/logout"
     }
       
 
   }
 
-  if (Cookies.get("session") === undefined) {
-    Cookies.set("session", [])
-  }
   return (
     <div className="h-screen w-screen bg-[#f7fafc] flex" >
       <SideNavBar OnClick={OnClick} state={state} />
