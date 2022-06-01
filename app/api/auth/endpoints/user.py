@@ -1,11 +1,12 @@
 from datetime import timedelta
+from re import U
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
 from app.core.config import SETTINGS, cls_factory
 from app.api.auth.user_auth import get_current_active_user, admin_auth_required, authenticate_user, create_access_token, hash_pw, teacher_auth_required
 from app.crud.game import get_game_by_id
-from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_group
+from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_admingroup, check_user_in_basegroup, check_user_in_group, check_user_in_teachergroup
 from app.crud.stock import new_stock_entry
 from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
 from app.db.session import get_async_session
@@ -167,3 +168,13 @@ async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_cu
 async def lol():
     return
 
+@router.get("/my_auth", status_code=status.HTTP_200_OK)
+async def my_auth(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> str:
+    auth_str = "no group"
+    if isinstance((await check_user_in_basegroup(user_id=current_user.id, session=session)), User):
+        auth_str = "basegroup"
+    if isinstance((await check_user_in_teachergroup(user_id=current_user.id, session=session)), User):
+        auth_str = "teachergroup"
+    if isinstance((await check_user_in_admingroup(user_id=current_user.id, session=session)), User):
+        auth_str = "admingroup"
+    return auth_str
