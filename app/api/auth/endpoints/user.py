@@ -13,7 +13,8 @@ from app.db.session import get_async_session
 from app.models.game import Game
 from app.models.groups import BaseGroup
 from app.models.stock import Stock
-from app.models.user import GroupPatch, User
+from app.models.user import User
+from app.schemas.group import GroupPatch
 from app.schemas.stock import StockCreate, StockResponse
 from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent, UserResponse
 from starlette import status
@@ -134,7 +135,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.patch("/groups", status_code=status.HTTP_202_ACCEPTED)
+@router.post("/groups/", status_code=status.HTTP_202_ACCEPTED)
 @admin_auth_required
 async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result : User | None = await get_user_by_id(patch_data.to_be_patched_user_id)
@@ -165,7 +166,7 @@ async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_cu
 
 
 @router.get("/me", status_code=status.HTTP_200_OK, response_model=UserResponse)
-async def lol(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> User:
+async def me(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> User:
     return current_user
 
 @router.get("/my_auth", status_code=status.HTTP_200_OK)

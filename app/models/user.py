@@ -19,8 +19,5 @@ class User(UserBase, table=True):
     game_id: int | None = Field(default=None)
 
 
-class GroupPatch(SQLModel):
-    to_be_patched_user_id: int
-    remove_groups: list[str]
-    add_groups: list[str]
+
 

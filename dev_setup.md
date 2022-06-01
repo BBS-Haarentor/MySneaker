@@ -79,7 +79,7 @@ schema: UserPostElevated
 example_minimal: 
 ```
 {
-  "name": "Grünkohl",
+  "name": "teacher",
   "unhashed_pw": "teachy"
 }
 ```
