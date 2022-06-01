@@ -7,6 +7,8 @@ from app.models.cycle import Cycle
 #
 def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
     stock_output = []
+    # mock
+    stock_output.append(stock_list)
     return stock_output
   
 

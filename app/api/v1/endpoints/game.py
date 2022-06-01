@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlmodel import select
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.api.auth.user_auth import admin_auth_required, get_current_active_user
+from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user
 
 from app.api.auth.user_auth import teacher_auth_required
 from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_game_by_id, toggle_game_state, turnover_next_cycle
@@ -53,7 +53,10 @@ async def get_all_game_ids_by_user_id(user_id: int, current_user: User = Depends
     return all_game_ids
     
     
-@router.get("/student/my_game")
+@router.get("/student/my_game", status_code=status.HTTP_200_OK, response_model=GameResponse)
+@base_auth_required
+async def get_my_game() -> GameResponse:
+    return 
 
 
 @router.get("/teacher/my_games",status_code=status.HTTP_200_OK)
@@ -80,7 +83,7 @@ async def turnover(game_id: int, current_user: User = Depends(get_current_active
         if isinstance(check_admin, NoneType):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient credentials")
         
-    new_index:int| None = turnover_next_cycle(game_id=game_id, session=session)
+    new_index: int = turnover_next_cycle(game_id=game_id, session=session)
     
     
     if isinstance(new_index, NoneType):

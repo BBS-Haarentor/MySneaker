@@ -1,10 +1,14 @@
 
 
 import logging
+from types import NoneType
 from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
+from app.crud.scenario import get_scenario_by_char
+from app.game_functions.turnover import mock_turnover
 from app.models.game import Game
+from app.models.scenario import Scenario
 from app.models.user import User
 from app.models.cycle import Cycle
 from app.models.stock import Stock
@@ -87,7 +91,7 @@ async def toggle_game_state(id: int, session: AsyncSession) -> bool:
     return False
 
 
-async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int | None:
+async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     '''
     Initiates turnover calculations for a game
     Starts new cycle by changing game-state and saving stock as basis for new cycle
@@ -113,14 +117,35 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int | None
     if current_index >= len(game.scenario_order) - 1:
         return None
 
+    # get current scenario
+    current_scenario: Scenario = await get_scenario_by_char(char=game.scenario_order[current_index])
+
     cycle_result = await session.exec(select(Cycle).where(Cycle.current_cycle_index == game.current_cycle_index)._and_where(Cycle.game_id == game.id))
     unsorted_cycle_list: list[Cycle] = cycle_result.all()
     
     stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index)._and_where(Stock.game_id == game.id))
     unsorted_stock_list: list[Stock] = stock_result.all()
     
-    # sort lists
+    # check every user has valid cycle and stock data
+    
+    
+    # sort lists TODO: sort
+    sorted_stock_list = unsorted_stock_list.sort()
+    sorted_cycle_list = unsorted_cycle_list.sort()
 
+    
+    ################################
+    # turnover logic here
+    new_stocks: list[Stock] = mock_turnover(scenario=current_scenario, stock_list=sorted_stock_list, cycle_list=sorted_cycle_list)
+    
+    # add new stocks to db
+    for s in new_stocks:
+        session.add(s)
+        await session.commit()
+        await session.refresh(s)
+        if isinstance(s.id, NoneType):
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="error while adding new Stocks for turnover")
+    ################################
 
     # if all successful then increase index by 1     
     game.current_cycle_index = current_index + 1
@@ -130,7 +155,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int | None
     if game.current_cycle_index == current_index + 1:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="error while increasing index")
     
-    raise NotImplementedError
+    return game.current_cycle_index
 
 async def get_all_user_ids_for_game(game_id: int, session: AsyncSession) -> list[User]:
     game: Game = await get_game_by_id(id=game_id, session=session)
@@ -146,8 +171,15 @@ async def get_all_games_by_owner(user_id: int, session: AsyncSession) -> list[Ga
 
 
 
-async def delete_game() -> bool:
-    raise NotImplementedError
+async def delete_game_by_id(id: int, session: AsyncSession) -> bool:
+    tbd_game: Game = await get_game_by_id(id=id, session=session)
+    session.delete(tbd_game)
+    await session.commit()
+    await session.refresh(tbd_game)
+    if isinstance(tbd_game, NoneType):
+        return True
+    else:
+        return False
 
 
 
