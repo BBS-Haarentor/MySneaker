@@ -1,5 +1,4 @@
 from sqlmodel import select
-from app.crud.game import get_game_by_id
 from app.models.game import Game
 from app.models.scenario import Scenario
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -18,7 +17,8 @@ async def get_scenario_by_char(char: str, session: AsyncSession) -> Scenario | N
 
 #returns scenario for specific game
 async def get_scenario_by_index(game_id: int, session: AsyncSession) -> Scenario | None:
-    game: Game | None = await get_game_by_id(game_id)
+    result = await session.exec(select(Game).where(Game.id == game_id))
+    game: Game | None = result.one_or_none()
     if not game.is_active:
         return None
     search_char = game.scenario_order[game.current_cycle_index]
