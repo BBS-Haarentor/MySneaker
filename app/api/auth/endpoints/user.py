@@ -172,9 +172,9 @@ async def lol():
 async def my_auth(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> str:
     auth_str = "no group"
     if isinstance((await check_user_in_basegroup(user_id=current_user.id, session=session)), User):
-        auth_str = "basegroup"
+        auth_str = "base"
     if isinstance((await check_user_in_teachergroup(user_id=current_user.id, session=session)), User):
-        auth_str = "teachergroup"
+        auth_str = "teacher"
     if isinstance((await check_user_in_admingroup(user_id=current_user.id, session=session)), User):
-        auth_str = "admingroup"
+        auth_str = "admin"
     return auth_str
