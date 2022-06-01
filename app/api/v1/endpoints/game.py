@@ -28,6 +28,8 @@ async def get_game_root():
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 @teacher_auth_required
 async def post_new_game(game_init_data: GameCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int: 
+    if game_init_data.owner_id == None:
+        game_init_data.owner_id = current_user.id
     new_game_id = await create_game(game_init_data, session)
     return new_game_id
 
@@ -39,7 +41,7 @@ async def get_all_my_game_ids(current_user: User = Depends(get_current_active_us
     
 @router.get("/get_by_id/{game_id}", status_code=status.HTTP_200_OK, response_model=GameResponse)
 @teacher_auth_required
-async def get_by_id(game_id: int,current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Game | None:
+async def get_by_id(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Game | None:
     result: Game | None = await get_game_by_id(id=game_id, session=session)
     return result
 

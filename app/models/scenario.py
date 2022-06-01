@@ -12,6 +12,8 @@ class Scenario(ScenarioBase, table=True):
     storage_fee_paint: float = Field(default=1.00)
     storage_fee_finished_sneaker: float = Field(default=8.00)
     employee_count_modifier: int = Field(default=0)
-    
-
-
+    factor_interest_rate: float = Field(default=0.04)
+    employee_salary: float = Field(default=400)
+    machine_purchase_allowed: bool = Field(default=False)
+    sneaker_ask: int = Field(default=400)
+    factor_ad_take: float = Field(default=0.1)

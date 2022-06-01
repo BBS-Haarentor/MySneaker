@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from starlette import status
 from app.crud.scenario import add_new_scenario, get_all_scenarios, get_scenario_by_char
 from app.db.session import get_async_session
@@ -28,6 +28,6 @@ async def get_all_scenarios_as_list(session =Depends(get_async_session)) -> list
 
 
 @router.post("/new_scenario", status_code=status.HTTP_201_CREATED)
-async def create_new_scenario(scenario_data: ScenarioCreate, session=Depends(get_async_session)) -> Scenario:
+async def create_new_scenario(*, scenario_data: ScenarioCreate, session=Depends(get_async_session)) -> Scenario:
     new_scenario: Scenario = await add_new_scenario(new_scenario_data=scenario_data, session=session)
     return new_scenario

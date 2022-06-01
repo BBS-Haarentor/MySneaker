@@ -1,5 +1,4 @@
 from datetime import timedelta
-from re import S
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
@@ -8,6 +7,7 @@ from app.api.auth.user_auth import get_current_active_user, admin_auth_required,
 from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_group
 from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
 from app.db.session import get_async_session
+from app.models.stock import Stock
 from app.models.user import GroupPatch, User
 from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent
 from starlette import status
@@ -25,12 +25,15 @@ async def get_user_root():
 
 
 @router.post("/create/student", status_code=status.HTTP_201_CREATED)
-async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)):
+async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)) -> int:
     user_post.hashed_pw = hash_pw(user_post.unhashed_pw)
     new_user_id = await create_user(user_post, session)
-    result: User | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
+    user: User | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
+    # create init stock for student
+    new_stock: Stock = Stock(game_id=user_post.game_id, company_id=user.id, current_cycle_index=0)
     return { f"Student user created with {new_user_id}"}
 
+   
 
 @router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
 async def post_teacheruser(user_post: UserPostElevated, session: AsyncSession = Depends(get_async_session)): # current_user: User = Depends(get_current_active_user),
@@ -66,6 +69,7 @@ async def get_usery_id(username: str, current_user: User = Depends(get_current_a
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
         return result
+
 
 @router.patch("/patch", status_code=status.HTTP_200_OK)
 @teacher_auth_required
@@ -146,4 +150,9 @@ async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_cu
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already member of one or more group in add_groups")
     '''
     raise NotImplementedError
+
+
+@router.get("/me")
+async def lol():
+    return
 
