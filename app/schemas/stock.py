@@ -8,17 +8,17 @@ class StockBase(SQLModel):
     game_id: int 
     company_id: int
     creation_date: datetime | None
-    current_cycle_index: int
-    sneaker_count: int
-    paint_count: int
-    finished_sneaker_count: int
-    employees_count: int
-    research_budget: float
-    account_balance: float
-    credit_taken: float
-    machine_count: int
-    real_sales: int
-    income_from_sales: float
+    current_cycle_index: int 
+    sneaker_count: int | None
+    paint_count: int | None
+    finished_sneaker_count: int | None
+    employees_count: int | None
+    research_budget: float | None
+    account_balance: float | None
+    credit_taken: float | None
+    machine_count: int | None
+    real_sales: int | None
+    income_from_sales: float | None
     
 
 class StockCreate(StockBase): 

@@ -14,8 +14,7 @@ async def new_stock_entry(entry_data: StockCreate, session: AsyncSession) -> Sto
     session.add(entry)
     await session.commit()
     await session.refresh(entry)
-    response = StockResponse(entry)
-    return response
+    return entry
 
 async def get_stock_entry_by_id(entry_id: int, session: AsyncSession) -> StockResponse | None:
     result = await session.exec(select(Stock).where(Stock.id == entry_id))
@@ -26,10 +25,7 @@ async def get_stock_entry_by_id(entry_id: int, session: AsyncSession) -> StockRe
 async def get_stock_entries_by_user_id(user_id: int, session: AsyncSession) -> list[StockResponse]:
     result = await session.exec(select(Stock).where(Stock.company_id == user_id))
     stock_list: list[Stock] = result.all()
-    result_list: list[StockResponse] = []
-    for n in stock_list:
-        result_list.append(StockResponse(n))
-    return result_list
+    return stock_list
 
 
 async def get_stock_entries_by_game(game_id: int, session: AsyncSession) -> list[StockResponse]:

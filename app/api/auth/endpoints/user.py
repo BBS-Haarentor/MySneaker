@@ -5,10 +5,13 @@ from app.api.auth.api_key_auth import get_api_key
 from app.core.config import SETTINGS, cls_factory
 from app.api.auth.user_auth import get_current_active_user, admin_auth_required, authenticate_user, create_access_token, hash_pw, teacher_auth_required
 from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_group
+from app.crud.stock import new_stock_entry
 from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
 from app.db.session import get_async_session
+from app.models.groups import BaseGroup
 from app.models.stock import Stock
 from app.models.user import GroupPatch, User
+from app.schemas.stock import StockCreate, StockResponse
 from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent
 from starlette import status
 from sqlmodel import select
@@ -28,9 +31,10 @@ async def get_user_root():
 async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)) -> int:
     user_post.hashed_pw = hash_pw(user_post.unhashed_pw)
     new_user_id = await create_user(user_post, session)
-    user: User | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
+    user_group_entry: BaseGroup | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
     # create init stock for student
-    new_stock: Stock = Stock(game_id=user_post.game_id, company_id=user.id, current_cycle_index=0)
+    stock_data = Stock(game_id=user_post.game_id, company_id=new_user_id, current_cycle_index=0)
+    new_stock: StockResponse = await new_stock_entry(entry_data=stock_data, session=session)
     return { f"Student user created with {new_user_id}"}
 
    

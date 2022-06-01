@@ -75,7 +75,7 @@ async def check_user_in_group(session: AsyncSession, user_id: int, target_group:
 
 
 # add to group functions
-async def add_user_to_admingroup(session: AsyncSession, user_id: int) -> User | None:
+async def add_user_to_admingroup(session: AsyncSession, user_id: int) -> AdminGroup | None:
     '''
     adds User to AdminGroup
     
@@ -93,7 +93,7 @@ async def add_user_to_admingroup(session: AsyncSession, user_id: int) -> User | 
     return new_group_entry
 
 
-async def add_user_to_teachergroup(session: AsyncSession, user_id: int) -> User | None:
+async def add_user_to_teachergroup(session: AsyncSession, user_id: int) -> TeacherGroup | None:
     '''
     adds User to TeacherGroup
     
@@ -111,7 +111,7 @@ async def add_user_to_teachergroup(session: AsyncSession, user_id: int) -> User 
     return new_group_entry
 
 
-async def add_user_to_basegroup(session: AsyncSession, user_id: int) -> User | None:
+async def add_user_to_basegroup(session: AsyncSession, user_id: int) -> BaseGroup | None:
     '''
     adds User to BaseGroup
     

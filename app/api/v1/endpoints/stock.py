@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import base_auth_required, game_owner_check, get_current_active_user, teacher_auth_required
-from app.crud.stock import new_stock_entry
+from app.crud.stock import get_stock_entries_by_user_id, new_stock_entry
 from app.db.session import get_async_session
 
 from app.models.stock import Stock
@@ -30,13 +30,14 @@ async def get_stock_by_stock_id(stock_id: int, current_user: User = Depends(get_
     
     # check teacher owner of game with user
     # get game id 
-    owner_check = await game_owner_check(user_id=current_user.id, session=session)
+    owner_check = await game_owner_check(user_id=current_user.id, game_id=current_user.game_id, session=session)
     raise NotImplementedError
 
 @router.get("/get_all_my_stocks",status_code=status.HTTP_200_OK, response_model=list[StockResponse])
 @base_auth_required
 async def get_all_my_stocks(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[StockResponse]:
-    raise NotImplementedError
+    stock_list: list[Stock] = await get_stock_entries_by_user_id(user_id=current_user.id, session=session)
+    return stock_list
 
 @router.get("/get_by_user/{user_id}", status_code=status.HTTP_200_OK, response_model=list[StockResponse])
 @teacher_auth_required

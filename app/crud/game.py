@@ -140,7 +140,7 @@ async def get_all_user_ids_for_game(game_id: int, session: AsyncSession) -> list
     return user_list
 
 
-async def get_all_games_by_user(user_id: int, session: AsyncSession) -> list[Game]:
+async def get_all_games_by_owner(user_id: int, session: AsyncSession) -> list[Game]:
     result = await session.exec(select(Game).where(Game.owner_id == user_id))
     return result.all()
 

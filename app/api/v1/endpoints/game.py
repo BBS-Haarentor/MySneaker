@@ -7,7 +7,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import admin_auth_required, get_current_active_user
 
 from app.api.auth.user_auth import teacher_auth_required
-from app.crud.game import create_game, get_all_game_ids, get_all_games_by_user, get_all_user_ids_for_game, get_game_by_id, toggle_game_state, turnover_next_cycle
+from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_game_by_id, toggle_game_state, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.db.session import get_async_session
 from app.models.user import User
@@ -59,13 +59,13 @@ async def get_all_game_ids_by_user_id(user_id: int, current_user: User = Depends
 @router.get("/teacher/my_games",status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def get_all_my_games(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
-    game_list: list[Game] = await get_all_games_by_user(user_id=current_user.id, session=session)
+    game_list: list[Game] = await get_all_games_by_owner(user_id=current_user.id, session=session)
     return game_list
     
 @router.get("/all_games_by_teacher/{user_id}",status_code=status.HTTP_200_OK)
 @admin_auth_required
 async def get_all_games_by_user_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
-    game_list: list[Game] = await get_all_games_by_user(user_id=user_id, session=session)
+    game_list: list[Game] = await get_all_games_by_owner(user_id=user_id, session=session)
     return game_list
     
 
@@ -89,21 +89,22 @@ async def turnover(game_id: int, current_user: User = Depends(get_current_active
         return new_index
 
 
-
-
 @router.get("/current_cycle_index/{game_id}", status_code=status.HTTP_200_OK)
 async def get_cycle_index(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int:
     game: Game = await get_game_by_id(id=game_id, session=session)
     return game.current_cycle_index
 
+
 @router.put("/edit", status_code=status.HTTP_202_ACCEPTED)
 async def game_patch(game_patch: GamePatch, session: AsyncSession = Depends(get_async_session)) -> GameResponse | None:
     raise NotImplementedError
+
 
 @router.put("/toggle_active/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 async def toggle_active(game_id: int, session: AsyncSession = Depends(get_async_session)) -> bool:
     result: bool = await toggle_game_state(id=game_id, session=session)
     return result
+
 
 @router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 async def get_all_users_for_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User] :
