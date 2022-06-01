@@ -83,11 +83,11 @@ return (
         <form className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar snap-y'>
 
        
-        <div className=" p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
+        <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
              <table>
                 <tbody>
                     <tr>
-                        <th></th>
+                        <th className='xl:w-72'></th>
                         <th className='text-[#4fd1c5]'>Sneaker</th>
                         <th className='text-[#4fd1c5]'>Farben</th>
                     </tr>
@@ -112,15 +112,17 @@ return (
                     </tr>
                 </tbody>
              </table>
+             <img src="/img/undraw_empty_cart.svg" className='h-96 w-0 xl:w-96 m-4'></img>
         </div>
-        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white  snap-start">
+        <div className="p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 flex justify-around bg-white  snap-start">
+        <img src="/img/undraw_heavy_box.svg" className='h-96 w-0 xl:w-96 m-4'></img>
              <table>
                 <tbody>
                     <tr>
-                        <th></th>
-                        <th className='text-[#4fd1c5]'>Sneaker</th>
-                        <th className='text-[#4fd1c5]'>Farben</th>
-                        <th className='text-[#4fd1c5]'>Fertige Sneaker</th>
+                        <th className='text-[#4fd1c5] w-96'></th>
+                        <th className='text-[#4fd1c5] w-40'>Sneaker</th>
+                        <th className='text-[#4fd1c5] w-40'>Farben</th>
+                        <th className='text-[#4fd1c5] w-40'>Fertige Sneaker</th>
                     </tr>
                     <tr>
                         <td>Lager (Vorperiode)</td>
@@ -185,13 +187,14 @@ return (
                     
                 </tbody>
              </table>
+             
         </div>
         <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={PersonalRef}>
-             <table  >
+             <table>
                 <tbody>
                     <tr>
                         <th className='xl:w-96'></th>
-                        <th className='text-[#4fd1c5] xl:w-96'>Personal</th>
+                        <th className='text-[#4fd1c5] xl:w-96 '>Personal</th>
                     </tr>
                     <tr>
                         <td>Mitarbeiter</td>
@@ -267,7 +270,7 @@ return (
 
                 </tbody>
              </table>
-             <img src="/img/personal.svg" className='h-96 w-96'></img>
+             <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
            
         </div>
         <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
@@ -525,7 +528,7 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center  snap-start " ref={MarketingRef}>
+        <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start " ref={MarketingRef}>
              <table>
                 <tbody>
                     <tr>
@@ -546,6 +549,7 @@ return (
                     </tr>
                 </tbody>
              </table>
+             <img src="/img/undraw_mobile_marketing.svg" className='h-96 w-64 xl:w-96 m-4'></img>
         </div>
         <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
              <table>
@@ -623,18 +627,19 @@ return (
                 </tbody>
              </table>
         </div>
-        <div className=" p-4 shadow-lg xl:col-span-2 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
+        <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
+        <img src="/img/undraw_finance.svg" className='h-[500px] w-0 xl:w-[500px] m-auto'></img>
              <table>
                 <tbody>
                     <tr>
-                        <th></th>
+                        <th ></th>
                         <th className='text-[#4fd1c5]'>Finanzen</th>
                         
                     </tr>
                     <tr>
-                        <td></td>
-                        <td className='text-[#4fd1c5]'>PLAN</td>
-                        <td className='text-[#4fd1c5]'>IST</td>
+                        <td className='w-80'></td>
+                        <td className='text-[#4fd1c5] w-40' >PLAN</td>
+                        <td className='text-[#4fd1c5] w-40'>IST</td>
                     </tr>
                     <tr>
                         <td>Kontostand</td>
