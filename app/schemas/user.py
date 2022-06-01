@@ -41,6 +41,6 @@ class UserResponse(UserBase):
     id: int
     name: str
     last_login: datetime 
-    email: str
+    email: str | None
     is_active: bool 
-    game_id: int
+    game_id: int | None

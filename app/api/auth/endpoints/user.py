@@ -15,7 +15,7 @@ from app.models.groups import BaseGroup
 from app.models.stock import Stock
 from app.models.user import GroupPatch, User
 from app.schemas.stock import StockCreate, StockResponse
-from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent
+from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent, UserResponse
 from starlette import status
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -164,9 +164,9 @@ async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_cu
     raise NotImplementedError
 
 
-@router.get("/me")
-async def lol():
-    return
+@router.get("/me", status_code=status.HTTP_200_OK, response_model=UserResponse)
+async def lol(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> User:
+    return current_user
 
 @router.get("/my_auth", status_code=status.HTTP_200_OK)
 async def my_auth(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> str:
