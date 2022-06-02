@@ -67,7 +67,7 @@ const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,P
             const dataFromServer = await fetchData()
             setData(dataFromServer)
         }
-        getData()
+        //getData()
         
     }, [])
 
@@ -551,7 +551,7 @@ return (
              </table>
              <img src="/img/undraw_mobile_marketing.svg" className='h-96 w-64 xl:w-96 m-4'></img>
         </div>
-        <div className=" p-4  shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
+        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
              <table>
                 <tbody>
                     <tr>
@@ -765,6 +765,7 @@ return (
                 </tbody>
              </table>
         </div>
+        <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold">Abgeben/Speichern</button>
         </form>
     </>
 )
