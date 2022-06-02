@@ -23,46 +23,46 @@ def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list:
     VerkaufDurchWerbungMax = NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
     NachfrageAufdemMarkt = NachfrageAufdemMarkt - VerkaufDurchWerbungMax  
 
-#for i = 1 in UnternehmenAnzahl:            #bekomme sotierte unternehmen
-    #
-    cycle_list[i].planned_production_1
-    StückzahlMarkt = cycle_list[i].planned_production_1+cycle_list[i].planned_production_2cycle_list[i].planned_production_3                   #Vertrieb und Absatz!D19
-    StückzahlAusschreibung = cycle_list[i].tender_offer_count            #Vertrieb und Absatz!D20
-    PreisAusschreibung = cycle_list[i].tender_offer_price             #Vertrieb und Absatz!E20
+    for i = 0 in UnternehmenAnzahl:            #bekomme sotierte unternehmen
+        #
+        cycle_list[i].planned_production_1
+        StückzahlMarkt = cycle_list[i].planned_production_1+cycle_list[i].planned_production_2cycle_list[i].planned_production_3                   #Vertrieb und Absatz!D19
+        StückzahlAusschreibung = cycle_list[i].tender_offer_count             #Vertrieb und Absatz!D20
+        PreisAusschreibung = cycle_list[i].tender_offer_price                 #Vertrieb und Absatz!E20
 
-    Rationalisierung = stock_list[i].         #'Marketing  F&E'!E12
-    Werbung = stock_list[i].                         #Statistik & Finanzen'!D42
+        #Rationalisierung = stock_list[i].                                     #'Marketing  F&E'!E12
+        #Werbungskosten = stock_list[i].           #cycle_list[i].research_invest----enthalten unten                                    #Statistik & Finanzen'!D42
 
-    #lAenderungenderMA =  - dict["Workers"]                               #Personal!D18-Personal!D10         bis heir weiter gegeben
+        #lAenderungenderMA =  - dict["Workers"]                               #Personal!D18-Personal!D10         bis heir weiter gegeben
 
-    Darlehenstand =  cycle_list[i].take_credit                         #Statistik & Finanzen'!E30
-    #Verkauf
-    UnternehmenGeboteneStückzahl = #cycle_list[i].tender_offer_count
-    UnternehmenPreise = scenario[i].sneaker_price
-    #werbung
-    UnternehmenGebotenWerbung = cycle_list[i].ad_invest
+        Darlehenstand =  cycle_list[i].take_credit                            #Statistik & Finanzen'!E30
+        #Verkauf
+        UnternehmenGeboteneStückzahl = #cycle_list[i].tender_offer_count
+        UnternehmenPreise = scenario[i].sneaker_price
+        #werbung
+        UnternehmenGebotenWerbung = cycle_list[i].ad_invest
 
-    Werbeanteil = round(100/VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
-    VerkaufDurchWerbung = round(VerkaufDurchWerbungMax/100*Werbeanteil, 0)             #Mximal?
-    StückzahlNachWerbeverkauf = UnternehmenGeboteneStückzahl - VerkaufDurchWerbung
-    #Verkauf der Firma
-    if NachfrageAufdemMarkt < VerkaufDurchWerbung
-        UnternehmenVerkaufOhneWerbung = NachfrageAufdemMarkt
-    else
-        UnternehmenVerkaufOhneWerbung = StückzahlNachWerbeverkauf
-    GesamterVerkauf = UnternehmenVerkaufOhneWerbung + VerkaufDurchWerbung
-    NachfrageAufdemMarkt = NachfrageAufdemMarkt - UnternehmenVerkaufOhneWerbung
-    Umsatz = UnternehmenPreise * GesamterVerkauf
+        Werbeanteil = round(100/VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
+        VerkaufDurchWerbung = round(VerkaufDurchWerbungMax/100*Werbeanteil, 0)             #Mximal?
+        StückzahlNachWerbeverkauf = UnternehmenGeboteneStückzahl - VerkaufDurchWerbung
+        #Verkauf der Firma
+        if NachfrageAufdemMarkt < VerkaufDurchWerbung
+            UnternehmenVerkaufOhneWerbung = NachfrageAufdemMarkt
+        else
+            UnternehmenVerkaufOhneWerbung = StückzahlNachWerbeverkauf
+        GesamterVerkauf = UnternehmenVerkaufOhneWerbung + VerkaufDurchWerbung
+        NachfrageAufdemMarkt = NachfrageAufdemMarkt - UnternehmenVerkaufOhneWerbung
+        Umsatz = UnternehmenPreise * GesamterVerkauf
 
-    #Entwickelung
-    Buget(Kumuliert) = cycle_list[i].research_invest                                       #int SpilereEingabe
-    if Buget(Kumuliert) >= 2500
-        StuffeEinsEntwickelung = true                                                       #Warhetiswert
-    if Buget(Kumuliert) >= 5000
-        StuffeZweiEntwickelung = true
-    if Buget(Kumuliert) >= 7500
-        StuffeDreiEntwickelung = true
-    if Buget(Kumuliert) >= 10000
-        StuffeFierEntwickelung = true
-    #if Buget(Kumuliert) >= 12500
-    #    StuffeFeunfEntwickelung = true
+        #Entwickelung
+        Buget(Kumuliert) = cycle_list[i].research_invest                                        #int SpilereEingabe
+        if Buget(Kumuliert) >= 2500
+            StuffeEinsEntwickelung = true                                                       #Warhetiswert
+        if Buget(Kumuliert) >= 5000
+            StuffeZweiEntwickelung = true
+        if Buget(Kumuliert) >= 7500
+            StuffeDreiEntwickelung = true
+        if Buget(Kumuliert) >= 10000
+            StuffeFierEntwickelung = true
+        if Buget(Kumuliert) >= 12500
+            StuffeFeunfEntwickelung = true
