@@ -37,6 +37,7 @@ const DashBoardPage = () => {
     }
 
   }
+  var [isLehe, setIsLehe] = useState(false);
 
   useEffect(() => {
     if (Cookies.get("session")) {
@@ -48,23 +49,31 @@ const DashBoardPage = () => {
         method: 'GET',
         headers: myHeaders,
       };
-
-      fetch('http://127.0.0.1:8008/user/my_auth', requestOptions)
+      try {
+        fetch('http://127.0.0.1:8008/user/my_auth', requestOptions)
         .then(async (element) => {
           let body = await element.text();
-          if (body.replaceAll("\"", "") === "teacher") {
+          console.log(body.replaceAll("\"", ""))
+          if(body.replaceAll("\"", "") === "teacher") {
             setIsLehe(true)
           }
           return
         })
+
+      } catch (error) {
+        setIsLehe(false)
+      }
+      
     }
-  }, [])
+  })
+  
+   
 
   return (
     <div className="h-screen w-screen bg-[#f7fafc] flex" >
       <SideNavBar OnClick={OnClick} state={state} />
 
-      {state == "Login" ? <LoginPage /> : (isLehe ? <LehrerPage /> : <Container MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef} LagerBeschaffungRef={LagerBeschaffungRef} ProductionRef={ProductionRef} PersonalRef={PersonalRef} />)}
+      {state == "Login" ? <LoginPage /> : ( isLehe ? <LehrerPage/>  : <Container MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef} LagerBeschaffungRef={LagerBeschaffungRef} ProductionRef={ProductionRef} PersonalRef={PersonalRef}/>)}
     </div>
   )
 }
