@@ -7,9 +7,10 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user
 
 from app.api.auth.user_auth import teacher_auth_required
-from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
+from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_current_cycles_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.db.session import get_async_session
+from app.models.cycle import Cycle
 from app.models.user import User
 from app.models.game import Game
 from app.schemas.game import GameCreate, GamePatch, GameResponse
@@ -55,17 +56,30 @@ async def get_all_game_ids_by_user_id(user_id: int, current_user: User = Depends
     
 @router.get("/student/my_game", status_code=status.HTTP_200_OK, response_model=GameResponse)
 @base_auth_required
-async def get_my_game() -> GameResponse:
-    return 
+async def get_my_game(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Game:
+    game: Game = await get_game_by_id(current_user.game_id, session=session)
+    return game
 
 
-@router.get("/teacher/my_games",status_code=status.HTTP_200_OK)
+
+@router.get("/student/my_summary", status_code=status.HTTP_200_OK)
+async def get_my_summary(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
+        
+    raise NotImplementedError
+
+@router.get("/student/my_summary/{index}", status_code=status.HTTP_200_OK)
+async def get_my_summary(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
+    raise NotImplementedError
+
+
+@router.get("/teacher/my_games",status_code=status.HTTP_200_OK, response_model=list[GameResponse])
 @teacher_auth_required
 async def get_all_my_games(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
     game_list: list[Game] = await get_all_games_by_owner(user_id=current_user.id, session=session)
     return game_list
     
-@router.get("/all_games_by_teacher/{user_id}",status_code=status.HTTP_200_OK)
+    
+@router.get("/all_games_by_teacher/{user_id}",status_code=status.HTTP_200_OK, response_model=list[GameResponse])
 @admin_auth_required
 async def get_all_games_by_user_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Game]:
     game_list: list[Game] = await get_all_games_by_owner(user_id=user_id, session=session)
@@ -83,6 +97,7 @@ async def turnover(game_id: int, current_user: User = Depends(get_current_active
         if isinstance(check_admin, NoneType):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient credentials")
         
+    
     new_index: int = await turnover_next_cycle(game_id=game_id, session=session)
     
     
@@ -98,7 +113,7 @@ async def get_cycle_index(game_id: int, current_user: User = Depends(get_current
     return game.current_cycle_index
 
 
-@router.put("/edit", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/edit", status_code=status.HTTP_202_ACCEPTED, response_model=GameResponse)
 async def game_patch(game_patch: GamePatch, session: AsyncSession = Depends(get_async_session)) -> GameResponse | None:
     raise NotImplementedError
 
@@ -108,15 +123,21 @@ async def toggle_active(game_id: int, session: AsyncSession = Depends(get_async_
     result: bool = await toggle_game_state(id=game_id, session=session)
     return result
 
+@router.get("/current_cycles/{game_id}", status_code=status.HTTP_200_OK, response_model=list[Cycle])
+@teacher_auth_required
+async def get_current_cycle(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Cycle]:
+    cycle_list: list[Cycle] = await get_current_cycles_by_game_id(id=game_id, session=session)
+    return cycle_list
 
-@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[UserResponse])
-async def get_all_users_for_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User] :
-    user_list: list[User] = await get_all_user_ids_for_game(game_id=game_id, session=session)
+
+@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[int])
+async def get_all_users_for_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[int] :
+    user_list: list[int] = await get_all_user_ids_for_game(game_id=game_id, session=session)
     # parse user_list to list[UserResponse]
     return user_list
 
 
-@router.put("/toggle_signup/{game_id}")
+@router.put("/toggle_signup/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
 async def toggle_signup(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
     signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)

@@ -4,9 +4,9 @@ from sqlmodel import SQLModel
 class CycleBase(SQLModel):
     id: int | None
     creation_date: datetime | None
-    game_id: int
-    current_cycle_index: int
-    company_id: int
+    game_id: int | None
+    current_cycle_index: int | None
+    company_id: int | None
     buy_sneaker: int
     buy_paint: int
     planned_production_1: int

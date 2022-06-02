@@ -124,7 +124,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index).where(Stock.game_id == game.id))
     unsorted_stock_list: list[Stock] = stock_result.all()
     
-    if unsorted_cycle_list.size() != unsorted_stock_list.size():
+    if (unsorted_cycle_list.size() != unsorted_stock_list.size()): # or unsorted_cycle_list.size() == 0
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="not all users have submitted new cycle data")
     
     # check every user has valid cycle and stock data
@@ -143,7 +143,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     await session.commit()
     await session.flush()
     if isinstance(new_stocks[0].id, NoneType):
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="error while adding new Stocks for turnover")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="error while adding new Stocks for turnover")
     ################################
 
     # if all successful then increase index by 1     
@@ -158,7 +158,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
 
 async def get_all_user_ids_for_game(game_id: int, session: AsyncSession) -> list[User]:
     game: Game = await get_game_by_id(id=game_id, session=session)
-    result = await session.exec(select(User).where(User.game_id == game_id))
+    result = await session.exec(select(User.id).where(User.game_id == game_id))
     user_list = result.all()
     
     return user_list
@@ -189,3 +189,9 @@ async def toggle_signup_by_id(id: int, session: AsyncSession) -> bool:
     await session.commit()
     await session.refresh(game)
     return game.signup_enabled
+
+
+async def get_current_cycles_by_game_id(id: int, session: AsyncSession) -> list[Cycle]:
+    game: Game = await get_game_by_id(id=id, session=session)
+    result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index == game.current_cycle_index))
+    return result.all()

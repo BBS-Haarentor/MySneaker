@@ -46,7 +46,6 @@ async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depe
     new_stock: StockResponse = await new_stock_entry(entry_data=stock_data, session=session)
     return { f"Student user created with {new_user_id}"}
 
-   
 
 @router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
 async def post_teacheruser(user_post: UserPostElevated, session: AsyncSession = Depends(get_async_session)): # current_user: User = Depends(get_current_active_user),
@@ -66,7 +65,7 @@ async def post_adminuser(new_user: UserPostElevated, session: AsyncSession = Dep
 
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
-async def get_dummy_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+async def get_user_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result = await get_user_by_id_or_name(id=id, name=None, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -76,7 +75,7 @@ async def get_dummy_by_id(id: int, current_user: User = Depends(get_current_acti
 
 @router.get("/get_by_name/{username}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
-async def get_usery_id(username: str, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+async def get_user_by_name(username: str, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result = await get_user_by_id_or_name(id=None, name=username, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -86,7 +85,8 @@ async def get_usery_id(username: str, current_user: User = Depends(get_current_a
 
 @router.patch("/patch", status_code=status.HTTP_200_OK)
 @teacher_auth_required
-async def patch_dummy(user_data: UserPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+async def patch_user(user_data: UserPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+    raise NotImplementedError
     result = await update_user(update_data=user_data, session=session)
     return result
 
@@ -181,3 +181,4 @@ async def my_auth(current_user: User = Depends(get_current_active_user), session
     if isinstance((await check_user_in_admingroup(user_id=current_user.id, session=session)), User):
         auth_str = "admin"
     return auth_str
+
