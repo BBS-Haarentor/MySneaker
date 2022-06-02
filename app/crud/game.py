@@ -195,3 +195,8 @@ async def get_current_cycles_by_game_id(id: int, session: AsyncSession) -> list[
     game: Game = await get_game_by_id(id=id, session=session)
     result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index == game.current_cycle_index))
     return result.all()
+
+async def get_current_stocks_by_game_id(id: int, session: AsyncSession) -> list[Stock]:
+    game: Game = await get_game_by_id(id=id, session=session)
+    result = await session.exec(select(Stock).where(Stock.game_id == game.id).where(Stock.current_cycle_index == game.current_cycle_index -1))
+    return result.all()

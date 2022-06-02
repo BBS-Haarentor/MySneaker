@@ -7,10 +7,11 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user
 
 from app.api.auth.user_auth import teacher_auth_required
-from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_current_cycles_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
+from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.db.session import get_async_session
 from app.models.cycle import Cycle
+from app.models.stock import Stock
 from app.models.user import User
 from app.models.game import Game
 from app.schemas.game import GameCreate, GamePatch, GameResponse
@@ -143,3 +144,9 @@ async def toggle_signup(game_id: int, current_user: User = Depends(get_current_a
     signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)
     return signup_status
     
+    
+@router.get("/current_stocks/{game_id}", status_code=status.HTTP_200_OK, response_model=list[Stock])
+@teacher_auth_required
+async def get_current_cycle(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Stock]:
+    stock_list: list[Stock] = await get_current_stocks_by_game_id(id=game_id, session=session)
+    return stock_list
