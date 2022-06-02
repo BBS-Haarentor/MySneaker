@@ -20,8 +20,8 @@ const SideNavBar = ({ OnClick, state }) => {
         method: 'GET',
         headers: myHeaders,
       };
-
-      fetch('http://127.0.0.1:8008/user/my_auth', requestOptions)
+      try {
+        fetch('http://127.0.0.1:8008/user/my_auth', requestOptions)
         .then(async (element) => {
           let body = await element.text();
           console.log(body.replaceAll("\"", ""))
@@ -31,6 +31,10 @@ const SideNavBar = ({ OnClick, state }) => {
           return
         })
 
+      } catch (error) {
+        setIsLehe(false)
+      }
+      
     }
   })
 
