@@ -67,7 +67,7 @@ async def post_adminuser(new_user: UserPostElevated, session: AsyncSession = Dep
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def get_dummy_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    result = await get_user_by_id_or_name(id = id, name = None, session = session)
+    result = await get_user_by_id_or_name(id=id, name=None, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
@@ -77,7 +77,7 @@ async def get_dummy_by_id(id: int, current_user: User = Depends(get_current_acti
 @router.get("/get_by_name/{username}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def get_usery_id(username: str, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    result = await get_user_by_id_or_name(id = None, name = username, session = session)
+    result = await get_user_by_id_or_name(id=None, name=username, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
@@ -89,6 +89,7 @@ async def get_usery_id(username: str, current_user: User = Depends(get_current_a
 async def patch_dummy(user_data: UserPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result = await update_user(update_data=user_data, session=session)
     return result
+
 
 @router.put("/toggle_active", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
@@ -106,6 +107,7 @@ async def toggle_active(user_id: int, current_user: User = Depends(get_current_a
     else:
         return False
     
+
 
 @router.delete("/{id}", status_code=status.HTTP_200_OK)
 @admin_auth_required

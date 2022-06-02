@@ -7,7 +7,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user
 
 from app.api.auth.user_auth import teacher_auth_required
-from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_game_by_id, toggle_game_state, turnover_next_cycle
+from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.db.session import get_async_session
 from app.models.user import User
@@ -116,3 +116,9 @@ async def get_all_users_for_game(game_id: int, current_user: User = Depends(get_
     return user_list
 
 
+@router.put("/toggle_signup/{game_id}")
+@teacher_auth_required
+async def toggle_signup(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)
+    return signup_status
+    

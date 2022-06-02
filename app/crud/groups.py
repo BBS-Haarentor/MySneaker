@@ -102,7 +102,7 @@ async def add_user_to_teachergroup(session: AsyncSession, user_id: int) -> Teach
                     session (AsyncSession): FastAPI dependecy-injected session, supplied by route-call
 
             Returns:
-                    new_group_entry (TeacherGroup) : a User object of the user who is in the Group
+                    new_group_entry (TeacherGroup): a User object of the user who is in the Group
     '''   
     new_group_entry = TeacherGroup(user_id=user_id)
     session.add(new_group_entry)

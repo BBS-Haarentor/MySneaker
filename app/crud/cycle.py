@@ -12,6 +12,7 @@ async def get_cycle_entry_by_id(cycle_id: int, session: AsyncSession) -> Cycle |
     result: Cycle | None = await session.exec(select(Cycle).where(Cycle.id == cycle_id)).one_or_none()
     return result
 
+
 async def new_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> int:
     new_cycle = Cycle.from_orm(cycle_data)
     session.add(new_cycle)
@@ -24,6 +25,7 @@ async def new_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> int:
 async def patch_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> Cycle:
     cycle: Cycle = await get_cycle_entry_by_id(cycle_id=cycle_data.id, session=session)
     raise NotImplementedError
+
 
 async def get_cycles_by_user_id(user_id: int, session: AsyncSession):
     result = await session.exec(select(Cycle).where(Cycle.company_id == user_id))

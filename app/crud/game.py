@@ -86,9 +86,7 @@ async def toggle_game_state(id: int, session: AsyncSession) -> bool:
     session.add(game)
     await session.commit()
     await session.refresh(game)
-    if game.is_active is not old_status:
-        return True
-    return False
+    return game.is_active
 
 
 async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
@@ -184,3 +182,10 @@ async def delete_game_by_id(id: int, session: AsyncSession) -> bool:
 
 
 
+async def toggle_signup_by_id(id: int, session: AsyncSession) -> bool:
+    game: Game = await get_game_by_id(id=id, session=session)
+    game.signup_enabled = not game.signup_enabled
+    session.add(game)
+    await session.commit()
+    await session.refresh(game)
+    return game.signup_enabled
