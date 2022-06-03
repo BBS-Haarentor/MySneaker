@@ -102,11 +102,7 @@ async def toggle_active(user_id: int, current_user: User = Depends(get_current_a
     session.add(user)
     await session.commit()
     await session.refresh(user)
-    if user.is_active is not old_status:
-        return True
-    else:
-        return False
-    
+    return user.is_active
 
 
 @router.delete("/{id}", status_code=status.HTTP_200_OK)

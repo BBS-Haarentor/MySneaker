@@ -16,7 +16,9 @@ class StockBase(SQLModel):
     research_budget: float | None
     account_balance: float | None
     credit_taken: float | None
-    machine_count: int | None
+    machine_1_bought: bool | None
+    machine_2_bought: bool | None
+    machine_3_bought: bool | None
     real_sales: int | None
     income_from_sales: float | None
     
