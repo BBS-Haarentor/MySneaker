@@ -20,18 +20,18 @@ from app.models.cycle import Cycle
 def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
 
     NachfrageAufdemMarkt = cycle_list[i].Nachfrage_auf_dem_Markt
-    VerkaufDurchWerbungMax = NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
-    NachfrageAufdemMarkt = NachfrageAufdemMarkt - VerkaufDurchWerbungMax  
+    if #Start der verechnugn
+        VerkaufDurchWerbungMax = NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
+    NachfrageAufdemMarkt = VerkaufDurchWerbungMax - NachfrageAufdemMarkt  
 
     for i = 0 in UnternehmenAnzahl:            #bekomme sotierte unternehmen
-        #
         cycle_list[i].planned_production_1
         StückzahlMarkt = cycle_list[i].planned_production_1+cycle_list[i].planned_production_2cycle_list[i].planned_production_3                   #Vertrieb und Absatz!D19
         StückzahlAusschreibung = cycle_list[i].tender_offer_count             #Vertrieb und Absatz!D20
         PreisAusschreibung = cycle_list[i].tender_offer_price                 #Vertrieb und Absatz!E20
 
         #Rationalisierung = stock_list[i].                                     #'Marketing  F&E'!E12
-        #Werbungskosten = stock_list[i].           #cycle_list[i].research_invest----enthalten unten                                    #Statistik & Finanzen'!D42
+        #Werbungskosten = stock_list[i].           #cycle_list[i].ad_invest----enthalten unten                                    #Statistik & Finanzen'!D42
 
         #lAenderungenderMA =  - dict["Workers"]                               #Personal!D18-Personal!D10         bis heir weiter gegeben
 
