@@ -5,6 +5,9 @@ from app.models.cycle import Cycle
 # Workers, Next_Period_Workers
 #
 #
+_NachfrageAufdemMarkt = cycle_list[i].Nachfrage_auf_dem_Markt
+
+
 async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
     
     # prepare output stock_list
@@ -12,9 +15,16 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     for x in stock_list:
         stock_output.append(Stock())
     
+
+    _VerkaufDurchWerbungMax = _NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
+    _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt  
+
     
-    
-    for stock in stock_list:
+    for i in range(0, UnternehmenAnzahl -1):
+        _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3
+
+
+    for stock in stock_list: #ersezten mit Logik
         stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
     # mock
     return stock_output
@@ -34,57 +44,68 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
 #Sortieren nach Preise(nitrigster zu erst).
 
-def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
+async def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
 
-    NachfrageAufdemMarkt = cycle_list[i].Nachfrage_auf_dem_Markt
-    if #Start der verechnugn
-        VerkaufDurchWerbungMax = NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
-    NachfrageAufdemMarkt = VerkaufDurchWerbungMax - NachfrageAufdemMarkt  
 
-    for i = 0 in UnternehmenAnzahl:            #bekomme sotierte unternehmen
-        cycle_list[i].planned_production_1
-        StückzahlMarkt = cycle_list[i].planned_production_1+cycle_list[i].planned_production_2cycle_list[i].planned_production_3                   #Vertrieb und Absatz!D19
-        StückzahlAusschreibung = cycle_list[i].tender_offer_count             #Vertrieb und Absatz!D20
-        PreisAusschreibung = cycle_list[i].tender_offer_price                 #Vertrieb und Absatz!E20
+
+    _NachfrageAufdemMarkt = cycle_list[i].Nachfrage_auf_dem_Markt
+    _VerkaufDurchWerbungMax = _NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
+    _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt                                    #Nachfrage wenn keienr werbung beinflust?
+
+
+
+
+    for i in range(0, UnternehmenAnzahl -1):                                 #bekomme sotierte unternehmen
+        _cycle_list[i].planned_production_1
+        _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3                   #Vertrieb und Absatz!D19
+        _StückzahlAusschreibung = cycle_list[i].tender_offer_count             #Vertrieb und Absatz!D20
+        #stock_output[i].tender_offer_count = StückzahlAusschreibung          HILFE!!
+        _PreisAusschreibung = cycle_list[i].tender_offer_price                 #Vertrieb und Absatz!E20
 
         #Rationalisierung = stock_list[i].                                     #'Marketing  F&E'!E12
         #Werbungskosten = stock_list[i].           #cycle_list[i].ad_invest----enthalten unten                                    #Statistik & Finanzen'!D42
 
         #lAenderungenderMA =  - dict["Workers"]                               #Personal!D18-Personal!D10         bis heir weiter gegeben
 
-        Darlehenstand =  cycle_list[i].take_credit                            #Statistik & Finanzen'!E30
-        #Verkauf
-        UnternehmenGeboteneStückzahl = #cycle_list[i].tender_offer_count
-        UnternehmenPreise = scenario[i].sneaker_price
-        #werbung
-        UnternehmenGebotenWerbung = cycle_list[i].ad_invest
+        _Darlehenstand = cycle_list[i].take_credit   
+                                                                            #Statistik & Finanzen'!E30
 
-        Werbeanteil = round(100/VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
-        VerkaufDurchWerbung = round(VerkaufDurchWerbungMax/100*Werbeanteil, 0)             #Mximal?
-        StückzahlNachWerbeverkauf = UnternehmenGeboteneStückzahl - VerkaufDurchWerbung
+        #Verkauf
+        _UnternehmenGeboteneStückzahl = cycle_list[i].sales_planned
+        _UnternehmenPreise = cycle_list[i].sales_bid
+
+
+        #werbung
+        _UnternehmenGebotenWerbung = cycle_list[i].ad_invest
+
+        _Werbeanteil = round(100/_VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
+        _VerkaufDurchWerbung = round(_VerkaufDurchWerbungMax/100*Werbeanteil, 0)              #Mximal?
+        _StückzahlNachWerbeverkauf = _UnternehmenGeboteneStückzahl - _VerkaufDurchWerbung
+
+
         #Verkauf der Firma
-        if NachfrageAufdemMarkt < VerkaufDurchWerbung
-            UnternehmenVerkaufOhneWerbung = NachfrageAufdemMarkt
-        else
-            UnternehmenVerkaufOhneWerbung = StückzahlNachWerbeverkauf
-        GesamterVerkauf = UnternehmenVerkaufOhneWerbung + VerkaufDurchWerbung
-        NachfrageAufdemMarkt = NachfrageAufdemMarkt - UnternehmenVerkaufOhneWerbung
-        Umsatz = UnternehmenPreise * GesamterVerkauf
+        if _NachfrageAufdemMarkt < _VerkaufDurchWerbung:                                      #Globale g variable zum runterzählen //Verkauf
+            _UnternehmenVerkaufOhneWerbung = _NachfrageAufdemMarkt
+        else:
+            _UnternehmenVerkaufOhneWerbung = _StückzahlNachWerbeverkauf
+        _GesamterVerkauf = _UnternehmenVerkaufOhneWerbung + _VerkaufDurchWerbung
+        _NachfrageAufdemMarkt = _NachfrageAufdemMarkt - _UnternehmenVerkaufOhneWerbung
+        _Umsatz = _UnternehmenPreise * _GesamterVerkauf
 
 #def turnover_simple(value_dict : dict) ->dict:
 #    UnternehmenVerkaufOhneWerbung = 
  
- 
 
         #Entwickelung
         Buget(Kumuliert) = cycle_list[i].research_invest                                        #int SpilereEingabe
-        if Buget(Kumuliert) >= 2500
+        if Buget(Kumuliert) >= 2500:                                                        #10%
             StuffeEinsEntwickelung = true                                                       #Warhetiswert
-        if Buget(Kumuliert) >= 5000
+        if Buget(Kumuliert) >= 5000:                                                        #18%
             StuffeZweiEntwickelung = true
-        if Buget(Kumuliert) >= 7500
+        if Buget(Kumuliert) >= 7500:                                                        #24%
             StuffeDreiEntwickelung = true
-        if Buget(Kumuliert) >= 10000
+        if Buget(Kumuliert) >= 10000:                                                       #28%
             StuffeFierEntwickelung = true
-        if Buget(Kumuliert) >= 12500
+        if Buget(Kumuliert) >= 12500:                                                       #30%
             StuffeFeunfEntwickelung = true
+                                                                                            #Rückgabe: % output_Geld
