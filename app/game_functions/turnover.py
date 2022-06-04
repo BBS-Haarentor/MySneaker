@@ -6,6 +6,7 @@ from app.models.cycle import Cycle
 #
 #
 _NachfrageAufdemMarkt = cycle_list[i].Nachfrage_auf_dem_Markt
+_Darlehenstand = cycle_list[i].take_credit
 
 
 async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
@@ -22,6 +23,60 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     
     for i in range(0, UnternehmenAnzahl -1):
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3
+        _StückzahlAusschreibung = cycle_list[i].tender_offer_count
+        _PreisAusschreibung = cycle_list[i].tender_offer_price
+
+
+        _Darlehenstand = cycle_list[i].take_credit
+        #Abbezahlt / Aufgenommen
+        if _Abbezahlt < 0:
+            _Abbezahlt = _Darlehenstand + _Darlehenstand
+        else:
+            _Abbezahlt = _Darlehenstand - _Darlehenstand
+        cycle_list[i].take_credit = _Abbezahlt
+
+        
+        _UnternehmenGeboteneStückzahl = cycle_list[i].sales_planned
+        _UnternehmenPreise = cycle_list[i].sales_bid
+
+
+        _Werbeanteil = round(100/_VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
+        _VerkaufDurchWerbung = round(_VerkaufDurchWerbungMax/100 * _Werbeanteil, 0)              #Mximal?
+        _StückzahlNachWerbeverkauf = _UnternehmenGeboteneStückzahl - _VerkaufDurchWerbung
+
+
+        if _NachfrageAufdemMarkt < _StückzahlNachWerbeverkauf:
+            __Übrig = _StückzahlNachWerbeverkauf - _NachfrageAufdemMarkt
+            _GesamterVerkauf = _StückzahlNachWerbeverkauf - __Übrig
+            _NachfrageAufdemMarkt = 0
+        else:
+            _NachfrageAufdemMarkt = _NachfrageAufdemMarkt - _StückzahlNachWerbeverkauf
+            _GesamterVerkauf = _StückzahlNachWerbeverkauf
+        _GesamterVerkauf = _GesamterVerkauf + _VerkaufDurchWerbung
+        _Umsatz = _UnternehmenPreise * _GesamterVerkauf
+        #Rückgabe Umsatz
+        #Rückgabe Übrigeschuhe
+
+
+        #Entwickelung
+        if cycle_list[i].research_invest  < 12500:
+            Buget(Kumuliert) = cycle_list[i].research_invest                                        #int SpilereEingabe
+            if Buget(Kumuliert) >= 2500:                                                       
+                StuffeEntwickelung = 0,10                                                     
+            if Buget(Kumuliert) >= 5000:                                                        
+                StuffeEntwickelung = 0,18
+            if Buget(Kumuliert) >= 7500:                                                      
+                StuffeEntwickelung = 0,24
+            if Buget(Kumuliert) >= 10000:                                                     
+                StuffeEntwickelung = 0,28
+            if Buget(Kumuliert) >= 12500:                                                      
+                StuffeEntwickelung = 0,30
+            #Rückgabe: % output_Geld
+            #nur noch 1 Rückgabe
+        else:
+            _Geldnichtverwendet = cycle_list[i].research_invest - 12500
+
+        #Rückgabe Kontostand
 
 
     for stock in stock_list: #ersezten mit Logik
@@ -56,7 +111,7 @@ async def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle
 
 
     for i in range(0, UnternehmenAnzahl -1):                                 #bekomme sotierte unternehmen
-        _cycle_list[i].planned_production_1
+        cycle_list[i].planned_production_1
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3                   #Vertrieb und Absatz!D19
         _StückzahlAusschreibung = cycle_list[i].tender_offer_count             #Vertrieb und Absatz!D20
         #stock_output[i].tender_offer_count = StückzahlAusschreibung          HILFE!!
@@ -76,7 +131,7 @@ async def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle
 
 
         #werbung
-        _UnternehmenGebotenWerbung = cycle_list[i].ad_invest
+        #_UnternehmenGebotenWerbung = cycle_list[i].ad_invest
 
         _Werbeanteil = round(100/_VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
         _VerkaufDurchWerbung = round(_VerkaufDurchWerbungMax/100*Werbeanteil, 0)              #Mximal?
