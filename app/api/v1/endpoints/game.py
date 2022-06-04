@@ -65,7 +65,7 @@ async def get_my_game(current_user: User = Depends(get_current_active_user), ses
 @router.get("/student/my_summary", status_code=status.HTTP_200_OK)
 @base_auth_required
 async def get_my_summary(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
-    
+    #current_cycle = await get_cy
     raise NotImplementedError
 
 

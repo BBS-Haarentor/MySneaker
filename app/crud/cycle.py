@@ -2,8 +2,11 @@
 import logging
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
+from app.crud.game import get_game_by_id
 
 from app.models.cycle import Cycle
+from app.models.game import Game
+from app.models.user import User
 from app.schemas.cycle import CycleCreate, CylcePost
 
 
@@ -30,3 +33,9 @@ async def patch_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> Cyc
 async def get_cycles_by_user_id(user_id: int, session: AsyncSession):
     result = await session.exec(select(Cycle).where(Cycle.company_id == user_id))
     return result.all()
+
+async def get_current_cycle_by_user_id(user: User, session: AsyncSession) -> Cycle | None:
+    game: Game = await get_game_by_id(id=user.game_id, session=session)
+    result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == game.current_cycle_index))
+    return result.one_or_none()
+

@@ -18,7 +18,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt  
 
     
-    for i in range(0, UnternehmenAnzahl -1):
+    for i in range(0, stock_output.size() -1):
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         _StückzahlAusschreibung = cycle_list[i].tender_offer_count
         _PreisAusschreibung = cycle_list[i].tender_offer_price
@@ -86,10 +86,31 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _Kontostand -= cycle_list[i].research_invest
         stock_output[i].research_budget = _Buget_Kumuliert
         stock_output[i].research_production_modifier = StuffeEntwickelung
+        
+        if cycle_list.buy_new_machine_2:
+            stock_output[i].machine_2_bought = True
+            _Kontostand -= scenario.machine_purchase_cost
+        else:
+            stock_output[i].machine_2_bought = False
+
+        
+        if cycle_list.buy_new_machine_3:
+            stock_output[i].machine_3_bought = True
+            _Kontostand -= scenario.machine_purchase_cost
+
+        else:
+            stock_output[i].machine_3_bought = False
+        
         stock_output[i].account_balance = _Kontostand
 
     #for stock in stock_list: #ersezten mit Logik
     #    stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
+
+    
+    
+    
+    for stock in stock_list:
+        stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
     # mock
     return stock_output
   
@@ -107,7 +128,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 #mySneaker_Spieledatein Daten für Lehrkraft
 
 #Sortieren nach Preise(nitrigster zu erst).
-
+'''
 async def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
 
 
@@ -173,3 +194,6 @@ async def turnover_Rechnungen(scenario: Scenario, stock_list: list[Stock], cycle
         if Buget(Kumuliert) >= 12500:                                                       #30%
             StuffeFeunfEntwickelung = true
                                                                                             #Rückgabe: % output_Geld
+                                                                                            
+                                                                                            
+'''

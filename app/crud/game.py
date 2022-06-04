@@ -129,7 +129,10 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     
     # check every user has valid cycle and stock data
     
+    # sort cycles by Cycle.sales_bid , lowest first
     
+    #unsorted_cycle_list.sort(key=lambda x:Cycle.sales_bid, reverse=True)
+
     # sort lists TODO: sort
     sorted_stock_list = unsorted_stock_list
     sorted_cycle_list = unsorted_cycle_list
