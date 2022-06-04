@@ -4,11 +4,11 @@ from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
 from app.core.config import SETTINGS, cls_factory
-from app.api.auth.user_auth import get_current_active_user, admin_auth_required, authenticate_user, create_access_token, hash_pw, teacher_auth_required
+from app.api.auth.user_auth import base_auth_required, get_current_active_user, admin_auth_required, authenticate_user, create_access_token, teacher_auth_required
 from app.crud.game import get_game_by_id
 from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_admingroup, check_user_in_basegroup, check_user_in_group, check_user_in_teachergroup
 from app.crud.stock import new_stock_entry
-from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_user
+from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_pw, update_user
 from app.db.session import get_async_session
 from app.models.game import Game
 from app.models.groups import BaseGroup
@@ -16,13 +16,13 @@ from app.models.stock import Stock
 from app.models.user import User
 from app.schemas.group import GroupPatch
 from app.schemas.stock import StockCreate, StockResponse
-from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent, UserResponse
+from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent, UserPwChange, UserResponse
 from starlette import status
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi.security.api_key import APIKey
 from fastapi.security import OAuth2PasswordRequestForm
-
+from app.api.auth.util import pwd_context, hash_pw
 
 router = APIRouter()
 
@@ -132,6 +132,19 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
+
+@router.put("/modify", status_code=status.HTTP_202_ACCEPTED, response_model=UserResponse)
+@base_auth_required
+async def modify(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+    update_data.id = current_user.id
+    user: User = await update_pw(update_data=update_data, session=session)
+    return user
+
+@router.put("/modify_else", status_code=status.HTTP_202_ACCEPTED, response_model=UserResponse)
+@teacher_auth_required
+async def modify_else(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
+    user: User = await update_pw(update_data=update_data, session=session)
+    return user
 
 @router.post("/groups/", status_code=status.HTTP_202_ACCEPTED)
 @admin_auth_required

@@ -20,15 +20,14 @@ from app.models.user import User
 from app.schemas.token import TokenData
 from app.schemas.user import UserLogin
 from fastapi.security import OAuth2PasswordBearer
-from passlib.context import CryptContext
 from starlette import status
 from app.core.config import SETTINGS, RolesEnums
+from app.api.auth.util import pwd_context, hash_pw
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
 
-def hash_pw(unhashed_pw: str):
-    return pwd_context.hash(unhashed_pw)
 
 
 async def authenticate_user(session: AsyncSession, username: str, password: str) -> User | bool :

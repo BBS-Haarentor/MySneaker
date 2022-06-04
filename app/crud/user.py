@@ -7,7 +7,8 @@ from fastapi import Depends, HTTPException
 from sqlmodel import or_, select
 from app.models.user import User
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.schemas.user import UserBase, UserPatch
+from app.schemas.user import UserBase, UserPatch, UserPwChange
+from app.api.auth.util import pwd_context, hash_pw
 
 
 async def create_user(user_post: UserBase, session: AsyncSession) -> int:
@@ -73,3 +74,13 @@ async def remove_user(id: int, session: AsyncSession) -> bool | None:
         return True
     else:
         return False
+    
+    
+async def update_pw(update_data: UserPwChange, session: AsyncSession) -> User | None:
+    result = await session.exec(select(User).where(User.id == update_data.id))
+    user: User = result.one_or_none()
+    if pwd_context.verify(update_data.old_pw, user.hashed_pw):
+        user.hashed_pw = hash_pw(update_data.new_pw)
+        return user
+    else:
+        return None

@@ -45,3 +45,7 @@ class UserResponse(UserBase):
     is_active: bool 
     game_id: int | None
 
+class UserPwChange(UserBase):
+    id: int | None
+    old_pw: str
+    new_pw: str
