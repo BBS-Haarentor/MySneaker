@@ -21,6 +21,7 @@ class StockBase(SQLModel):
     machine_3_bought: bool | None
     real_sales: int | None
     income_from_sales: float | None
+    research_production_modifier: float | None
     
 
 class StockCreate(StockBase): 

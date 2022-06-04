@@ -5,35 +5,37 @@ from app.models.cycle import Cycle
 # Workers, Next_Period_Workers
 #
 #
-_NachfrageAufdemMarkt = cycle_list[i].Nachfrage_auf_dem_Markt
-_Darlehenstand = cycle_list[i].take_credit
-
 
 async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
     
     # prepare output stock_list
-    stock_output = []
+    stock_output: list[Stock] = []
     for x in stock_list:
         stock_output.append(Stock())
-    
 
+    _NachfrageAufdemMarkt = scenario.sneaker_ask
     _VerkaufDurchWerbungMax = _NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
     _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt  
 
     
     for i in range(0, UnternehmenAnzahl -1):
-        _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3
+        _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         _StückzahlAusschreibung = cycle_list[i].tender_offer_count
         _PreisAusschreibung = cycle_list[i].tender_offer_price
 
+        stock_output[i].sneaker_count = stock_list[i].sneaker_count + cycle_list[i].buy_sneaker - _StückzahlMarkt
+        stock_output[i].paint_count = stock_list[i].paint_count + cycle_list[i].buy_paint - _StückzahlMarkt*2
 
-        _Darlehenstand = cycle_list[i].take_credit
+        _AufgenommenerKreditVorperiode = stock_list[i].credit_taken
+        _Darlehenstand = cycle_list[i].take_credit + _AufgenommenerKreditVorperiode
         #Abbezahlt / Aufgenommen
-        if _Abbezahlt < 0:
-            _Abbezahlt = _Darlehenstand + _Darlehenstand
-        else:
-            _Abbezahlt = _Darlehenstand - _Darlehenstand
-        cycle_list[i].take_credit = _Abbezahlt
+        _Abbezahlt = cycle_list[i].payback_credit
+        _Darlehenstand -= _Abbezahlt
+        stock_output[i].credit_taken = _Darlehenstand
+            #credit aufgenommen
+
+        _Kontostand = stock_list[i].account_balance
+        _Kontostand += cycle_list[i].take_credit
 
         
         _UnternehmenGeboteneStückzahl = cycle_list[i].sales_planned
@@ -46,41 +48,48 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
 
         if _NachfrageAufdemMarkt < _StückzahlNachWerbeverkauf:
-            __Übrig = _StückzahlNachWerbeverkauf - _NachfrageAufdemMarkt
-            _GesamterVerkauf = _StückzahlNachWerbeverkauf - __Übrig
+            _Übrig = _StückzahlNachWerbeverkauf - _NachfrageAufdemMarkt
+            _GesamterVerkauf = _StückzahlNachWerbeverkauf - _Übrig
             _NachfrageAufdemMarkt = 0
         else:
             _NachfrageAufdemMarkt = _NachfrageAufdemMarkt - _StückzahlNachWerbeverkauf
             _GesamterVerkauf = _StückzahlNachWerbeverkauf
         _GesamterVerkauf = _GesamterVerkauf + _VerkaufDurchWerbung
         _Umsatz = _UnternehmenPreise * _GesamterVerkauf
-        #Rückgabe Umsatz
-        #Rückgabe Übrigeschuhe
+
+        stock_output[i].real_sales = _GesamterVerkauf
+        stock_output[i].income_from_sales = _Umsatz
+        _Kontostand += _Umsatz
+        stock_output[i].finished_sneaker_count = _Übrig
+
+        _MitarbeiterTotal = stock_list[i].employees_count + cycle_list[i].new_employees
+        
+
+        _Kontostand -= (_MitarbeiterTotal * scenario.employee_salary) * 1 + scenario.employee_cost_modifier
+        stock_output[i].employees_count = _MitarbeiterTotal - scenario.employee_count_modifier_permanent
 
 
         #Entwickelung
-        if cycle_list[i].research_invest  < 12500:
-            Buget(Kumuliert) = cycle_list[i].research_invest                                        #int SpilereEingabe
-            if Buget(Kumuliert) >= 2500:                                                       
-                StuffeEntwickelung = 0,10                                                     
-            if Buget(Kumuliert) >= 5000:                                                        
-                StuffeEntwickelung = 0,18
-            if Buget(Kumuliert) >= 7500:                                                      
-                StuffeEntwickelung = 0,24
-            if Buget(Kumuliert) >= 10000:                                                     
-                StuffeEntwickelung = 0,28
-            if Buget(Kumuliert) >= 12500:                                                      
-                StuffeEntwickelung = 0,30
-            #Rückgabe: % output_Geld
-            #nur noch 1 Rückgabe
-        else:
-            _Geldnichtverwendet = cycle_list[i].research_invest - 12500
-
-        #Rückgabe Kontostand
+        _Buget_Kumuliert = stock_list[i].research_budget + cycle_list[i].research_invest  
+        if _Buget_Kumuliert >= 2_500:                                                       
+            StuffeEntwickelung = 0.10                                                     
+        if _Buget_Kumuliert >= 5_000:                                                        
+            StuffeEntwickelung = 0.18
+        if _Buget_Kumuliert >= 7_500:                                                      
+            StuffeEntwickelung = 0.24
+        if _Buget_Kumuliert >= 10_000:                                                     
+            StuffeEntwickelung = 0.28
+        if _Buget_Kumuliert >= 12_500:                                                      
+            StuffeEntwickelung = 0.30
 
 
-    for stock in stock_list: #ersezten mit Logik
-        stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
+        _Kontostand -= cycle_list[i].research_invest
+        stock_output[i].research_budget = _Buget_Kumuliert
+        stock_output[i].research_production_modifier = StuffeEntwickelung
+        stock_output[i].account_balance = _Kontostand
+
+    #for stock in stock_list: #ersezten mit Logik
+    #    stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
     # mock
     return stock_output
   
