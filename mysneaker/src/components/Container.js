@@ -4,6 +4,7 @@ import {useState, useEffect,useRef} from "react";
 
 
 const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,PersonalRef,AbsatzRef}) => {
+    
     const [data, setData] = useState({
         "vorperiode":{
           "lager":{
@@ -72,7 +73,7 @@ const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,P
     }, [])
 
 const fetchData = async () => {
-    const res = await fetch('http://127.0.0.1:8000/playlist')
+    const res = await fetch('http://127.0.0.1:8008/api/v1/game/my_summary')
     const data = await res.json()
 
     return data
@@ -98,8 +99,8 @@ return (
                     </tr>
                     <tr>
                         <td>Einkauf (Menge)</td>
-                        <td><input min="0" type="number" onChange={(e)=> setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
-                        <td><input min="0" type="number" onChange={(e)=> setFarbenEinkaufMenge(e.target.value)} value={FarbenEinkaufMenge}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setFarbenEinkaufMenge(e.target.value)} value={FarbenEinkaufMenge}></input></td>
                     </tr>
                     <tr>
                         <td>Kosten pro Werkstoff</td>
@@ -198,7 +199,7 @@ return (
                     </tr>
                     <tr>
                         <td>Mitarbeiter</td>
-                        <td><input min="0" type="number" onChange={(e)=> setMitarbeiter(e.target.value)} value={Mitarbeiter}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setMitarbeiter(e.target.value)} value={Mitarbeiter}></input></td>
 
                     </tr>
                     <tr>
@@ -223,7 +224,7 @@ return (
                     </tr>
                     <tr>
                         <td>Neueinstellungen</td>
-                        <td><input min="0" type="number" onChange={(e)=> setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input></td>
 
                     </tr>
                     <tr>
@@ -233,12 +234,12 @@ return (
                     </tr>
                     <tr>
                         <td>Kündigungen/Rente/ etc.</td>
-                        <td><input min="0" type="number" onChange={(e)=> setKündigungen(e.target.value)} value={Kündigungen}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setKündigungen(e.target.value)} value={Kündigungen}></input></td>
 
                     </tr>
                     <tr>
                         <td>Zugeteilte Mitarbeiter</td>
-                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
 
                     </tr>
                     <tr>
@@ -254,7 +255,7 @@ return (
                     </tr>
                     <tr>
                         <td>Personalnebenkosten</td>
-                        <td><input min="0" type="number" onChange={(e)=> setPersonalnebenkosten(e.target.value)} value={Personalnebenkosten}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setPersonalnebenkosten(e.target.value)} value={Personalnebenkosten}></input></td>
 
                     </tr>
                     <tr>
@@ -314,7 +315,7 @@ return (
                     </tr>
                     <tr>
                         <td>Geplante Produktion</td>
-                        <td><input min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -332,7 +333,7 @@ return (
                     </tr>
                     <tr>
                         <td>Zugeteilte Mitarbeiter</td>
-                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -399,7 +400,7 @@ return (
                     </tr>
                     <tr>
                         <td>Geplante Produktion</td>
-                        <td><input min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -417,7 +418,7 @@ return (
                     </tr>
                     <tr>
                         <td>Zugeteilte Mitarbeiter</td>
-                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -484,7 +485,7 @@ return (
                     </tr>
                     <tr>
                         <td>Geplante Produktion</td>
-                        <td><input min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -502,7 +503,7 @@ return (
                     </tr>
                     <tr>
                         <td>Zugeteilte Mitarbeiter</td>
-                        <td><input min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -537,7 +538,7 @@ return (
                     </tr>
                     <tr>
                         <td>Werbung</td>
-                        <td><input min="0" type="number" onChange={(e)=> setWerbung(e.target.value)} value={Werbung}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setWerbung(e.target.value)} value={Werbung}></input></td>
                     </tr>
                     <tr>
                         <th></th>
@@ -545,7 +546,7 @@ return (
                     </tr>
                     <tr>
                         <td>Verbesserung der Maschinen</td>
-                        <td><input min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input></td>
                     </tr>
                 </tbody>
              </table>
@@ -566,7 +567,7 @@ return (
                     </tr>
                     <tr>
                         <td>Entnahme aus dem Lager</td>
-                        <td><input min="0" type="number" onChange={(e)=> setEntnahmeAusDemLager(e.target.value)} value={EntnahmeAusDemLager}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setEntnahmeAusDemLager(e.target.value)} value={EntnahmeAusDemLager}></input></td>
                     </tr>
                     <tr>
                         <td>Gesamtproduktion</td>
@@ -588,11 +589,11 @@ return (
                     </tr>
                     <tr>
                         <td>Markt</td>
-                        <td><input min="0" type="number" onChange={(e)=> setMarktSoll(e.target.value)} value={MarktSoll}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setMarktSoll(e.target.value)} value={MarktSoll}></input></td>
                     </tr>
                     <tr>
                         <td>Ausschreibung</td>
-                        <td><input min="0" type="number" onChange={(e)=> setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input></td>
                     </tr>
                     <tr>
                         <td>Gesamt</td>
@@ -614,11 +615,11 @@ return (
                     </tr>
                     <tr>
                         <td>Markt</td>
-                        <td><input min="0" type="number" onChange={(e)=> setMarktIst(e.target.value)} value={MarktIst}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setMarktIst(e.target.value)} value={MarktIst}></input></td>
                     </tr>
                     <tr>
                         <td>Ausschreibung</td>
-                        <td><input min="0" type="number" onChange={(e)=> setAusschreibungIst(e.target.value)} value={AusschreibungIst}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setAusschreibungIst(e.target.value)} value={AusschreibungIst}></input></td>
                     </tr>
                     <tr>
                         <td>Gesamt</td>
@@ -658,7 +659,7 @@ return (
                     </tr>
                     <tr>
                         <td>Aufnahme Darlehen</td>
-                        <td><input min="0" type="number" onChange={(e)=> setAufnahmeDarlehen(e.target.value)} value={AufnahmeDarlehen}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setAufnahmeDarlehen(e.target.value)} value={AufnahmeDarlehen}></input></td>
                         <td>{AufnahmeDarlehen}</td>
                     </tr>
                     <tr>
@@ -723,8 +724,8 @@ return (
                     </tr>
                     <tr>
                         <td>Rationalisierung</td>
-                        <td>{<input min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input>}</td>
-                        <td>{<input min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input>}</td>
+                        <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input>}</td>
+                        <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input>}</td>
                     </tr>
                     <tr>
                         <td>Zinsen (Darlehen)</td>
@@ -733,8 +734,8 @@ return (
                     </tr>
                     <tr>
                         <td>Rückzahlung Darlehen</td>
-                        <td>{<input min="0" type="number" onChange={(e)=> setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
-                        <td>{<input min="0" type="number" onChange={(e)=> setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
+                        <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
+                        <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e)=> setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
                     </tr>
                     <tr>
                         <td>Umsatzerlöse</td>
