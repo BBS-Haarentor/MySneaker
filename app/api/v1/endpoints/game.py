@@ -7,10 +7,14 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user
 
 from app.api.auth.user_auth import teacher_auth_required
+from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_by_user_id_and_index
 from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
+from app.crud.scenario import get_scenario_by_index
+from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id
 from app.db.session import get_async_session
 from app.models.cycle import Cycle
+from app.models.scenario import Scenario
 from app.models.stock import Stock
 from app.models.user import User
 from app.models.game import Game
@@ -66,18 +70,33 @@ async def get_my_game(current_user: User = Depends(get_current_active_user), ses
 @base_auth_required
 async def get_my_summary(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
     #current_cycle = await get_cy
-    raise NotImplementedError
-
+    current_cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
+    game: Game = await get_game_by_id(current_user.game_id, session=session)
+    current_stock: Stock = await get_stock_entries_by_user_id_and_cycle_id(user_id=current_user.id, index=game.current_cycle_index, session=session)
+    current_scenario: Scenario = await get_scenario_by_index(game_id=game.id, session=session)
+    return { "stock" : f"{current_stock}", "scenario" : f"{current_scenario}", "current_cycle" : f"{current_cycle}" }
 
 @router.get("/student/my_summary/{index}", status_code=status.HTTP_200_OK)
 @base_auth_required
 async def get_my_summary_by_index(index: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
-    raise NotImplementedError
+    current_cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
+    game: Game = await get_game_by_id(current_user.game_id, session=session)
+    current_stock: Stock = await get_stock_entries_by_user_id_and_cycle_id(user_id=current_user.id, index=index, session=session)
+    current_scenario: Scenario = await get_scenario_by_index(game_id=game.id, session=session)
+    
+    return { "stock" : f"{current_stock}", "scenario" : f"{current_scenario}", "current_cycle" : f"{current_cycle}" }
 
 
 @router.get("/student/my_summary/{index}", status_code=status.HTTP_200_OK)
-async def get_my_summary(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
-    raise NotImplementedError
+async def get_my_summary(index: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
+    current_cycle: Cycle = await get_cycle_by_user_id_and_index(user_id=current_user.id, index=index, session=session)
+    game: Game = await get_game_by_id(current_user.game_id, session=session)
+    current_scenario: Scenario = await get_scenario_by_index(game_id=game.id, index=index, session=session)
+    current_stock: Stock = await get_stock_entries_by_user_id_and_cycle_id(user_id=current_user.id, index=index, session=session)
+    
+    return { "stock" : f"{current_stock}", "scenario" : f"{current_scenario}", "current_cycle" : f"{current_cycle}" }
+
+    
 
 
 @router.get("/teacher/my_games",status_code=status.HTTP_200_OK, response_model=list[GameResponse])

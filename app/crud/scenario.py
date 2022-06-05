@@ -16,7 +16,7 @@ async def get_scenario_by_char(char: str, session: AsyncSession) -> Scenario | N
 
 
 #returns scenario for specific game
-async def get_scenario_by_index(game_id: int, session: AsyncSession) -> Scenario | None:
+async def get_current_scenario_by_game(game_id: int, session: AsyncSession) -> Scenario | None:
     result = await session.exec(select(Game).where(Game.id == game_id))
     game: Game | None = result.one_or_none()
     if not game.is_active:
@@ -24,6 +24,15 @@ async def get_scenario_by_index(game_id: int, session: AsyncSession) -> Scenario
     search_char = game.scenario_order[game.current_cycle_index]
     result = await session.exec(select(Scenario).where(Scenario.char == search_char))
     return result.one_or_none()
+
+
+async def get_scenario_by_index(game_id: int, index: int, session: AsyncSession) -> Scenario | None:
+    game_result: Game = await session.exec(select(Game).where(Game.id == game_id))
+    if not game_result.is_active:
+        return None    
+    search_char = game_result.scenario_order[index]
+    scenario_result = await session.exec(select(Scenario).where(Scenario.char == search_char))
+    return scenario_result.one_or_none()
 
 
 async def add_new_scenario(new_scenario_data: ScenarioCreate, session: AsyncSession) -> Scenario:

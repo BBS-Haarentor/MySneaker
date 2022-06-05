@@ -49,5 +49,5 @@ async def get_by_id(id: int, current_user: User = Depends(get_current_active_use
 @router.get("/my_current_cycle", status_code=status.HTTP_200_OK, response_model=list[Cycle])
 @base_auth_required
 async def my_current_cycle(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Cycle:
-    cycle_list: Cycle = await get_current_cycle_by_user_id(game_id=current_user.game_id, session=session)
-    return 
+    cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
+    return cycle
