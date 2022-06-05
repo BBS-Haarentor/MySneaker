@@ -14,7 +14,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         stock_output.append(Stock())
 
     _NachfrageAufdemMarkt = scenario.sneaker_ask
-    _VerkaufDurchWerbungMax = _NachfrageAufdemMarkt / 100 * cycle_list[i].Verkauf_Durch_werbung_in_procenten
+    _VerkaufDurchWerbungMax = _NachfrageAufdemMarkt / 100 * scenario.factor_ad_take
     _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt  
 
     
