@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react";
 import QRCodeStyling from "qr-code-styling";
 import Cookies from 'js-cookie';
+import SideNavBar from './SideNavBar'
 
 const KlassenDetailPage = () => {
   let { id } = useParams()
@@ -46,6 +47,22 @@ const KlassenDetailPage = () => {
     qrCode.update({
       data: url
     });
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+    };
+
+    fetch('http://127.0.0.1:8008/api/v1/game/get_all_users_for_game/' + id, requestOptions)
+      .then(async (element) => {
+        let json = await element.json();
+
+        setCompanies(json)
+      })
   }, [url]);
 
   const toggleTurnover = () => {
@@ -83,11 +100,17 @@ const KlassenDetailPage = () => {
   const disableModal = () => {
     setShowModal(false)
   }
-
+  const OnClick = (text) => {
+    if(text == "LehrerPage"){
+      window.location.href = "/dashboard"
+    }
+      
+  }
 
   return (
     <>
-
+    <div className='flex'>
+    <SideNavBar OnClick={OnClick}/>
       <div className={showModal ? "block" : "hidden"}>
         <div
           className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
@@ -109,9 +132,10 @@ const KlassenDetailPage = () => {
         </div>
       </div>
 
-      <div className='h-screen  overflow-hidden'>
-        <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
-          <h1 className='text-center'>Test</h1>
+      <div className='h-screen w-full overflow-hidden'>
+        <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white  justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
+          <img src="/img/teacher_empty.svg" className='h-96  w-96 m-4 m-auto'></img>
+          <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
         </div>
         <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
           <div className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[160%] overflow-y-auto my-12'>
@@ -131,6 +155,7 @@ const KlassenDetailPage = () => {
           </button>
 
         </div>
+      </div>
       </div>
     </>
   )

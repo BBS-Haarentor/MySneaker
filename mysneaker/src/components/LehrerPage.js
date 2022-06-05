@@ -14,31 +14,7 @@ const LehrerPage = () => {
     let mounted = true;
 
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-
-    const d1 = fetch('http://127.0.0.1:8008/api/v1/game/teacher/my_games', requestOptions)
-      .then(async (element) => {
-        if (element.status == 401) {
-          window.location.href = "/"
-        }
-        let klasses = [];
-        let elementArray = await element.json()
-
-        if (mounted) {
-          await setData(elementArray)
-        }
-      })
-
-
-    return () => mounted = false;
+    getGames();
 
   }, [])
 
@@ -69,11 +45,37 @@ const LehrerPage = () => {
               window.location.href = "/"
               break;
           }
+          getGames()
         })
     }
     setShowModal(false)
     setCreateGameName("")
     setCreateGameScenarioOrder("")
+  }
+
+  const getGames = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    const d1 = fetch('http://127.0.0.1:8008/api/v1/game/teacher/my_games', requestOptions)
+      .then(async (element) => {
+        if (element.status == 401) {
+          window.location.href = "/"
+        }
+        let klasses = [];
+        let elementArray = await element.json()
+
+
+        await setData(elementArray)
+
+      })
   }
 
   const onClickRegister = () => {
@@ -118,7 +120,7 @@ const LehrerPage = () => {
           </div>
         </div>
         <div className='grid grid-cols-2 w-screen h-screen'>
-          <div className='shadow-lg bg-white w-[90%] h-[90%] rounded-3xl my-auto mx-12'>
+          <div className='shadow-lg bg-white w-[90%] h-[90%] rounded-3xl overflow-y-auto my-auto mx-12'>
             {data.map((element, index) => {
               return (
                 <a key={index} href={'/ler/' + element.id}>
@@ -133,7 +135,7 @@ const LehrerPage = () => {
           </div>
           <div className='flex flex-col justify-center self-center'>
             <button className='my-6 mx-16 bg-white rounded-3xl shadow-lg p-4' onClick={() => onClickRegister()}>Spiel Erstellen</button>
-            <div className=' shadow-lg bg-white rounded-3xl mx-16 my-auto
+            <div className=' shadow-lg bg-white rounded-3xl mx-16 my-auto overflow-y-auto
           h-96'>
               {data.map(({ name, date }, index) =>
                 <p key={index} className=''>name</p>
