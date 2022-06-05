@@ -124,7 +124,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index).where(Stock.game_id == game.id))
     unsorted_stock_list: list[Stock] = stock_result.all()
     
-    if (unsorted_cycle_list.size() != unsorted_stock_list.size()): # or unsorted_cycle_list.size() == 0
+    if (len(unsorted_cycle_list) != len(unsorted_stock_list)): # or unsorted_cycle_list.size() == 0
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="not all users have submitted new cycle data")
     
     # check every user has valid cycle and stock data

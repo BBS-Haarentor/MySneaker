@@ -10,15 +10,18 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     
     # prepare output stock_list
     stock_output: list[Stock] = []
-    for x in stock_list:
-        stock_output.append(Stock())
+    # for x in stock_list:
+    #     stock_output.append(Stock())
+
+    for stock in stock_list:
+        stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
 
     _NachfrageAufdemMarkt = scenario.sneaker_ask
     _VerkaufDurchWerbungMax = _NachfrageAufdemMarkt / 100 * scenario.factor_ad_take
     _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt  
 
     
-    for i in range(0, stock_output.size() -1):
+    for i in range(0, len(stock_output) -1):
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         _StückzahlAusschreibung = cycle_list[i].tender_offer_count
         _PreisAusschreibung = cycle_list[i].tender_offer_price
@@ -65,7 +68,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _MitarbeiterTotal = stock_list[i].employees_count + cycle_list[i].new_employees
         
 
-        _Kontostand -= (_MitarbeiterTotal * scenario.employee_salary) * 1 + scenario.employee_cost_modifier
+        _Kontostand -= (_MitarbeiterTotal * scenario.employee_salary) * 1 + scenario.employee_cost_modfier
         stock_output[i].employees_count = _MitarbeiterTotal - scenario.employee_count_modifier_permanent
 
 
@@ -87,14 +90,14 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         stock_output[i].research_budget = _Buget_Kumuliert
         stock_output[i].research_production_modifier = StuffeEntwickelung
         
-        if cycle_list.buy_new_machine_2:
+        if cycle_list[i].buy_new_machine_2:
             stock_output[i].machine_2_bought = True
             _Kontostand -= scenario.machine_purchase_cost
         else:
             stock_output[i].machine_2_bought = False
 
         
-        if cycle_list.buy_new_machine_3:
+        if cycle_list[i].buy_new_machine_3:
             stock_output[i].machine_3_bought = True
             _Kontostand -= scenario.machine_purchase_cost
 
@@ -108,10 +111,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
     
     
-    
-    for stock in stock_list:
-        stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
-    # mock
+        # mock
     return stock_output
   
 # Market_Planned_quantity, Market_Price_Pro_Unit_Offer, Tender_Planned_quantity, Tender_Price_Pro_Unit_Offer, Research_and_development_costs, Plan_Publicity_expenditure
