@@ -130,27 +130,56 @@ schema: GameCreate
 
 ```
 {
-  "game_id": 1,
-  "current_cycle_index": 0,
-  "company_id": 2,
-  "buy_sneaker": 0,
-  "buy_paint": 0,
-  "planned_production_1": 0,
+  "game_id": x,
+  "current_cycle_index": x,
+  "company_id": x,
+  "buy_sneaker": 160,
+  "buy_paint": 320,
+  "planned_production_1": 160,
   "planned_production_2": 0,
   "planned_production_3": 0,
-  "planned_workers_1": 0,
+  "planned_workers_1": 8,
   "planned_workers_2": 0,
   "planned_workers_3": 0,
   "include_from_stock": 0,
-  "sales_planned": 0,
-  "sales_bid": 0,
+  "sales_planned": 160,
+  "sales_bid": 130,
   "tender_offer_count": 0,
   "tender_offer_price": 0,
-  "research_invest": 0,
+  "research_invest": 2500,
   "ad_invest": 0,
   "take_credit": 0,
   "payback_credit": 0,
   "new_employees": 0,
-  "buy_new_machine": true
+  "buy_new_machine": False
+}
+```
+                                                                   #sneaker price
+### example body2 Cycle
+
+```
+{
+  "game_id": x,
+  "current_cycle_index": x,
+  "company_id": x,
+  "buy_sneaker": 100,
+  "buy_paint": 200,
+  "planned_production_1": 100,
+  "planned_production_2": 0,
+  "planned_production_3": 0,
+  "planned_workers_1": 5,
+  "planned_workers_2": 0,
+  "planned_workers_3": 0,
+  "include_from_stock": 0,
+  "sales_planned": 100,
+  "sales_bid": 200,
+  "tender_offer_count": 0,
+  "tender_offer_price": 0,
+  "research_invest": 0,
+  "ad_invest": 100,
+  "take_credit": 1000,
+  "payback_credit": 0,
+  "new_employees": 2,
+  "buy_new_machine": True
 }
 ```
