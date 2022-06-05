@@ -183,3 +183,44 @@ schema: GameCreate
   "buy_new_machine": True
 }
 ```
+
+{
+  "grade_name": "FA1A-B",
+  "owner_id": 1,
+  "scenario_order": "AAA"
+}
+
+{
+  "char": "A"
+}
+
+{
+  "id": 0,
+  "char": "string",
+  "sneaker_price": 60,
+  "paint_price": 10,
+  "storage_fee_sneaker": 4.00,
+  "storage_fee_paint": 1.00,
+  "storage_fee_finished_sneaker": 8.00,
+  "employee_count_modifier_temporary": 0,
+  "employee_count_modifier_permanent": 0,
+  "factor_interest_rate": 0.04,
+  "employee_salary": 400,
+  "employee_signup_bonus": 100,
+  "employee_production_capacity": 10,
+  "employee_cost_modfier": 0.00,
+  "machine_purchase_allowed": false,
+  "machine_purchase_cost": 1000.00,
+  "sneaker_ask": 400,
+  "factor_ad_take": 0.1,
+  "machine_production_capacity": 200,
+  "machine_maintainance_cost": 4000.00,
+  "production_cost_per_sneaker": 60.00
+}
+
+{
+  "name": "s1",
+  "game_id": 1,
+  "unhashed_pw": "s1"
+}
+

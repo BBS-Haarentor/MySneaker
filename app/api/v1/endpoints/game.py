@@ -74,7 +74,7 @@ async def get_my_summary(current_user: User = Depends(get_current_active_user), 
     current_cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
     game: Game = await get_game_by_id(current_user.game_id, session=session)
     current_stock: Stock = await get_stock_entries_by_user_id_and_cycle_id(user_id=current_user.id, index=game.current_cycle_index, session=session)
-    current_scenario: Scenario = await get_scenario_by_index(game_id=game.id, session=session)
+    current_scenario: Scenario = await get_scenario_by_index(game_id=game.id, index=game.current_cycle_index, session=session)
     return { "current_stock" : current_stock, "scenario" : current_scenario, "current_cycle" : current_cycle }
 
 @router.get("/student/my_summary/{index}", status_code=status.HTTP_200_OK)

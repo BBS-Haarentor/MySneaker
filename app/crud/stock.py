@@ -33,7 +33,7 @@ async def get_stock_entries_by_game(game_id: int, session: AsyncSession) -> list
     stock_list: list[Stock] = result.all()
     return stock_list
 
-async def get_stock_entries_by_user_id_and_cycle_id(user_id: int, index: int, session: AsyncSession) -> list[Stock]:
+async def get_stock_entries_by_user_id_and_cycle_id(user_id: int, index: int, session: AsyncSession) -> Stock:
     result = await session.exec(select(Stock).where(Stock.company_id == user_id).where(Stock.current_cycle_index == index))
-    stock_list: list[Stock] = result.all()
-    return 
+    stock: Stock = result.one_or_none()
+    return stock

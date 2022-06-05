@@ -19,7 +19,7 @@ class Scenario(ScenarioBase, table=True):
     employee_production_capacity: int = Field(default=10)
     employee_cost_modfier: float = Field(default=0.00)
     machine_purchase_allowed: bool = Field(default=False)
-    machine_purchase_cost: float = Field(default=1_000)
+    machine_purchase_cost: float = Field(default=1_000.00)
     sneaker_ask: int = Field(default=400)
     factor_ad_take: float = Field(default=0.1)
     machine_production_capacity: int = Field(default=200)
