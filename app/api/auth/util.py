@@ -1,3 +1,9 @@
 from passlib.context import CryptContext
+
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-print(pwd_context.hash(input('Text-->')))
+
+
+
+def hash_pw(unhashed_pw: str):
+    return pwd_context.hash(unhashed_pw)

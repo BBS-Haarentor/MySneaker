@@ -22,3 +22,7 @@ class BaseGroupBase(SQLModel):
     entry_id: int | None
     user_id: int | None
 
+class GroupPatch(SQLModel):
+    to_be_patched_user_id: int
+    remove_groups: list[str]
+    add_groups: list[str]

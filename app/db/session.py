@@ -11,8 +11,6 @@ from app.core.config import SETTINGS
 
 
 
-sqlite_path = SETTINGS.DATABASE_URL_SQLITE
-
 postgres_async_schema = "postgresql+asyncpg"
 sqlite_async_schema = "sqlite+aiosqlite"
 
@@ -20,7 +18,7 @@ postgre_conn_str = f"{postgres_async_schema}://{SETTINGS.DATABASE_USER}:{SETTING
 sqlite_conn_str = f"{sqlite_async_schema}://{SETTINGS.DATABASE_URL_SQLITE}"
 
 engine_async_postgres = create_async_engine(postgre_conn_str, echo=True, future=True)
-engine_async_sqlite = create_async_engine(f"{sqlite_async_schema}://{SETTINGS.DATABASE_URL_SQLITE}", echo=True, future=True)
+engine_async_sqlite = create_async_engine(sqlite_conn_str, echo=True, future=True)
 
 engine_sqlite = create_engine(f"sqlite://{SETTINGS.DATABASE_URL_SQLITE}", echo=True)
 
@@ -28,6 +26,8 @@ engine_sqlite = create_engine(f"sqlite://{SETTINGS.DATABASE_URL_SQLITE}", echo=T
 
 engine = engine_async_sqlite
 #engine = engine_async_postgres
+
+
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async_session = sessionmaker(
         engine, class_ = AsyncSession, expire_on_commit=False

@@ -9,24 +9,25 @@ from fastapi import Depends, HTTPException, Request
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
+from app.crud.game import get_game_by_id
 from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
-from app.crud.user import get_user_by_name
+from app.crud.user import get_user_by_name, update_last_login
 from app.db.session import get_async_session
 from jose import JWTError, jwt
+from app.models.game import Game
 
 from app.models.user import User
 from app.schemas.token import TokenData
 from app.schemas.user import UserLogin
 from fastapi.security import OAuth2PasswordBearer
-from passlib.context import CryptContext
 from starlette import status
 from app.core.config import SETTINGS, RolesEnums
+from app.api.auth.util import pwd_context, hash_pw
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
 
-def hash_pw(unhashed_pw: str):
-    return pwd_context.hash(unhashed_pw)
 
 
 async def authenticate_user(session: AsyncSession, username: str, password: str) -> User | bool :
@@ -38,13 +39,12 @@ async def authenticate_user(session: AsyncSession, username: str, password: str)
     if not pwd_context.verify(password, result.hashed_pw):
         return False
     else:
-        return result
-    # log newest login for user
-    #update_login_succeeded = await update_last_login(user=result, session=session)
-    #if update_login_succeeded == True:
-    #    return result
-    #else:
-    #    return False
+        update_login_succeeded = await update_last_login(user=result, session=session)
+        if update_login_succeeded:
+            return result
+        else:
+            return False
+
 
 # function decorator for authentication requirement and check, right now only checking implicitly
 def base_auth_required(func):
@@ -52,7 +52,9 @@ def base_auth_required(func):
     async def decorated(*args,**kwargs):
         user: User = kwargs["current_user"]
         role_check = await check_user_in_basegroup(session=kwargs["session"], user_id=user.id)
-        if not isinstance(role_check, User):
+        role_check_teacher = await check_user_in_teachergroup(session=kwargs["session"], user_id=user.id)
+        role_check_admin = await check_user_in_admingroup(session=kwargs["session"], user_id=user.id)
+        if not isinstance(role_check, User) and not isinstance(role_check_teacher, User) and not isinstance(role_check_admin, User):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient Credentials")
         return await func(*args,**kwargs)
     return decorated
@@ -61,8 +63,9 @@ def teacher_auth_required(func):
     @wraps(func)
     async def decorated(*args,**kwargs):
         user: User = kwargs["current_user"]
-        role_check = await check_user_in_teachergroup(session=kwargs["session"], user_id=user.id)
-        if not isinstance(role_check, User):
+        role_check_teacher = await check_user_in_teachergroup(session=kwargs["session"], user_id=user.id)
+        role_check_admin = await check_user_in_admingroup(session=kwargs["session"], user_id=user.id)
+        if not isinstance(role_check_teacher, User) and not isinstance(role_check_admin, User):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient Credentials")
         return await func(*args,**kwargs)
     return decorated
@@ -77,17 +80,11 @@ def admin_auth_required(func):
         return await func(*args,**kwargs)
     return decorated
 
-#def admin_auth_required(func):
-#    @wraps(func)
-#    async def decorated(current_user: User, session: AsyncSession,*args,**kwargs):
-#        role_check = await check_user_in_admingroup(session=session, user_id=current_user.id)
-#        if not isinstance(role_check, User):
-#            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Insufficient Credentials")
-#        return await func(current_user,session,*args,**kwargs)
-#    return decorated
 
-
-
+async def game_owner_check(user_id: int, game_id: int, session: AsyncSession) -> bool:
+    game: Game = await get_game_by_id(id=game_id, session=session)
+    
+    return game.owner_id == user_id
 
 
 async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session))-> User | None:
