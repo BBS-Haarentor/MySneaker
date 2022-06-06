@@ -27,7 +27,7 @@ async def create_new_cycle_entry(cycle_data: CycleCreate, current_user: User = D
 
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
 async def get_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Cycle:
-    result: Cycle | None = await get_cycle_entry_by_id(id=id, session=session)
+    result: Cycle | None = await get_cycle_entry_by_id(cycle_id=id, session=session)
     return result
 
 @router.patch("/patch_by_id", status_code=status.HTTP_202_ACCEPTED)

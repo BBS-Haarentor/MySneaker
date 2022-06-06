@@ -13,8 +13,8 @@ from app.schemas.cycle import CycleCreate, CylcePost
 
 
 async def get_cycle_entry_by_id(cycle_id: int, session: AsyncSession) -> Cycle | None:
-    result: Cycle | None = await session.exec(select(Cycle).where(Cycle.id == cycle_id)).one_or_none()
-    return result
+    result: Cycle | None = await session.exec(select(Cycle).where(Cycle.id == cycle_id))
+    return result.one_or_none()
 
 
 async def new_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> int:
