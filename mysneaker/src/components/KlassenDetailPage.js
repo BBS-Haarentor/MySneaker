@@ -39,7 +39,7 @@ const KlassenDetailPage = () => {
     }
   });
 
-  const [url, setUrl] = useState("http://window.location.hostname:3000/register/" + id);
+  const [url, setUrl] = useState("http://"+window.location.hostname+":3000/register/" + id);
   const [showModal, setShowModal] = useState(false)
   const ref = useRef(null);
 
@@ -58,7 +58,7 @@ const KlassenDetailPage = () => {
       headers: myHeaders,
     };
 
-    fetch('http://window.location.hostname:8008/api/v1/game/get_all_users_for_game/' + id, requestOptions)
+    fetch('http://'+window.location.hostname+':8008/api/v1/game/get_all_users_for_game/' + id, requestOptions)
       .then(async (element) => {
         let json = await element.json();
 
@@ -78,7 +78,7 @@ const KlassenDetailPage = () => {
       mode: 'cors',
     };
 
-    fetch('http://window.location.hostname:8008/api/v1/game/turnover/' + id, requestOptions)
+    fetch('http://'+window.location.hostname+':8008/api/v1/game/turnover/' + id, requestOptions)
       .then(async (element) => {
         return
       })
