@@ -122,7 +122,7 @@ const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,P
             const dataFromServer = await fetchData()
             setData(dataFromServer)
         }
-        //getData()
+        getData()
         
     }, [])
 

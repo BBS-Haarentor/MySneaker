@@ -51,6 +51,7 @@ const KlassenDetailPage = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+    myHeaders.append('Access-Control-Allow-Origin', '*')
 
     var requestOptions = {
       method: 'GET',

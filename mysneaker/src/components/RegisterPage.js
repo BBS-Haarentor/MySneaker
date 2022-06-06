@@ -14,6 +14,7 @@ const RegisterPage = () => {
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+        myHeaders.append('Access-Control-Allow-Origin', '*')
 
         var requestOptions = {
             method: 'POST',

@@ -12,6 +12,7 @@ const LoginPage = () => {
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        myHeaders.append('Access-Control-Allow-Origin', '*')
 
         var urlencoded = new URLSearchParams();
         urlencoded.append("username", userName);
