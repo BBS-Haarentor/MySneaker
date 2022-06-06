@@ -15,7 +15,7 @@ from app.models.groups import BaseGroup
 from app.models.stock import Stock
 from app.models.user import User
 from app.schemas.group import GroupPatch
-from app.schemas.stock import StockCreate, StockResponse
+from app.schemas.stock import StockCreate
 from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent, UserPwChange, UserResponse
 from starlette import status
 from sqlmodel import select
@@ -43,7 +43,7 @@ async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depe
     user_group_entry: BaseGroup | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
     # create init stock for student
     stock_data = Stock(game_id=user_post.game_id, company_id=new_user_id, current_cycle_index=0)
-    new_stock: StockResponse = await new_stock_entry(entry_data=stock_data, session=session)
+    new_stock: Stock = await new_stock_entry(entry_data=stock_data, session=session)
     return { f"Student user created with {new_user_id}"}
 
 

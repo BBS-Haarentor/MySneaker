@@ -6,10 +6,10 @@
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models.stock import Stock
-from app.schemas.stock import StockCreate, StockResponse
+from app.schemas.stock import StockCreate
 
 
-async def new_stock_entry(entry_data: StockCreate, session: AsyncSession) -> StockResponse:
+async def new_stock_entry(entry_data: StockCreate, session: AsyncSession) -> Stock:
     entry: Stock = Stock.from_orm(entry_data)
     session.add(entry)
     await session.commit()
@@ -28,7 +28,7 @@ async def get_stock_entries_by_user_id(user_id: int, session: AsyncSession) -> l
     return stock_list
 
 
-async def get_stock_entries_by_game(game_id: int, session: AsyncSession) -> list[StockResponse]:
+async def get_stock_entries_by_game(game_id: int, session: AsyncSession) -> list[Stock]:
     result = await session.exec(select(Stock).where(Stock.game_id == game_id))
     stock_list: list[Stock] = result.all()
     return stock_list
