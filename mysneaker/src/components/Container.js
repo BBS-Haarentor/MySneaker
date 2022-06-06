@@ -127,7 +127,7 @@ const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,P
     }, [])
 
 const fetchData = async () => {
-    const res = await fetch('http://127.0.0.1:8008/api/v1/game/my_summary')
+    const res = await fetch('http://window.location.hostname:8008/api/v1/game/my_summary')
     const data = await res.json()
 
     return data
