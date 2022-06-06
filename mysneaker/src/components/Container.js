@@ -5,31 +5,85 @@ import {useState, useEffect,useRef} from "react";
 
 const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,PersonalRef,AbsatzRef}) => {
     
-    const [data, setData] = useState({
-        "vorperiode":{
-          "lager":{
-            "sneaker":0,
-            "farben":0,
-            "fertigeSneaker":0
-          },
-          "finanzen":{
-            "kontostand":15000,
-            "darlehenstand":0
-          }
-        },
-        "beschaffungUndLager":{
-          "beschaffung":{
-            "einstandspreis":{
-              "sneaker":60,
-              "farben":10
+    const [data, setData] = useState(
+        {
+            "current_stock": {
+              "creation_date": "2022-06-05T20:16:57.207679",
+              "id": 1,
+              "sneaker_count": 0,
+              "finished_sneaker_count": 0,
+              "research_budget": 0,
+              "credit_taken": 0,
+              "machine_2_bought": false,
+              "real_sales": 0,
+              "research_production_modifier": 0,
+              "current_cycle_index": 0,
+              "game_id": 1,
+              "company_id": 2,
+              "paint_count": 0,
+              "employees_count": 8,
+              "account_balance": 5000,
+              "machine_1_bought": true,
+              "machine_3_bought": false,
+              "income_from_sales": 0
+            },
+            "scenario": {
+              "sneaker_price": 60,
+              "factor_interest_rate": 0.04,
+              "factor_ad_take": 0.1,
+              "paint_price": 10,
+              "employee_salary": 400,
+              "machine_production_capacity": 200,
+              "storage_fee_sneaker": 4,
+              "employee_signup_bonus": 100,
+              "machine_maintainance_cost": 4000,
+              "storage_fee_paint": 1,
+              "employee_production_capacity": 10,
+              "production_cost_per_sneaker": 60,
+              "storage_fee_finished_sneaker": 8,
+              "employee_cost_modfier": 0,
+              "employee_count_modifier_temporary": 0,
+              "machine_purchase_allowed": false,
+              "char": "A",
+              "employee_count_modifier_permanent": 0,
+              "machine_purchase_cost": 1000,
+              "id": 1,
+              "sneaker_ask": 400
+            },
+            "current_cycle": {
+              "id": 1,
+              "buy_paint": 320,
+              "sales_planned": 160,
+              "new_employees": 0,
+              "planned_production_1": 160,
+              "sales_bid": 130,
+              "buy_new_machine_2": false,
+              "planned_production_2": 0,
+              "tender_offer_count": 0,
+              "buy_new_machine_3": false,
+              "creation_date": null,
+              "planned_production_3": 0,
+              "tender_offer_price": 0,
+              "game_id": 1,
+              "planned_workers_1": 8,
+              "research_invest": 2500,
+              "entry_date": "2022-06-05T20:27:11.340557",
+              "current_cycle_index": 0,
+              "planned_workers_2": 0,
+              "ad_invest": 0,
+              "company_id": 2,
+              "planned_workers_3": 0,
+              "take_credit": 0,
+              "buy_sneaker": 160,
+              "include_from_stock": 0,
+              "payback_credit": 0
             }
-          },
-        }
-      })
+          }
+      )
     const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState(0)
     const [FarbenEinkaufMenge, setFarbenEinkaufMenge] = useState(0)
-    const SneakerKosten = data.beschaffungUndLager.beschaffung.einstandspreis.sneaker * SneakerEinkaufMenge
-    const FarbenKosten = data.beschaffungUndLager.beschaffung.einstandspreis.farben * FarbenEinkaufMenge
+    const SneakerKosten = data.scenario.sneaker_price * SneakerEinkaufMenge
+    const FarbenKosten = data.scenario.paint_price * FarbenEinkaufMenge
     const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
     const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
     const [Werbung, setWerbung] = useState(0)
@@ -94,8 +148,8 @@ return (
                     </tr>
                     <tr>
                         <td>Einstandspreis</td>
-                        <td>{data.beschaffungUndLager.beschaffung.einstandspreis.sneaker}</td>
-                        <td>{data.beschaffungUndLager.beschaffung.einstandspreis.farben}</td>
+                        <td>{data.scenario.sneaker_price}</td>
+                        <td>{data.scenario.paint_price}</td>
                     </tr>
                     <tr>
                         <td>Einkauf (Menge)</td>
@@ -127,9 +181,9 @@ return (
                     </tr>
                     <tr>
                         <td>Lager (Vorperiode)</td>
-                        <td>{data.vorperiode.lager.sneaker}</td>
-                        <td>{data.vorperiode.lager.farben}</td>
-                        <td>{data.vorperiode.lager.fertigeSneaker}</td>
+                        <td>{data.current_stock.sneaker_count}</td>
+                        <td>{data.current_stock.paint_count}</td>
+                        <td>{data.current_stock.finished_sneaker_count}</td>
                     </tr>
                     <tr>
                         <td>Aktuelle Beschaffung</td>
@@ -139,9 +193,9 @@ return (
                     </tr>
                     <tr>
                         <td>Gesamte Verfügbarkeit</td>
-                        <td>{data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge)}</td>
-                        <td>{data.vorperiode.lager.farben + parseInt(FarbenEinkaufMenge)}</td>
-                        <td>{data.vorperiode.lager.fertigeSneaker + parseInt(GeplanteProduktion)}</td>
+                        <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)}</td>
+                        <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge)}</td>
+                        <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)}</td>
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (PLAN)</td>
@@ -151,9 +205,9 @@ return (
                     </tr>
                     <tr>
                         <td>Lager Periodenende (PLAN)</td>
-                        <td>{(data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge))-GeplanteProduktion}</td>
-                        <td>{(data.vorperiode.lager.sneaker + parseInt(FarbenEinkaufMenge))-GeplanteProduktion*2}</td>
-                        <td>{data.vorperiode.lager.fertigeSneaker + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktSoll)+parseInt(AusschreibungSoll))}</td>
+                        <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge))-GeplanteProduktion}</td>
+                        <td>{(data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge))-GeplanteProduktion*2}</td>
+                        <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktSoll)+parseInt(AusschreibungSoll))}</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten pro Stück</td>
@@ -163,9 +217,9 @@ return (
                     </tr>
                     <tr>
                         <td>Lagerkosten (PLAN)</td>
-                        <td>{((data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge))-GeplanteProduktion)*4 + "€"}</td>
-                        <td>{((data.vorperiode.lager.sneaker + parseInt(FarbenEinkaufMenge))-GeplanteProduktion*2)*1 + "€"}</td>
-                        <td>{(data.vorperiode.lager.fertigeSneaker + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktSoll)+parseInt(AusschreibungSoll)))*8 + "€"}</td>
+                        <td>{((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge))-GeplanteProduktion)*4 + "€"}</td>
+                        <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge))-GeplanteProduktion*2)*1 + "€"}</td>
+                        <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktSoll)+parseInt(AusschreibungSoll)))*8 + "€"}</td>
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (IST)</td>
@@ -175,15 +229,15 @@ return (
                     </tr>
                     <tr>
                         <td>Lager Periodenende (IST)</td>
-                        <td>{data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge)-GeplanteProduktion}</td>
-                        <td>{data.vorperiode.lager.farben + parseInt(FarbenEinkaufMenge)-GeplanteProduktion*2}</td>
-                        <td>{data.vorperiode.lager.fertigeSneaker + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst))}</td>
+                        <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)-GeplanteProduktion}</td>
+                        <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge)-GeplanteProduktion*2}</td>
+                        <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst))}</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten (IST)</td>
-                        <td>{(data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge)-GeplanteProduktion)*4 + "€"}</td>
-                        <td>{(data.vorperiode.lager.farben + parseInt(FarbenEinkaufMenge)-GeplanteProduktion*2)*1  + "€"}</td>
-                        <td>{(data.vorperiode.lager.fertigeSneaker + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst)))*8  + "€"}</td>
+                        <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)-GeplanteProduktion)*4 + "€"}</td>
+                        <td>{(data.current_stock.paint_count + parseInt(FarbenEinkaufMenge)-GeplanteProduktion*2)*1  + "€"}</td>
+                        <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst)))*8  + "€"}</td>
                     </tr>
                     
                 </tbody>
@@ -274,7 +328,7 @@ return (
              <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
            
         </div>
-        <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+        {data.scenario.machine_1_bought ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
              <table>
                 <tbody>
                     <tr>
@@ -358,7 +412,8 @@ return (
                     
                 </tbody>
              </table>
-        </div>
+        </div>:<></>}
+       
         <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
              <table>
                 <tbody>
@@ -644,8 +699,8 @@ return (
                     </tr>
                     <tr>
                         <td>Kontostand</td>
-                        <td>{data.vorperiode.finanzen.kontostand + "€"}</td>
-                        <td>{data.vorperiode.finanzen.kontostand + "€"}</td>
+                        <td>{data.current_stock.account_balance + "€"}</td>
+                        <td>{data.current_stock.account_balance + "€"}</td>
                     </tr>
                     <tr>
                         <td>Maximale Darlehenshöhe</td>
@@ -654,8 +709,8 @@ return (
                     </tr>
                     <tr>
                         <td>Darlehensstand (Beginn Periode)</td>
-                        <td>{data.vorperiode.finanzen.darlehenstand}</td>
-                        <td>{data.vorperiode.finanzen.darlehenstand}</td>
+                        <td>{data.current_stock.credit_taken}</td>
+                        <td>{data.current_stock.credit_taken}</td>
                     </tr>
                     <tr>
                         <td>Aufnahme Darlehen</td>
@@ -664,8 +719,8 @@ return (
                     </tr>
                     <tr>
                         <td>Darlehensstand (Ende Periode)</td>
-                        <td>{data.vorperiode.finanzen.darlehenstand + AufnahmeDarlehen -RueckzahlungDarlehen}</td>
-                        <td>{data.vorperiode.finanzen.darlehenstand + AufnahmeDarlehen -RueckzahlungDarlehen}</td>
+                        <td>{data.current_stock.credit_taken + AufnahmeDarlehen -RueckzahlungDarlehen}</td>
+                        <td>{data.current_stock.credit_taken + AufnahmeDarlehen -RueckzahlungDarlehen}</td>
                     </tr>
                     <tr>
                         <td>Einkauf Sneaker</td>
@@ -679,18 +734,18 @@ return (
                     </tr>
                     <tr>
                         <td>Lagerkosten Fertige Erz.</td>
-                        <td>{(data.vorperiode.lager.fertigeSneaker + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktSoll)+parseInt(AusschreibungSoll)))*8 + "€"}</td>
-                        <td>{(data.vorperiode.lager.fertigeSneaker + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst)))*8  + "€"}</td>
+                        <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktSoll)+parseInt(AusschreibungSoll)))*8 + "€"}</td>
+                        <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)-Math.round(parseInt(MarktIst)+parseInt(AusschreibungIst)))*8  + "€"}</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten Sneaker</td>
-                        <td>{(data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge)-GeplanteProduktion)*4 + "€"}</td>
-                        <td>{(data.vorperiode.lager.sneaker + parseInt(SneakerEinkaufMenge)-GeplanteProduktion)*4 + "€"}</td>
+                        <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)-GeplanteProduktion)*4 + "€"}</td>
+                        <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)-GeplanteProduktion)*4 + "€"}</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten Farben</td>
-                        <td>{((data.vorperiode.lager.sneaker + parseInt(FarbenEinkaufMenge))-GeplanteProduktion*2)*1 + "€"}</td>
-                        <td>{((data.vorperiode.lager.sneaker + parseInt(FarbenEinkaufMenge))-GeplanteProduktion*2)*1 + "€"}</td>
+                        <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge))-GeplanteProduktion*2)*1 + "€"}</td>
+                        <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge))-GeplanteProduktion*2)*1 + "€"}</td>
                     </tr>
                     <tr>
                         <td>Maschinenkosten</td>
@@ -729,8 +784,8 @@ return (
                     </tr>
                     <tr>
                         <td>Zinsen (Darlehen)</td>
-                        <td>{(data.vorperiode.finanzen.darlehenstand + AufnahmeDarlehen -RueckzahlungDarlehen)*0.04 + "€"}</td>                      
-                        <td>{(data.vorperiode.finanzen.darlehenstand + AufnahmeDarlehen -RueckzahlungDarlehen)*0.04 + "€"}</td>
+                        <td>{((data.current_stock.credit_taken + AufnahmeDarlehen -RueckzahlungDarlehen)*data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>                      
+                        <td>{((data.current_stock.credit_taken + AufnahmeDarlehen -RueckzahlungDarlehen)*data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
                     </tr>
                     <tr>
                         <td>Rückzahlung Darlehen</td>
