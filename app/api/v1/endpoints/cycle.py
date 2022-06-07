@@ -42,8 +42,8 @@ async def my_cycles(current_user: User = Depends(get_current_active_user), sessi
     return cycle_list
 
 @router.get("/get_by_user/{user_id}", status_code=status.HTTP_200_OK)
-async def get_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Cycle:
-    result: Cycle | None = await get_cycle_entry_by_id(id=id, session=session)
+async def get_by_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Cycle:
+    result: Cycle | None = await get_cycles_by_user_id(user_id=user_id, session=session)
     return result
 
 @router.get("/my_current_cycle", status_code=status.HTTP_200_OK, response_model=list[Cycle])
