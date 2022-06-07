@@ -21,7 +21,7 @@ const SideNavBar = ({ OnClick, state }) => {
         headers: myHeaders,
       };
       try {
-        fetch('http://127.0.0.1:8008/user/my_auth', requestOptions)
+        fetch('http://'+window.location.hostname+':8008/user/my_auth', requestOptions)
         .then(async (element) => {
           let body = await element.text();
           console.log(body.replaceAll("\"", ""))
