@@ -54,7 +54,6 @@ const DashBoardPage = () => {
         fetch('http://'+window.location.hostname+':8008/user/my_auth', requestOptions)
         .then(async (element) => {
           let body = await element.text();
-          console.log(body.replaceAll("\"", ""))
           if(body.replaceAll("\"", "") === "teacher") {
             setIsLehe(true)
           }

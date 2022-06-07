@@ -1,7 +1,7 @@
 import React from 'react'
 import Beschaffung from './Beschaffung'
 import {useState, useEffect,useRef} from "react";
-
+import Cookies from "js-cookie";
 
 const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,PersonalRef,AbsatzRef}) => {
     
@@ -118,16 +118,33 @@ const Container = ({ProductionRef,LagerBeschaffungRef,FinanzenRef,MarketingRef,P
   
     
     useEffect(() => {
-        const getData = async () => {
-            const dataFromServer = await fetchData()
-            setData(dataFromServer)
-        }
-        getData()
-        
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+        myHeaders.append('Access-Control-Allow-Origin', '*')
+  
+        var requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+        };
+
+        fetch(window.location.protocol + '//'+window.location.hostname+':8008/user/my_auth', requestOptions)
+        .then(async (element) => {
+          let body = await element.text();
+          if(body.replaceAll("\"", "") === "student") {
+            const getData = async () => {
+                const dataFromServer = await fetchData()
+                setData(dataFromServer)
+            }
+            getData()
+          }
+          return
+        })
     }, [])
 
 const fetchData = async () => {
-    const res = await fetch('http://'+window.location.hostname+':8008/api/v1/game/my_summary')
+    const res = await fetch(window.location.protocol + '//'+window.location.hostname+':8008/api/v1/game/my_summary')
     const data = await res.json()
 
     return data

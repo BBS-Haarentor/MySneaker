@@ -38,7 +38,7 @@ const LehrerPage = () => {
         body: raw
       };
 
-      const d1 = fetch('http://127.0.0.1:8008/api/v1/game/create', requestOptions)
+      const d1 = fetch('http://'+window.location.hostname+':8008/api/v1/game/create', requestOptions)
         .then(async (element) => {
           switch (element.status) {
             case 401:
@@ -64,7 +64,7 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    const d1 = fetch('http://127.0.0.1:8008/api/v1/game/teacher/my_games', requestOptions)
+    const d1 = fetch(window.location.protocol + '//'+window.location.hostname+':8008/api/v1/game/teacher/my_games', requestOptions)
       .then(async (element) => {
         if (element.status == 401) {
           window.location.href = "/"

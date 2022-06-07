@@ -35,13 +35,13 @@ const RegisterPage = () => {
 
     const putData = async (requestOptions) => {
 
-        const res = await fetch("http://"+window.location.hostname+":8008/user/create/student", requestOptions).then(async (element) => {
+        const res = await fetch(window.location.protocol + "//"+window.location.hostname+":8008/user/create/student", requestOptions).then(async (element) => {
             if (element.status === 201) {
-                await fetch("http://"+window.location.hostname+":8008/user/login", requestOptions).then(async (element2) => {
+                await fetch(window.location.protocol + "//"+window.location.hostname+":8008/user/login", requestOptions).then(async (element2) => {
                     const rawData2 = await element2.json()
                     console.log(rawData2)
                     Cookies.set("session", [rawData2.access_token])
-                    window.location.href = "http://localhost:3000/dashboard"
+                    window.location.href = window.location.protocol + "//"+window.location.hostname+"/dashboard"
                 })
             }
         })

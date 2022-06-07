@@ -34,7 +34,7 @@ const LoginPage = () => {
     }
 
     const putData = async (requestOptions) => {
-        const res = await fetch("http://"+window.location.hostname+":8008/user/login", requestOptions)
+        const res = await fetch(window.location.protocol + "//"+window.location.hostname+":8008/user/login", requestOptions)
         if (res.status === 200) {
             const rawData = await res.json()
             Cookies.set("session", [rawData.access_token])
