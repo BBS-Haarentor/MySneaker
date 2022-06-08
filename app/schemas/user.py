@@ -37,7 +37,7 @@ class UserLogin(UserBase):
     name: str
     hashed_pw: str
 
-class UserResponse(UserBase):
+class UserResponse(SQLModel):
     id: int
     name: str
     last_login: datetime 

@@ -148,7 +148,7 @@ async def game_patch(game_patch: GamePatch, session: AsyncSession = Depends(get_
 
 @router.put("/toggle_active/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
-async def toggle_active(game_id: int, session: AsyncSession = Depends(get_async_session)) -> bool:
+async def toggle_active(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
     result: bool = await toggle_game_state(id=game_id, session=session)
     return result
 
@@ -161,7 +161,7 @@ async def get_current_cycle(game_id: int, current_user: User = Depends(get_curre
 
 @router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[UserResponse])
 @teacher_auth_required
-async def get_all_users_for_game_by_game_id(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User] :
+async def get_all_users_for_game_by_game_id(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User]:
     user_list: list[User] = await get_all_users_for_game(game_id=game_id, session=session)
     return user_list
 
