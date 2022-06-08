@@ -159,9 +159,9 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     
     return game.current_cycle_index
 
-async def get_all_user_ids_for_game(game_id: int, session: AsyncSession) -> list[User]:
+async def get_all_users_for_game(game_id: int, session: AsyncSession) -> list[User]:
     game: Game = await get_game_by_id(id=game_id, session=session)
-    result = await session.exec(select(User.id).where(User.game_id == game_id))
+    result = await session.exec(select(User).where(User.game_id == game_id))
     user_list = result.all()
     
     return user_list

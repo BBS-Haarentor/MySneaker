@@ -11,10 +11,6 @@ from app.schemas.stock import StockCreate
 
 router = APIRouter()
 
-@router.get("/", status_code=status.HTTP_200_OK)
-async def get_scenario_root():
-    return { "HAHA": "stockroot hier" }
-
 
 @router.post("/create", status_code=status.HTTP_201_CREATED, response_model=Stock)
 async def create_stock_entry(stock_data: StockCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Stock:

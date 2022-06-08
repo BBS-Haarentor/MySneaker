@@ -8,7 +8,7 @@ from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_
 
 from app.api.auth.user_auth import teacher_auth_required
 from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_by_user_id_and_index
-from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_user_ids_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
+from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_users_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.crud.scenario import get_scenario_by_index
 from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id
@@ -27,9 +27,6 @@ from app.schemas.user import UserResponse
 
 router = APIRouter()
 
-@router.get("/", status_code=status.HTTP_200_OK)
-async def get_game_root():
-    return { "HAHA": "du player, gameroot hier" }
 
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
@@ -138,6 +135,7 @@ async def turnover(game_id: int, current_user: User = Depends(get_current_active
 
 
 @router.get("/current_cycle_index/{game_id}", status_code=status.HTTP_200_OK)
+@base_auth_required
 async def get_cycle_index(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int:
     game: Game = await get_game_by_id(id=game_id, session=session)
     return game.current_cycle_index
@@ -149,6 +147,7 @@ async def game_patch(game_patch: GamePatch, session: AsyncSession = Depends(get_
 
 
 @router.put("/toggle_active/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@teacher_auth_required
 async def toggle_active(game_id: int, session: AsyncSession = Depends(get_async_session)) -> bool:
     result: bool = await toggle_game_state(id=game_id, session=session)
     return result
@@ -160,10 +159,10 @@ async def get_current_cycle(game_id: int, current_user: User = Depends(get_curre
     return cycle_list
 
 
-@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[int])
-async def get_all_users_for_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[int] :
-    user_list: list[int] = await get_all_user_ids_for_game(game_id=game_id, session=session)
-    # parse user_list to list[UserResponse]
+@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[UserResponse])
+@teacher_auth_required
+async def get_all_users_for_game_by_game_id(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User] :
+    user_list: list[User] = await get_all_users_for_game(game_id=game_id, session=session)
     return user_list
 
 

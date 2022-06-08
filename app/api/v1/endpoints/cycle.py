@@ -1,6 +1,6 @@
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException, Request
-from app.api.auth.user_auth import base_auth_required, get_current_active_user
+from app.api.auth.user_auth import base_auth_required, get_current_active_user, teacher_auth_required
 from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_entry_by_id, get_cycles_by_user_id, new_cycle_entry, patch_cycle_entry
 from app.crud.game import get_game_by_id
 from app.db.session import get_async_session
@@ -42,6 +42,7 @@ async def my_cycles(current_user: User = Depends(get_current_active_user), sessi
     return cycle_list
 
 @router.get("/get_by_user/{user_id}", status_code=status.HTTP_200_OK)
+@teacher_auth_required
 async def get_by_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Cycle:
     result: Cycle | None = await get_cycles_by_user_id(user_id=user_id, session=session)
     return result
