@@ -41,7 +41,7 @@ const RegisterPage = () => {
                     const rawData2 = await element2.json()
                     console.log(rawData2)
                     Cookies.set("session", [rawData2.access_token])
-                    window.location.href = window.location.protocol + "//"+window.location.hostname+"/dashboard"
+                    window.location.href = "/dashboard"
                 })
             }
         })

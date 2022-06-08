@@ -8,19 +8,13 @@ import SideNavBar from './SideNavBar'
 const KlassenDetailPage = () => {
   let { id } = useParams()
 
-  const [companies, setCompanies] = useState([
-    {
-      name: "test"
-    },
-    {
-      name: "test"
-    },
-  ])
+  const [companies, setCompanies] = useState([])
 
   const [register, setRegister] = useState(false)
+  const [selectCompanie, setSelectCompanie] = useState(null)
 
   const changeCompanie = (name) => {
-    console.log(name)
+    setSelectCompanie(name)
   }
 
 
@@ -43,7 +37,7 @@ const KlassenDetailPage = () => {
   const [showModal, setShowModal] = useState(false)
   const ref = useRef(null);
 
-  useEffect(() => {
+  useEffect(async () => {
     qrCode.update({
       data: url
     });
@@ -60,10 +54,9 @@ const KlassenDetailPage = () => {
       headers: myHeaders,
     };
 
-    fetch(window.location.protocol + '//'+window.location.hostname+':8008/api/v1/game/get_all_users_for_game/' + id, requestOptions)
+    await fetch(window.location.protocol + '//'+window.location.hostname+':8008/api/v1/game/get_all_users_for_game/' + id, requestOptions)
       .then(async (element) => {
         let json = await element.json();
-
         setCompanies(json)
       })
   }, [url]);
@@ -136,14 +129,24 @@ const KlassenDetailPage = () => {
 
       <div className='h-screen w-full overflow-hidden'>
         <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white  justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
-          <img src="/img/teacher_empty.svg" className='h-96  w-96 m-4 m-auto'></img>
-          <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
+          { selectCompanie ? <>
+          
+          
+          
+          
+          </> : <><img src="/img/teacher_empty.svg" className='h-96  w-96 m-4 m-auto'></img>
+          <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1></> }
+        
         </div>
         <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
           <div className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[160%] overflow-y-auto my-12'>
             <ul>
-              {companies.map(({ name }) =>
-                <li className='p-3 text-lg' onClick={() => changeCompanie(name)}><a>{name}</a></li>
+              {companies.map(({ name }) => {
+                return(
+                  <li className='p-3 text-lg' onClick={() => changeCompanie(name)}><a>{name}</a></li>
+
+                )
+              }
               )}
             </ul>
           </div>

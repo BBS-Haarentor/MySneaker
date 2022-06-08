@@ -51,7 +51,7 @@ const DashBoardPage = () => {
         headers: myHeaders,
       };
       try {
-        fetch('http://'+window.location.hostname+':8008/user/my_auth', requestOptions)
+        fetch(window.location.protocol+'//'+window.location.hostname+':8008/user/my_auth', requestOptions)
         .then(async (element) => {
           let body = await element.text();
           if(body.replaceAll("\"", "") === "teacher") {
