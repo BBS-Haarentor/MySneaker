@@ -3,7 +3,7 @@ from sqlmodel import SQLModel
 
 class CycleBase(SQLModel):
     id: int | None
-    creation_date: datetime | None
+    entry_date: datetime | None
     game_id: int | None
     current_cycle_index: int | None
     company_id: int | None
