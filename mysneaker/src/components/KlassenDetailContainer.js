@@ -3,11 +3,11 @@ import Beschaffung from './Beschaffung'
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 
-const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingRef, PersonalRef, AbsatzRef }) => {
+const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
 
     const [data, setData] = useState(
         {
-            "current_stock": {
+            "stock": {
                 "creation_date": "2022-06-05T20:16:57.207679",
                 "id": 1,
                 "sneaker_count": 0,
@@ -50,7 +50,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 "id": 1,
                 "sneaker_ask": 400
             },
-            "current_cycle": {
+            "cycle": {
                 "id": 1,
                 "buy_paint": 320,
                 "sales_planned": 160,
@@ -134,10 +134,14 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/my_auth', requestOptions)
             .then(async (element) => {
                 let body = await element.text();
-                if (body.replaceAll("\"", "") === "student") {
+                if(element.status !== 200) {
+                    window.location.href = "/logout"
+                }
+                if (body.replaceAll("\"", "") === "teacher") {
                     const getData = async () => {
                         const dataFromServer = await fetchData()
                         setData(dataFromServer)
+                        console.log(dataFromServer)
                     }
                     getData()
                 }
@@ -146,48 +150,16 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     }, [])
 
     const fetchData = async () => {
-        const res = await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/my_summary')
-        const data = await res.json()
-
-        return data
-    }
-
-    const onSubmit = async () => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
         myHeaders.append('Access-Control-Allow-Origin', '*')
 
-        var raw = JSON.stringify({
-            "buy_sneaker": SneakerEinkaufMenge,
-            "buy_paint": FarbenEinkaufMenge,
-            "planned_production_1": GeplanteProduktion,
-            "planned_production_2": false,
-            "planned_production_3": false,
-            "planned_workers_1": ZugeteilteMitarbeiter,
-            "planned_workers_2": false,
-            "planned_workers_3": false,
-            "include_from_stock": EntnahmeAusDemLager,
-            "sales_planned": MarktSoll,
-            "sales_bid": AusschreibungSoll,
-            "tender_offer_count": false,
-            "tender_offer_price": false,
-            "research_invest": ForschungUndEntwickelung,
-            "ad_invest": Werbung,
-            "take_credit": AufnahmeDarlehen,
-            "payback_credit": RueckzahlungDarlehen,
-            "new_employees": (Neueinstellungen - Kündigungen),
-            "buy_new_machine_2": buy_new_machine_2,
-            "buy_new_machine_3": buy_new_machine_3,
-          });
-
         var requestOptions = {
-            method: 'POST',
-            body: raw,
+            method: 'GET',
             headers: myHeaders,
         };
-
-        const res = await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/cycle/new_entry', requestOptions)
+        const res = await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/teacher/summary/user/' + userId + '/index/' + current_cycle_index, requestOptions)
         const data = await res.json()
 
         return data
@@ -207,7 +179,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar snap-y'>
 
 
-                <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
+                <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start ">
                     <table>
                         <tbody>
                             <tr>
@@ -250,9 +222,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lager (Vorperiode)</td>
-                                <td>{data.current_stock.sneaker_count}</td>
-                                <td>{data.current_stock.paint_count}</td>
-                                <td>{data.current_stock.finished_sneaker_count}</td>
+                                <td>{data.stock.sneaker_count}</td>
+                                <td>{data.stock.paint_count}</td>
+                                <td>{data.stock.finished_sneaker_count}</td>
                             </tr>
                             <tr>
                                 <td>Aktuelle Beschaffung</td>
@@ -262,9 +234,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Gesamte Verfügbarkeit</td>
-                                <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)}</td>
-                                <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge)}</td>
-                                <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)}</td>
+                                <td>{data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)}</td>
+                                <td>{data.stock.paint_count + parseInt(FarbenEinkaufMenge)}</td>
+                                <td>{data.stock.finished_sneaker_count + parseInt(GeplanteProduktion)}</td>
                             </tr>
                             <tr>
                                 <td>Verbrauch Produktion (PLAN)</td>
@@ -274,9 +246,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lager Periodenende (PLAN)</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - GeplanteProduktion}</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2}</td>
-                                <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))}</td>
+                                <td>{(data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - GeplanteProduktion}</td>
+                                <td>{(data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2}</td>
+                                <td>{data.stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten pro Stück</td>
@@ -286,9 +258,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lagerkosten (PLAN)</td>
-                                <td>{((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - GeplanteProduktion) * 4 + "€"}</td>
-                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
-                                <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 + "€"}</td>
+                                <td>{((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - GeplanteProduktion) * 4 + "€"}</td>
+                                <td>{((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
+                                <td>{(data.stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Verbrauch Produktion (IST)</td>
@@ -298,22 +270,22 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lager Periodenende (IST)</td>
-                                <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion}</td>
-                                <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - GeplanteProduktion * 2}</td>
-                                <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))}</td>
+                                <td>{data.stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion}</td>
+                                <td>{data.stock.paint_count + parseInt(FarbenEinkaufMenge) - GeplanteProduktion * 2}</td>
+                                <td>{data.stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten (IST)</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
-                                <td>{(data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - GeplanteProduktion * 2) * 1 + "€"}</td>
-                                <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 + "€"}</td>
+                                <td>{(data.stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
+                                <td>{(data.stock.paint_count + parseInt(FarbenEinkaufMenge) - GeplanteProduktion * 2) * 1 + "€"}</td>
+                                <td>{(data.stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 + "€"}</td>
                             </tr>
 
                         </tbody>
                     </table>
 
                 </div>
-                <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={PersonalRef}>
+                <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start ">
                     <table>
                         <tbody>
                             <tr>
@@ -398,7 +370,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                 </div>
                 
-                {data.current_stock.machine_1_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                {data.stock.machine_1_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <table>
                         <tbody>
                             <tr>
@@ -482,11 +454,11 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                         </tbody>
                     </table>
-                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
                     </div>}
 
-                {data.current_stock.machine_2_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                {data.stock.machine_2_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <table>
                         <tbody>
                             <tr>
@@ -570,13 +542,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                         </tbody>
                     </table>
-                </div> : buy_new_machine_2 ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                </div> : buy_new_machine_2 ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                    </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
                     </div>}
 
-                {data.current_stock.machine_3_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                {data.stock.machine_3_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <table>
                         <tbody>
                             <tr>
@@ -660,14 +632,14 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                         </tbody>
                     </table>
-                </div> : data.current_stock.machine_2_bought === false ? <></> : buy_new_machine_3 ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                </div> : data.stock.machine_2_bought === false ? <></> : buy_new_machine_3 ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                    </div>  : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
-                    <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img> //TODO mach plus hin
+                    </div>  : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
+                    <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
                     </div> }
 
 
-                <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start " ref={MarketingRef}>
+                <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start ">
                     <table>
                         <tbody>
                             <tr>
@@ -690,7 +662,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     </table>
                     <img src="/img/undraw_mobile_marketing.svg" className='h-96 w-64 xl:w-96 m-4'></img>
                 </div>
-                <div className="p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
+                <div className="p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start">
                     <table>
                         <tbody>
                             <tr>
@@ -766,7 +738,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div>
-                <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
+                <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start ">
                     <img src="/img/undraw_finance.svg" className='h-[500px] w-0 xl:w-[500px] m-auto'></img>
                     <table>
                         <tbody>
@@ -782,8 +754,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Kontostand</td>
-                                <td>{data.current_stock.account_balance + "€"}</td>
-                                <td>{data.current_stock.account_balance + "€"}</td>
+                                <td>{data.stock.account_balance + "€"}</td>
+                                <td>{data.stock.account_balance + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Maximale Darlehenshöhe</td>
@@ -792,8 +764,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Darlehensstand (Beginn Periode)</td>
-                                <td>{data.current_stock.credit_taken}</td>
-                                <td>{data.current_stock.credit_taken}</td>
+                                <td>{data.stock.credit_taken}</td>
+                                <td>{data.stock.credit_taken}</td>
                             </tr>
                             <tr>
                                 <td>Aufnahme Darlehen</td>
@@ -802,8 +774,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Darlehensstand (Ende Periode)</td>
-                                <td>{data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen}</td>
-                                <td>{data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen}</td>
+                                <td>{data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen}</td>
+                                <td>{data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen}</td>
                             </tr>
                             <tr>
                                 <td>Einkauf Sneaker</td>
@@ -817,18 +789,18 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lagerkosten Fertige Erz.</td>
-                                <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 + "€"}</td>
-                                <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 + "€"}</td>
+                                <td>{(data.stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 + "€"}</td>
+                                <td>{(data.stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Sneaker</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
+                                <td>{(data.stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
+                                <td>{(data.stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Farben</td>
-                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
-                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
+                                <td>{((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
+                                <td>{((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten</td>
@@ -867,8 +839,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Zinsen (Darlehen)</td>
-                                <td>{((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
-                                <td>{((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
+                                <td>{((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
+                                <td>{((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Rückzahlung Darlehen</td>
@@ -904,10 +876,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div>
-                <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={() => onSubmit()}>Abgeben/Speichern</button>
             </div>
         </>
     )
 }
 
-export default Container
+export default KlassenDetailContainer
