@@ -26,7 +26,7 @@ from app.api.auth.util import pwd_context, hash_pw
 
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")    
 
 
 

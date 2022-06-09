@@ -45,5 +45,5 @@ async def get_current_cycle_by_user_id(user_id: int, session: AsyncSession) -> C
 async def get_cycle_by_user_id_and_index(user_id: int, index: int, session: AsyncSession) -> Cycle | None:
     user: User = await get_user_by_id(id=user_id, session=session)
     game: Game = await get_game_by_id(id=user.game_id , session=session)
-    result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == index))
-    return result.one_or_none()
+    result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == index).order_by(Cycle.entry_date.desc()))
+    return result.first()
