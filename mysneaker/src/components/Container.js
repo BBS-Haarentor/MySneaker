@@ -162,16 +162,16 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             "buy_sneaker": SneakerEinkaufMenge,
             "buy_paint": FarbenEinkaufMenge,
             "planned_production_1": GeplanteProduktion,
-            "planned_production_2": false,
-            "planned_production_3": false,
+            "planned_production_2": 0,
+            "planned_production_3": 0,
             "planned_workers_1": ZugeteilteMitarbeiter,
-            "planned_workers_2": false,
-            "planned_workers_3": false,
+            "planned_workers_2": 0,
+            "planned_workers_3": 0,
             "include_from_stock": EntnahmeAusDemLager,
             "sales_planned": MarktSoll,
             "sales_bid": AusschreibungSoll,
-            "tender_offer_count": false,
-            "tender_offer_price": false,
+            "tender_offer_count": 0,
+            "tender_offer_price": 0,
             "research_invest": ForschungUndEntwickelung,
             "ad_invest": Werbung,
             "take_credit": AufnahmeDarlehen,
@@ -904,7 +904,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div>
-                <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={() => onSubmit()}>Abgeben/Speichern</button>
+                <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={onSubmit}>Abgeben/Speichern</button>
             </div>
         </>
     )
