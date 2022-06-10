@@ -12,6 +12,15 @@ from app.api.auth.util import pwd_context, hash_pw
 
 
 async def create_user(user_post: UserBase, session: AsyncSession) -> int:
+    """Function to create a new User entry via ORM
+
+    Args:
+        user_post (UserBase): UserPost-Object with parameters hashed_pw and name set, for students game_id is also set
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        int: id of the newly created user entry
+    """
     if user_post.game_id is not None:
         new_user = User(name=user_post.name, hashed_pw=user_post.hashed_pw, game_id=user_post.game_id)
     else:
@@ -23,16 +32,44 @@ async def create_user(user_post: UserBase, session: AsyncSession) -> int:
     return new_user.id
 
 async def get_user_by_id_or_name(id: int | None, name: str | None, session: AsyncSession) -> User | None:
+    """Function to get a User-Object via ORM given a name or id
+
+    Args:
+        id (int | None): Optional id parameter to get the User by
+        name (str | None): Optional name parameter to get the User by
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        User | None: User-Object or NoneType-Object respectively if User was found by supplied parameter or not
+    """
     result = await session.exec(select(User).where(or_(User.id == id, User.name == name)))
     return result.one_or_none()
 
 
 async def get_user_by_id(id: int, session: AsyncSession) -> User | None:
+    """Function to get a User-Object via ORM given id
+
+    Args:
+        id (int): id parameter to get the User by
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        User | None: User-Object or NoneType-Object respectively if User was found by supplied parameter or not
+    """
     result = await session.exec(select(User).where(User.id == id))
     return result.one_or_none()
 
 
 async def get_user_by_name(search_name: str, session: AsyncSession) -> User | None:
+    """Function to get a User-Object via ORM given name
+
+    Args:
+        search_name (str): name parameter to get the User by
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        User | None: User-Object or NoneType-Object respectively if User was found by supplied parameter or not
+    """
     result = await session.exec(select(User).where(User.name == search_name))
     return result.one_or_none()
 
@@ -50,6 +87,15 @@ async def update_user(update_data: UserPatch, session: AsyncSession) -> User | N
     return to_be_updated_user
 
 async def update_last_login(user: User, session: AsyncSession) -> bool:
+    """Function to update the last login field of a User upon login
+
+    Args:
+        user (User): User-Object supplied by endpoint dependency injection current_user
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        bool: boolean to indicate whether the update attempt was successful
+    """
     now = datetime.now()
     user.last_login = now
     session.add(user)
@@ -62,6 +108,15 @@ async def update_last_login(user: User, session: AsyncSession) -> bool:
 
 
 async def remove_user(id: int, session: AsyncSession) -> bool | None:
+    """Function to remove a User from the database via the id of the User
+
+    Args:
+        id (int): id parameter of the User to be removed
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        bool | None: boolean to indicate whether the remove attempt was successful or NoneType-Object if no User was found with the given id
+    """
     result = await session.exec(select(User).where(User.id == id))
     to_be_deleted: User | None = result.one_or_none()
     if isinstance(to_be_deleted, NoneType):
@@ -77,6 +132,15 @@ async def remove_user(id: int, session: AsyncSession) -> bool | None:
     
     
 async def update_pw(update_data: UserPwChange, session: AsyncSession) -> User | None:
+    """Function to update the password of a User
+
+    Args:
+        update_data (UserPwChange): SQLModel-Schema with old and new password
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        User | None: returns User with new hashed_pw parameter set
+    """
     result = await session.exec(select(User).where(User.id == update_data.id))
     user: User = result.one_or_none()
     if pwd_context.verify(update_data.old_pw, user.hashed_pw):

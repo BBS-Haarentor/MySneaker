@@ -8,7 +8,7 @@ from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_
 
 from app.api.auth.user_auth import teacher_auth_required
 from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_by_user_id_and_index
-from app.crud.game import create_game, get_all_game_ids, get_all_games_by_owner, get_all_users_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
+from app.crud.game import create_game, delete_game_by_id, get_all_game_ids, get_all_games_by_owner, get_all_users_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.crud.scenario import get_scenario_by_index
 from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id
@@ -178,3 +178,9 @@ async def toggle_signup(game_id: int, current_user: User = Depends(get_current_a
 async def get_current_cycle(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Stock]:
     stock_list: list[Stock] = await get_current_stocks_by_game_id(id=game_id, session=session)
     return stock_list
+
+
+@router.delete("/delete/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@teacher_auth_required
+async def delete_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    return await delete_game_by_id(id=game_id, session=session) 

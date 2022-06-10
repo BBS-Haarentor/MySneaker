@@ -96,7 +96,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     
             Parameters:
                     game_id (int): game_id which to turnover
-                    session (AsyncSession): FastAPI dependecy-injected session, supplied by route-call
+                    session (AsyncSession): An asynchronous Session handed down via function call from endpoint
 
             Returns:
                     game.current_cycle_index (int) : returns increased cycle_index of the game
@@ -160,6 +160,15 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     return game.current_cycle_index
 
 async def get_all_users_for_game(game_id: int, session: AsyncSession) -> list[User]:
+    """Function to get all users for a given game id
+
+    Args:
+        game_id (int): id parameter of the Game for which the Users are to be returned 
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        list[User]: list of Users found for the given game
+    """
     game: Game = await get_game_by_id(id=game_id, session=session)
     result = await session.exec(select(User).where(User.game_id == game_id))
     user_list = result.all()
@@ -168,6 +177,15 @@ async def get_all_users_for_game(game_id: int, session: AsyncSession) -> list[Us
 
 
 async def get_all_games_by_owner(user_id: int, session: AsyncSession) -> list[Game]:
+    """Function to find all Games for a Teacher User  
+
+    Args:
+        user_id (int): _description_
+        session (AsyncSession): An asynchronous Session handed down via function call from endpoint
+
+    Returns:
+        list[Game]: _description_
+    """
     result = await session.exec(select(Game).where(Game.owner_id == user_id))
     return result.all()
 
@@ -195,6 +213,15 @@ async def toggle_signup_by_id(id: int, session: AsyncSession) -> bool:
 
 
 async def get_current_cycles_by_game_id(id: int, session: AsyncSession) -> list[Cycle]:
+    """_summary_
+
+    Args:
+        id (int): _description_
+        session (AsyncSession): _description_
+
+    Returns:
+        list[Cycle]: _description_
+    """
     game: Game = await get_game_by_id(id=id, session=session)
     result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index == game.current_cycle_index))
     return result.all()
