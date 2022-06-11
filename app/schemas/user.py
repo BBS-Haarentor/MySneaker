@@ -51,3 +51,11 @@ class UserPwChange(UserBase):
     new_pw: str
     
     
+class UserResponseWithGradeName(SQLModel):
+    id: int
+    name: str
+    last_login: datetime
+    email: str | None
+    is_active: bool
+    game_id: int | None
+    grade_name: str | None

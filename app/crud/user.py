@@ -8,7 +8,7 @@ from sqlmodel import or_, select
 from app.models.game import Game
 from app.models.user import User
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.schemas.user import UserBase, UserPatch, UserPwChange
+from app.schemas.user import UserBase, UserPatch, UserPwChange, UserResponseWithGradeName
 from app.api.auth.util import pwd_context, hash_pw
 
 
@@ -151,14 +151,31 @@ async def update_pw(update_data: UserPwChange, session: AsyncSession) -> User | 
         return None
 
 
-async def get_all_users_for_teacher(user_id: int, session: AsyncSession) -> list[User]:
-    game_result = await session.exec(select(Game.id).where(Game.owner_id == user_id))
-    game_ids: list[int] = game_result.all()
-    result_list: list[User] = []
-
+async def get_all_users_for_teacher(user_id: int, session: AsyncSession) -> list[UserResponseWithGradeName]:
+    game_result = await session.exec(select(Game).where(Game.owner_id == user_id))
+    game_list: list[Game] = game_result.all()
+    
+    param_dict = {}
+    
+    for g in game_list:
+        param_dict[g.id] = g.grade_name
+    
+    game_ids: list[int]= []
+    for g in game_list:
+        game_ids.append(g.id)
+        
+    game_names: list[str] = []
+    for g in game_list:
+        game_names.append(g.grade_name)
+        
+    result_list: list[UserResponseWithGradeName] = []
     r = await session.exec(select(User))
     unfiltered_user_list: list[User] = r.all()
+    
     for u in unfiltered_user_list:
         if u.game_id in game_ids:
-            result_list.append(u)
+            new_u = UserResponseWithGradeName.from_orm(u)
+            
+            new_u.grade_name = param_dict[u.game_id]
+            result_list.append(new_u)
     return result_list

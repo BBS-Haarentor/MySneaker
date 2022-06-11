@@ -20,7 +20,7 @@ from app.models.stock import Stock
 from app.models.user import User
 from app.models.game import Game
 from app.schemas.game import GameCreate, GamePatch, GameResponse
-from app.schemas.user import UserResponse
+from app.schemas.user import UserResponse, UserResponseWithGradeName
 
 
 
@@ -166,10 +166,24 @@ async def get_all_users_for_game_by_game_id(game_id: int, current_user: User = D
     user_list: list[User] = await get_all_users_for_game(game_id=game_id, session=session)
     return user_list
 
-@router.get("/get_all_users_for_my_games", status_code=status.HTTP_200_OK, response_model=list[UserResponse])
-async def get_all_users_for_my_games(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User]:
-    user_list: list[User] = await get_all_users_for_teacher(user_id=current_user.id, session=session)
+@router.get("/get_all_users_for_my_games", status_code=status.HTTP_200_OK, response_model=list[UserResponseWithGradeName])
+@teacher_auth_required
+async def get_all_users_for_my_games(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[UserResponseWithGradeName]:
+    user_list: list[UserResponseWithGradeName] = await get_all_users_for_teacher(user_id=current_user.id, session=session)
+    
     return user_list
+
+@router.put("/activate_signup/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@teacher_auth_required
+async def activate_signup(game_id:int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)
+    if signup_status == False:
+        sec_signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)
+        if sec_signup_status == True:
+            return True
+        else:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+
 
 
 @router.put("/toggle_signup/{game_id}", status_code=status.HTTP_202_ACCEPTED)
