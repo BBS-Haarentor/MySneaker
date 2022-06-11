@@ -12,7 +12,7 @@ from app.crud.game import create_game, delete_game_by_id, get_all_game_ids, get_
 from app.crud.groups import check_user_in_admingroup
 from app.crud.scenario import get_scenario_by_index
 from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id
-from app.crud.user import get_user_by_id
+from app.crud.user import get_all_users_for_teacher, get_user_by_id
 from app.db.session import get_async_session
 from app.models.cycle import Cycle
 from app.models.scenario import Scenario
@@ -73,6 +73,7 @@ async def get_my_summary(current_user: User = Depends(get_current_active_user), 
     current_stock: Stock = await get_stock_entries_by_user_id_and_cycle_id(user_id=current_user.id, index=game.current_cycle_index, session=session)
     current_scenario: Scenario = await get_scenario_by_index(game_id=game.id, index=game.current_cycle_index, session=session)
     return { "current_stock" : current_stock, "scenario" : current_scenario, "current_cycle" : current_cycle }
+
 
 @router.get("/student/my_summary/{index}", status_code=status.HTTP_200_OK)
 @base_auth_required
@@ -163,6 +164,11 @@ async def get_current_cycle(game_id: int, current_user: User = Depends(get_curre
 @teacher_auth_required
 async def get_all_users_for_game_by_game_id(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User]:
     user_list: list[User] = await get_all_users_for_game(game_id=game_id, session=session)
+    return user_list
+
+@router.get("/get_all_users_for_my_games", status_code=status.HTTP_200_OK, response_model=list[UserResponse])
+async def get_all_users_for_my_games(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User]:
+    user_list: list[User] = await get_all_users_for_teacher(user_id=current_user.id, session=session)
     return user_list
 
 

@@ -63,7 +63,7 @@ async def post_adminuser(new_user: UserPostElevated, api_key: APIKey = Depends(g
     return { f"Admin user created with {new_user_id}"}
 
 
-@router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
+@router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK, response_model=UserResponse)
 @teacher_auth_required
 async def get_user_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     result = await get_user_by_id_or_name(id=id, name=None, session=session)
@@ -191,3 +191,4 @@ async def my_auth(current_user: User = Depends(get_current_active_user), session
         auth_str = "admin"
     return auth_str
 
+# get teacher list for admin

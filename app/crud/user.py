@@ -5,6 +5,7 @@ import logging
 from types import NoneType
 from fastapi import Depends, HTTPException
 from sqlmodel import or_, select
+from app.models.game import Game
 from app.models.user import User
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.schemas.user import UserBase, UserPatch, UserPwChange
@@ -148,3 +149,16 @@ async def update_pw(update_data: UserPwChange, session: AsyncSession) -> User | 
         return user
     else:
         return None
+
+
+async def get_all_users_for_teacher(user_id: int, session: AsyncSession) -> list[User]:
+    game_result = await session.exec(select(Game.id).where(Game.owner_id == user_id))
+    game_ids: list[int] = game_result.all()
+    result_list: list[User] = []
+
+    r = await session.exec(select(User))
+    unfiltered_user_list: list[User] = r.all()
+    for u in unfiltered_user_list:
+        if u.game_id in game_ids:
+            result_list.append(u)
+    return result_list
