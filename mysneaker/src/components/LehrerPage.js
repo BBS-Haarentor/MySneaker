@@ -7,16 +7,42 @@ const LehrerPage = () => {
   const [data, setData] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [createGameName, setCreateGameName] = useState("")
+  const [companiesVerify, setCompaniesVerify] = useState([])
   const [createGameScenarioOrder, setCreateGameScenarioOrder] = useState("")
 
   useEffect(() => {
 
-    let mounted = true;
-
-
     getGames();
 
   }, [])
+
+  const getCompaniesVerify = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/get_all_users_for_my_games', requestOptions).then((element) => {
+      if (element.status === 200) {
+        let companies = []
+        element.json().then((element1) => {
+          element1.forEach(element2 => {
+            if (element2.is_active) {
+              companies.push(element2)
+            }
+          });
+        }).then(() => {
+          setCompaniesVerify(companies)
+        })
+      }
+    })
+  }
+
 
   const onCreateGame = () => {
     if (createGameName && createGameScenarioOrder) {
@@ -38,7 +64,7 @@ const LehrerPage = () => {
         body: raw
       };
 
-      const d1 = fetch('http://'+window.location.hostname+':8008/api/v1/game/create', requestOptions)
+      const d1 = fetch('http://' + window.location.hostname + ':8008/api/v1/game/create', requestOptions)
         .then(async (element) => {
           switch (element.status) {
             case 401:
@@ -53,6 +79,39 @@ const LehrerPage = () => {
     setCreateGameScenarioOrder("")
   }
 
+  const deleteUser = (id) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/' + id, requestOptions).then((element) => {
+      if (element.status === 200) {
+      }
+    })
+
+    getCompaniesVerify();
+  }
+
+  const activeUser = (id) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/toggle_active?user_id=' + id, requestOptions).then(() => getCompaniesVerify())
+  }
+
   const getGames = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -64,7 +123,7 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    const d1 = fetch(window.location.protocol + '//'+window.location.hostname+':8008/api/v1/game/teacher/my_games', requestOptions)
+    const d1 = fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/teacher/my_games', requestOptions)
       .then(async (element) => {
         if (element.status == 401) {
           window.location.href = "/"
@@ -75,6 +134,8 @@ const LehrerPage = () => {
 
         await setData(elementArray)
 
+      }).then(() => {
+        getCompaniesVerify()
       })
   }
 
@@ -137,9 +198,30 @@ const LehrerPage = () => {
             <button className='my-6 mx-16 bg-white rounded-3xl shadow-lg p-4' onClick={() => onClickRegister()}>Spiel Erstellen</button>
             <div className=' shadow-lg bg-white rounded-3xl mx-16 my-auto overflow-y-auto
           h-96'>
-              {data.map(({ name, date }, index) =>
-                <p key={index} className=''>name</p>
-              )}
+              <table className='w-full'>
+                <tbody>
+                  {companiesVerify.map(({ name, grade_name, id }, index) =>
+                    <>
+                      <tr key={index} className='p-4 shadow-lg rounded-3xl m-auto my-3 flex justify-around bg-white w-[90%]'>
+                        <td>{name}</td>
+                        <td>{grade_name}</td>
+                        <td>
+                          <button className='mx-2' onClick={() => activeUser(id)}>
+                            <svg className='fill-green-500 hover:fill-green-600 w-6 h-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                              <path d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z" />
+                            </svg>
+                          </button>
+                          <button className='mx-2' onClick={() => deleteUser(id)}>
+                            <svg className='fill-red-500 hover:fill-red-600 w-6 h-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                              <path d="M376.6 427.5c11.31 13.58 9.484 33.75-4.094 45.06c-5.984 4.984-13.25 7.422-20.47 7.422c-9.172 0-18.27-3.922-24.59-11.52L192 305.1l-135.4 162.5c-6.328 7.594-15.42 11.52-24.59 11.52c-7.219 0-14.48-2.438-20.47-7.422c-13.58-11.31-15.41-31.48-4.094-45.06l142.9-171.5L7.422 84.5C-3.891 70.92-2.063 50.75 11.52 39.44c13.56-11.34 33.73-9.516 45.06 4.094L192 206l135.4-162.5c11.3-13.58 31.48-15.42 45.06-4.094c13.58 11.31 15.41 31.48 4.094 45.06l-142.9 171.5L376.6 427.5z" />
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>
+                    </>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

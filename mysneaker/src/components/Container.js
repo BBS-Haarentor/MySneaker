@@ -204,7 +204,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     }
     return (
         <>
-            <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar snap-y'>
+            <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
 
 
                 <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
