@@ -101,10 +101,10 @@ async def toggle_user_active_by_id(user_id: int, current_user: User = Depends(ge
         return result
 
 
-@router.delete("/{id}", status_code=status.HTTP_200_OK)
-@admin_auth_required
-async def delete_user(to_be_deleted_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session), api_key: APIKey = Depends(get_api_key)):
-    result: bool | None = await remove_user(id=to_be_deleted_id, session=session)
+@router.delete("/delete/{user_id}", status_code=status.HTTP_200_OK)
+@teacher_auth_required
+async def delete_user(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+    result: bool | None = await remove_user(id=user_id, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     if result == True:
