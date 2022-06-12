@@ -12,6 +12,7 @@ from app.schemas.user import UserBase, UserPatch, UserPwChange, UserResponseWith
 from app.api.auth.util import pwd_context, hash_pw
 
 
+
 async def create_user(user_post: UserBase, session: AsyncSession) -> int:
     """Function to create a new User entry via ORM
 
@@ -179,3 +180,27 @@ async def get_all_users_for_teacher(user_id: int, session: AsyncSession) -> list
             new_u.grade_name = param_dict[u.game_id]
             result_list.append(new_u)
     return result_list
+
+
+async def check_user_in_game(game_id: int, user_id: int, session: AsyncSession) -> bool | None:
+    user_result = await session.exec(select(User).where(User.id == user_id))
+    user: User | None = user_result.one_or_none()
+    if isinstance(user, NoneType):
+        return None
+    else:
+        if user.game_id == game_id:
+            return True
+        else:
+            return False
+    
+async def toggle_user_active(user_id: int, session: AsyncSession) -> bool | None: 
+    result = await session.exec(select(User).where(User.id == user_id))
+    user: User | None = result.one_or_none()
+    if isinstance(user, NoneType):
+        return None
+    old_status = user.is_active
+    user.is_active = not old_status
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    return user.is_active

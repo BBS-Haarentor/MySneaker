@@ -8,7 +8,7 @@ from app.api.auth.user_auth import base_auth_required, get_current_active_user, 
 from app.crud.game import get_game_by_id
 from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_admingroup, check_user_in_basegroup, check_user_in_group, check_user_in_teachergroup
 from app.crud.stock import new_stock_entry
-from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, update_pw, update_user
+from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, toggle_user_active, update_pw, update_user
 from app.db.session import get_async_session
 from app.models.game import Game
 from app.models.groups import BaseGroup
@@ -91,24 +91,20 @@ async def patch_user(user_data: UserPatch, current_user: User = Depends(get_curr
     return result
 
 
-@router.put("/toggle_active", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/toggle_active/{user_id}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
-async def toggle_active(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
-    user: None | User = await get_user_by_id(id=user_id, session=session)
-    if isinstance(user, NoneType):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="error while toggling activity status")
-    old_status = user.is_active
-    user.is_active = not old_status
-    session.add(user)
-    await session.commit()
-    await session.refresh(user)
-    return user.is_active
+async def toggle_user_active_by_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    result = await toggle_user_active(user_id=user_id, session=session)
+    if isinstance(result, NoneType):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    else:
+        return result
 
 
 @router.delete("/{id}", status_code=status.HTTP_200_OK)
 @admin_auth_required
 async def delete_user(to_be_deleted_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session), api_key: APIKey = Depends(get_api_key)):
-    result: bool | None = await remove_user(id=id, session=session)
+    result: bool | None = await remove_user(id=to_be_deleted_id, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     if result == True:
