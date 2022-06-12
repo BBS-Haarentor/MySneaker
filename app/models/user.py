@@ -15,7 +15,7 @@ class User(UserBase, table=True):
     name: str
     email: str | None = Field(default=None)
     hashed_pw: str
-    is_active: bool | None = Field(default=True)
+    is_active: bool | None = Field(default=False)
     game_id: int | None = Field(default=None)
 
 

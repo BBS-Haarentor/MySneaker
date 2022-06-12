@@ -1,5 +1,6 @@
 
 import logging
+from types import NoneType
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.crud.game import get_game_by_id
@@ -26,24 +27,26 @@ async def new_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> int:
     return new_cycle.id
 
 
-async def patch_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> Cycle:
-    cycle: Cycle = await get_cycle_entry_by_id(cycle_id=cycle_data.id, session=session)
-    raise NotImplementedError
-
-
 async def get_cycles_by_user_id(user_id: int, session: AsyncSession):
     result = await session.exec(select(Cycle).where(Cycle.company_id == user_id))
     return result.all()
 
 async def get_current_cycle_by_user_id(user_id: int, session: AsyncSession) -> Cycle | None:
     user: User = await get_user_by_id(id=user_id, session=session)
+    if isinstance(user, NoneType):
+        return None
     game: Game = await get_game_by_id(id=user.game_id , session=session)
-
+    if isinstance(game, NoneType):
+        return None
     result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == game.current_cycle_index).order_by(Cycle.entry_date.desc()))
     return result.first()
 
 async def get_cycle_by_user_id_and_index(user_id: int, index: int, session: AsyncSession) -> Cycle | None:
     user: User = await get_user_by_id(id=user_id, session=session)
+    if isinstance(user, NoneType):
+        return None
     game: Game = await get_game_by_id(id=user.game_id , session=session)
+    if isinstance(game, NoneType):
+        return None
     result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == index).order_by(Cycle.entry_date.desc()))
     return result.first()
