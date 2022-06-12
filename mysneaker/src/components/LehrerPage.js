@@ -1,5 +1,4 @@
 import React from 'react'
-import Klassen from './Klassen'
 import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 
@@ -32,7 +31,7 @@ const LehrerPage = () => {
         let companies = []
         element.json().then((element1) => {
           element1.forEach(element2 => {
-            if (element2.is_active) {
+            if (!element2.is_active) {
               companies.push(element2)
             }
           });
