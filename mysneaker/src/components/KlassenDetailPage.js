@@ -100,6 +100,21 @@ const KlassenDetailPage = () => {
 
   const onClickRegister = () => {
     setShowModal(true)
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+    myHeaders.append("Access-Control-Allow-Origin", "*")
+
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      mode: 'cors',
+    };
+
+    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/activate_signup/' + id, requestOptions)
+    .then(async (element) => {
+      return
+    })
     if (!register) {
       setRegister(true)
     } else {
@@ -114,6 +129,8 @@ const KlassenDetailPage = () => {
   const OnClick = (text) => {
     if (text == "LehrerPage") {
       window.location.href = "/dashboard"
+    } else if(text == "Logout") {
+      window.location.href = "/logout"
     }
 
   }
