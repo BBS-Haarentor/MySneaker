@@ -8,7 +8,7 @@ from app.api.auth.user_auth import base_auth_required, get_current_active_user, 
 from app.crud.game import get_game_by_id
 from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_admingroup, check_user_in_basegroup, check_user_in_group, check_user_in_teachergroup
 from app.crud.stock import new_stock_entry
-from app.crud.user import create_user, get_user_by_id, get_user_by_id_or_name, remove_user, toggle_user_active, update_pw, update_user
+from app.crud.user import create_user, get_teacher_list, get_user_by_id, get_user_by_id_or_name, remove_user, toggle_user_active, update_pw, update_user
 from app.db.session import get_async_session
 from app.models.game import Game
 from app.models.groups import BaseGroup
@@ -188,3 +188,8 @@ async def my_auth(current_user: User = Depends(get_current_active_user), session
     return auth_str
 
 # get teacher list for admin
+@router.get("/teacher_list", status_code=status.HTTP_200_OK, response_model=list[UserResponse])
+@admin_auth_required
+async def get_all_teachers(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User]:
+    teacher_list: list[User] = await get_teacher_list(session=session)
+    return teacher_list

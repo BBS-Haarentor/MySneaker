@@ -6,6 +6,7 @@ from types import NoneType
 from fastapi import Depends, HTTPException
 from sqlmodel import or_, select
 from app.models.game import Game
+from app.models.groups import TeacherGroup
 from app.models.user import User
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.schemas.user import UserBase, UserPatch, UserPwChange, UserResponseWithGradeName
@@ -204,3 +205,9 @@ async def toggle_user_active(user_id: int, session: AsyncSession) -> bool | None
     await session.commit()
     await session.refresh(user)
     return user.is_active
+
+
+async def get_teacher_list(session: AsyncSession) -> list[User]:
+    result = await session.exec(select(User).join(TeacherGroup))
+    teacher_list: list[User] = result.all()
+    return teacher_list
