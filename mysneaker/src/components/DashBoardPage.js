@@ -5,6 +5,7 @@ import LoginPage from "./LoginPage";
 import LehrerPage from "./LehrerPage";
 import Container from "./Container";
 import Cookies from "js-cookie";
+import AdminPage from "./AdminPage";
 
 const DashBoardPage = () => {
   const MarketingRef = useRef(null);
@@ -19,7 +20,6 @@ const DashBoardPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const OnClick = (text) => {
-    console.log(text)
     setState(text)
     if (text === "Lager/Beschaffung") {
       LagerBeschaffungRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -57,6 +57,8 @@ const DashBoardPage = () => {
           let body = await element.text();
           if(body.replaceAll("\"", "") === "teacher") {
             setIsLehe(true)
+          } else if(body.replaceAll("\"", "") === "admin") {
+            setIsAdmin(true)
           }
           return
         })
@@ -74,7 +76,7 @@ const DashBoardPage = () => {
     <div className="h-screen w-screen bg-[#f7fafc] flex" >
       <SideNavBar OnClick={OnClick} state={state} />
 
-      {state == "Login" ? <LoginPage /> : ( isLehe ? <LehrerPage/>  : <Container MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef} LagerBeschaffungRef={LagerBeschaffungRef} ProductionRef={ProductionRef} PersonalRef={PersonalRef}/>)}
+      {state == "Login" ? <LoginPage /> : ( isAdmin ? <AdminPage/> : isLehe ? <LehrerPage/> : <Container MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef} LagerBeschaffungRef={LagerBeschaffungRef} ProductionRef={ProductionRef} PersonalRef={PersonalRef}/>)}
     </div>
   )
 }
