@@ -37,17 +37,28 @@ const LoginPage = () => {
 
     const putData = async (requestOptions) => {
         setAlert("")
-        const res = await fetch(window.location.protocol + "//" + window.location.hostname + ":8008/user/login", requestOptions)
-        if (res.status === 200) {
-            const rawData = await res.json()
-            Cookies.set("session", [rawData.access_token])
-            window.location.href = "/dashboard"
-        } else if(res.status === 422) {
+        try {
+            const res = await fetch(window.location.protocol + '//' + window.location.hostname + ":8008/user/login", requestOptions)
+            if (res.status === 200) {
+                const rawData = await res.json()
+                Cookies.set("session", [rawData.access_token])
+                window.location.href = "/dashboard"
+            } else if (res.status === 422) {
+                setAlert(
+                    <>
+                        <div class="bg-red-100 border border-red-600 text-red-700 px-4 mx-11 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Login Fehlgeschlagen!</strong>
+                            <span class="block sm:inline"> Bitte Passwort und Benutzername überprüfen</span>
+                        </div>
+                    </>
+                )
+            }
+        } catch (error) {
             setAlert(
                 <>
                     <div class="bg-red-100 border border-red-600 text-red-700 px-4 mx-11 py-3 rounded relative" role="alert">
                         <strong class="font-bold">Login Fehlgeschlagen!</strong>
-                        <span class="block sm:inline"> Bitte Passwort und Benutzername überprüfen</span>
+                        <span class="block sm:inline"> Unbekannter fehler</span>
                     </div>
                 </>
             )

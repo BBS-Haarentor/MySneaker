@@ -16,6 +16,7 @@ const DashBoardPage = () => {
 
   const [state, setState] = useState((Cookies.get("session") === undefined || Cookies.get("session") === "" ? "Login" : "Lager/Beschaffung"))
   var [isLehe, setIsLehe] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const OnClick = (text) => {
     console.log(text)
