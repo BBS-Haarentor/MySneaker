@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 const SideNavBar = ({ OnClick, state }) => {
   const [token, setToken] = useState();
   var [isLehe, setIsLehe] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     if (Cookies.get("session")) {
@@ -26,6 +27,8 @@ const SideNavBar = ({ OnClick, state }) => {
           let body = await element.text();
           if(body.replaceAll("\"", "") === "teacher") {
             setIsLehe(true)
+          } else if(body.replaceAll("\"", "") === "admin") {
+            setIsAdmin(true)
           }
           return
         })
@@ -42,7 +45,8 @@ const SideNavBar = ({ OnClick, state }) => {
       <img className='max-w-[20px] max-h-[20px]' src="https://img.icons8.com/ios/50/000000/sneakers.png" />
       <h1 className='text-black ml-2 font-bold '>MySneaker</h1>
     </div>
-    {isLehe ? <> <NavBarButton text="LehrerPage" state={state} onClick={OnClick}></NavBarButton> <NavBarButton text="Logout" state={state} onClick={OnClick}></NavBarButton></> :
+    {isAdmin ? <> <NavBarButton text="Lehrer List" state={state} onClick={OnClick}></NavBarButton> <NavBarButton text="Logout" state={state} onClick={OnClick}></NavBarButton></> : 
+    isLehe ? <> <NavBarButton text="LehrerPage" state={state} onClick={OnClick}></NavBarButton> <NavBarButton text="Logout" state={state} onClick={OnClick}></NavBarButton></> :
       (token === undefined ? <NavBarButton text="Login" state={state} onClick={OnClick}></NavBarButton> : <> <Spacer></Spacer>
         <NavBarButton text="Lager/Beschaffung" state={state} onClick={OnClick} ></NavBarButton>
         <NavBarButton text="Personal" state={state} onClick={OnClick}></NavBarButton>

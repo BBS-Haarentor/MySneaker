@@ -112,9 +112,9 @@ const KlassenDetailPage = () => {
     };
 
     fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/activate_signup/' + id, requestOptions)
-    .then(async (element) => {
-      return
-    })
+      .then(async (element) => {
+        return
+      })
     if (!register) {
       setRegister(true)
     } else {
@@ -129,7 +129,7 @@ const KlassenDetailPage = () => {
   const OnClick = (text) => {
     if (text == "LehrerPage") {
       window.location.href = "/dashboard"
-    } else if(text == "Logout") {
+    } else if (text == "Logout") {
       window.location.href = "/logout"
     }
 
@@ -174,11 +174,12 @@ const KlassenDetailPage = () => {
           <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
             <div className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[160%] overflow-y-auto my-12'>
               <ul>
-                {companies.map(({ name, id }) => {
-                  return (
-                    <li className='p-3 text-lg' onClick={() => changeCompanie(name, id)}><a>{name}</a></li>
-
-                  )
+                {companies.map(({ name, id, is_active }) => {
+                  if (is_active) {
+                    return (
+                      <li className='p-3 text-lg' onClick={() => changeCompanie(name, id)}><a>{name}</a></li>
+                    )
+                  }
                 }
                 )}
               </ul>

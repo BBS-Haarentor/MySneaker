@@ -63,7 +63,7 @@ const LehrerPage = () => {
         body: raw
       };
 
-      const d1 = fetch('http://' + window.location.hostname + ':8008/api/v1/game/create', requestOptions)
+      const d1 = fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/create', requestOptions)
         .then(async (element) => {
           switch (element.status) {
             case 401:
@@ -108,7 +108,7 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/toggle_active?user_id=' + id, requestOptions).then(() => getCompaniesVerify())
+    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/toggle_active/' + id, requestOptions).then(() => getCompaniesVerify())
   }
 
   const getGames = () => {
