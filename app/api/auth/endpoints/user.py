@@ -50,6 +50,7 @@ async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depe
 @router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
 async def post_teacheruser(user_post: UserPostElevated, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)): # current_user: User = Depends(get_current_active_user),
     user_post.hashed_pw = hash_pw(user_post.unhashed_pw)
+    user_post.is_active = True
     new_user_id = await create_user(user_post, session)
     result: User | None = await add_user_to_teachergroup(user_id=new_user_id, session=session)
     return { f"Teacher user created with {new_user_id}"}
@@ -58,6 +59,7 @@ async def post_teacheruser(user_post: UserPostElevated, api_key: APIKey = Depend
 @router.post("/create/admin", status_code=status.HTTP_201_CREATED)
 async def post_adminuser(new_user: UserPostElevated, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)): 
     new_user.hashed_pw = hash_pw(new_user.unhashed_pw)
+    new_user.is_active = True
     new_user_id = await create_user(user_post=new_user, session=session)
     result: User | None = await add_user_to_admingroup(session=session, user_id=new_user_id)
     return { f"Admin user created with {new_user_id}"}
