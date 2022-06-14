@@ -86,6 +86,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const FarbenKosten = data.scenario.paint_price * FarbenEinkaufMenge
     const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
     const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
+    const [GeplanteProduktion2, setGeplanteProduktion2] = useState(0)
+    const [ZugeteilteMitarbeiter2, setZugeteilteMitarbeiter2] = useState(0)
+    const [GeplanteProduktion3, setGeplanteProduktion3] = useState(0)
+    const [ZugeteilteMitarbeiter3, setZugeteilteMitarbeiter3] = useState(0)
     const [Werbung, setWerbung] = useState(0)
     const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(0)
     const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(0)
@@ -483,7 +487,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
-                    <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> 
+                    <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
                     </div>}
 
                 {data.current_stock.machine_2_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
