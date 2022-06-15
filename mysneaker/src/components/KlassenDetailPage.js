@@ -116,7 +116,7 @@ const KlassenDetailPage = () => {
                     </svg>
                   </div>
                   <span className="font-bold block text-xl mb-3">Erfolgreich</span>
-                  <span className="block text-xl mb-3">Das Spiel ist jetzt in der nächsten Phase</span>
+                  <span className="block text-xl mb-3">Das Spiel ist jetzt in der nächsten Periode</span>
                   <div className="text-right space-x-5 mt-5">
                     <button onClick={() => setInfoModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
                   </div>
@@ -125,6 +125,7 @@ const KlassenDetailPage = () => {
             </div>
           </>)
         } else {
+          let json = await element.json()
           setInfoModal(<>
             <div className={"block"}>
               <div
@@ -144,8 +145,8 @@ const KlassenDetailPage = () => {
                       <rect x="11" y="17" width="2" height="2" rx="1" />
                     </svg>
                   </div>
-                  <span className="font-bold block text-xl mb-3">Es gab ein Fehler!</span>
-                  <span className="block text-xl mb-3">Bitte Versuche Sie es später erneut</span>
+                  <span className="font-bold block text-xl mb-3">Fehler!</span>
+                  <span className="block text-xl mb-3">{json.detail}</span>
                   <div className="text-right space-x-5 mt-5">
                     <button onClick={() => setInfoModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
                   </div>
@@ -215,7 +216,7 @@ const KlassenDetailPage = () => {
             <div
               className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-              <span className="font-bold block text-xl mb-3">Register QRCode</span>
+              <span className="font-bold block text-xl mb-3">QR-Code</span>
               <div className='flex'>
                 <div className='block text-xl m-auto justify-center' ref={ref} />
               </div>
@@ -243,7 +244,7 @@ const KlassenDetailPage = () => {
                 {companies.map(({ name, id, is_active }) => {
                   if (is_active) {
                     return (
-                      <li className='p-3 text-lg' onClick={() => changeCompanie(name, id)}><a>{name}</a></li>
+                      <li className='p-3 shadow-lg rounded-3xl m-auto my-4 flex justify-around bg-white w-[90%]' onClick={() => changeCompanie(name, id)}><a>{name}</a></li>
                     )
                   }
                 }
@@ -253,10 +254,10 @@ const KlassenDetailPage = () => {
             <div className='absolute m-auto' />
             <div></div>
             <button className={'inline-block border-2 shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12 '} onClick={() => onClickRegister()}>
-              Register Freischalten
+              QR-Code anzeigen
             </button>
             <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => toggleTurnover()}>
-              Abschließen
+              Periode abschließen
             </button>
           </div>
         </div>
