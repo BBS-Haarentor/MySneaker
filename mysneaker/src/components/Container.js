@@ -99,7 +99,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
-    const [Gesamtproduktion, setGesamtproduktion] = useState(0)
     const [Mitarbeiter, setMitarbeiter] = useState(8)
     const [Neueinstellungen, setNeueinstellungen] = useState(0)
     const [Kündigungen, setKündigungen] = useState(0)
@@ -109,7 +108,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [buy_new_machine_2, setBuy_new_machine_2] = useState(false)
     const [buy_new_machine_3, setBuy_new_machine_3] = useState(false)
 
-    Gesamtproduktion = GeplanteProduktion + GeplanteProduktion2 + GeplanteProduktion3
+    var Gesamtproduktion = GeplanteProduktion + GeplanteProduktion2 + GeplanteProduktion3
 
     var PersonalnebenkostenInP = Personalnebenkosten / 100 + 1
     var ProduktionFarben = parseInt(FarbenEinkaufMenge / 2)
