@@ -45,6 +45,7 @@ const KlassenDetailPage = () => {
   const [showModal, setShowModal] = useState(false)
   const [game, setGame] = useState()
   const ref = useRef(null);
+  const [infoModal, setInfoModal] = useState(<></>)
 
   useEffect(async () => {
     qrCode.update({
@@ -91,8 +92,72 @@ const KlassenDetailPage = () => {
 
     fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/turnover/' + id, requestOptions)
       .then(async (element) => {
+        if (element.status === 200) {
+          setInfoModal(<>
+            <div className={"block"}>
+              <div
+                className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                id="my-modal"
+              ></div>
+              <div
+                className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                <div
+                  className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+
+                  <div class="hero container max-w-screen-lg mx-auto p-5">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                      id="Capa_1" x="0px" y="0px" viewBox="0 0 507.506 507.506"
+                      fill="currentColor"
+                      class="mx-auto h-32 text-green-400"
+                      height="512">
+                      <g>
+                        <path d="M163.865,436.934c-14.406,0.006-28.222-5.72-38.4-15.915L9.369,304.966c-12.492-12.496-12.492-32.752,0-45.248l0,0   c12.496-12.492,32.752-12.492,45.248,0l109.248,109.248L452.889,79.942c12.496-12.492,32.752-12.492,45.248,0l0,0   c12.492,12.496,12.492,32.752,0,45.248L202.265,421.019C192.087,431.214,178.271,436.94,163.865,436.934z" />
+                      </g>
+                    </svg>
+                  </div>
+                  <span className="font-bold block text-xl mb-3">Erfolgreich</span>
+                  <span className="block text-xl mb-3">Das Spiel ist jetzt in der nächsten Phase</span>
+                  <div className="text-right space-x-5 mt-5">
+                    <button onClick={() => setInfoModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>)
+        } else {
+          setInfoModal(<>
+            <div className={"block"}>
+              <div
+                className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                id="my-modal"
+              ></div>
+              <div
+                className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                <div
+                  className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+
+                  <div class="hero container max-w-screen-lg mx-auto p-5">
+                    <svg class="mx-auto h-32 text-red-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
+                      height="512">
+                      <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
+                      <path d="M12,5a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V6A1,1,0,0,0,12,5Z" />
+                      <rect x="11" y="17" width="2" height="2" rx="1" />
+                    </svg>
+                  </div>
+                  <span className="font-bold block text-xl mb-3">Es gab ein Fehler!</span>
+                  <span className="block text-xl mb-3">Bitte Versuche Sie es später erneut</span>
+                  <div className="text-right space-x-5 mt-5">
+                    <button onClick={() => setInfoModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>)
+        }
         return
       })
+
+
 
   }
 
@@ -139,6 +204,7 @@ const KlassenDetailPage = () => {
     <>
       <div className='flex'>
         <SideNavBar OnClick={OnClick} />
+        {infoModal}
         <div className={showModal ? "block" : "hidden"}>
           <div
             className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
@@ -192,7 +258,6 @@ const KlassenDetailPage = () => {
             <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => toggleTurnover()}>
               Abschließen
             </button>
-
           </div>
         </div>
       </div>

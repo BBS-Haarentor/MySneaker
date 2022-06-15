@@ -54,6 +54,9 @@ const DashBoardPage = () => {
       try {
         fetch(window.location.protocol+'//'+window.location.hostname+':8008/user/my_auth', requestOptions)
         .then(async (element) => {
+          if(element.status === 401) {
+            window.location.href = "/logout"
+          }
           let body = await element.text();
           if(body.replaceAll("\"", "") === "teacher") {
             setIsLehe(true)

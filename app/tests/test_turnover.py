@@ -34,6 +34,59 @@ class TestTurnover(unittest.TestCase):
   "machine_maintainance_cost": 4000.00,
   "production_cost_per_sneaker": 60.00
 }
+
+    user_1_stock = {
+  "game_id": 1,
+  "current_cycle_index": 0,
+  "company_id": 2,
+  "buy_sneaker": 100,
+  "buy_paint": 200,
+  "planned_production_1": 100,
+  "planned_production_2": 0,
+  "planned_production_3": 0,
+  "planned_workers_1": 5,
+  "planned_workers_2": 0,
+  "planned_workers_3": 0,
+  "include_from_stock": 0,
+  "sales_planned": 100,
+  "sales_bid": 200.00,
+  "tender_offer_count": 0,
+  "tender_offer_price": 0.00,
+  "research_invest": 1000.00,
+  "ad_invest": 0.00,
+  "take_credit": 1000.00,
+  "payback_credit": 0.00,
+  "new_employees": 2,
+  "buy_new_machine_2": False,
+  "buy_new_machine_3": False
+    }
+
+    user_2_stock = {
+  "game_id": 1,
+  "current_cycle_index": 0,
+  "company_id": 2,
+  "buy_sneaker": 160,
+  "buy_paint": 320,
+  "planned_production_1": 160,
+  "planned_production_2": 0,
+  "planned_production_3": 0,
+  "planned_workers_1": 8,
+  "planned_workers_2": 0,
+  "planned_workers_3": 0,
+  "include_from_stock": 0,
+  "sales_planned": 160,
+  "sales_bid": 130.00,
+  "tender_offer_count": 0,
+  "tender_offer_price": 0.00,
+  "research_invest": 2500.00,
+  "ad_invest": 0.00,
+  "take_credit": 0.00,
+  "payback_credit": 0.00,
+  "new_employees": 0,
+  "buy_new_machine_2": False,
+  "buy_new_machine_3": False
+    }
+
         
         self.scenario: Scenario = Scenario.from_orm(scenarion_json)
         logging.error(f"{self.scenario=}")
