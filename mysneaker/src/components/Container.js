@@ -162,8 +162,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         myHeaders.append('Access-Control-Allow-Origin', '*')
 
         var raw = JSON.stringify({
-            "buy_sneaker": SneakerEinkaufMenge,
-            "buy_paint": FarbenEinkaufMenge,
+            "buy_sneaker": parseInt(SneakerEinkaufMenge),
+            "buy_paint": parseInt(FarbenEinkaufMenge),
             "planned_production_1": GeplanteProduktion,
             "planned_production_2": 0,
             "planned_production_3": 0,
