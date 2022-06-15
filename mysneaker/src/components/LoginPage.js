@@ -38,7 +38,7 @@ const LoginPage = () => {
     const putData = async (requestOptions) => {
         setAlert("")
         try {
-            const res = await fetch(window.location.protocol + '//' + window.location.hostname + ":8008/user/login", requestOptions)
+            const res = await fetch(process.env.REACT_APP_MY_API_URL + "/user/login", requestOptions)
             if (res.status === 200) {
                 const rawData = await res.json()
                 Cookies.set("session", [rawData.access_token])

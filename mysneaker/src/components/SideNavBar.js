@@ -22,7 +22,7 @@ const SideNavBar = ({ OnClick, state }) => {
         headers: myHeaders,
       };
       try {
-        fetch(window.location.protocol + '//'+window.location.hostname+':8008/user/my_auth', requestOptions)
+        fetch(process.env.REACT_APP_MY_API_URL + '/user/my_auth', requestOptions)
         .then(async (element) => {
           if(element.status === 401) {
             window.location.href = "/logout"

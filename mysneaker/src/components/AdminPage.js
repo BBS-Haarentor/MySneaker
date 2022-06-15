@@ -15,7 +15,7 @@ const AdminPage = () => {
       method: 'GET',
       headers: myHeaders,
     };
-    await fetch(window.location.protocol + "//" + window.location.hostname + ":8008/user/teacher_list", requestOptions).then((element) => {
+    await fetch(process.env.REACT_APP_MY_API_URL + "/user/teacher_list", requestOptions).then((element) => {
       if (element.status === 200) {
         element.json().then((element1) => {
           setTeachers(element1)

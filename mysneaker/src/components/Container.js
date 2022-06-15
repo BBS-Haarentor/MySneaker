@@ -134,7 +134,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             headers: myHeaders,
         };
 
-        fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/my_auth', requestOptions)
+        fetch(process.env.REACT_APP_MY_API_URL + '/user/my_auth', requestOptions)
             .then(async (element) => {
                 let body = await element.text();
                 if (body.replaceAll("\"", "") === "student") {
@@ -149,7 +149,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     }, [])
 
     const fetchData = async () => {
-        const res = await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/my_summary')
+        const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/my_summary')
         const data = await res.json()
 
         return data
@@ -190,7 +190,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             headers: myHeaders,
         };
 
-        const res = await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/cycle/new_entry', requestOptions)
+        const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/cycle/new_entry', requestOptions)
         const data = await res.json()
 
         return data

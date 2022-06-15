@@ -64,13 +64,13 @@ const KlassenDetailPage = () => {
       headers: myHeaders,
     };
 
-    await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/get_all_users_for_game/' + id, requestOptions)
+    await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_all_users_for_game/' + id, requestOptions)
       .then(async (element) => {
         let json = await element.json();
         setCompanies(json)
       })
 
-    await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
+    await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
       if (res.status === 200) {
         let json = await res.json();
         setGame(json)
@@ -90,7 +90,7 @@ const KlassenDetailPage = () => {
       mode: 'cors',
     };
 
-    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/turnover/' + id, requestOptions)
+    fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/turnover/' + id, requestOptions)
       .then(async (element) => {
         if (element.status === 200) {
           setInfoModal(<>
@@ -176,7 +176,7 @@ const KlassenDetailPage = () => {
       mode: 'cors',
     };
 
-    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/activate_signup/' + id, requestOptions)
+    fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/activate_signup/' + id, requestOptions)
       .then(async (element) => {
         return
       })

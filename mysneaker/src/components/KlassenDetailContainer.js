@@ -131,7 +131,7 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
             headers: myHeaders,
         };
 
-        fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/my_auth', requestOptions)
+        fetch(process.env.REACT_APP_MY_API_URL + '/user/my_auth', requestOptions)
             .then(async (element) => {
                 let body = await element.text();
                 if(element.status !== 200) {
@@ -159,7 +159,7 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
             method: 'GET',
             headers: myHeaders,
         };
-        const res = await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/teacher/summary/user/' + userId + '/index/' + current_cycle_index, requestOptions)
+        const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/teacher/summary/user/' + userId + '/index/' + current_cycle_index, requestOptions)
         const data = await res.json()
 
         return data
