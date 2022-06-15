@@ -1,4 +1,5 @@
 
+from datetime import datetime
 import logging
 from types import NoneType
 from sqlmodel import select
@@ -9,7 +10,7 @@ from app.crud.user import get_user_by_id
 from app.models.cycle import Cycle
 from app.models.game import Game
 from app.models.user import User
-from app.schemas.cycle import CycleCreate, CylcePost
+from app.schemas.cycle import CycleCreate
 
 
 
@@ -18,7 +19,8 @@ async def get_cycle_entry_by_id(cycle_id: int, session: AsyncSession) -> Cycle |
     return result.one_or_none()
 
 
-async def new_cycle_entry(cycle_data: CylcePost, session: AsyncSession) -> int:
+async def new_cycle_entry(cycle_data: CycleCreate, session: AsyncSession) -> int:
+    cycle_data.entry_date = datetime.now()
     new_cycle = Cycle.from_orm(cycle_data)
     session.add(new_cycle)
     await session.commit()

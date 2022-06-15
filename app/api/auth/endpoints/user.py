@@ -85,14 +85,6 @@ async def get_user_by_name(username: str, current_user: User = Depends(get_curre
         return result
 
 
-@router.patch("/patch", status_code=status.HTTP_200_OK)
-@teacher_auth_required
-async def patch_user(user_data: UserPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    raise NotImplementedError
-    result = await update_user(update_data=user_data, session=session)
-    return result
-
-
 @router.put("/toggle_active/{user_id}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
 async def toggle_user_active_by_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
