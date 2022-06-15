@@ -99,7 +99,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
-    const [Gesamtproduktion, setGesamtproduktion] = useState(0)
     const [Mitarbeiter, setMitarbeiter] = useState(8)
     const [Neueinstellungen, setNeueinstellungen] = useState(0)
     const [Kündigungen, setKündigungen] = useState(0)
@@ -109,7 +108,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [buy_new_machine_2, setBuy_new_machine_2] = useState(false)
     const [buy_new_machine_3, setBuy_new_machine_3] = useState(false)
 
-
+    var Gesamtproduktion = GeplanteProduktion + GeplanteProduktion2 + GeplanteProduktion3
 
     var PersonalnebenkostenInP = Personalnebenkosten / 100 + 1
     var ProduktionFarben = parseInt(FarbenEinkaufMenge / 2)
@@ -262,25 +261,25 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                                 <td>Aktuelle Beschaffung</td>
                                 <td>{SneakerEinkaufMenge}</td>
                                 <td>{FarbenEinkaufMenge}</td>
-                                <td>{GeplanteProduktion}</td>
+                                <td>{Gesamtproduktion}</td>
                             </tr>
                             <tr>
                                 <td>Gesamte Verfügbarkeit</td>
                                 <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)}</td>
                                 <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge)}</td>
-                                <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion)}</td>
+                                <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion)}</td>
                             </tr>
                             <tr>
                                 <td>Verbrauch Produktion (PLAN)</td>
-                                <td>{GeplanteProduktion}</td>
-                                <td>{GeplanteProduktion * 2}</td>
-                                <td>{Math.round(parseInt(GeplanteProduktion) + parseInt(EntnahmeAusDemLager))}</td>
+                                <td>{Gesamtproduktion}</td>
+                                <td>{Gesamtproduktion * 2}</td>
+                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager))}</td>
                             </tr>
                             <tr>
                                 <td>Lager Periodenende (PLAN)</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - GeplanteProduktion}</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2}</td>
-                                <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))}</td>
+                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion}</td>
+                                <td>{(data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2}</td>
+                                <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten pro Stück</td>
@@ -290,27 +289,27 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lagerkosten (PLAN)</td>
-                                <td>{((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - GeplanteProduktion) * 4 + "€"}</td>
-                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
-                                <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 + "€"}</td>
+                                <td>{((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 + "€"}</td>
+                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1 + "€"}</td>
+                                <td>{(data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Verbrauch Produktion (IST)</td>
-                                <td>{GeplanteProduktion}</td>
-                                <td>{GeplanteProduktion * 2}</td>
+                                <td>{Gesamtproduktion}</td>
+                                <td>{Gesamtproduktion * 2}</td>
                                 <td>{MarktSoll}</td>
                             </tr>
                             <tr>
                                 <td>Lager Periodenende (IST)</td>
-                                <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion}</td>
-                                <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - GeplanteProduktion * 2}</td>
-                                <td>{data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))}</td>
+                                <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion}</td>
+                                <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2}</td>
+                                <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten (IST)</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
-                                <td>{(data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - GeplanteProduktion * 2) * 1 + "€"}</td>
-                                <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 + "€"}</td>
+                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4 + "€"}</td>
+                                <td>{(data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2) * 1 + "€"}</td>
+                                <td>{(data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 + "€"}</td>
                             </tr>
 
                         </tbody>
@@ -531,19 +530,19 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion2(e.target.value)} value={GeplanteProduktion2}></input></td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion / 20)}</td>
+                                <td>{Math.ceil(GeplanteProduktion2 / 20)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -555,19 +554,19 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion2 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Auslastung</td>
-                                <td>{Math.round((GeplanteProduktion / 1) / Produktionskapazität * 100)}</td>
+                                <td>{Math.round((GeplanteProduktion2 / 1) / Produktionskapazität * 100)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Gesamtkosten Produktion</td>
-                                <td>{Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion}</td>
+                                <td>{Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion2}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -623,19 +622,19 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input></td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion3(e.target.value)} value={GeplanteProduktion3}></input></td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion / 20)}</td>
+                                <td>{Math.ceil(GeplanteProduktion3 / 20)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -647,19 +646,19 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion3 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Auslastung</td>
-                                <td>{Math.round((GeplanteProduktion / 1) / Produktionskapazität * 100)}</td>
+                                <td>{Math.round((GeplanteProduktion3 / 1) / Produktionskapazität * 100)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Gesamtkosten Produktion</td>
-                                <td>{Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion}</td>
+                                <td>{Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion3}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -717,7 +716,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Gesamtproduktion</td>
-                                <td>{Math.round(parseInt(GeplanteProduktion) + parseInt(EntnahmeAusDemLager))}</td>
+                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager))}</td>
                             </tr>
                             <tr>
                                 <td>Geplanteproduktion möglich</td>
@@ -747,7 +746,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Gesamtverkauf Möglich</td>
-                                <td>{Math.round(parseInt(GeplanteProduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "Nein" : "Ja"}</td>
+                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "Nein" : "Ja"}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -825,18 +824,18 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lagerkosten Fertige Erz.</td>
-                                <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 + "€"}</td>
-                                <td>{(data.current_stock.finished_sneaker_count + parseInt(GeplanteProduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 + "€"}</td>
+                                <td>{(data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 + "€"}</td>
+                                <td>{(data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Sneaker</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
-                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - GeplanteProduktion) * 4 + "€"}</td>
+                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4 + "€"}</td>
+                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4 + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Farben</td>
-                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
-                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - GeplanteProduktion * 2) * 1 + "€"}</td>
+                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1 + "€"}</td>
+                                <td>{((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1 + "€"}</td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten</td>
