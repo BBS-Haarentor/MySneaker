@@ -180,11 +180,11 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             "buy_sneaker": parseInt(SneakerEinkaufMenge),
             "buy_paint": parseInt(FarbenEinkaufMenge),
             "planned_production_1": GeplanteProduktion,
-            "planned_production_2": 0,
-            "planned_production_3": 0,
+            "planned_production_2": GeplanteProduktion2,
+            "planned_production_3": GeplanteProduktion3,
             "planned_workers_1": ZugeteilteMitarbeiter,
-            "planned_workers_2": 0,
-            "planned_workers_3": 0,
+            "planned_workers_2": ZugeteilteMitarbeiter2,
+            "planned_workers_3": ZugeteilteMitarbeiter3,
             "include_from_stock": EntnahmeAusDemLager,
             "sales_planned": MarktSoll,
             "sales_bid": AusschreibungSoll,
@@ -219,7 +219,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 <div
                   className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-                  <div class="hero container max-w-screen-lg mx-auto p-5">
+                  <div className="hero container max-w-screen-lg mx-auto p-5">
                     <svg xmlns="http://www.w3.org/2000/svg"
                       id="Capa_1" x="0px" y="0px" viewBox="0 0 507.506 507.506"
                       fill="currentColor"
@@ -253,8 +253,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 <div
                   className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-                  <div class="hero container max-w-screen-lg mx-auto p-5">
-                    <svg class="mx-auto h-32 text-red-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
+                  <div className="hero container max-w-screen-lg mx-auto p-5">
+                    <svg className="mx-auto h-32 text-red-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
                       height="512">
                       <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
                       <path d="M12,5a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V6A1,1,0,0,0,12,5Z" />
