@@ -80,23 +80,23 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             }
         }
     )
-    const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState(0)
-    const [FarbenEinkaufMenge, setFarbenEinkaufMenge] = useState(0)
+    const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState(data.current_cycle.buy_sneaker)
+    const [FarbenEinkaufMenge, setFarbenEinkaufMenge] = useState(data.current_cycle.buy_paint)
     const SneakerKosten = data.scenario.sneaker_price * SneakerEinkaufMenge
     const FarbenKosten = data.scenario.paint_price * FarbenEinkaufMenge
-    const [GeplanteProduktion, setGeplanteProduktion] = useState(0)
-    const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(0)
-    const [GeplanteProduktion2, setGeplanteProduktion2] = useState(0)
-    const [ZugeteilteMitarbeiter2, setZugeteilteMitarbeiter2] = useState(0)
-    const [GeplanteProduktion3, setGeplanteProduktion3] = useState(0)
-    const [ZugeteilteMitarbeiter3, setZugeteilteMitarbeiter3] = useState(0)
-    const [Werbung, setWerbung] = useState(0)
-    const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(0)
-    const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(0)
-    const [MarktSoll, setMarktSoll] = useState(0)
+    const [GeplanteProduktion, setGeplanteProduktion] = useState(data.current_cycle.planned_production_1)
+    const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(data.current_cycle.planned_workers_1)
+    const [GeplanteProduktion2, setGeplanteProduktion2] = useState(data.current_cycle.planned_production_2)
+    const [ZugeteilteMitarbeiter2, setZugeteilteMitarbeiter2] = useState(data.current_cycle.planned_workers_2)
+    const [GeplanteProduktion3, setGeplanteProduktion3] = useState(data.current_cycle.planned_production_3)
+    const [ZugeteilteMitarbeiter3, setZugeteilteMitarbeiter3] = useState(data.current_cycle.planned_workers_3)
+    const [Werbung, setWerbung] = useState(data.current_cycle.ad_invest)
+    const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(data.current_cycle.research_invest)
+    const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(data.current_cycle.include_from_stock)
+    const [MarktSoll, setMarktSoll] = useState(data.current_cycle.sales_planned)
     const [MarktSollPreis, setMarktSollPreis] = useState(0)
     const [MarktIst, setMarktIst] = useState(0)
-    const [AusschreibungSoll, setAussetschreibungSoll] = useState(0)
+    const [AusschreibungSoll, setAussetschreibungSoll] = useState(data.current_cycle.sales_bid)
     const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(0)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
@@ -834,13 +834,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             <tr>
                                 <td>Markt</td>
                                 <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSoll(e.target.value)} value={MarktSoll}></input> Stk.</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" max="300" type="number" onChange={(e) => setMarktSollPreis(e.target.value)} value={MarktSollPreis}></input> €</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0"  type="number" onChange={(e) => setMarktSollPreis(e.target.value)} value={MarktSollPreis}></input> €</td>
                                 <td>{formatter.format(MarktSoll * MarktSollPreis)}</td>
                             </tr>
                             <tr>
                                 <td>Ausschreibung</td>
                                 <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input> Stk.</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis}></input> €</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0"  type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis}></input> €</td>
                                 <td>{formatter.format(AusschreibungSoll * AusschreibungSollPreis)}</td>
                             </tr>
                             <tr>
@@ -862,19 +862,28 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                                 <th className='text-[#4fd1c5]'>Verkauf (Ist)</th>
                             </tr>
                             <tr>
+                                <td></td>
+                                <td>Verkaufte Stück</td>
+                                <td>Umsatz</td>
+                            </tr>
+                            <tr>
                                 <td>Markt</td>
                                 <td>{MarktIst} Stk.</td>
+                                <td>{formatter.format(UmsatzIst)}</td>
                             </tr>
                             <tr>
                                 <td>Ausschreibung</td>
                                 <td>{AusschreibungIst} Stk.</td>
+                                <td>{formatter.format(UmsatzIst)}</td>
                             </tr>
                             <tr>
                                 <td>Gesamt</td>
                                 <td>{Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk. </td>
+                                <td>{formatter.format(UmsatzIst)}</td>
                             </tr>
                         </tbody>
                     </table>
+                    <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
                 </div>
                 <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
                     <img src="/img/undraw_finance.svg" className='h-[500px] w-0 xl:w-[500px] m-auto'></img>
