@@ -117,7 +117,20 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
     var GesamtkostenProduktion = Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion;
+    var UmsatzIst = 0;
+    var UmsatzSoll = 0;
   
+    var AllMaschienenKosten = 0
+
+    if(data.current_stock.machine_1_bought){
+        AllMaschienenKosten = 4000
+    }
+    if (data.current_stock.machine_2_bought){
+        AllMaschienenKosten = 8000
+    }
+    if (data.current_stock.machine_3_bought){
+        AllMaschienenKosten = 12000
+    }
 
     const [modal, setModal] = useState()
 
@@ -264,13 +277,16 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         return data
     }
 
+    var newMaschienPrize = 0
 
     const onBuyM2 = async () => {
+        isbuynewMaschine = true
         setBuy_new_machine_2(true)
     }
 
     
     const onBuyM3 = async () => {
+        isbuynewMaschine = true
         setBuy_new_machine_3(true)
     }
 
@@ -966,8 +982,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Saldo</td>
-                                <td>{ }</td>
-                                <td>{ }</td>
+                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 ) + AllMaschienenKosten + (Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion2) +(Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion) + (Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100)+ (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)* data.scenario.factor_interest_rate) + UmsatzSoll + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen))}</td>
+                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 ) + AllMaschienenKosten + (Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion2) +(Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion) + (Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100)+ (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)* data.scenario.factor_interest_rate) + UmsatzIst + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)) }</td>
                             </tr>
                             <tr>
                                 <td>Höhe Kontokorrentkredit</td>
