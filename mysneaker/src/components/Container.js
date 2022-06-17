@@ -94,8 +94,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(0)
     const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(0)
     const [MarktSoll, setMarktSoll] = useState(0)
+    const [MarktSollPreis, setMarktSollPreis] = useState(0)
     const [MarktIst, setMarktIst] = useState(0)
     const [AusschreibungSoll, setAussetschreibungSoll] = useState(0)
+    const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(0)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
@@ -108,7 +110,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [buy_new_machine_2, setBuy_new_machine_2] = useState(false)
     const [buy_new_machine_3, setBuy_new_machine_3] = useState(false)
 
-    var Gesamtproduktion = GeplanteProduktion + GeplanteProduktion2 + GeplanteProduktion3
+    var Gesamtproduktion =  parseInt(GeplanteProduktion)  +   parseInt(GeplanteProduktion2)  +   parseInt(GeplanteProduktion3) 
 
     var PersonalnebenkostenInP = Personalnebenkosten / 100 + 1
     var ProduktionFarben = parseInt(FarbenEinkaufMenge / 2)
@@ -280,13 +282,11 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     var newMaschienPrize = 0
 
     const onBuyM2 = async () => {
-        isbuynewMaschine = true
         setBuy_new_machine_2(true)
     }
 
     
     const onBuyM3 = async () => {
-        isbuynewMaschine = true
         setBuy_new_machine_3(true)
     }
 
@@ -645,7 +645,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion2 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -737,7 +737,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion3 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -818,7 +818,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div>
-                <div className=" p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center  snap-start">
+                <div className=" p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start">
                     <table>
                         <tbody>
                             <tr>
@@ -826,12 +826,22 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                                 <th className='text-[#4fd1c5]'   >Verkauf (Soll)</th>
                             </tr>
                             <tr>
+                                <td></td>
+                                <td>Geplante Stückzahl</td>
+                                <td>Preis je Einheit (Angebot)</td>
+                                <td>Geplanter Umsatz</td>
+                            </tr>
+                            <tr>
                                 <td>Markt</td>
                                 <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSoll(e.target.value)} value={MarktSoll}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" max="300" type="number" onChange={(e) => setMarktSollPreis(e.target.value)} value={MarktSollPreis}></input> €</td>
+                                <td>{formatter.format(MarktSoll * MarktSollPreis)}</td>
                             </tr>
                             <tr>
                                 <td>Ausschreibung</td>
                                 <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis}></input> €</td>
+                                <td>{formatter.format(AusschreibungSoll * AusschreibungSollPreis)}</td>
                             </tr>
                             <tr>
                                 <td>Gesamt</td>
@@ -844,7 +854,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div>
-                <div className=" p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start ">
+                <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
                     <table>
                         <tbody>
                             <tr>
@@ -891,7 +901,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                                 <td>50.000€</td>
                             </tr>
                             <tr>
-                                <td>Darlehensstand (Beginn Periode)</td>
+                              <td>Darlehensstand (Beginn Periode)</td>
                                 <td>{formatter.format(data.current_stock.credit_taken)}</td>
                                 <td>{formatter.format(data.current_stock.credit_taken)}</td>
                             </tr>
@@ -932,8 +942,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Maschinenkosten</td>
-                                <td>{formatter.format(Maschinenkosten)}</td>
-                                <td>{formatter.format(Maschinenkosten)}</td>
+                                <td>{formatter.format(AllMaschienenKosten)}</td>
+                                <td>{formatter.format(AllMaschienenKosten)}</td>
                             </tr>
                             <tr>
                                 <td>Produktionskosten</td>
@@ -982,8 +992,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Saldo</td>
-                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 ) + AllMaschienenKosten + (Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion2) +(Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion) + (Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100)+ (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)* data.scenario.factor_interest_rate) + UmsatzSoll + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen))}</td>
-                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 ) + AllMaschienenKosten + (Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion2) +(Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion) + (Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100)+ (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)* data.scenario.factor_interest_rate) + UmsatzIst + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)) }</td>
+                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 ) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) +(FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100)+ (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)* data.scenario.factor_interest_rate)) + UmsatzSoll + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
+                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 ) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) +(FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100)+ (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)* data.scenario.factor_interest_rate)) + UmsatzIst + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) }</td>
                             </tr>
                             <tr>
                                 <td>Höhe Kontokorrentkredit</td>
