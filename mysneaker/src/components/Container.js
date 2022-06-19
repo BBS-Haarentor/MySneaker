@@ -2,6 +2,7 @@ import React from 'react'
 import Beschaffung from './Beschaffung'
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
+import Swal from 'sweetalert2'
 
 const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingRef, PersonalRef, AbsatzRef }) => {
 
@@ -14,7 +15,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 "finished_sneaker_count": 0,
                 "research_budget": 0,
                 "credit_taken": 0,
-                "machine_2_bought": true,
+                "machine_2_bought": false,
                 "real_sales": 0,
                 "research_production_modifier": 0,
                 "current_cycle_index": 0,
@@ -107,10 +108,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [Personalnebenkosten, setPersonalnebenkosten] = useState(20)
     const [AufnahmeDarlehen, setAufnahmeDarlehen] = useState(0)
     const [RueckzahlungDarlehen, setRueckzahlungDarlehen] = useState(0)
-    const [buy_new_machine_2, setBuy_new_machine_2] = useState(false)
-    const [buy_new_machine_3, setBuy_new_machine_3] = useState(false)
+    const [buy_new_machine_2, setBuy_new_machine_2] = useState(data.current_cycle.buy_new_machine_2)
+    const [buy_new_machine_3, setBuy_new_machine_3] = useState(data.current_cycle.buy_new_machine_2)
 
-    var Gesamtproduktion =  parseInt(GeplanteProduktion)  +   parseInt(GeplanteProduktion2)  +   parseInt(GeplanteProduktion3) 
+    var Gesamtproduktion = parseInt(GeplanteProduktion) + parseInt(GeplanteProduktion2) + parseInt(GeplanteProduktion3)
 
     var PersonalnebenkostenInP = Personalnebenkosten / 100 + 1
     var ProduktionFarben = parseInt(FarbenEinkaufMenge / 2)
@@ -121,20 +122,24 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     var GesamtkostenProduktion = Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion;
     var UmsatzIst = 0;
     var UmsatzSoll = 0;
-  
+
     var AllMaschienenKosten = 0
 
-    if(data.current_stock.machine_1_bought){
+    if (data.current_stock.machine_1_bought) {
         AllMaschienenKosten = 4000
     }
-    if (data.current_stock.machine_2_bought){
+    if (data.current_stock.machine_2_bought) {
         AllMaschienenKosten = 8000
     }
-    if (data.current_stock.machine_3_bought){
+    if (data.current_stock.machine_3_bought) {
         AllMaschienenKosten = 12000
     }
 
     const [modal, setModal] = useState()
+
+    const [modalBuyMaschine, setModalBuyMaschine] = useState()
+
+    const [modalConfirm, setModalConfirm] = useState()
 
 
     useEffect(() => {
@@ -197,7 +202,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             "new_employees": (Neueinstellungen - Kündigungen),
             "buy_new_machine_2": buy_new_machine_2,
             "buy_new_machine_3": buy_new_machine_3,
-          });
+        });
 
         var requestOptions = {
             method: 'POST',
@@ -206,98 +211,246 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         };
 
         const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/cycle/new_entry', requestOptions)
-        if(res.status === 201) {
+        if (res.status === 201) {
             setModal(
-            <>
-                <div className={"block"}>
-              <div
-                className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
-                id="my-modal"
-              ></div>
-              <div
-                className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
-                <div
-                  className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+                <>
+                    <div className={"block"}>
+                        <div
+                            className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                            id="my-modal"
+                        ></div>
+                        <div
+                            className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                            <div
+                                className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-                  <div className="hero container max-w-screen-lg mx-auto p-5">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                      id="Capa_1" x="0px" y="0px" viewBox="0 0 507.506 507.506"
-                      fill="currentColor"
-                      class="mx-auto h-32 text-green-400"
-                      height="512">
-                      <g>
-                        <path d="M163.865,436.934c-14.406,0.006-28.222-5.72-38.4-15.915L9.369,304.966c-12.492-12.496-12.492-32.752,0-45.248l0,0   c12.496-12.492,32.752-12.492,45.248,0l109.248,109.248L452.889,79.942c12.496-12.492,32.752-12.492,45.248,0l0,0   c12.492,12.496,12.492,32.752,0,45.248L202.265,421.019C192.087,431.214,178.271,436.94,163.865,436.934z" />
-                      </g>
-                    </svg>
-                  </div>
-                  <span className="font-bold block text-xl mb-3">Erfolgreich</span>
-                  <span className="block text-xl mb-3">Die Abgabe war Erfolgreich</span>
-                  <div className="text-right space-x-5 mt-5">
-                    <button onClick={() => setModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </>
+                                <div className="hero container max-w-screen-lg mx-auto p-5">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        id="Capa_1" x="0px" y="0px" viewBox="0 0 507.506 507.506"
+                                        fill="currentColor"
+                                        class="mx-auto h-32 text-green-400"
+                                        height="512">
+                                        <g>
+                                            <path d="M163.865,436.934c-14.406,0.006-28.222-5.72-38.4-15.915L9.369,304.966c-12.492-12.496-12.492-32.752,0-45.248l0,0   c12.496-12.492,32.752-12.492,45.248,0l109.248,109.248L452.889,79.942c12.496-12.492,32.752-12.492,45.248,0l0,0   c12.492,12.496,12.492,32.752,0,45.248L202.265,421.019C192.087,431.214,178.271,436.94,163.865,436.934z" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <span className="font-bold block text-xl mb-3">Erfolgreich</span>
+                                <span className="block text-xl mb-3">Die Abgabe war Erfolgreich</span>
+                                <div className="text-right space-x-5 mt-5">
+                                    <button onClick={() => setModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
             )
         } else {
             setModal(
                 <>
-            <div className={"block"}>
-              <div
-                className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
-                id="my-modal"
-              ></div>
-              <div
-                className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
-                <div
-                  className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+                    <div className={"block"}>
+                        <div
+                            className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                            id="my-modal"
+                        ></div>
+                        <div
+                            className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                            <div
+                                className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-                  <div className="hero container max-w-screen-lg mx-auto p-5">
-                    <svg className="mx-auto h-32 text-red-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
-                      height="512">
-                      <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
-                      <path d="M12,5a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V6A1,1,0,0,0,12,5Z" />
-                      <rect x="11" y="17" width="2" height="2" rx="1" />
-                    </svg>
-                  </div>
-                  <span className="font-bold block text-xl mb-3">Fehler!</span>
-                  <span className="block text-xl mb-3">Es gibt ein Fehler beim Abgeben</span>
-                  <div className="text-right space-x-5 mt-5">
-                    <button onClick={() => setModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
+                                <div className="hero container max-w-screen-lg mx-auto p-5">
+                                    <svg className="mx-auto h-32 text-red-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
+                                        height="512">
+                                        <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
+                                        <path d="M12,5a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V6A1,1,0,0,0,12,5Z" />
+                                        <rect x="11" y="17" width="2" height="2" rx="1" />
+                                    </svg>
+                                </div>
+                                <span className="font-bold block text-xl mb-3">Fehler!</span>
+                                <span className="block text-xl mb-3">Es gibt ein Fehler beim Abgeben</span>
+                                <div className="text-right space-x-5 mt-5">
+                                    <button onClick={() => setModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
             )
         }
         const data = await res.json()
 
-        
+
 
         return data
     }
 
-    var newMaschienPrize = 0
+    const [newMaschienPrize, setNewMaschienPrize] = useState(0)
+
 
     const onBuyM2 = async () => {
-        setBuy_new_machine_2(true)
+
+        BuymaschineModal()
     }
 
-    
+
     const onBuyM3 = async () => {
-        setBuy_new_machine_3(true)
+        BuymaschineModal()
+    }
+
+    const [availableMachine, setAvailableMachine] = useState(
+        [
+            {
+                name: "Sneakerbox 200",
+                price: "3000"
+            },
+            {
+                name: "Sneakerbox 300",
+                price: "0.5"
+            },
+            {
+                name: "Sneakerbox 300",
+                price: "10000"
+            }
+        ])
+
+    /*useEffect(() => {
+        const fetchData = async () => {
+            const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/machine')
+            const data = await res.json()
+    
+            return data
+        }
+        fetchData()
+    }, [])*/
+
+
+
+
+    const BuymaschineModal = () => {
+        setModalBuyMaschine(<>
+            <div className="block">
+                <div
+                    className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                    id="my-modal"
+                ></div>
+                <div
+                    className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                    <div
+                        className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+
+                        <div className='p-4 list-none xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%]  mx-12 overflow-hidden'>
+                            {availableMachine.map(({ name, price }) => {
+                                return (
+                                    <li className='p-3 mx-3 shadow-lg rounded-3xl m-auto my-4 justify-around bg-white w-[90%]' onClick={() => Confirm(name, price)}>
+                                        <h1 className='block mb-2'>{name}</h1>
+                                        <hr className='w-[50%] text-center mx-auto border-none h-[2px] rounded-xl bg-[#4fd1c5] opacity-50'/>
+                                        <br/>
+                                        <p></p>
+                                        <br/>
+                                        <hr className='w-[50%] text-center mx-auto border-none h-[2px] rounded-xl bg-[#4fd1c5] opacity-50'/>
+                                        <h2 className='block mt-2'>{formatter.format(price)}</h2>
+
+                                    </li>
+                                )
+                            })
+                            }
+                        </div>
+                        <button onClick={() => setModalBuyMaschine(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+                    </div>
+                </div>
+            </div>
+        </>
+
+        )
+    }
+
+    const Confirm = (name, price) => {
+        setModalConfirm(<></>)
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'bg-green-500 hove:bg-green-700 focus:bg-green-600 text-white px-4 py-2 mx-[10px] rounded',
+              cancelButton: 'bg-red-500 hove:bg-red-700 focus:bg-red-600 text-white px-4 py-2 mx-[10px] rounded',
+            },
+            buttonsStyling: false
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: 'Bist du dir Sicher?',
+            text: "Möchtest du die Maschine \"" + name + "\" wirklich kaufen?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Ja',
+            cancelButtonText: 'Nein',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              swalWithBootstrapButtons.fire(
+                'Erfolgreich',
+                'Du hast den kauf Erfolgreich Abgeschlossen!',
+                'success'
+              ).then(() => {
+                doMagicToBuyMachine(name, price)
+                setModalBuyMaschine(<></>)
+              })
+              
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Kauf Abgebrochen',
+                'Du hast den Kauf von ' + name + ' Abgebrochen',
+                'error'
+              )
+            }
+          })
+        /*setModalConfirm(
+            <>
+                <div className={"block"}>
+                    <div
+                        className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                        id="my-modal"
+                    ></div>
+                    <div
+                        className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                        <div
+                            className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+
+                            <div className="hero container max-w-screen-lg mx-auto p-5">
+                                <h1>Möchtes du wirklich die Maschine {name} für {formatter.format(price)} Kaufen?</h1>
+                                <div className='pt-4'>
+                                <button onClick={() => doMagicToBuyMachine(name, price)} className="px-4 py-2 text-sm bg-green-500 text-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-green-700 focus:bg-green-600 focus:text-indigo">Ja</button>
+                                <button onClick={() => setModalConfirm(<></>)} className="px-4 py-2 text-white text-sm bg-red-500 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-red-700 focus:bg-red-600 focus:text-indigo">Nein</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )*/
+    }
+    const doMagicToBuyMachine = (name, preis) => {
+        //TODO warten auf jost wegen api und dann einbinden
+        if (buy_new_machine_2 == false) {
+            setBuy_new_machine_2(true)
+        } else {
+            setBuy_new_machine_3(true)
+        }
+        setNewMaschienPrize(preis)
+        setModalConfirm(<></>)
+        setModalBuyMaschine(<></>)
+
     }
 
     const formatter = new Intl.NumberFormat('de-de', {
         style: 'currency',
         currency: 'EUR',
         minimumFractionDigits: 2
-      })
+    })
     return (
         <>
             {modal}
+            {modalBuyMaschine}
+            {modalConfirm}
             <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
 
 
@@ -356,14 +509,14 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Gesamte Verfügbarkeit</td>
-                                <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)+ " Stk."}</td>
-                                <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge)+ " Stk."}</td>
-                                <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion)+ " Stk."}</td>
+                                <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) + " Stk."}</td>
+                                <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) + " Stk."}</td>
+                                <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) + " Stk."}</td>
                             </tr>
                             <tr>
                                 <td>Verbrauch Produktion (PLAN)</td>
                                 <td>{Gesamtproduktion} Stk.</td>
-                                <td>{Gesamtproduktion * 2 } Stk.</td>
+                                <td>{Gesamtproduktion * 2} Stk.</td>
                                 <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) + " Stk."}</td>
                             </tr>
                             <tr>
@@ -380,14 +533,14 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lagerkosten (PLAN)</td>
-                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 )}</td>
-                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1 )}</td>
-                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )}</td>
+                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4)}</td>
+                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
+                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
                             </tr>
                             <tr>
                                 <td>Verbrauch Produktion (IST)</td>
                                 <td>{Gesamtproduktion} Stk.</td>
-                                <td>{Gesamtproduktion * 2 } Stk.</td>
+                                <td>{Gesamtproduktion * 2} Stk.</td>
                                 <td>{MarktSoll} Stk.</td>
                             </tr>
                             <tr>
@@ -398,9 +551,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lagerkosten (IST)</td>
-                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4 )}</td>
-                                <td>{formatter.format((data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2) * 1 )}</td>
-                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 )}</td>
+                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
+                                <td>{formatter.format((data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2) * 1)}</td>
+                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
                             </tr>
 
                         </tbody>
@@ -456,7 +609,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td>{parseInt(ZugeteilteMitarbeiter)+ parseInt(ZugeteilteMitarbeiter2) +parseInt(ZugeteilteMitarbeiter3)} Stk.</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter) + parseInt(ZugeteilteMitarbeiter2) + parseInt(ZugeteilteMitarbeiter3)} Stk.</td>
 
                             </tr>
                             <tr>
@@ -491,7 +644,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 m-auto'></img>
 
                 </div>
-                
+
                 {data.current_stock.machine_1_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <table>
                         <tbody>
@@ -578,7 +731,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     </table>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
-                    </div>}
+                </div>}
 
                 {data.current_stock.machine_2_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <table>
@@ -664,13 +817,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                         </tbody>
                     </table>
-                </div> : buy_new_machine_2 ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
-                <h1  className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
+                </div> : buy_new_machine_2 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                     <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                    </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
-                        <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
+                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
-                    </div>}
+                </div>}
 
                 {data.current_stock.machine_3_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <table>
@@ -756,13 +909,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                         </tbody>
                     </table>
-                </div> : data.current_stock.machine_2_bought === false ? <></> : buy_new_machine_3 ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
-                <h1  className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
+                </div> : data.current_stock.machine_2_bought === false ? <></> : buy_new_machine_3 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                     <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                    </div>  : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
-                    <h1  className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
+                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img> //TODO mach plus hin
-                    </div> }
+                </div>}
 
 
                 <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start " ref={MarketingRef}>
@@ -834,13 +987,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             <tr>
                                 <td>Markt</td>
                                 <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSoll(e.target.value)} value={MarktSoll}></input> Stk.</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0"  type="number" onChange={(e) => setMarktSollPreis(e.target.value)} value={MarktSollPreis}></input> €</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSollPreis(e.target.value)} value={MarktSollPreis}></input> €</td>
                                 <td>{formatter.format(MarktSoll * MarktSollPreis)}</td>
                             </tr>
                             <tr>
                                 <td>Ausschreibung</td>
                                 <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input> Stk.</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0"  type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis}></input> €</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis}></input> €</td>
                                 <td>{formatter.format(AusschreibungSoll * AusschreibungSollPreis)}</td>
                             </tr>
                             <tr>
@@ -910,7 +1063,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                                 <td>50.000€</td>
                             </tr>
                             <tr>
-                              <td>Darlehensstand (Beginn Periode)</td>
+                                <td>Darlehensstand (Beginn Periode)</td>
                                 <td>{formatter.format(data.current_stock.credit_taken)}</td>
                                 <td>{formatter.format(data.current_stock.credit_taken)}</td>
                             </tr>
@@ -936,18 +1089,18 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Lagerkosten Fertige Erz.</td>
-                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )}</td>
-                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 )}</td>
+                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
+                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Sneaker</td>
-                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4 )}</td>
-                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4 )}</td>
+                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
+                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Farben</td>
                                 <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1 )}</td>
+                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten</td>
@@ -961,8 +1114,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Maschinenkauf</td>
-                                <td>{ }</td>
-                                <td>{ }</td>
+                                <td>{formatter.format(newMaschienPrize)}</td>
+                                <td>{formatter.format(newMaschienPrize)}</td>
                             </tr>
                             <tr>
                                 <td>Kosten Neueinstellung</td>
@@ -1001,8 +1154,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Saldo</td>
-                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 ) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) +(FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100)+ (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)* data.scenario.factor_interest_rate)) + UmsatzSoll + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8 )) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4 ) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) +(FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100)+ (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)* data.scenario.factor_interest_rate)) + UmsatzIst + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) }</td>
+                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
+                                <td>{data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
                             </tr>
                             <tr>
                                 <td>Höhe Kontokorrentkredit</td>

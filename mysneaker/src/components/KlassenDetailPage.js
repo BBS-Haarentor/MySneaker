@@ -5,6 +5,7 @@ import QRCodeStyling from "qr-code-styling";
 import Cookies from 'js-cookie';
 import SideNavBar from './SideNavBar'
 import KlassenDetailContainer from './KlassenDetailContainer';
+import KlasseContainer from './KlasseContainer';
 
 const KlassenDetailPage = () => {
   let { id } = useParams()
@@ -43,7 +44,9 @@ const KlassenDetailPage = () => {
 
   const [url, setUrl] = useState(window.location.protocol + "//" + window.location.hostname + "/register/" + id);
   const [showModal, setShowModal] = useState(false)
-  const [game, setGame] = useState()
+  const [game, setGame] = useState({
+    current_cycle_index: ""
+  })
   const ref = useRef(null);
   const [infoModal, setInfoModal] = useState(<></>)
 
@@ -228,14 +231,10 @@ const KlassenDetailPage = () => {
         </div>
 
         <div className='h-screen w-full overflow-hidden'>
-          <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
-            {selectCompanie ? <>
+          <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12 overflow-x-hidden'>
 
-              <KlassenDetailContainer userId={selectCompanie.id} current_cycle_index={game.current_cycle_index} />
+            <KlasseContainer companyId={selectCompanie !== null ? selectCompanie.id : null} current_cycle_index={game.current_cycle_index} />
 
-
-            </> : <><img src="/img/teacher_empty.svg" className='h-96  w-96 m-4 m-auto'></img>
-              <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1></>}
 
           </div>
           <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
