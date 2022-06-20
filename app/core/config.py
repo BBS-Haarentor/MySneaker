@@ -26,6 +26,15 @@ class Settings(BaseSettings):
     ADMIN_USER_NAME: str
     ADMIN_USER_HASHED_PW: str
     
+    TEACHER_1_NAME: str
+    TEACHER_1_HASHED_PW: str
+    
+    TEACHER_2_NAME: str
+    TEACHER_2_HASHED_PW: str
+    
+    TEACHER_3_NAME: str
+    TEACHER_3_HASHED_PW: str
+    
     class Config:
         env_file = '.env'
         case_sensitive = True

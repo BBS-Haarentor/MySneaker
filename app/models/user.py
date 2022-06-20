@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import List
-from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint, Column, String, ARRAY
-
+from sqlalchemy import ForeignKey, Integer
+from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint, Column, String, ARRAY, ForeignKeyConstraint
+from sqlalchemy.orm import relationship
 from app.core.config import SETTINGS, RolesEnums
 from app.models.cycle import Cycle
 #from app.models.link_models import UserCycleLink
@@ -20,13 +21,5 @@ class User(UserBase, table=True):
     email: str | None = Field(default=None)
     hashed_pw: str
     is_active: bool | None = Field(default=False)
-    game_id: int | None = Field(default=None)
-    #cycles: List[UserCycleLink] = Relationship(back_populates="cycle", link_model=UserCycleLink)
-    """
-    cycles: List["Cycle"] | None = Relationship(back_populates="cycle", link_model=UserCycleLink) #, link_model=Cycle)
-    stocks: list[Stock] = Relationship(
-        sa_relationship_kwargs={
-            "cascade": "delete,all"
-        }
-    )
-    """
+    game_id: int | None = Field(sa_column=Column(Integer, ForeignKey("game.id", onupdate="CASCADE", ondelete="CASCADE")))
+

@@ -10,15 +10,16 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.config import SETTINGS, ordered_roles
 from app.crud.game import get_game_by_id
-from app.crud.groups import check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
-from app.crud.user import get_user_by_name, update_last_login
+from app.crud.groups import add_user_to_admingroup, add_user_to_teachergroup, check_user_in_admingroup, check_user_in_basegroup, check_user_in_teachergroup
+from app.crud.user import create_user, get_user_by_name, update_last_login
 from app.db.session import get_async_session
 from jose import JWTError, jwt
 from app.models.game import Game
+from app.models.groups import AdminGroup, TeacherGroup
 
 from app.models.user import User
 from app.schemas.token import TokenData
-from app.schemas.user import UserLogin
+from app.schemas.user import UserLogin, UserPost
 from fastapi.security import OAuth2PasswordBearer
 from starlette import status
 from app.core.config import SETTINGS, RolesEnums
@@ -121,3 +122,34 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SETTINGS.SECRET_KEY, algorithm=SETTINGS.ALGORITHM)
     return encoded_jwt
 
+async def init_admin(session: AsyncSession) -> int:
+    new_admin_user = UserPost(name=SETTINGS.ADMIN_USER_NAME, hashed_pw=SETTINGS.ADMIN_USER_HASHED_PW)
+    admin_id: int = await create_user(user_post=new_admin_user, session=session)
+    result = await add_user_to_admingroup(user_id=admin_id, session=session)
+    if not isinstance(result, AdminGroup):
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return admin_id
+
+
+async def init_teachers(session: AsyncSession) -> list[int]:
+    result_list: list[int] = []
+    new_teacher_1 = UserPost(name=SETTINGS.TEACHER_1_NAME, hashed_pw=SETTINGS.TEACHER_1_HASHED_PW)
+    teacher_1_id: int = await create_user(user_post=new_teacher_1, session=session)
+    auth_result_1 = await add_user_to_teachergroup(user_id=teacher_1_id, session=session)
+    if isinstance(auth_result_1, TeacherGroup):
+        result_list.append(teacher_1_id)
+    
+    new_teacher_2 = UserPost(name=SETTINGS.TEACHER_2_NAME, hashed_pw=SETTINGS.TEACHER_2_HASHED_PW)
+    teacher_2_id: int = await create_user(user_post=new_teacher_2, session=session)
+    auth_result_2 = await add_user_to_teachergroup(user_id=teacher_2_id, session=session)
+    if isinstance(auth_result_2, TeacherGroup):
+        result_list.append(teacher_2_id)    
+    
+    new_teacher_3 = UserPost(name=SETTINGS.TEACHER_3_NAME, hashed_pw=SETTINGS.TEACHER_3_HASHED_PW)
+    teacher_3_id: int = await create_user(user_post=new_teacher_3, session=session)
+    auth_result_3 = await add_user_to_teachergroup(user_id=teacher_3_id, session=session)
+    if isinstance(auth_result_3, TeacherGroup):
+        result_list.append(teacher_3_id)    
+
+    return result_list

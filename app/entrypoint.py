@@ -1,17 +1,15 @@
 import asyncio
-from os import stat
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 import time
 from fastapi import FastAPI, Request
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.v1.api import v1_router
 from app.api.auth.endpoints.user import router as user_router
 from app.core.config import SETTINGS, Settings
-from app.db.init_db import init_admin_user, init_async_db, init_db
+from app.db.init_db import init_async_db
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 
-from app.db.session import get_async_session
 
 settings = Settings()
 
@@ -53,11 +51,7 @@ api.add_middleware(
 
 @api.on_event("startup")
 async def setup_db():
-    await asyncio.sleep(5)
+    await asyncio.sleep(3)
     await init_async_db()
-    #await init_admin_user()
-    #await init_async_user_db()
-    #await init_db()
-
 
 

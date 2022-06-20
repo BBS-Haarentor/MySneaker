@@ -24,6 +24,11 @@ async def create_user(user_post: UserBase, session: AsyncSession) -> int:
     Returns:
         int: id of the newly created user entry
     """
+    # check username taken 
+    username_result = await session.exec(select(User).where(User.name == user_post.name))
+    name_check: User | None = username_result.one_or_none()
+    if isinstance(name_check, User): 
+        return None
     if user_post.game_id is not None:
         new_user = User(name=user_post.name, hashed_pw=user_post.hashed_pw, game_id=user_post.game_id)
     else:
@@ -211,3 +216,11 @@ async def get_teacher_list(session: AsyncSession) -> list[User]:
     result = await session.exec(select(User).join(TeacherGroup))
     teacher_list: list[User] = result.all()
     return teacher_list
+
+async def get_user_status(user_id: int, session: AsyncSession) -> bool | None:
+    result = await session.exec(select(User).where(User.id == user_id))
+    user: User | None = result.one_or_none()
+    if isinstance(user, NoneType):
+        return None
+    else:
+        return user.is_active

@@ -24,8 +24,8 @@ engine_sqlite = create_engine(f"sqlite://{SETTINGS.DATABASE_URL_SQLITE}", echo=T
 
 
 
-engine = engine_async_sqlite
-#engine = engine_async_postgres
+#engine = engine_async_sqlite
+engine = engine_async_postgres
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:

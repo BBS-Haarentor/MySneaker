@@ -3,8 +3,10 @@
 
 from datetime import datetime
 from typing import Optional
+from sqlalchemy import Column, ForeignKey, Integer
 
 from sqlmodel import Field, Relationship
+from sqlalchemy.orm import relationship 
 #from app.models.link_models import UserCycleLink
 from app.schemas.cycle import CycleBase
 
@@ -13,10 +15,8 @@ class Cycle(CycleBase, table=True):
     __tablename__ = 'cycle'
     id: int | None = Field(default=None, index=True, primary_key=True)
     entry_date: datetime = Field(datetime.now()) 
-    game_id: int = Field(foreign_key="game.id")
-    company_id: int | None = Field(default=None, foreign_key="user.id")
-    #company: "User" = Relationship(back_populates="cycles", link_model=UserCycleLink)
-    #user_link: "User" = Relationship(back_populates="user", link_model=UserCycleLink)
+    game_id: int | None = Field(sa_column=Column(Integer, ForeignKey("game.id", onupdate="CASCADE", ondelete="CASCADE")))
+    company_id: int | None = Field(sa_column=Column(Integer, ForeignKey("user.id", onupdate="CASCADE", ondelete="CASCADE")))
     current_cycle_index: int = Field(default=0)
     buy_sneaker: int = Field(default=0)
     buy_paint: int = Field(default=0)

@@ -8,7 +8,7 @@ from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_
 
 from app.api.auth.user_auth import teacher_auth_required
 from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_by_user_id_and_index
-from app.crud.game import create_game, delete_game_by_id, get_all_game_ids, get_all_games_by_owner, get_all_users_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
+from app.crud.game import create_game, delete_game_by_id, get_all_game_ids, get_all_games_by_owner, get_all_users_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, get_game_state, set_back_cycle_index, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.crud.scenario import get_scenario_by_index
 from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id
@@ -26,7 +26,6 @@ from app.schemas.user import UserResponse, UserResponseWithGradeName
 
 
 router = APIRouter()
-
 
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
@@ -203,4 +202,24 @@ async def get_current_cycle(game_id: int, current_user: User = Depends(get_curre
 @router.delete("/delete/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
 async def delete_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    # check game active
+    state = await get_game_state(game_id=game_id, session=session)
+    if isinstance(state, NoneType):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    if state:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="It is not allowed to delete an active game. Please deactivate the Game before deleting.")
     return await delete_game_by_id(id=game_id, session=session) 
+
+@router.put("/setback_game/{game_id}/index/{index}", status_code=status.HTTP_202_ACCEPTED)
+@teacher_auth_required
+async def setback_game_by_id_and_index(game_id: int, index: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int | None:
+    return await set_back_cycle_index(game_id=game_id, new_index=index, session=session)
+
+@router.get("/game_state/{game_id}", status_code=status.HTTP_200_OK)
+@teacher_auth_required
+async def get_game_state_by_id(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    result: bool | None = await get_game_state(game_id=game_id, session=session)
+    if isinstance(result, NoneType):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    else:
+        return result

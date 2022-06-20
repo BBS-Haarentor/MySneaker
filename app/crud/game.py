@@ -125,7 +125,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     unsorted_stock_list: list[Stock] = stock_result.all()
     
     if (len(unsorted_cycle_list) != len(unsorted_stock_list)): # or unsorted_cycle_list.size() == 0
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="not all users have submitted new cycle data")
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Periode abschließen nicht möglich, da nicht alle Unternehmen ihre Daten eingereicht haben.")
     
     # check every user has valid cycle and stock data
     
@@ -191,12 +191,16 @@ async def get_all_games_by_owner(user_id: int, session: AsyncSession) -> list[Ga
 
 
 
-async def delete_game_by_id(id: int, session: AsyncSession) -> bool:
-    tbd_game: Game = await get_game_by_id(id=id, session=session)
-    session.delete(tbd_game)
-    await session.commit()
-    await session.refresh(tbd_game)
+async def delete_game_by_id(id: int, session: AsyncSession) -> bool | None:
+    result = await session.exec(select(Game).where(Game.id == id))
+    tbd_game: Game = result.one_or_none()
     if isinstance(tbd_game, NoneType):
+        return None
+    await session.delete(tbd_game)
+    await session.commit()
+    double_check_result = await session.exec(select(Game).where(Game.id == id))
+    double_check = double_check_result.one_or_none()
+    if isinstance(double_check, NoneType):
         return True
     else:
         return False
@@ -230,3 +234,39 @@ async def get_current_stocks_by_game_id(id: int, session: AsyncSession) -> list[
     game: Game = await get_game_by_id(id=id, session=session)
     result = await session.exec(select(Stock).where(Stock.game_id == game.id).where(Stock.current_cycle_index == game.current_cycle_index -1))
     return result.all()
+
+
+
+async def set_back_cycle_index(game_id: int, new_index: int, session: AsyncSession) -> int | None:
+    result = await session.exec(select(Game).where(Game.id == game_id))
+    game: Game | None = result.one_or_none()
+    if isinstance(game, NoneType):
+        return game
+    # check cycle in the past
+    if game.current_cycle_index >= new_index:
+        return None
+    # delete all cycles after new index
+    cycle_result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index >= new_index))
+    cycles: list[Cycle] = cycle_result.all()
+    await session.delete(cycles)
+    await session.commit()
+    # delete all stocks after new index
+    stock_result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index >= new_index))
+    stocks: list[Stock] = stock_result.all()
+    await session.delete(stocks)
+    await session.commit()
+    # setback index on game
+    game.current_cycle_index = new_index
+    await session.add(game)
+    await session.commit()
+    await session.refresh(game)
+    return game.current_cycle_index
+
+
+async def get_game_state(game_id: int, session: AsyncSession) -> bool | None:
+    result = await session.exec(select(Game).where(Game.id ==game_id))
+    game: Game | None = result.one_or_none()
+    if isinstance(game, NoneType):
+        return game
+    else:
+        return game.is_active

@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy import Column, ForeignKey, Integer
 
 from sqlmodel import Field
 from app.schemas.stock import StockBase
@@ -7,8 +8,8 @@ from app.schemas.stock import StockBase
 class Stock(StockBase, table=True):
     __tablename__ = 'stock'
     id: int | None = Field(default=None, primary_key=True)
-    game_id: int = Field(foreign_key="game.id")
-    company_id: int = Field(foreign_key="user.id")
+    game_id: int | None = Field(sa_column=Column(Integer, ForeignKey("game.id", onupdate="CASCADE", ondelete="CASCADE")))
+    company_id: int | None = Field(sa_column=Column(Integer, ForeignKey("user.id", onupdate="CASCADE", ondelete="CASCADE")))
     creation_date: datetime | None = Field(datetime.now()) 
     current_cycle_index: int = Field(default=0)
 
