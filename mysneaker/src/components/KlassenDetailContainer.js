@@ -131,17 +131,16 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
             headers: myHeaders,
         };
 
-        fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/my_auth', requestOptions)
+        fetch(process.env.REACT_APP_MY_API_URL + '/user/my_auth', requestOptions)
             .then(async (element) => {
                 let body = await element.text();
-                if(element.status !== 200) {
+                if (element.status !== 200) {
                     window.location.href = "/logout"
                 }
                 if (body.replaceAll("\"", "") === "teacher") {
                     const getData = async () => {
                         const dataFromServer = await fetchData()
                         setData(dataFromServer)
-                        console.log(dataFromServer)
                     }
                     getData()
                 }
@@ -159,7 +158,7 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
             method: 'GET',
             headers: myHeaders,
         };
-        const res = await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/teacher/summary/user/' + userId + '/index/' + current_cycle_index, requestOptions)
+        const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/teacher/summary/user/' + userId + '/index/' + current_cycle_index, requestOptions)
         const data = await res.json()
 
         return data
@@ -170,7 +169,7 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
         setBuy_new_machine_2(true)
     }
 
-    
+
     const onBuyM3 = async () => {
         setBuy_new_machine_3(true)
     }
@@ -369,7 +368,7 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
                     <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
 
                 </div>
-                
+
                 {data.stock.machine_1_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <table>
                         <tbody>
@@ -456,7 +455,7 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
                     </table>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
-                    </div>}
+                </div>}
 
                 {data.stock.machine_2_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <table>
@@ -542,11 +541,11 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
 
                         </tbody>
                     </table>
-                </div> : buy_new_machine_2 ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
+                </div> : buy_new_machine_2 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                    </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
+                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
-                    </div>}
+                </div>}
 
                 {data.stock.machine_3_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <table>
@@ -632,11 +631,11 @@ const KlassenDetailContainer = ({ userId, current_cycle_index }) => {
 
                         </tbody>
                     </table>
-                </div> : data.stock.machine_2_bought === false ? <></> : buy_new_machine_3 ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
+                </div> : data.stock.machine_2_bought === false ? <></> : buy_new_machine_3 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                    </div>  : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
+                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start">
                     <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
-                    </div> }
+                </div>}
 
 
                 <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start ">

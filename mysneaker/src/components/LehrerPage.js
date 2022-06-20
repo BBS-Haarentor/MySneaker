@@ -26,7 +26,7 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/get_all_users_for_my_games', requestOptions).then((element) => {
+    fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_all_users_for_my_games', requestOptions).then((element) => {
       if (element.status === 200) {
         let companies = []
         element.json().then((element1) => {
@@ -63,7 +63,7 @@ const LehrerPage = () => {
         body: raw
       };
 
-      const d1 = fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/create', requestOptions)
+      const d1 = fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/create', requestOptions)
         .then(async (element) => {
           switch (element.status) {
             case 401:
@@ -89,7 +89,7 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/' + id, requestOptions).then((element) => {
+    fetch(process.env.REACT_APP_MY_API_URL + '/user/' + id, requestOptions).then((element) => {
       if (element.status === 200) {
       }
     })
@@ -108,7 +108,7 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/user/toggle_active/' + id, requestOptions).then(() => getCompaniesVerify())
+    fetch(process.env.REACT_APP_MY_API_URL + '/user/toggle_active/' + id, requestOptions).then(() => getCompaniesVerify())
   }
 
   const getGames = () => {
@@ -122,7 +122,7 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    const d1 = fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/teacher/my_games', requestOptions)
+    const d1 = fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/teacher/my_games', requestOptions)
       .then(async (element) => {
         if (element.status == 401) {
           window.location.href = "/"

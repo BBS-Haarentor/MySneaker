@@ -9,6 +9,7 @@ const RegisterPage = () => {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
 
+    const [alert, setAlert] = useState('')
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -17,42 +18,61 @@ const RegisterPage = () => {
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append('Access-Control-Allow-Origin', '*')
 
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: JSON.stringify({
-                name: userName,
-                unhashed_pw: password,
-                is_active: false,
-                game_id: id
-            }),
-            redirect: 'follow'
-        };
-
-
-        putData(requestOptions)
+        if (userName && password) {
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: JSON.stringify({
+                    name: userName,
+                    unhashed_pw: password,
+                    is_active: false,
+                    game_id: id
+                }),
+                redirect: 'follow'
+            };
+            putData(requestOptions)
+        } else {
+            setAlert(<>
+                <div className="bg-red-100 border border-red-600 text-red-700 px-4 mx-11 py-3 rounded relative" role="alert">
+                    <strong className="font-bold">Regestrierung Fehlgeschlagen!</strong>
+                    <span className="block sm:inline"> Grund: Bitte geben Sie Daten ein!</span>
+                </div>
+            </>)
+        }
     }
 
 
     const putData = async (requestOptions) => {
-
-        const res = await fetch(window.location.protocol + "//" + window.location.hostname + ":8008/user/create/student", requestOptions).then(async (element) => {
+        document.getElementById('submit').disabled = true;
+        const res = await fetch(process.env.REACT_APP_MY_API_URL + "/user/create/student", requestOptions).then(async (element) => {
             if (element.status === 201) {
-                await fetch(window.location.protocol + "//" + window.location.hostname + ":8008/user/login", requestOptions).then(async (element2) => {
-                    const rawData2 = await element2.json()
-                    console.log(rawData2)
-                    Cookies.set("session", [rawData2.access_token])
+                setAlert(<>
+                    <div className="bg-green-100 border border-green-600 text-green-600 px-4 mx-11 py-3 rounded relative" role="alert">
+                        <strong className="font-bold">Regestrierung Erfolgreich!</strong>
+                        <span className="block sm:inline"> Sie werden in 5 Sekunden zum Login weitergeleitet</span>
+                    </div>
+                </>)
+                setTimeout(() => {
                     window.location.href = "/dashboard"
-                })
+                }, 5000)
+            } else {
+                let json = await element.json();
+                document.getElementById('submit').disabled = false;
+                setAlert(<>
+                    <div className="bg-red-100 border border-red-600 text-red-700 px-4 mx-11 py-3 rounded relative" role="alert">
+                        <strong className="font-bold">Regestrierung Fehlgeschlagen!</strong>
+                        <span className="block sm:inline"> Grund: {json.detail}</span>
+                    </div>
+                </>)
             }
         })
     }
 
     const OnClick = (text) => {
         if (text == "Login") {
-          window.location.href = "/dashboard"
+            window.location.href = "/dashboard"
         }
-      }
+    }
 
 
     return (
@@ -64,13 +84,16 @@ const RegisterPage = () => {
                         <h1 className="text-[#4fd1c5] text-4xl font-bold px-10 py-1">Registrieren</h1>
                         <p className="text-[#a3b1c2] px-11 py-1 pb-10">Bitte gebe ein Benutzername und ein Passwort ein, um dich zu Registrieren</p>
                     </div>
+                    <div className="" id="alert">
+                        {alert}
+                    </div>
                     <form className="" onSubmit={onSubmit}>
                         <div className="grid">
                             <p className="px-11 py-3" >Benutzername</p>
                             <input className="text-[#a3b1c2] mb-3 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={userName} placeholder="Dein Benutzername" onChange={(e) => setUserName(e.target.value)} type="text" ></input>
                             <p className="px-11 py-3">Passwort</p>
                             <input autoComplete="password" className="text-[#a3b1c2] mb-2 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={password} placeholder="Dein Passwort" onChange={(e) => setPassword(e.target.value)} type="password"></input>
-                            <input className="bg-[#4fd1c5] p-3 mx-11 rounded-3xl mt-10 text-white" type="submit"></input>
+                            <input className="bg-[#4fd1c5] p-3 mx-11 rounded-3xl mt-10 text-white disabled:opacity-75" id="submit" type="submit"></input>
                         </div>
                     </form>
                 </div>

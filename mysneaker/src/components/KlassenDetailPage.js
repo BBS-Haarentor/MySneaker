@@ -5,6 +5,7 @@ import QRCodeStyling from "qr-code-styling";
 import Cookies from 'js-cookie';
 import SideNavBar from './SideNavBar'
 import KlassenDetailContainer from './KlassenDetailContainer';
+import KlasseContainer from './KlasseContainer';
 
 const KlassenDetailPage = () => {
   let { id } = useParams()
@@ -43,7 +44,9 @@ const KlassenDetailPage = () => {
 
   const [url, setUrl] = useState(window.location.protocol + "//" + window.location.hostname + "/register/" + id);
   const [showModal, setShowModal] = useState(false)
-  const [game, setGame] = useState()
+  const [game, setGame] = useState({
+    current_cycle_index: ""
+  })
   const ref = useRef(null);
   const [infoModal, setInfoModal] = useState(<></>)
 
@@ -64,13 +67,13 @@ const KlassenDetailPage = () => {
       headers: myHeaders,
     };
 
-    await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/get_all_users_for_game/' + id, requestOptions)
+    await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_all_users_for_game/' + id, requestOptions)
       .then(async (element) => {
         let json = await element.json();
         setCompanies(json)
       })
 
-    await fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
+    await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
       if (res.status === 200) {
         let json = await res.json();
         setGame(json)
@@ -90,7 +93,7 @@ const KlassenDetailPage = () => {
       mode: 'cors',
     };
 
-    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/turnover/' + id, requestOptions)
+    fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/turnover/' + id, requestOptions)
       .then(async (element) => {
         if (element.status === 200) {
           setInfoModal(<>
@@ -116,7 +119,7 @@ const KlassenDetailPage = () => {
                     </svg>
                   </div>
                   <span className="font-bold block text-xl mb-3">Erfolgreich</span>
-                  <span className="block text-xl mb-3">Das Spiel ist jetzt in der nächsten Phase</span>
+                  <span className="block text-xl mb-3">Das Spiel ist jetzt in der nächsten Periode</span>
                   <div className="text-right space-x-5 mt-5">
                     <button onClick={() => setInfoModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
                   </div>
@@ -125,6 +128,7 @@ const KlassenDetailPage = () => {
             </div>
           </>)
         } else {
+          let json = await element.json()
           setInfoModal(<>
             <div className={"block"}>
               <div
@@ -144,8 +148,8 @@ const KlassenDetailPage = () => {
                       <rect x="11" y="17" width="2" height="2" rx="1" />
                     </svg>
                   </div>
-                  <span className="font-bold block text-xl mb-3">Es gab ein Fehler!</span>
-                  <span className="block text-xl mb-3">Bitte Versuche Sie es später erneut</span>
+                  <span className="font-bold block text-xl mb-3">Fehler!</span>
+                  <span className="block text-xl mb-3">{json.detail}</span>
                   <div className="text-right space-x-5 mt-5">
                     <button onClick={() => setInfoModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
                   </div>
@@ -176,7 +180,7 @@ const KlassenDetailPage = () => {
       mode: 'cors',
     };
 
-    fetch(window.location.protocol + '//' + window.location.hostname + ':8008/api/v1/game/activate_signup/' + id, requestOptions)
+    fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/activate_signup/' + id, requestOptions)
       .then(async (element) => {
         return
       })
@@ -215,7 +219,7 @@ const KlassenDetailPage = () => {
             <div
               className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-              <span className="font-bold block text-xl mb-3">Register QRCode</span>
+              <span className="font-bold block text-xl mb-3">QR-Code</span>
               <div className='flex'>
                 <div className='block text-xl m-auto justify-center' ref={ref} />
               </div>
@@ -227,14 +231,10 @@ const KlassenDetailPage = () => {
         </div>
 
         <div className='h-screen w-full overflow-hidden'>
-          <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
-            {selectCompanie ? <>
+          <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12 overflow-x-hidden'>
 
-              <KlassenDetailContainer userId={selectCompanie.id} current_cycle_index={game.current_cycle_index} />
+            <KlasseContainer companyId={selectCompanie !== null ? selectCompanie.id : null} current_cycle_index={game.current_cycle_index} />
 
-
-            </> : <><img src="/img/teacher_empty.svg" className='h-96  w-96 m-4 m-auto'></img>
-              <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1></>}
 
           </div>
           <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
@@ -243,7 +243,7 @@ const KlassenDetailPage = () => {
                 {companies.map(({ name, id, is_active }) => {
                   if (is_active) {
                     return (
-                      <li className='p-3 text-lg' onClick={() => changeCompanie(name, id)}><a>{name}</a></li>
+                      <li className='p-3 shadow-lg rounded-3xl m-auto my-4 flex justify-around bg-white w-[90%]' onClick={() => changeCompanie(name, id)}><a>{name}</a></li>
                     )
                   }
                 }
@@ -253,10 +253,10 @@ const KlassenDetailPage = () => {
             <div className='absolute m-auto' />
             <div></div>
             <button className={'inline-block border-2 shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12 '} onClick={() => onClickRegister()}>
-              Register Freischalten
+              QR-Code anzeigen
             </button>
             <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => toggleTurnover()}>
-              Abschließen
+              Periode abschließen
             </button>
           </div>
         </div>
