@@ -99,3 +99,7 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
 
     if scenario.machine_purchase_allowed == False:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="In dieser periode kann keine Maschiene gekauft werden.")
+    
+    
+    
+    return True
