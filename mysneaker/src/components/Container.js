@@ -141,8 +141,36 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
     const [modalConfirm, setModalConfirm] = useState()
 
+    const initData = (data) =>{
+        setSneakerEinkaufMenge(data.current_cycle.buy_sneaker)
+        setFarbenEinkaufMenge(data.current_cycle.buy_paint)
+        setGeplanteProduktion(data.current_cycle.planned_production_1)
+        setZugeteilteMitarbeiter(data.current_cycle.planned_workers_1)
+        setGeplanteProduktion2(data.current_cycle.planned_production_2)
+        setZugeteilteMitarbeiter2(data.current_cycle.planned_workers_2)
+        setGeplanteProduktion3(data.current_cycle.planned_production_3)
+        setZugeteilteMitarbeiter3(data.current_cycle.planned_workers_3)
+        setWerbung(data.current_cycle.ad_invest)
+        setForschungUndEntwickelung(data.current_cycle.research_invest)
+        setEntnahmeAusDemLager(data.current_cycle.include_from_stock)
+        setMarktSoll(data.current_cycle.sales_planned)
+        setMarktSollPreis(0)
+        setMarktIst(0)
+        setAussetschreibungSollPreis(data.current_cycle.sales_bid)
+        setAusschreibungIst(0)
+        setGesamtSoll(0)
+        setMaximaleEntnahmeAusLager(0)
+        setMitarbeiter(8)
+        setNeueinstellungen(0)
+        setKündigungen(0)
+        setPersonalnebenkosten(20)
+        setAufnahmeDarlehen(0)
+        setRueckzahlungDarlehen(0)
+        setBuy_new_machine_2(data.current_cycle.buy_new_machine_2)
+        setBuy_new_machine_3(data.current_cycle.buy_new_machine_3)
+    }
 
-    useEffect(() => {
+    useEffect(async () => {
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -157,10 +185,11 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         fetch(process.env.REACT_APP_MY_API_URL + '/user/my_auth', requestOptions)
             .then(async (element) => {
                 let body = await element.text();
-                if (body.replaceAll("\"", "") === "student") {
+                if (body.replaceAll("\"", "") === "base") {
                     const getData = async () => {
-                        const dataFromServer = await fetchData()
+                        const dataFromServer = await fetchData(requestOptions)
                         setData(dataFromServer)
+                        initData(dataFromServer)
                     }
                     getData()
                 }
@@ -168,8 +197,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             })
     }, [])
 
-    const fetchData = async () => {
-        const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/my_summary')
+    const fetchData = async (requestOptions) => {
+        const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/student/my_summary', requestOptions)
         const data = await res.json()
 
         return data
