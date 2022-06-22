@@ -135,7 +135,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         AllMaschienenKosten = 12000
     }
 
-    const [modal, setModal] = useState()
+    //const [modal, setModal] = useState()
 
     const [modalBuyMaschine, setModalBuyMaschine] = useState()
 
@@ -212,7 +212,14 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
         const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/cycle/new_entry', requestOptions)
         if (res.status === 201) {
-            setModal(
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Die Abgabe war Erfolgreich',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            /*setModal(
                 <>
                     <div className={"block"}>
                         <div
@@ -244,9 +251,16 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </div>
                     </div>
                 </>
-            )
+            )*/
         } else {
-            setModal(
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Es ist ein Fehler aufgetreten',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            /*setModal(
                 <>
                     <div className={"block"}>
                         <div
@@ -275,7 +289,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </div>
                     </div>
                 </>
-            )
+            )*/
         }
         const data = await res.json()
 
@@ -448,7 +462,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     })
     return (
         <>
-            {modal}
+            
             {modalBuyMaschine}
             {modalConfirm}
             <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
