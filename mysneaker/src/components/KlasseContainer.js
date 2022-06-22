@@ -67,7 +67,7 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                 case "input":
                     return (<>
                     <button className='px-4 right-0 m-4 py-2 text-sm bg-red-500 hover:bg-red-700 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold' onClick={() => setSelect("main")}>Zurück</button>
-                        <KlassenDetailContainer current_cycle_index={current_cycle_index} userId={companyId} />
+                        <KlassenDetailContainer cycle_index={current_cycle_index} userId={companyId} />
                     </>)
 
             }
