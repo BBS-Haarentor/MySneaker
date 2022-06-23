@@ -23,10 +23,6 @@
             "machine_production_capacity": 200,
             "machine_maintainance_cost": 4000.00,
             "production_cost_per_sneaker": 60.00
-        },
-        {
-            "char": "B",
-            "...": "rest_of_data"
         }
     ]
 }

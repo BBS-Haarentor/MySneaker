@@ -5,8 +5,8 @@ from app.schemas.scenario import ScenarioBase
 class Scenario(ScenarioBase, table=True):
     __tablename__ = 'scenario'
     id: int | None = Field(default=None, primary_key=True)
-    char: str | None = Field(default=None)
-    description: str | None = Field(default=None)
+    char: str 
+    description: str
     sneaker_price: float  = Field(default=20)
     paint_price: float = Field(default=10)
     storage_fee_sneaker: float = Field(default=4.00)

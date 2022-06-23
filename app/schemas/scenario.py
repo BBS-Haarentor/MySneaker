@@ -2,8 +2,8 @@ from sqlmodel import SQLModel
 
 class ScenarioBase(SQLModel):
     id: int | None
-    char: str | None
-    description: str | None
+    char: str 
+    description: str 
     sneaker_price: float | None
     paint_price: float | None
     storage_fee_sneaker: float | None 
