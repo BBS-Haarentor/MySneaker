@@ -224,6 +224,9 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
         myHeaders.append('Access-Control-Allow-Origin', '*')
 
         var raw = JSON.stringify({
+            "game_id": data.stock.game_id,
+            "current_cycle_index": cycle_index,
+            "company_id": userId,
             "buy_sneaker": parseInt(SneakerEinkaufMenge),
             "buy_paint": parseInt(FarbenEinkaufMenge),
             "planned_production_1": GeplanteProduktion,
@@ -240,7 +243,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             "research_invest": ForschungUndEntwickelung,
             "ad_invest": Werbung,
             "take_credit": AufnahmeDarlehen,
-            "payback_credit": RueckzahlungDarlehen,
+            "payback_credit": parseInt(RueckzahlungDarlehen),
             "new_employees": (Neueinstellungen - Kündigungen),
             "buy_new_machine_2": buy_new_machine_2,
             "buy_new_machine_3": buy_new_machine_3,

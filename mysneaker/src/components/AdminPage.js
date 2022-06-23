@@ -24,8 +24,35 @@ const AdminPage = () => {
     })
   }, [])
 
-  const deleteTeacher = async () => {
+  const deleteTeacher = async (id) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+    myHeaders.append('Access-Control-Allow-Origin', '*')
 
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+    };
+    await fetch(process.env.REACT_APP_MY_API_URL + "/user/delete/" + id, requestOptions).then((element) => {
+      if (element.status === 200) {
+        element.json().then((element1) => {
+          setTeachers(element1)
+        })
+      }
+    })
+
+    var requestOptions1 = {
+      method: 'DELETE',
+      headers: myHeaders,
+    };
+    await fetch(process.env.REACT_APP_MY_API_URL + "/user/teacher_list", requestOptions1).then((element) => {
+      if (element.status === 200) {
+        element.json().then((element1) => {
+          setTeachers(element1)
+        })
+      }
+    })
   }
 
   const showTeacher = async () => {
@@ -44,15 +71,16 @@ const AdminPage = () => {
                 <td>Aktionen</td>
               </tr>
               <tr className='mb-12'>
-                <td><hr/></td>
-                <td><hr/></td>
-                <td><hr/></td>
+                <td><hr /></td>
+                <td><hr /></td>
+                <td><hr /></td>
               </tr>
               {teachers.map(({ id, last_login, name }) => {
+                let date = new Date(last_login)
                 return (
                   <tr onClick={() => showTeacher()}>
                     <td>{name}</td>
-                    <td>{last_login}</td>
+                    <td>{date.getHours()}:{date.getSeconds()} {date.getDate()}.{date.getMonth()}.{date.getFullYear()}</td>
                     <td>
                       <button className='p-2' onClick={() => deleteTeacher(id)}>
                         <svg className='fill-red-500 hover:fill-red-600 h-5 w-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -72,7 +100,9 @@ const AdminPage = () => {
           </table>
         </div>
         <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
-
+          <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'>
+            Lehrer Hinzufügen
+          </button>
         </div>
       </div>
     </>
