@@ -23,12 +23,3 @@ async def init_async_db() -> None:
         """
         await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)
-
-
-async def init_admin_user(session: AsyncSession = Depends(get_async_session)) -> None:
-    #with get_async_session() as session:
-    new_admin_user = UserPost(name=SETTINGS.ADMIN_USER_NAME, hashed_pw=SETTINGS.ADMIN_USER_HASHED_PW)
-    admin_id: int = await create_user(user_post=new_admin_user, session=session)
-
-async def init_teacher_users(session: AsyncSession) -> None:
-    new_teacher_1 = UserPost(name=SETTINGS, hashed_pw=SETTINGS)
