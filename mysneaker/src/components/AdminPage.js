@@ -59,6 +59,10 @@ const AdminPage = () => {
 
   }
 
+  const createTeacher = async () => {
+    
+  }
+
   return (
     <>
       <div className='h-screen w-full overflow-hidden'>
@@ -100,7 +104,7 @@ const AdminPage = () => {
           </table>
         </div>
         <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
-          <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'>
+          <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => createTeacher()}>
             Lehrer Hinzufügen
           </button>
         </div>

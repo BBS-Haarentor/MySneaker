@@ -23,18 +23,18 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                         className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
                         <div
                             className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
-                            <span className="font-bold block text-xl mb-3">Spiel Erstellen</span>
+                            <span className="font-bold block text-xl mb-3">Passwort ändern</span>
                             <div className='flex flex-col'>
                                 <div className='my-6'>
-                                    <label>Spiel Name</label>
-                                    <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" placeholder="Spiel 1" required />
+                                    <label>Neues Passwort</label>
+                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" placeholder="Neues Passwort" required />
                                 </div>
                                 <div className='my-6'>
-                                    <label>Scenario Ordnung</label>
-                                    <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" placeholder="ABCDEFG" required />
+                                    <label>Neues Passwort wiederholen</label>
+                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" placeholder="Neues Passwort wiederholen" required />
                                 </div>
                                 <div className='my-6'>
-                                    <button className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo">Spiel erstellen</button>
+                                    <button className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo">Passwort ändern</button>
                                 </div>
                             </div>
                             <div className="text-right space-x-5 mt-5">
@@ -77,7 +77,7 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
     } else {
         return (
             <>
-                <img src="/img/teacher_empty.svg" className='h-96  w-96 m-4 m-auto'></img>
+                <img src="/img/teacher_empty.svg" className='h-96 w-96 m-4 mx-auto'></img>
                 <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
             </>
         )
