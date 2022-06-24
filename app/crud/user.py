@@ -151,11 +151,15 @@ async def update_pw(update_data: UserPwChange, session: AsyncSession) -> User | 
     """
     result = await session.exec(select(User).where(User.id == update_data.id))
     user: User = result.one_or_none()
-    if pwd_context.verify(update_data.old_pw, user.hashed_pw):
-        user.hashed_pw = hash_pw(update_data.new_pw)
-        return user
-    else:
+    if isinstance(user, NoneType):
         return None
+    user.hashed_pw = hash_pw(update_data.new_pw)
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    
+    return user
+    
 
 
 async def get_all_users_for_teacher(user_id: int, session: AsyncSession) -> list[UserResponseWithGradeName]:

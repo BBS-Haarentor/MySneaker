@@ -45,9 +45,9 @@ class UserResponse(SQLModel):
     is_active: bool 
     game_id: int | None
 
-class UserPwChange(UserBase):
+class UserPwChange(SQLModel):
     id: int | None
-    old_pw: str
+    old_pw: str | None
     new_pw: str
     
     
@@ -59,3 +59,4 @@ class UserResponseWithGradeName(SQLModel):
     is_active: bool
     game_id: int | None
     grade_name: str | None
+    

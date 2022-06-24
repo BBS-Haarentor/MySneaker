@@ -1,3 +1,4 @@
+from curses.ascii import HT
 from datetime import timedelta
 from re import U
 from types import NoneType
@@ -16,7 +17,7 @@ from app.models.stock import Stock
 from app.models.user import User
 from app.schemas.group import GroupPatch
 from app.schemas.stock import StockCreate
-from app.schemas.user import UserPatch, UserPostElevated, UserPostStudent, UserPwChange, UserResponse
+from app.schemas.user import UserPostElevated, UserPostStudent, UserPwChange, UserResponse
 from starlette import status
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -140,22 +141,28 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 @router.put("/modify", status_code=status.HTTP_202_ACCEPTED, response_model=UserResponse)
 @base_auth_required
 async def modify(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+    # verify old pw
+    if not update_data.old_pw:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Old password not supplied")
+    if not pwd_context.verify(update_data.old_pw, current_user.hashed_pw):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Old password does not match")
     update_data.id = current_user.id
     user: User = await update_pw(update_data=update_data, session=session)
+    
     return user
+
 
 @router.put("/teacher/modify/", status_code=status.HTTP_202_ACCEPTED, response_model=UserResponse)
 @teacher_auth_required
 async def modify_by_teacher(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    user: User = await update_pw(update_data=update_data, session=session)
+    if not update_data.id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No user_id supplied")
+    user: User | None = await update_pw(update_data=update_data, session=session)
+    if isinstance(user, NoneType):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No User found by the supplied id")
+    
     return user
 
-
-@router.put("/modify_else", status_code=status.HTTP_202_ACCEPTED, response_model=UserResponse)
-@teacher_auth_required
-async def modify_else(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)): 
-    user: User = await update_pw(update_data=update_data, session=session)
-    return user
 
 @router.post("/groups/", status_code=status.HTTP_202_ACCEPTED)
 @admin_auth_required
