@@ -17,20 +17,20 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht mehr als 1000 Faben gekauft werden.")
 
 
-    if cycle.planned_production_1>( cycle.planned_workers_1*scenario.machine_employee_max):
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_1*scenario.machine_employee_max + " arbeiter an der Maschiene arbeiten.")
-    if cycle.planned_production_1>0:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 arbeiter an der Maschiene arbeiten.")
+    if cycle.planned_production_1>( cycle.planned_workers_1*20):
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_1*20 + " arbeiter an der Maschiene arbeiten.")
+    if cycle.planned_production_1<0:
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
-    if cycle.planned_production_2>( cycle.planned_workers_2*scenario.machine_employee_max):
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_2*scenario.machine_employee_max + " arbeiter an der Maschiene arbeiten.")
-    if cycle.planned_production_2>0:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 arbeiter an der Maschiene arbeiten.")
+    if cycle.planned_production_2>( cycle.planned_workers_2*20):
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_2*20 + " arbeiter an der Maschiene arbeiten.")
+    if cycle.planned_production_2<0:
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
     
-    if cycle.planned_production_3>( cycle.planned_workers_3*scenario.machine_employee_max):
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_3*scenario.machine_employee_max + " arbeiter an der Maschiene arbeiten.")
-    if cycle.planned_production_3>0:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 arbeiter an der Maschiene arbeiten.")
+    if cycle.planned_production_3>( cycle.planned_workers_3*20):
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_3*20 + " arbeiter an der Maschiene arbeiten.")
+    if cycle.planned_production_3<0:
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
     if cycle.planned_workers_1>scenario.machine_employee_max:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + scenario.machine_employee_max + " arbeiter an der Maschiene arbeiten.")
@@ -59,8 +59,7 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
     if cycle.sales_bid>(cycle.planned_production_1+cycle.planned_production_2+cycle.planned_production_3+cycle.include_from_stock):
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht mehr schuhe verkauft werden als peoduktiert wurden und auf lager sind")
 
-    # if sycle.tender_offer_count<0:
-    #     raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 ")
+
     if cycle.tender_offer_price>300:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es darf nicht mehr geld für sneakers verlankt werden als 300€")
     if cycle.tender_offer_price<0: #Klärungs bedarf
