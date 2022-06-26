@@ -20,6 +20,7 @@ class ScenarioBase(SQLModel):
     machine_purchase_cost: float | None
     sneaker_ask: int | None
     factor_ad_take: float | None
+    tender_offer_count: int | None
     machine_production_capacity: int | None
     machine_employee_max: int | None
     machine_maintainance_cost: float | None
