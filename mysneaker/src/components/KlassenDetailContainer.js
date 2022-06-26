@@ -189,6 +189,31 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                 if (body.replaceAll("\"", "") === "teacher") {
                     const getData = async () => {
                         const dataFromServer = await fetchData()
+                        if (dataFromServer.cycle === null) {
+                            dataFromServer.cycle = {
+                                "buy_paint": 0,
+                                "sales_planned": 0,
+                                "new_employees": 0,
+                                "planned_production_1": 0,
+                                "sales_bid": 0,
+                                "buy_new_machine_2": false,
+                                "planned_production_2": 0,
+                                "tender_offer_count": 0,
+                                "buy_new_machine_3": false,
+                                "planned_production_3": 0,
+                                "tender_offer_price": 0,
+                                "planned_workers_1": 0,
+                                "research_invest": 0,
+                                "current_cycle_index": 0,
+                                "planned_workers_2": 0,
+                                "ad_invest": 0,
+                                "planned_workers_3": 0,
+                                "take_credit": 0,
+                                "buy_sneaker": 0,
+                                "include_from_stock": 0,
+                                "payback_credit": 0
+                            }
+                        }
                         setData(dataFromServer)
                         initData(dataFromServer)
                     }

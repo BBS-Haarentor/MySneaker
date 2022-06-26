@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 const AdminPage = () => {
 
   const [teachers, setTeachers] = useState([]);
+  const [modal, setModal] = useState(<></>)
 
   useEffect(async () => {
     var myHeaders = new Headers();
@@ -60,11 +61,12 @@ const AdminPage = () => {
   }
 
   const createTeacher = async () => {
-    
+
   }
 
   return (
     <>
+      {modal}
       <div className='h-screen w-full overflow-hidden'>
         <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
           <table className='w-full text-center'>

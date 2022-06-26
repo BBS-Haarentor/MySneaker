@@ -1,10 +1,7 @@
 import React from 'react'
-import Beschaffung from './Container/Beschaffung'
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
-import Lager from './Container/Lager';
-import Personal from './Container/Personal';
 
 const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingRef, PersonalRef, AbsatzRef }) => {
 
@@ -276,6 +273,39 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 showConfirmButton: false,
                 timer: 1500
             })
+            /*setModal(
+                <>
+                    <div className={"block"}>
+                        <div
+                            className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                            id="my-modal"
+                        ></div>
+                        <div
+                            className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                            <div
+                                className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+
+                                <div className="hero container max-w-screen-lg mx-auto p-5">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        id="Capa_1" x="0px" y="0px" viewBox="0 0 507.506 507.506"
+                                        fill="currentColor"
+                                        class="mx-auto h-32 text-green-400"
+                                        height="512">
+                                        <g>
+                                            <path d="M163.865,436.934c-14.406,0.006-28.222-5.72-38.4-15.915L9.369,304.966c-12.492-12.496-12.492-32.752,0-45.248l0,0   c12.496-12.492,32.752-12.492,45.248,0l109.248,109.248L452.889,79.942c12.496-12.492,32.752-12.492,45.248,0l0,0   c12.492,12.496,12.492,32.752,0,45.248L202.265,421.019C192.087,431.214,178.271,436.94,163.865,436.934z" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <span className="font-bold block text-xl mb-3">Erfolgreich</span>
+                                <span className="block text-xl mb-3">Die Abgabe war Erfolgreich</span>
+                                <div className="text-right space-x-5 mt-5">
+                                    <button onClick={() => setModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )*/
         } else {
             Swal.fire({
                 position: 'top-end',
@@ -284,6 +314,36 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 showConfirmButton: false,
                 timer: 1500
             })
+            /*setModal(
+                <>
+                    <div className={"block"}>
+                        <div
+                            className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                            id="my-modal"
+                        ></div>
+                        <div
+                            className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                            <div
+                                className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+
+                                <div className="hero container max-w-screen-lg mx-auto p-5">
+                                    <svg className="mx-auto h-32 text-red-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="512"
+                                        height="512">
+                                        <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
+                                        <path d="M12,5a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V6A1,1,0,0,0,12,5Z" />
+                                        <rect x="11" y="17" width="2" height="2" rx="1" />
+                                    </svg>
+                                </div>
+                                <span className="font-bold block text-xl mb-3">Fehler!</span>
+                                <span className="block text-xl mb-3">Es gibt ein Fehler beim Abgeben</span>
+                                <div className="text-right space-x-5 mt-5">
+                                    <button onClick={() => setModal(<></>)} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )*/
         }
         const data = await res.json()
 
@@ -411,6 +471,30 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 )
             }
         })
+        /*setModalConfirm(
+            <>
+                <div className={"block"}>
+                    <div
+                        className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                        id="my-modal"
+                    ></div>
+                    <div
+                        className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                        <div
+                            className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+
+                            <div className="hero container max-w-screen-lg mx-auto p-5">
+                                <h1>Möchtes du wirklich die Maschine {name} für {formatter.format(price)} Kaufen?</h1>
+                                <div className='pt-4'>
+                                <button onClick={() => doMagicToBuyMachine(name, price)} className="px-4 py-2 text-sm bg-green-500 text-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-green-700 focus:bg-green-600 focus:text-indigo">Ja</button>
+                                <button onClick={() => setModalConfirm(<></>)} className="px-4 py-2 text-white text-sm bg-red-500 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-red-700 focus:bg-red-600 focus:text-indigo">Nein</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )*/
     }
     const doMagicToBuyMachine = (name, preis) => {
         //TODO warten auf jost wegen api und dann einbinden
@@ -437,19 +521,197 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             {modalConfirm}
             <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
 
-                <Beschaffung LagerBeschaffungRef={LagerBeschaffungRef} data={data} setSneakerEinkaufMenge={setSneakerEinkaufMenge} 
-                setFarbenEinkaufMenge={setFarbenEinkaufMenge} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} 
-                formatter={formatter} FarbenKosten={FarbenKosten} SneakerKosten={SneakerKosten} />
 
-                <Lager data={data} Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} formatter={formatter}
-                AusschreibungSoll={AusschreibungSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} MarktIst={MarktIst} 
-                AusschreibungIst={AusschreibungIst} />
-                
-                <Personal PersonalRef={PersonalRef} Mitarbeiter={Mitarbeiter} ZugeteilteMitarbeiter={ZugeteilteMitarbeiter} setNeueinstellungen={setNeueinstellungen} 
-                Neueinstellungen={Neueinstellungen} setKündigungen={setKündigungen} Kündigungen={Kündigungen} ZugeteilteMitarbeiter2={ZugeteilteMitarbeiter2} 
-                ZugeteilteMitarbeiter3={ZugeteilteMitarbeiter3} formatter={formatter} PersonalnebenkostenInP={PersonalnebenkostenInP} setPersonalnebenkosten={setPersonalnebenkosten}
-                Personalnebenkosten={Personalnebenkosten} />
+                <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th className='xl:w-72'></th>
+                                <th className='text-[#4fd1c5]'>Sneaker</th>
+                                <th className='text-[#4fd1c5]'>Farben</th>
+                            </tr>
+                            <tr>
+                                <td>Einstandspreis</td>
+                                <td>{formatter.format(data.scenario.sneaker_price)}</td>
+                                <td>{formatter.format(data.scenario.paint_price)}</td>
+                            </tr>
+                            <tr>
+                                <td>Einkauf (Menge)</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setFarbenEinkaufMenge(e.target.value)} value={FarbenEinkaufMenge}></input></td>
+                            </tr>
+                            <tr>
+                                <td>Kosten pro Werkstoff</td>
+                                <td>{formatter.format(SneakerKosten)}</td>
+                                <td>{formatter.format(FarbenKosten)}</td>
+                            </tr>
+                            <tr>
+                                <td>Gesamtkosten Werkstoffe</td>
+                                <td>{formatter.format(SneakerKosten + FarbenKosten)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <img src="/img/undraw_empty_cart.svg" className='h-96 w-0 xl:w-96 m-4'></img>
+                </div>
+                <div className="p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 flex justify-around bg-white  snap-start">
+                    <img src="/img/undraw_heavy_box.svg" className='h-96 w-0 xl:w-96 m-4'></img>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th className='text-[#4fd1c5] w-96'></th>
+                                <th className='text-[#4fd1c5] w-40'>Sneaker</th>
+                                <th className='text-[#4fd1c5] w-40'>Farben</th>
+                                <th className='text-[#4fd1c5] w-40'>Fertige Sneaker</th>
+                            </tr>
+                            <tr>
+                                <td>Lager (Vorperiode)</td>
+                                <td>{data.current_stock.sneaker_count} Stk.</td>
+                                <td>{data.current_stock.paint_count} Stk.</td>
+                                <td>{data.current_stock.finished_sneaker_count} Stk.</td>
+                            </tr>
+                            <tr>
+                                <td>Aktuelle Beschaffung</td>
+                                <td>{SneakerEinkaufMenge} Stk.</td>
+                                <td>{FarbenEinkaufMenge} Stk.</td>
+                                <td>{Gesamtproduktion} Stk.</td>
+                            </tr>
+                            <tr>
+                                <td>Gesamte Verfügbarkeit</td>
+                                <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) + " Stk."}</td>
+                                <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) + " Stk."}</td>
+                                <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) + " Stk."}</td>
+                            </tr>
+                            <tr>
+                                <td>Verbrauch Produktion (PLAN)</td>
+                                <td>{Gesamtproduktion} Stk.</td>
+                                <td>{Gesamtproduktion * 2} Stk.</td>
+                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) + " Stk."}</td>
+                            </tr>
+                            <tr>
+                                <td>Lager Periodenende (PLAN)</td>
+                                <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion + " Stk."}</td>
+                                <td>{(data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2 + " Stk."}</td>
+                                <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) + " Stk."}</td>
+                            </tr>
+                            <tr>
+                                <td>Lagerkosten pro Stück</td>
+                                <td>4,00€</td>
+                                <td>1,00€</td>
+                                <td>8,00€</td>
+                            </tr>
+                            <tr>
+                                <td>Lagerkosten (PLAN)</td>
+                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4)}</td>
+                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
+                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
+                            </tr>
+                            <tr>
+                                <td>Verbrauch Produktion (IST)</td>
+                                <td>{Gesamtproduktion} Stk.</td>
+                                <td>{Gesamtproduktion * 2} Stk.</td>
+                                <td>{MarktSoll} Stk.</td>
+                            </tr>
+                            <tr>
+                                <td>Lager Periodenende (IST)</td>
+                                <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion} Stk.</td>
+                                <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2} Stk.</td>
+                                <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk.</td>
+                            </tr>
+                            <tr>
+                                <td>Lagerkosten (IST)</td>
+                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
+                                <td>{formatter.format((data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2) * 1)}</td>
+                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
+                            </tr>
 
+                        </tbody>
+                    </table>
+
+                </div>
+                <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={PersonalRef}>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th className='xl:w-96'></th>
+                                <th className='text-[#4fd1c5] xl:w-96 '>Personal</th>
+                            </tr>
+                            <tr>
+                                <td>Mitarbeiter</td>
+                                <td>{Mitarbeiter}</td>
+
+                            </tr>
+                            <tr>
+                                <td>Grundkapazität Stück je MA</td>
+                                <td>20</td>
+
+                            </tr>
+                            <tr>
+                                <td>Verfügbare Kapazität (MA)</td>
+                                <td>{Mitarbeiter - ZugeteilteMitarbeiter} Stk.</td>
+
+                            </tr>
+                            <tr>
+                                <td>benötigte MA </td>
+                                <td>{ZugeteilteMitarbeiter} Stk.</td>
+
+                            </tr>
+                            <tr>
+                                <td>Auslastung </td>
+                                <td>{Math.round((ZugeteilteMitarbeiter / 1) / Mitarbeiter * 100)} %</td>
+
+                            </tr>
+                            <tr>
+                                <td>Neueinstellungen</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input> Stk.</td>
+
+                            </tr>
+                            <tr>
+                                <td>Kosten Neueinstellung</td>
+                                <td>100,00€</td>
+
+                            </tr>
+                            <tr>
+                                <td>Kündigungen/Rente/ etc.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setKündigungen(e.target.value)} value={Kündigungen}></input> Stk.</td>
+
+                            </tr>
+                            <tr>
+                                <td>Zugeteilte Mitarbeiter</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter) + parseInt(ZugeteilteMitarbeiter2) + parseInt(ZugeteilteMitarbeiter3)} Stk.</td>
+
+                            </tr>
+                            <tr>
+                                <td>Mitarbeiter nächste Periode</td>
+                                <td>{parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen} Stk.</td>
+
+
+                            </tr>
+                            <tr>
+                                <td>Kosten pro MA</td>
+                                <td>500,00 €</td>
+
+                            </tr>
+                            <tr>
+                                <td>Personalnebenkosten</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setPersonalnebenkosten(e.target.value)} value={Personalnebenkosten}></input> €</td>
+
+                            </tr>
+                            <tr>
+                                <td>Personalkosten akt. Periode</td>
+                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
+
+                            </tr>
+                            <tr>
+                                <td>Personalkosten folg. Periode</td>
+                                <td>{formatter.format((parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen) * (500 * (PersonalnebenkostenInP)))}</td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 m-auto'></img>
+
+                </div>
 
                 {data.current_stock.machine_1_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <table>
