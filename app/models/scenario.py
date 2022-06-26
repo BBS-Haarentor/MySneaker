@@ -23,7 +23,7 @@ class Scenario(ScenarioBase, table=True):
     machine_purchase_cost: float = Field(default=1_000.00)
     sneaker_ask: int = Field(default=400)
     factor_ad_take: float = Field(default=0.1)
-    tender_offer_count: int = Field(defoult=0)
+    tender_offer_count: int = Field(default=0)
     machine_production_capacity: int = Field(default=200)
     machine_employee_max: int = Field(default=10)
     machine_maintainance_cost: float = Field(default=4_000.00)
