@@ -1,6 +1,4 @@
-from curses.ascii import HT
 from datetime import timedelta
-from re import U
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
@@ -16,7 +14,6 @@ from app.models.groups import BaseGroup
 from app.models.stock import Stock
 from app.models.user import User
 from app.schemas.group import GroupPatch
-from app.schemas.stock import StockCreate
 from app.schemas.user import UserPostElevated, UserPostStudent, UserPwChange, UserResponse
 from starlette import status
 from sqlmodel import select
@@ -43,7 +40,7 @@ async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depe
     new_user_id = await create_user(user_post=user_post, session=session)
     user_group_entry: BaseGroup | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
     # create init stock for student
-    stock_data = Stock(game_id=user_post.game_id, company_id=new_user_id, current_cycle_index=0)
+    stock_data = Stock(game_id=user_post.game_id, company_id=new_user_id, current_cycle_index=game.current_cycle_index)
     new_stock: Stock = await new_stock_entry(entry_data=stock_data, session=session)
     return new_user_id
 

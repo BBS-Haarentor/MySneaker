@@ -1,6 +1,5 @@
 from datetime import datetime
 from sqlalchemy import Column, ForeignKey, Integer
-
 from sqlmodel import Field
 from app.schemas.stock import StockBase
 

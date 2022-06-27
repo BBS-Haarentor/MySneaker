@@ -1,8 +1,7 @@
-
 from datetime import datetime
 from sqlmodel import SQLModel
 
-# Lager
+
 class StockBase(SQLModel):
     id: int | None
     game_id: int 

@@ -1,5 +1,6 @@
 from sqlmodel import SQLModel
 
+
 class ScenarioBase(SQLModel):
     id: int | None
     char: str 

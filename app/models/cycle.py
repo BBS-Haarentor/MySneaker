@@ -1,13 +1,6 @@
-
-
-
 from datetime import datetime
-from typing import Optional
 from sqlalchemy import Column, ForeignKey, Integer
-
-from sqlmodel import Field, Relationship
-from sqlalchemy.orm import relationship 
-#from app.models.link_models import UserCycleLink
+from sqlmodel import Field
 from app.schemas.cycle import CycleBase
 
 

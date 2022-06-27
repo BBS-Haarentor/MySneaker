@@ -1,6 +1,7 @@
 from datetime import datetime
 from sqlmodel import SQLModel
 
+
 class CycleBase(SQLModel):
     id: int | None
     entry_date: datetime | None
@@ -27,6 +28,7 @@ class CycleBase(SQLModel):
     new_employees: int
     buy_new_machine_2: bool
     buy_new_machine_3: bool
+
 
 class CycleCreate(CycleBase):
     pass

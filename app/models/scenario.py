@@ -1,9 +1,10 @@
-from sqlmodel import Field
+from sqlmodel import Field, UniqueConstraint
 from app.schemas.scenario import ScenarioBase
 
 
 class Scenario(ScenarioBase, table=True):
     __tablename__ = 'scenario'
+    __table_args__ = (UniqueConstraint("char"),)
     id: int | None = Field(default=None, primary_key=True)
     char: str 
     description: str

@@ -4,7 +4,6 @@ from sqlmodel import Field, UniqueConstraint, Column
 from app.schemas.user import UserBase
 
 
-
 class User(UserBase, table=True):
     __tablename__ = 'user'
     __table_args__ = (UniqueConstraint("name"),)

@@ -1,8 +1,4 @@
-
-
-
 from datetime import datetime
-
 from sqlmodel import Field
 from app.schemas.game import GameBase
 

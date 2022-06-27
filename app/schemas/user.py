@@ -1,7 +1,6 @@
-
-
 from datetime import datetime
 from sqlmodel import SQLModel
+
 
 class UserBase(SQLModel):
     id: int | None
@@ -12,8 +11,10 @@ class UserBase(SQLModel):
     is_active: bool | None
     game_id: int | None
 
+
 class UserPost(UserBase):
     pass
+
 
 class UserPostStudent(UserBase):
     name: str
@@ -21,9 +22,9 @@ class UserPostStudent(UserBase):
     hashed_pw: str | None
     game_id: int
     
+    
 class UserPostElevated(UserPostStudent):
     game_id: int | None
-
 
 
 class UserPatch(UserBase):
@@ -32,10 +33,10 @@ class UserPatch(UserBase):
     email: str | None
 
 
-
 class UserLogin(UserBase):
     name: str
     hashed_pw: str
+
 
 class UserResponse(SQLModel):
     id: int
@@ -44,6 +45,7 @@ class UserResponse(SQLModel):
     email: str | None
     is_active: bool 
     game_id: int | None
+
 
 class UserPwChange(SQLModel):
     id: int | None
