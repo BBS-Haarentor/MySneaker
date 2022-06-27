@@ -6,11 +6,15 @@ const AdminPage = () => {
   const [teachers, setTeachers] = useState([]);
   const [modal, setModal] = useState(<></>)
 
+  const [newTeacher, setNewTeacher] = useState()
+  const [newTeacherPassword, setNewTeacherPassword] = useState()
+
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+  myHeaders.append('Access-Control-Allow-Origin', '*')
+
   useEffect(async () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-    myHeaders.append('Access-Control-Allow-Origin', '*')
 
     var requestOptions = {
       method: 'GET',
@@ -61,7 +65,64 @@ const AdminPage = () => {
   }
 
   const createTeacher = async () => {
+    setModal(<>
+      <div className="block">
+        <div
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+          id="my-modal"
+        ></div>
+        <div
+          className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+          <div
+            className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+            <span className="font-bold block text-xl mb-3">Lehrer Erstellen</span>
+            <div className='flex flex-col'>
+              <div className='my-6'>
+                <label>Lehrer Name</label>
+                <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setNewTeacher(e.target.value)} placeholder="Name" required />
+              </div>
+              <div className='my-6'>
+                <label>Passwort</label>
+                <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setNewTeacherPassword(e.target.value)} placeholder="Passwort" required />
+              </div>
+              <div className='my-6'>
+                <button className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo" onClick={() => createTeacherSubmit()}>Lehrer Erstellen</button>
+              </div>
+            </div>
+            <div className="text-right space-x-5 mt-5">
+              <button className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo" onClick={() => setModal(<></>)}>Schließen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>)
+  }
 
+  const createTeacherSubmit = async () => {
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify({
+        name: newTeacher,
+        unhashed_pw: newTeacherPassword,
+      }),
+      redirect: 'follow'
+    };
+    fetch(process.env.REACT_APP_MY_API_URL + "/user/create/teacher", requestOptions).then((element) => {
+      if (element.status === 200) {
+        var requestOptions1 = {
+          method: 'GET',
+          headers: myHeaders,
+        };
+        fetch(process.env.REACT_APP_MY_API_URL + "/user/teacher_list", requestOptions1).then((element) => {
+          if (element.status === 200) {
+            element.json().then((element1) => {
+              setTeachers(element1)
+            })
+          }
+        })
+      }
+    })
   }
 
   return (
