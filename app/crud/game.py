@@ -1,6 +1,3 @@
-
-
-import logging
 from types import NoneType
 from fastapi import HTTPException
 from sqlmodel import select
@@ -12,8 +9,7 @@ from app.models.scenario import Scenario
 from app.models.user import User
 from app.models.cycle import Cycle
 from app.models.stock import Stock
-
-from app.schemas.game import GameCreate
+from app.schemas.game import GameCreate, GamePatch
 from starlette import status
 
 async def create_game(new_game_data: GameCreate, session: AsyncSession) -> int:
@@ -129,13 +125,16 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     
     # check every user has valid cycle and stock data
     
-    # sort cycles by Cycle.sales_bid , lowest first
+    # sort by company_id 
+    id_sorted_cycles: list[Cycle] = sorted(unsorted_cycle_list, key= lambda x: x.company_id)
+    id_sorted_stocks: list[Stock] = sorted(unsorted_stock_list, key= lambda x: x.company_id)
+    # zip the two lists for sorting by feature only given in one list
+    zipped = zip(id_sorted_cycles, id_sorted_stocks)
+    sorted_zipped = sorted(zipped, key= lambda x: x[0].sales_bid, reverse=True)
     
-    #unsorted_cycle_list.sort(key=lambda x:Cycle.sales_bid, reverse=True)
-
-    # sort lists TODO: sort
-    sorted_stock_list = unsorted_stock_list
-    sorted_cycle_list = unsorted_cycle_list
+    tuples = zip(*sorted_zipped)
+    
+    sorted_cycle_list, sorted_stock_list = [ list(tuple) for tuple in tuples]
     
     ################################
     # turnover logic here
@@ -270,3 +269,21 @@ async def get_game_state(game_id: int, session: AsyncSession) -> bool | None:
         return game
     else:
         return game.is_active
+    
+    
+async def edit_game(patch_data: GamePatch, session: AsyncSession) -> Game | None:
+    result = await session.exec(select(Game).where(Game.id == patch_data.id))
+    game: Game | None = result.one_or_none()
+    if isinstance(game, NoneType):
+        return game
+    if not isinstance(patch_data.owner_id, NoneType):
+        game.owner_id = patch_data.owner_id
+    if not isinstance(patch_data.grade_name, NoneType):
+        game.grade_name = patch_data.grade_name
+    if not isinstance(patch_data.scenario_order, NoneType):
+        game.scenario_order = patch_data.scenario_order
+    session.add(game)
+    await session.commit()
+    await session.refresh(game)
+    
+    return game
