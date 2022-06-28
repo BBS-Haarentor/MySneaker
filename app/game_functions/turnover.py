@@ -22,7 +22,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
     
     for i in range(0, len(stock_output) -1):
-        _Kontostand= stock[i].account_balance
+        _Kontostand= stock_list[i].account_balance
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         _StückzahlAusschreibung = cycle_list[i].tender_offer_count
         _PreisAusschreibung = cycle_list[i].tender_offer_price
@@ -114,6 +114,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
         #Entwickelung
         _Buget_Kumuliert = stock_list[i].research_budget + cycle_list[i].research_invest  
+        
         if _Buget_Kumuliert >= 2_500:                                                       
             StuffeEntwickelung = 0.90                                                     
         if _Buget_Kumuliert >= 5_000:                                                        
@@ -131,7 +132,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         stock_output[i].research_production_modifier = StuffeEntwickelung
         
         
-          
+        
         if cycle_list[i].buy_new_machine != 0:
             if stock_list[i].machine_2_space == 0:
                 stock_output[i].machine_2_space = cycle_list[i].buy_new_machine

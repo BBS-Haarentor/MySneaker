@@ -143,7 +143,7 @@ async def get_cycle_index(game_id: int, current_user: User = Depends(get_current
 
 @router.put("/edit", status_code=status.HTTP_202_ACCEPTED, response_model=GameResponse)
 @teacher_auth_required
-async def game_patch(game_patch: GamePatch, session: AsyncSession = Depends(get_async_session)) -> GameResponse | None:
+async def game_patch(game_patch: GamePatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> GameResponse | None:
     updated_game: Game | None = await edit_game(patch_data=game_patch, session=session)
     if isinstance(updated_game, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No game found by that id")
