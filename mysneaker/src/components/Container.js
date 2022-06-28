@@ -97,10 +97,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(data.current_cycle.research_invest)
     const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(data.current_cycle.include_from_stock)
     const [MarktSoll, setMarktSoll] = useState(data.current_cycle.sales_planned)
-    const [MarktSollPreis, setMarktSollPreis] = useState(0)
+    const [MarktSollPreis, setMarktSollPreis] = useState(data.current_cycle.sales_bid)
     const [MarktIst, setMarktIst] = useState(0)
-    const [AusschreibungSoll, setAussetschreibungSoll] = useState(data.current_cycle.sales_bid)
-    const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(0)
+    const [AusschreibungSoll, setAussetschreibungSoll] = useState(data.current_cycle.tender_offer_count)
+    const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(data.current_cycle.tender_offer_price)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
@@ -158,7 +158,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setMarktSoll(data.current_cycle.sales_planned)
         setMarktSollPreis(data.current_cycle.sales_bid)
         setMarktIst(0)
-        setAussetschreibungSollPreis(0)
+        setAussetschreibungSoll(data.current_cycle.tender_offer_count)
+        setAussetschreibungSollPreis(data.cycle.tender_offer_price)
         setAusschreibungIst(0)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
@@ -934,7 +935,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                                 <td>{formatter.format(newMaschienPrize)}</td>
                                 <td>{formatter.format(newMaschienPrize)}</td>
                             </tr>
-                            <tr>UmsatzSolGepl
+                            <tr>
                                 <td>Kosten Neueinstellung</td>
                                 <td>{formatter.format(Neueinstellungen * 100)}</td>
                                 <td>{formatter.format(Neueinstellungen * 100)}</td>

@@ -98,9 +98,9 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(data.cycle.research_invest)
     const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(data.cycle.include_from_stock)
     const [MarktSoll, setMarktSoll] = useState(data.cycle.sales_planned)
-    const [MarktSollPreis, setMarktSollPreis] = useState(0)
+    const [MarktSollPreis, setMarktSollPreis] = useState(data.cycle.sales_bid)
     const [MarktIst, setMarktIst] = useState(0)
-    const [AusschreibungSoll, setAussetschreibungSoll] = useState(data.cycle.sales_bid)
+    const [AusschreibungSoll, setAussetschreibungSoll] = useState(0)
     const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(0)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
@@ -156,9 +156,10 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
         setForschungUndEntwickelung(data.cycle.research_invest)
         setEntnahmeAusDemLager(data.cycle.include_from_stock)
         setMarktSoll(data.cycle.sales_planned)
-        setMarktSollPreis(0)
+        setMarktSollPreis(data.cycle.sales_bid)
         setMarktIst(0)
-        setAussetschreibungSollPreis(data.cycle.sales_bid)
+        setAussetschreibungSoll(data.current_cycle.tender_offer_count)
+        setAussetschreibungSollPreis(data.cycle.tender_offer_price)
         setAusschreibungIst(0)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
@@ -262,9 +263,9 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             "planned_workers_3": ZugeteilteMitarbeiter3,
             "include_from_stock": EntnahmeAusDemLager,
             "sales_planned": MarktSoll,
-            "sales_bid": AusschreibungSoll,
-            "tender_offer_count": 0,
-            "tender_offer_price": 0,
+            "sales_bid": MarktSollPreis,
+            "tender_offer_count": AusschreibungSoll,
+            "tender_offer_price": AusschreibungSollPreis,
             "research_invest": ForschungUndEntwickelung,
             "ad_invest": Werbung,
             "take_credit": AufnahmeDarlehen,
@@ -913,7 +914,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                                 <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
-                            </tr>
+                            </tr>vwr
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
                                 <td>{ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
@@ -1180,8 +1181,8 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Saldo</td>
-                                <td>{data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                                <td>{data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + newMaschienPrize + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + Werbung + ForschungUndEntwickelung + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
+                                <td>{formatter.format(data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) + ForschungUndEntwickelung + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen))}</td>
+                                <td>{formatter.format(data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) + ForschungUndEntwickelung + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen))}</td>
                             </tr>
                             <tr>
                                 <td>Höhe Kontokorrentkredit</td>

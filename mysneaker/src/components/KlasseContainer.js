@@ -8,8 +8,8 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
     const [select, setSelect] = useState("main");
     const [modal, setModal] = useState();
 
-    const [changePassword, setChangePassword] = useState()
-    const [changePasswordRepeat, setChangePasswordRepeat] = useState()
+    let changePassword = ""
+    let changePasswordRepeat = ""
 
     const deleteUser = () => {
 
@@ -32,11 +32,11 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                             <div className='flex flex-col'>
                                 <div className='my-6'>
                                     <label>Neues Passwort</label>
-                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setChangePassword(e.target.value)} placeholder="Neues Passwort" required />
+                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => changePassword = e.target.value} placeholder="Neues Passwort" required />
                                 </div>
                                 <div className='my-6'>
                                     <label>Neues Passwort wiederholen</label>
-                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setChangePasswordRepeat(e.target.value)} placeholder="Neues Passwort wiederholen" required />
+                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => changePasswordRepeat = e.target.value} placeholder="Neues Passwort wiederholen" required />
                                 </div>
                                 <div className='my-6'>
                                     <button className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo" onClick={() => submitChangePassword(companyId)}>Passwort ändern</button>
@@ -58,19 +58,21 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                 myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
                 myHeaders.append('Access-Control-Allow-Origin', '*')
 
+                let raw = JSON.stringify({
+                    id: companyId,
+                    new_pw: changePassword
+                })
+
                 var requestOptions = {
                     method: 'PUT',
                     headers: myHeaders,
-                    body: JSON.stringify({
-                        id: companyId,
-                        new_pw: changePassword
-                    }),
+                    body: raw,
                 };
                 fetch(process.env.REACT_APP_MY_API_URL + '/user/teacher/modify', requestOptions).then((element) => {
                     if(element.status === 202) {
                         setModal(<></>)
-                        setChangePassword()
-                        setChangePasswordRepeat()
+                        changePassword = ""
+                        changePasswordRepeat = ""
                         Swal.fire({
                             position: 'top-end',
                             icon: 'success',
