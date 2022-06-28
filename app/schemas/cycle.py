@@ -26,6 +26,7 @@ class CycleBase(SQLModel):
     take_credit: float
     payback_credit: float
     new_employees: int
+    let_go_employees: int
     buy_new_machine_2: bool
     buy_new_machine_3: bool
     
