@@ -22,11 +22,8 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
     for i in range(0, len(stock_output) -1):
         _PreisAusschreibung=cycle_list[0].tender_offer_price
-        if _PreisAusschreibung == 0:
-            _PreisAusschreibung = cycle_list[i].tender_offer_price
-
         if _PreisAusschreibung > cycle_list[i].tender_offer_price:
-            _PreisAusschreibung = cycle_list[i].tender_offer_price
+            _UnternemensNummer=i
 
     
     for i in range(0, len(stock_output) -1):
@@ -90,8 +87,9 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _UnternehmenGeboteneStückzahl = cycle_list[i].sales_planned
         _UnternehmenPreise = cycle_list[i].sales_bid
 
-        if _PreisAusschreibung == cycle_list[i].tender_offer_price:
-            _StückzahlAusschreibung=cycle_list[i].tender_offer_count
+        if _UnternemensNummer == i:
+            _StückzahlAusschreibung=scenario[i].tender_offer_count
+            _PreisAusschreibung=cycle_list[i].tender_offer_price
             _EinkommenAuschreibung=round(_StückzahlAusschreibung*_PreisAusschreibung, 0)
         _Kontostand+=_EinkommenAuschreibung
 
