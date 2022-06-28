@@ -151,6 +151,7 @@ schema: GameCreate
   "take_credit": 1000.00,
   "payback_credit": 0.00,
   "new_employees": 2,
+    "let_go_employees": 0,
   "buy_new_machine_2": false,
   "buy_new_machine_3": false
 }
@@ -181,6 +182,7 @@ schema: GameCreate
   "take_credit": 0.00,
   "payback_credit": 0.00,
   "new_employees": 0,
+  "let_go_employees": 0,
   "buy_new_machine_2": false,
   "buy_new_machine_3": false
 }
