@@ -68,7 +68,7 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                     headers: myHeaders,
                     body: raw,
                 };
-                fetch(process.env.REACT_APP_MY_API_URL + '/user/teacher/modify', requestOptions).then((element) => {
+                fetch(process.env.REACT_APP_MY_API_URL + '/user/teacher/modify/', requestOptions).then((element) => {
                     if(element.status === 202) {
                         setModal(<></>)
                         changePassword = ""
