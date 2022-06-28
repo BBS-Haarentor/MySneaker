@@ -111,11 +111,11 @@ console.log(newTeacher + " " +newTeacherPassword )
             <div className='flex flex-col'>
               <div className='my-6'>
                 <label>Lehrer Name</label>
-                <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => newTeacher = e.target.value} placeholder="Name" required />
+                <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => newTeacher = e.target.value} placeholder="Name" required />
               </div>
               <div className='my-6'>
                 <label>Passwort</label>
-                <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => newTeacherPassword  = e.target.value} placeholder="Passwort" required />
+                <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => newTeacherPassword  = e.target.value} placeholder="Passwort" required />
               </div>
               <div className='my-6'>
                 <button className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo" onClick={() => createTeacherSubmit()}>Lehrer Erstellen</button>
