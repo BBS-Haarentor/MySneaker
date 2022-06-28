@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import KlassenDetailContainer from './KlassenDetailContainer';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
+import Analytics from './KlasseContainer/Analytics';
 
 const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
 
     const [select, setSelect] = useState("main");
     const [modal, setModal] = useState();
+    const [selectCycleIndex, setSelectCycleIndex] = useState();
 
     let changePassword = ""
     let changePasswordRepeat = ""
@@ -140,23 +142,37 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
 
         return (menues())
     } else {
-        if (myGame !== undefined) {
-            let i = 0;
-            return (
-                <>
-                    <div className=''>
-                        {myGame.scenario_order.split('').map((e) => {
-                            i++
-                            return (<p key={i} className={(myGame.current_cycle_index === (i - 1) ? 'hover:bg-gray-600 hover:text-white bg-gray-500' : 'hover:bg-gray-300 bg-gray-200') + ' cursor-pointer mr-2 inline-block p-1 w-8 text-center rounded-full'}>{i}</p>)
-                        })}
-                    </div>
-                    <img src="/img/teacher_empty.svg" className='h-96 w-96 m-4 mx-auto'></img>
-                    <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
-                </>
-            )
-        } else {
-            return (<></>)
+
+        const menues = () => {
+            switch (select) {
+                case "main":
+                    if (myGame !== undefined) {
+                        let i = 0;
+                        return (
+                            <>
+                                <div className=''>
+                                    {myGame.scenario_order.split('').map((e) => {
+                                        i++
+                                        return (<p key={i} className={(myGame.current_cycle_index === (i - 1) ? 'hover:bg-gray-600 text-white hover:text-white bg-gray-500 cursor-pointer' : myGame.current_cycle_index < (i - 1) ? 'bg-slate-300 text-white cursor-not-allowed' : 'hover:bg-gray-300 bg-gray-200 cursor-pointer') + ' mr-2 inline-block p-1 w-8 text-center rounded-full'} onClick={() => { setSelect("cycle_index"); setSelectCycleIndex((i)); }}>{i}</p>)
+                                    })}
+                                </div>
+                                <img src="/img/teacher_empty.svg" className='h-96 w-96 m-4 mx-auto'></img>
+                                <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
+                            </>
+                        )
+                    } else {
+                        return (<></>)
+                    }
+                case "cycle_index":
+                    return (<>
+                        <button className='px-4 right-0 m-4 py-2 text-sm bg-red-500 hover:bg-red-700 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold' onClick={() => setSelect("main")}>Zurück</button>
+                        <Analytics myHeaders={myHeaders} gameId={gameId} cycle_index={selectCycleIndex} />
+                    </>)
+
+            }
         }
+
+        return (menues())
     }
 }
 

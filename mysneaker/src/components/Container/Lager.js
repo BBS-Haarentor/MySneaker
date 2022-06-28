@@ -16,9 +16,9 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     </tr>
                     <tr>
                         <td>Lager (Vorperiode)</td>
-                        <td>{data.current_stock.sneaker_count} Stk.</td>
-                        <td>{data.current_stock.paint_count} Stk.</td>
-                        <td>{data.current_stock.finished_sneaker_count} Stk.</td>
+                        <td>{data.sneaker_count} Stk.</td>
+                        <td>{data.paint_count} Stk.</td>
+                        <td>{data.finished_sneaker_count} Stk.</td>
                     </tr>
                     <tr>
                         <td>Aktuelle Beschaffung</td>
@@ -28,9 +28,9 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     </tr>
                     <tr>
                         <td>Gesamte Verfügbarkeit</td>
-                        <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) + " Stk."}</td>
-                        <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) + " Stk."}</td>
-                        <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) + " Stk."}</td>
+                        <td>{data.sneaker_count + parseInt(SneakerEinkaufMenge) + " Stk."}</td>
+                        <td>{data.paint_count + parseInt(FarbenEinkaufMenge) + " Stk."}</td>
+                        <td>{data.finished_sneaker_count + parseInt(Gesamtproduktion) + " Stk."}</td>
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (PLAN)</td>
@@ -40,9 +40,9 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     </tr>
                     <tr>
                         <td>Lager Periodenende (PLAN)</td>
-                        <td>{(data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion + " Stk."}</td>
-                        <td>{(data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2 + " Stk."}</td>
-                        <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) + " Stk."}</td>
+                        <td>{(data.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion + " Stk."}</td>
+                        <td>{(data.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2 + " Stk."}</td>
+                        <td>{data.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) + " Stk."}</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten pro Stück</td>
@@ -52,9 +52,9 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     </tr>
                     <tr>
                         <td>Lagerkosten (PLAN)</td>
-                        <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4)}</td>
-                        <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                        <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
+                        <td>{formatter.format(((data.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4)}</td>
+                        <td>{formatter.format(((data.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
+                        <td>{formatter.format((data.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (IST)</td>
@@ -64,15 +64,15 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     </tr>
                     <tr>
                         <td>Lager Periodenende (IST)</td>
-                        <td>{data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion} Stk.</td>
-                        <td>{data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2} Stk.</td>
-                        <td>{data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk.</td>
+                        <td>{data.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion} Stk.</td>
+                        <td>{data.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2} Stk.</td>
+                        <td>{data.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk.</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten (IST)</td>
-                        <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
-                        <td>{formatter.format((data.current_stock.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2) * 1)}</td>
-                        <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
+                        <td>{formatter.format((data.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
+                        <td>{formatter.format((data.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2) * 1)}</td>
+                        <td>{formatter.format((data.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
                     </tr>
 
                 </tbody>
