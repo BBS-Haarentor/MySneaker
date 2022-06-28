@@ -112,6 +112,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [RueckzahlungDarlehen, setRueckzahlungDarlehen] = useState(0)
     const [buy_new_machine_2, setBuy_new_machine_2] = useState(data.current_cycle.buy_new_machine_2)
     const [buy_new_machine_3, setBuy_new_machine_3] = useState(data.current_cycle.buy_new_machine_2)
+    const [machine_2_space, set_machine_2_space] = useState(data.current_stock.machine_2_space)
+    const [machine_3_space, set_machine_3_space] = useState(data.current_stock.machine_3_space)
 
     var Gesamtproduktion = parseInt(GeplanteProduktion) + parseInt(GeplanteProduktion2) + parseInt(GeplanteProduktion3)
 
@@ -171,6 +173,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setRueckzahlungDarlehen(0)
         setBuy_new_machine_2(data.current_cycle.buy_new_machine_2)
         setBuy_new_machine_3(data.current_cycle.buy_new_machine_3)
+        set_machine_2_space(data.current_stock.machine_2_space)
+        set_machine_3_space(data.current_stock.machine_3_space)
     }
 
     useEffect(async () => {
@@ -262,8 +266,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             "buy_new_machine_2": buy_new_machine_2,
             "buy_new_machine_3": buy_new_machine_3,
             "machine_1_space":1,
-            "machine_2_space":0,
-            "machine_3_space":0,
+            "machine_2_space":machine_2_space,
+            "machine_3_space":machine_3_space,
         });
 
         var requestOptions = {
@@ -313,6 +317,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [availableMachine, setAvailableMachine] = useState(
         [
             {
+                id:1,
                 name: "Sneakerbox 200",
                 price: "12000",
                 capacity:200,
@@ -320,6 +325,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 price_per_unit:60
             },
             {
+                id:2,
                 name: "Sneakerdream 500",
                 price: "25000",
                 capacity:500,
@@ -327,6 +333,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 price_per_unit:50
             },
             {
+                id:3,
                 name: "Sneakergigant 1000",
                 price: "45000",
                 capacity:1000,
@@ -361,9 +368,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
                         <div className='p-4 list-none xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%]  mx-12 overflow-hidden'>
-                            {availableMachine.map(({ name, price, capacity, price_per_Periode,  price_per_unit}) => {
+                            {availableMachine.map(({ name, price, id, capacity, price_per_Periode,  price_per_unit}) => {
                                 return (
-                                    <li className='p-3 mx-3 shadow-lg rounded-3xl m-auto my-4 justify-around bg-white w-[90%]' onClick={() => Confirm(name, price)}>
+                                    <li className='p-3 mx-3 shadow-lg rounded-3xl m-auto my-4 justify-around bg-white w-[90%]' onClick={() => Confirm(name, price , id)}>
                                         <h1 className='block mb-2'>{name}</h1>
                                         <hr className='w-[50%] text-center mx-auto border-none h-[2px] rounded-xl bg-[#4fd1c5] opacity-50' />
                                         <br />
@@ -388,7 +395,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         )
     }
 
-    const Confirm = (name, price) => {
+    const Confirm = (name, price ,id) => {
         setModalConfirm(<></>)
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -413,7 +420,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     'Du hast den kauf Erfolgreich Abgeschlossen!',
                     'success'
                 ).then(() => {
-                    doMagicToBuyMachine(name, price)
+                    doMagicToBuyMachine(name, price , id)
                     setModalBuyMaschine(<></>)
                 })
 
@@ -428,12 +435,14 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             }
         })
     }
-    const doMagicToBuyMachine = (name, preis) => {
+    const doMagicToBuyMachine = (name, preis, id) => {
         //TODO warten auf jost wegen api und dann einbinden
         if (buy_new_machine_2 == false) {
             setBuy_new_machine_2(true)
+            set_machine_2_space(id)
         } else {
             setBuy_new_machine_3(true)
+            set_machine_3_space(id)
         }
         setNewMaschienPrize(preis)
         setModalConfirm(<></>)
