@@ -90,16 +90,22 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         stock_output[i].research_budget = _Buget_Kumuliert
         stock_output[i].research_production_modifier = StuffeEntwickelung
         
+        if cycle_list[i].buy_new_machine_1:
+            stock_output[i].machine_1_bought = True
+            _Kontostand -= scenario.machine_purchase_cost1
+        else:
+            stock_output[i].machine_2_bought = False
+
         if cycle_list[i].buy_new_machine_2:
             stock_output[i].machine_2_bought = True
-            _Kontostand -= scenario.machine_purchase_cost
+            _Kontostand -= scenario.machine_purchase_cost2
         else:
             stock_output[i].machine_2_bought = False
 
         
         if cycle_list[i].buy_new_machine_3:
             stock_output[i].machine_3_bought = True
-            _Kontostand -= scenario.machine_purchase_cost
+            _Kontostand -= scenario.machine_purchase_cost3
 
         else:
             stock_output[i].machine_3_bought = False
