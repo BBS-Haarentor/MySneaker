@@ -19,12 +19,14 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     _NachfrageAufdemMarkt = scenario.sneaker_ask
     _VerkaufDurchWerbungMax = _NachfrageAufdemMarkt / 100 * scenario.factor_ad_take
     _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt  
+    _PreisAusschreibung=cycle_list[0].tender_offer_price
 
-    if _PreisAusschreibung == 0:
-        _PreisAusschreibung = cycle_list[i].tender_offer_price
+    for i in range(0, len(stock_output) -1):
+        if _PreisAusschreibung == 0:
+            _PreisAusschreibung = cycle_list[i].tender_offer_price
 
-    if _PreisAusschreibung > cycle_list[i].tender_offer_price:
-        _PreisAusschreibung = cycle_list[i].tender_offer_price
+        if _PreisAusschreibung > cycle_list[i].tender_offer_price:
+            _PreisAusschreibung = cycle_list[i].tender_offer_price
 
     
     for i in range(0, len(stock_output) -1):
