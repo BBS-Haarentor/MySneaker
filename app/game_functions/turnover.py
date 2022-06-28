@@ -26,35 +26,35 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _StückzahlAusschreibung = cycle_list[i].tender_offer_count
         _PreisAusschreibung = cycle_list[i].tender_offer_price
 
-        if stock.machine_1_space=1:
+        if stock.machine_1_space==1:
             _Maschiene1ProduktionskostenSneaker=cycle_list[i].planned_production_1*Scenario.production_cost_per_sneaker1
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost1
-        if stock.machine_1_space=2:
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost1
+        if stock.machine_1_space==2:
             _Maschiene1ProduktionskostenSneaker=cycle_list[i].planned_production_1*Scenario.production_cost_per_sneaker2
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost2
-        if stock.machine_1_space=3:
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost2
+        if stock.machine_1_space==3:
             _Maschiene1ProduktionskostenSneaker=cycle_list[i].planned_production_1*Scenario.production_cost_per_sneaker3
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost3
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost3
 
-        if stock.machine_2_space=1:
+        if stock.machine_2_space==1:
             _Maschiene2ProduktionskostenSneaker=cycle_list[i].planned_production_2*Scenario.production_cost_per_sneaker1
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost1
-        if stock.machine_2_space=2:
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost1
+        if stock.machine_2_space==2:
             _Maschiene2ProduktionskostenSneaker=cycle_list[i].planned_production_2*Scenario.production_cost_per_sneaker2
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost2
-        if stock.machine_2_space=3:
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost2
+        if stock.machine_2_space==3:
             _Maschiene2ProduktionskostenSneaker=cycle_list[i].planned_production_2*Scenario.production_cost_per_sneaker3
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost3
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost3
         
-        if stock.machine_3_space=1:
+        if stock.machine_3_space==1:
             _Maschiene3ProduktionskostenSneaker=cycle_list[i].planned_production_3*Scenario.production_cost_per_sneaker1
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost1
-        if stock.machine_3_space=2:
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost1
+        if stock.machine_3_space==2:
             _Maschiene3ProduktionskostenSneaker=cycle_list[i].planned_production_3*Scenario.production_cost_per_sneaker2
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost2
-        if stock.machine_3_space=3:
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost2
+        if stock.machine_3_space==3:
             _Maschiene3ProduktionskostenSneaker=cycle_list[i].planned_production_3*Scenario.production_cost_per_sneaker3
-            _MaschienenKostenProPeriode+=Senario.machine_maintainance_cost3
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost3
 
         _KostenSneakerProduktion=_Maschiene1ProduktionskostenSneaker+_Maschiene2ProduktionskostenSneaker+_Maschiene3ProduktionskostenSneaker
         _Kontostand-=_KostenSneakerProduktion
@@ -124,25 +124,26 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         stock_output[i].research_budget = _Buget_Kumuliert
         stock_output[i].research_production_modifier = StuffeEntwickelung
         
-        if cycle_list[i].buy_new_machine_1:
-            stock_output[i].machine_1_bought = True
-            _Kontostand -= scenario.machine_purchase_cost1
-        else:
-            stock_output[i].machine_2_bought = False
-
-        if cycle_list[i].buy_new_machine_2:
-            stock_output[i].machine_2_bought = True
-            _Kontostand -= scenario.machine_purchase_cost2
-        else:
-            stock_output[i].machine_2_bought = False
+        
+          
+        if cycle_list[i].buy_new_machine != 0:
+            if stock_list[i].machine_2_space == 0:
+                stock_output[i].machine_2_space = cycle_list[i].buy_new_machine
+            else:
+                stock_output[i].machine_3_space = cycle_list[i].buy_new_machine
 
         
-        if cycle_list[i].buy_new_machine_3:
-            stock_output[i].machine_3_bought = True
+        
+        if cycle_list[i].buy_new_machine == 1:
+            _Kontostand -= scenario.machine_purchase_cost1
+        elif cycle_list[i].buy_new_machine == 2:
+            _Kontostand -= scenario.machine_purchase_cost2
+        elif cycle_list[i].buy_new_machine == 3:
             _Kontostand -= scenario.machine_purchase_cost3
 
-        else:
-            stock_output[i].machine_3_bought = False
+        
+        
+        
         
         stock_output[i].account_balance = _Kontostand
 
