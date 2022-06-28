@@ -1,3 +1,4 @@
+import logging
 from app.models.scenario import Scenario
 from app.models.stock import Stock
 from app.models.cycle import Cycle
@@ -7,7 +8,7 @@ from app.models.cycle import Cycle
 #
 
 async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list: list[Cycle]) -> list[Stock]:
-    
+    logging.warning(f"Starting turnover\n\n\n\n\n\n\n\n")
     # prepare output stock_list
     stock_output: list[Stock] = []
     # for x in stock_list:
@@ -17,25 +18,36 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
 
     _NachfrageAufdemMarkt = scenario.sneaker_ask
+    logging.warning(f"{_NachfrageAufdemMarkt=}")
     _VerkaufDurchWerbungMax: int = round(_NachfrageAufdemMarkt * scenario.factor_ad_take, None)
-    _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt  
+    logging.warning(f"{_VerkaufDurchWerbungMax=}")
+    _NachfrageAufdemMarkt -= _VerkaufDurchWerbungMax 
+    logging.warning(f"{_NachfrageAufdemMarkt=}")
+
 
     _UnternemensNummer=-1
     _PreisAusschreibung=5_000
-    for i in range(0, len(stock_output) -1):
+    for i in range(0, len(stock_output)):
         if _PreisAusschreibung > cycle_list[i].tender_offer_price:
             _UnternemensNummer=i
+            logging.warning(f"{_PreisAusschreibung=}")
+
 
     
-    for i in range(0, len(stock_output) -1):
+    for i in range(0, len(stock_output)):
         _Kontostand= stock_list[i].account_balance
+        logging.warning(f"{_Kontostand=}")
+    
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
+        logging.warning(f"{_StückzahlMarkt=}")
 
         _MaschienenKostenProPeriode=0.00
         _Maschiene1ProduktionskostenSneaker=0.00
         _Maschiene2ProduktionskostenSneaker=0.00
         _Maschiene3ProduktionskostenSneaker=0.00
         _VorherigeEntwicklungsStufe = stock_list[i].research_production_modifier
+        logging.warning(f"{_VorherigeEntwicklungsStufe=}")
+
         if stock.machine_1_space==1:
             _Maschiene1ProduktionskostenSneaker=round(cycle_list[i].planned_production_1*scenario.production_cost_per_sneaker1*_VorherigeEntwicklungsStufe, 0)
             _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost1
@@ -65,13 +77,24 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         if stock.machine_3_space==3:
             _Maschiene3ProduktionskostenSneaker=round(cycle_list[i].planned_production_3*scenario.production_cost_per_sneaker3*_VorherigeEntwicklungsStufe, 0)
             _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost3
+        
+        logging.warning(f"{_MaschienenKostenProPeriode=}")
+
 
         _KostenSneakerProduktion=_Maschiene1ProduktionskostenSneaker+_Maschiene2ProduktionskostenSneaker+_Maschiene3ProduktionskostenSneaker
-        _Kontostand-=_KostenSneakerProduktion
-        _Kontostand-=_MaschienenKostenProPeriode
+        logging.warning(f"{_KostenSneakerProduktion=}")
 
+        _Kontostand-=_KostenSneakerProduktion
+        logging.warning(f"{_Kontostand=}")
+
+        _Kontostand-=_MaschienenKostenProPeriode
+        logging.warning(f"{_Kontostand=}")
+        
         stock_output[i].sneaker_count = stock_list[i].sneaker_count + cycle_list[i].buy_sneaker - _StückzahlMarkt
         stock_output[i].paint_count = stock_list[i].paint_count + cycle_list[i].buy_paint - _StückzahlMarkt*2
+        logging.warning(f"{stock_output[i].sneaker_count=}")
+        logging.warning(f"{stock_output[i].paint_count=}")
+
 
         _AufgenommenerKreditVorperiode = stock_list[i].credit_taken
         _Darlehenstand = cycle_list[i].take_credit + _AufgenommenerKreditVorperiode
@@ -87,7 +110,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         
         _UnternehmenGeboteneStückzahl = cycle_list[i].sales_planned
         _UnternehmenPreise = cycle_list[i].sales_bid
-
+        _EinkommenAuschreibung = 0.0
         if _UnternemensNummer == i:
             _StückzahlAusschreibung=scenario.tender_offer_count
             _PreisAusschreibung=cycle_list[i].tender_offer_price
@@ -106,6 +129,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
             _NachfrageAufdemMarkt = 0
         else:
             _NachfrageAufdemMarkt = _NachfrageAufdemMarkt - _StückzahlNachWerbeverkauf
+            _Übrig = 0
             _GesamterVerkauf = _StückzahlNachWerbeverkauf
         _GesamterVerkauf = _GesamterVerkauf + _VerkaufDurchWerbung
         _Umsatz = _UnternehmenPreise * _GesamterVerkauf
@@ -167,7 +191,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     #    stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
 
     
-    
+    logging.warning(f"\n\n\n\n\n\n\n\n")
         # mock
     return stock_output
   
