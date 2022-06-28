@@ -247,22 +247,22 @@ async def set_back_cycle_index(game_id: int, new_index: int, session: AsyncSessi
     game: Game | None = result.one_or_none()
     if isinstance(game, NoneType):
         return game
-    # check cycle in the past
-    if game.current_cycle_index >= new_index:
-        return None
+    # check cycle in the future
+    if new_index > game.current_cycle_index:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"New index has to be {game.current_cycle_index=} or lower")
     # delete all cycles after new index
     cycle_result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index >= new_index))
     cycles: list[Cycle] = cycle_result.all()
-    await session.delete(cycles)
+    session.delete(cycles)
     await session.commit()
     # delete all stocks after new index
-    stock_result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index >= new_index))
+    stock_result = await session.exec(select(Stock).where(Stock.game_id == game.id).where(Stock.current_cycle_index >= new_index and Stock.current_cycle_index != 0))
     stocks: list[Stock] = stock_result.all()
-    await session.delete(stocks)
+    session.delete(stocks)
     await session.commit()
     # setback index on game
     game.current_cycle_index = new_index
-    await session.add(game)
+    session.add(game)
     await session.commit()
     await session.refresh(game)
     return game.current_cycle_index

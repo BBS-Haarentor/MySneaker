@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.api.auth.user_auth import base_auth_required, game_owner_check, get_current_active_user, teacher_auth_required
-from app.crud.stock import get_stock_entries_by_user_id, get_stock_entries_by_user_id_and_cycle_id, new_stock_entry
+from app.crud.stock import get_stock_entries_by_user_id, get_stock_entries_by_user_id_and_cycle_id, get_stock_entry_by_user_id_and_cycle_id, new_stock_entry
 from app.db.session import get_async_session
 
 from app.models.stock import Stock
@@ -38,7 +38,7 @@ async def get_all_my_stocks(current_user: User = Depends(get_current_active_user
 @router.get("/get_my_stock_by_index/{index}",status_code=status.HTTP_200_OK, response_model=list[Stock])
 @base_auth_required
 async def get_all_my_stocks(index: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Stock]:
-    stock_list: list[Stock] = await get_stock_entries_by_user_id_and_cycle_id(user_id=current_user.id, index=index,  session=session)
+    stock_list: list[Stock] = await get_stock_entry_by_user_id_and_cycle_id(user_id=current_user.id, index=index,  session=session)
     return stock_list
 
 

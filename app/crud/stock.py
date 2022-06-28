@@ -33,7 +33,12 @@ async def get_stock_entries_by_game(game_id: int, session: AsyncSession) -> list
     stock_list: list[Stock] = result.all()
     return stock_list
 
-async def get_stock_entries_by_user_id_and_cycle_id(user_id: int, index: int, session: AsyncSession) -> Stock:
+async def get_stock_entries_by_user_id_and_cycle_id(user_id: int, index: int, session: AsyncSession) -> list[Stock]:
     result = await session.exec(select(Stock).where(Stock.company_id == user_id).where(Stock.current_cycle_index == index))
-    stock: Stock = result.one_or_none()
+    stock: list[Stock] = result.all()
+    return stock
+
+async def get_stock_entry_by_user_id_and_cycle_id(user_id: int, index: int, session: AsyncSession) -> Stock:
+    result = await session.exec(select(Stock).where(Stock.company_id == user_id).where(Stock.current_cycle_index == index).order_by(Stock.creation_date.desc()))
+    stock: Stock = result.first()
     return stock

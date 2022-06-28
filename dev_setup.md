@@ -151,7 +151,7 @@ schema: GameCreate
   "payback_credit": 0.00,
   "new_employees": 2,
   "let_go_employees": 0,
-  "buy_new_machine": 0,
+  "buy_new_machine": 0
 }
 ```
                                                                    #sneaker price
@@ -180,7 +180,7 @@ schema: GameCreate
   "payback_credit": 0.00,
   "new_employees": 0,
   "let_go_employees": 0,
-  "buy_new_machine": 0,
+  "buy_new_machine": 0
 }
 
 ```

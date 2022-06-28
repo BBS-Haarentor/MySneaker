@@ -11,7 +11,7 @@ from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_by_user_id_an
 from app.crud.game import create_game, delete_game_by_id, edit_game, get_all_game_ids, get_all_games_by_owner, get_all_users_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, get_game_state, set_back_cycle_index, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
 from app.crud.scenario import get_scenario_by_index
-from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id
+from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id, get_stock_entry_by_user_id_and_cycle_id
 from app.crud.user import get_all_users_for_teacher, get_user_by_id
 from app.db.session import get_async_session
 from app.models.cycle import Cycle
@@ -92,7 +92,7 @@ async def get_my_summary(user_id: int, index: int, current_user: User = Depends(
     cycle: Cycle = await get_cycle_by_user_id_and_index(user_id=user.id, index=index, session=session)
     game: Game = await get_game_by_id(id=user.game_id, session=session)
     scenario: Scenario = await get_scenario_by_index(game_id=game.id, index=index, session=session)
-    stock: Stock = await get_stock_entries_by_user_id_and_cycle_id(user_id=user.id, index=index, session=session)
+    stock: Stock = await get_stock_entry_by_user_id_and_cycle_id(user_id=user.id, index=index, session=session)
     
     return { "stock" : stock, "scenario" : scenario, "cycle" : cycle }
 
