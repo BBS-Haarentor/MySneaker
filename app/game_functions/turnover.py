@@ -31,6 +31,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _Maschiene1ProduktionskostenSneaker=0.00
         _Maschiene2ProduktionskostenSneaker=0.00
         _Maschiene3ProduktionskostenSneaker=0.00
+        _VorherigeEntwicklungsStufe = stock_list[i].research_production_modifier
         if stock.machine_1_space==1:
             _Maschiene1ProduktionskostenSneaker=round(cycle_list[i].planned_production_1*scenario.production_cost_per_sneaker1*StuffeEntwickelung, 0)
             _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost1
@@ -114,15 +115,15 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         #Entwickelung
         _Buget_Kumuliert = stock_list[i].research_budget + cycle_list[i].research_invest  
         if _Buget_Kumuliert >= 2_500:                                                       
-            StuffeEntwickelung = 0.10                                                     
+            StuffeEntwickelung = 0.90                                                     
         if _Buget_Kumuliert >= 5_000:                                                        
-            StuffeEntwickelung = 0.18
+            StuffeEntwickelung = 0.82
         if _Buget_Kumuliert >= 7_500:                                                      
-            StuffeEntwickelung = 0.24
+            StuffeEntwickelung = 0.76
         if _Buget_Kumuliert >= 10_000:                                                     
-            StuffeEntwickelung = 0.28
+            StuffeEntwickelung = 0.72
         if _Buget_Kumuliert >= 12_500:                                                      
-            StuffeEntwickelung = 0.30
+            StuffeEntwickelung = 0.70
 
 
         _Kontostand -= cycle_list[i].research_invest
