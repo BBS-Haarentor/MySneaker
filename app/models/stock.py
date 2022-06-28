@@ -25,5 +25,9 @@ class Stock(StockBase, table=True):
     real_sales: int = Field(default=0)#
     income_from_sales: float = Field(default=0.00)#
     research_production_modifier: float = Field(default=0.00)#
+
+    machine_1_space: int = Field(default=1)
+    machine_2_space: int = Field(default=0)
+    machine_3_space: int = Field(default=0)
     
     

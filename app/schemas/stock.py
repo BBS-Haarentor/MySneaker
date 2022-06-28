@@ -21,6 +21,10 @@ class StockBase(SQLModel):
     real_sales: int | None
     income_from_sales: float | None
     research_production_modifier: float | None
+    machine_1_space: int | None
+    machine_2_space: int | None
+    machine_3_space: int | None
+
     
 
 class StockCreate(StockBase): 
