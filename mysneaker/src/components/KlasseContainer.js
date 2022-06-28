@@ -154,7 +154,7 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
                                         i++;
                                         return (
                                             <p key={i} className={(myGame.current_cycle_index === (i - 1) ? 'hover:bg-gray-600 text-white hover:text-white bg-gray-500 cursor-pointer' : myGame.current_cycle_index < (i - 1) ? 'bg-slate-300 text-white cursor-not-allowed' : 'hover:bg-gray-300 bg-gray-200 cursor-pointer') + ' mr-2 inline-block p-1 w-8 text-center rounded-full'}
-                                                onClick={() => { setSelect("cycle_index"); setSelectCycleIndex(i); }}>{i}</p>
+                                                onClick={() => { setSelect("cycle_index"); setSelectCycleIndex((i - 1)); }}>{i}</p>
                                         )
                                     })}
                                 </div>
