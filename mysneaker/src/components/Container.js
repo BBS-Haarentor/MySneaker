@@ -163,8 +163,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setAusschreibungIst(0)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
-        setMitarbeiter(8)
-        setNeueinstellungen(0)
+        setMitarbeiter(data.current_stock.employees_count)
+        setNeueinstellungen(data.current_cycle.new_employees)
         setKündigungen(0)
         setPersonalnebenkosten(20)
         setAufnahmeDarlehen(0)
@@ -257,7 +257,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             "ad_invest":  parseFloat(Werbung),
             "take_credit": parseFloat( AufnahmeDarlehen),
             "payback_credit":  parseFloat(RueckzahlungDarlehen),
-            "new_employees": ( parseInt(Neueinstellungen) -  parseInt(Kündigungen)),
+            "new_employees":parseInt(Neueinstellungen),
+            "let_go_employees":parseInt(Kündigungen),
             "buy_new_machine_2": buy_new_machine_2,
             "buy_new_machine_3": buy_new_machine_3,
             "machine_1_space":1,
@@ -463,7 +464,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 <Personal PersonalRef={PersonalRef} Mitarbeiter={Mitarbeiter} ZugeteilteMitarbeiter={ZugeteilteMitarbeiter} setNeueinstellungen={setNeueinstellungen} 
                 Neueinstellungen={Neueinstellungen} setKündigungen={setKündigungen} Kündigungen={Kündigungen} ZugeteilteMitarbeiter2={ZugeteilteMitarbeiter2} 
                 ZugeteilteMitarbeiter3={ZugeteilteMitarbeiter3} formatter={formatter} PersonalnebenkostenInP={PersonalnebenkostenInP} setPersonalnebenkosten={setPersonalnebenkosten}
-                Personalnebenkosten={Personalnebenkosten} />
+                Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
                 {data.current_stock.machine_1_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
@@ -641,9 +642,12 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 </div> : buy_new_machine_2 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                     <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                </div> : data.scenario.machine_purchase_allowed ? <></> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                </div> : data.scenario.machine_purchase_allowed ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
+                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <h1 className='text-[#4fd1c5]'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
+                    <img src="/img/access_denied.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
                 </div>}
 
                 {data.current_stock.machine_3_bought ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
@@ -733,9 +737,12 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 </div> : data.current_stock.machine_2_bought === false ? <></> : buy_new_machine_3 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                     <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                </div> : data.scenario.machine_purchase_allowed ? <></> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                </div> : data.scenario.machine_purchase_allowed ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img> //TODO mach plus hin
+                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
+                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <h1 className='text-[#4fd1c5]'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
+                    <img src="/img/access_denied.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
                 </div>}
 
 

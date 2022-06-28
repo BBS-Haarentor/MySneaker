@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinstellungen, Neueinstellungen, setKündigungen, Kündigungen, ZugeteilteMitarbeiter2, ZugeteilteMitarbeiter3, formatter, PersonalnebenkostenInP, setPersonalnebenkosten, Personalnebenkosten }) => {
+const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinstellungen, Neueinstellungen, setKündigungen, Kündigungen, ZugeteilteMitarbeiter2, ZugeteilteMitarbeiter3, formatter, PersonalnebenkostenInP, setPersonalnebenkosten, Personalnebenkosten,data }) => {
 
 
     return (
@@ -69,7 +69,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Personalnebenkosten</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setPersonalnebenkosten(e.target.value)} value={Personalnebenkosten}></input> €</td>
+                        <td>{data.scenario.employee_cost_modfier * 100}%</td>
 
                     </tr>
                     <tr>
