@@ -120,16 +120,22 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index).where(Stock.game_id == game.id))
     unsorted_stock_list: list[Stock] = stock_result.all()
     
-    if (len(unsorted_cycle_list) != len(unsorted_stock_list)): # or unsorted_cycle_list.size() == 0
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Periode abschließen nicht möglich, da nicht alle Unternehmen ihre Daten eingereicht haben.")
-    
+
     # check every user has valid cycle and stock data
     
     # sort by company_id 
-    id_sorted_cycles: list[Cycle] = sorted(unsorted_cycle_list, key= lambda x: x.company_id)
+    id_sorted_cycles: list[Cycle] = sorted(unsorted_cycle_list, key= lambda x: (x.company_id, -x.entry_date.timestamp()))
+    filtered_id_sorted_cycles: list[Cycle] = []
+    for elem in id_sorted_cycles:
+        if not any(u.company_id == elem.company_id for u in filtered_id_sorted_cycles):
+            filtered_id_sorted_cycles.append(elem)
     id_sorted_stocks: list[Stock] = sorted(unsorted_stock_list, key= lambda x: x.company_id)
+    
+    if (len(filtered_id_sorted_cycles) != len(id_sorted_stocks)): # or unsorted_cycle_list.size() == 0
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Periode abschließen nicht möglich, da nicht alle Unternehmen ihre Daten eingereicht haben.")
+    
     # zip the two lists for sorting by feature only given in one list
-    zipped = zip(id_sorted_cycles, id_sorted_stocks)
+    zipped = zip(filtered_id_sorted_cycles, id_sorted_stocks)
     sorted_zipped = sorted(zipped, key= lambda x: x[0].sales_bid, reverse=True)
     
     tuples = zip(*sorted_zipped)
