@@ -147,7 +147,7 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
                     <div className=''>
                         {myGame.scenario_order.split('').map((e) => {
                             i++
-                            return (<p key={i} className={(myGame.current_cycle_index === (i - 1) ? 'hover:bg-gray-600 bg-gray-500' : 'hover:bg-gray-300 bg-gray-200') + ' cursor-pointer mr-2 inline-block p-1 w-8 text-center rounded-full'}>{i}</p>)
+                            return (<p key={i} className={(myGame.current_cycle_index === (i - 1) ? 'hover:bg-gray-600 hover:text-white bg-gray-500' : 'hover:bg-gray-300 bg-gray-200') + ' cursor-pointer mr-2 inline-block p-1 w-8 text-center rounded-full'}>{i}</p>)
                         })}
                     </div>
                     <img src="/img/teacher_empty.svg" className='h-96 w-96 m-4 mx-auto'></img>
