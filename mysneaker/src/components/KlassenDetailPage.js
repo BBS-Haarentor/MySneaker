@@ -233,7 +233,7 @@ const KlassenDetailPage = () => {
         <div className='h-screen w-full overflow-hidden'>
           <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12 overflow-x-hidden'>
 
-            <KlasseContainer companyId={selectCompanie !== null ? selectCompanie.id : null} current_cycle_index={game.current_cycle_index} />
+            <KlasseContainer companyId={selectCompanie !== null ? selectCompanie.id : null} gameId={id} current_cycle_index={game.current_cycle_index} />
 
 
           </div>

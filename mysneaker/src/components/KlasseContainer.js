@@ -1,15 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import KlassenDetailContainer from './KlassenDetailContainer';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 
-const KlasseContainer = ({ companyId, current_cycle_index }) => {
+const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
 
     const [select, setSelect] = useState("main");
     const [modal, setModal] = useState();
 
     let changePassword = ""
     let changePasswordRepeat = ""
+
+    const [myGame, setMyGame] = useState()
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+    myHeaders.append('Access-Control-Allow-Origin', '*')
+
+    useEffect(async () => {
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+        };
+        await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + gameId, requestOptions).then((element) => {
+            if (element.status === 200) {
+                element.json().then((element1) => {
+                    setMyGame(element1)
+                })
+            }
+        })
+    }, [])
 
     const deleteUser = () => {
 
@@ -53,10 +74,6 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
 
         const submitChangePassword = (companyId) => {
             if (changePassword === changePasswordRepeat) {
-                var myHeaders = new Headers();
-                myHeaders.append("Content-Type", "application/json");
-                myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-                myHeaders.append('Access-Control-Allow-Origin', '*')
 
                 let raw = JSON.stringify({
                     id: companyId,
@@ -69,7 +86,7 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                     body: raw,
                 };
                 fetch(process.env.REACT_APP_MY_API_URL + '/user/teacher/modify/', requestOptions).then((element) => {
-                    if(element.status === 202) {
+                    if (element.status === 202) {
                         setModal(<></>)
                         changePassword = ""
                         changePasswordRepeat = ""
@@ -90,7 +107,7 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                         })
                     }
                 })
-                
+
             }
         }
 
@@ -123,12 +140,23 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
 
         return (menues())
     } else {
-        return (
-            <>
-                <img src="/img/teacher_empty.svg" className='h-96 w-96 m-4 mx-auto'></img>
-                <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
-            </>
-        )
+        if (myGame !== undefined) {
+            let i = 0;
+            return (
+                <>
+                    <div className=''>
+                        {myGame.scenario_order.split('').map((e) => {
+                            i++
+                            return (<p key={i} className={(myGame.current_cycle_index === (i - 1) ? 'hover:bg-gray-600 bg-gray-500' : 'hover:bg-gray-300 bg-gray-200') + ' cursor-pointer mr-2 inline-block p-1 w-8 text-center rounded-full'}>{i}</p>)
+                        })}
+                    </div>
+                    <img src="/img/teacher_empty.svg" className='h-96 w-96 m-4 mx-auto'></img>
+                    <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
+                </>
+            )
+        } else {
+            return (<></>)
+        }
     }
 }
 
