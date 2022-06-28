@@ -6,13 +6,15 @@ const AdminPage = () => {
   const [teachers, setTeachers] = useState([]);
   const [modal, setModal] = useState(<></>)
 
-  const [newTeacher, setNewTeacher] = useState()
-  const [newTeacherPassword, setNewTeacherPassword] = useState()
+  let newTeacher = ""
+  let newTeacherPassword = ""
 
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
   myHeaders.append('Access-Control-Allow-Origin', '*')
+  myHeaders.append("accept", "application/json")
+console.log(newTeacher + " " +newTeacherPassword )
 
   useEffect(async () => {
 
@@ -48,7 +50,7 @@ const AdminPage = () => {
     })
 
     var requestOptions1 = {
-      method: 'DELETE',
+      method: 'GET',
       headers: myHeaders,
     };
     await fetch(process.env.REACT_APP_MY_API_URL + "/user/teacher_list", requestOptions1).then((element) => {
@@ -63,6 +65,36 @@ const AdminPage = () => {
   const showTeacher = async () => {
 
   }
+  const createTeacherSubmit = async () => {
+    var raw = JSON.stringify({
+      "name": newTeacher,
+      "unhashed_pw": newTeacherPassword,
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch(process.env.REACT_APP_MY_API_URL + "/user/create/teacher", requestOptions).then((element) => {
+      if (element.status === 201) {
+        var requestOptions1 = {
+          method: 'GET',
+          headers: myHeaders,
+        };
+        setModal(<></>)
+        fetch(process.env.REACT_APP_MY_API_URL + "/user/teacher_list", requestOptions1).then((element) => {
+          if (element.status === 200) {
+            element.json().then((element1) => {
+              setTeachers(element1)
+            })
+          }
+        })
+      }
+    })
+  }
+
 
   const createTeacher = async () => {
     setModal(<>
@@ -79,11 +111,11 @@ const AdminPage = () => {
             <div className='flex flex-col'>
               <div className='my-6'>
                 <label>Lehrer Name</label>
-                <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setNewTeacher(e.target.value)} placeholder="Name" required />
+                <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => newTeacher = e.target.value} placeholder="Name" required />
               </div>
               <div className='my-6'>
                 <label>Passwort</label>
-                <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setNewTeacherPassword(e.target.value)} placeholder="Passwort" required />
+                <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => newTeacherPassword  = e.target.value} placeholder="Passwort" required />
               </div>
               <div className='my-6'>
                 <button className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo" onClick={() => createTeacherSubmit()}>Lehrer Erstellen</button>
@@ -98,33 +130,7 @@ const AdminPage = () => {
     </>)
   }
 
-  const createTeacherSubmit = async () => {
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify({
-        name: newTeacher,
-        unhashed_pw: newTeacherPassword,
-      }),
-      redirect: 'follow'
-    };
-    fetch(process.env.REACT_APP_MY_API_URL + "/user/create/teacher", requestOptions).then((element) => {
-      if (element.status === 200) {
-        var requestOptions1 = {
-          method: 'GET',
-          headers: myHeaders,
-        };
-        fetch(process.env.REACT_APP_MY_API_URL + "/user/teacher_list", requestOptions1).then((element) => {
-          if (element.status === 200) {
-            element.json().then((element1) => {
-              setTeachers(element1)
-            })
-          }
-        })
-      }
-    })
-  }
-
+ 
   return (
     <>
       {modal}

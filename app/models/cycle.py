@@ -31,3 +31,7 @@ class Cycle(CycleBase, table=True):
     new_employees: int = Field(default=0)
     buy_new_machine_2: bool = Field(default=False)
     buy_new_machine_3: bool = Field(default=False)
+
+    machine_1_space: int = Field(default=1)
+    machine_2_space: int = Field(default=0)
+    machine_3_space: int = Field(default=0)
