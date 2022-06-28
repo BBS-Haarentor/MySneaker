@@ -28,10 +28,7 @@ class CycleBase(SQLModel):
     new_employees: int
     buy_new_machine_2: bool
     buy_new_machine_3: bool
-    machine_1_space: int
-    machine_2_space: int 
-    machine_3_space: int
-
+    
 
 class CycleCreate(CycleBase):
     pass

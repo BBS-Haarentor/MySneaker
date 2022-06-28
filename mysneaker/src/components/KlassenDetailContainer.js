@@ -255,24 +255,27 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             "company_id": userId,
             "buy_sneaker": parseInt(SneakerEinkaufMenge),
             "buy_paint": parseInt(FarbenEinkaufMenge),
-            "planned_production_1": GeplanteProduktion,
-            "planned_production_2": GeplanteProduktion2,
-            "planned_production_3": GeplanteProduktion3,
-            "planned_workers_1": ZugeteilteMitarbeiter,
-            "planned_workers_2": ZugeteilteMitarbeiter2,
-            "planned_workers_3": ZugeteilteMitarbeiter3,
+            "planned_production_1": parseFloat(GeplanteProduktion),
+            "planned_production_2":  parseFloat(GeplanteProduktion2),
+            "planned_production_3":  parseFloat(GeplanteProduktion3),
+            "planned_workers_1":  parseFloat(ZugeteilteMitarbeiter),
+            "planned_workers_2":  parseFloat(ZugeteilteMitarbeiter2),
+            "planned_workers_3":  parseInt(ZugeteilteMitarbeiter3),
             "include_from_stock": EntnahmeAusDemLager,
-            "sales_planned": MarktSoll,
-            "sales_bid": MarktSollPreis,
-            "tender_offer_count": AusschreibungSoll,
-            "tender_offer_price": AusschreibungSollPreis,
-            "research_invest": ForschungUndEntwickelung,
-            "ad_invest": Werbung,
-            "take_credit": AufnahmeDarlehen,
-            "payback_credit": parseInt(RueckzahlungDarlehen),
-            "new_employees": (Neueinstellungen - Kündigungen),
+            "sales_planned":  parseFloat(MarktSoll),
+            "sales_bid":  parseFloat(MarktSollPreis),
+            "tender_offer_count":  parseFloat(AusschreibungSoll),
+            "tender_offer_price":  parseFloat(AusschreibungSollPreis),
+            "research_invest":  parseFloat(ForschungUndEntwickelung),
+            "ad_invest":  parseFloat(Werbung),
+            "take_credit": parseFloat( AufnahmeDarlehen),
+            "payback_credit":  parseFloat(RueckzahlungDarlehen),
+            "new_employees": ( parseInt(Neueinstellungen) -  parseInt(Kündigungen)),
             "buy_new_machine_2": buy_new_machine_2,
             "buy_new_machine_3": buy_new_machine_3,
+            "machine_1_space":1,
+            "machine_2_space":0,
+            "machine_3_space":0,
         });
 
         var requestOptions = {
@@ -445,8 +448,8 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             <div className="hero container max-w-screen-lg mx-auto p-5">
                                 <h1>Möchtes du wirklich die Maschine {name} für {formatter.format(price)} Kaufen?</h1>
                                 <div className='pt-4'>
-                                <button onClick={() => doMagicToBuyMachine(name, price)} className="px-4 py-2 text-sm bg-green-500 text-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-green-700 focus:bg-green-600 focus:text-indigo">Ja</button>
-                                <button onClick={() => setModalConfirm(<></>)} className="px-4 py-2 text-white text-sm bg-red-500 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-red-700 focus:bg-red-600 focus:text-indigo">Nein</button>
+                                <button onClick={() => doMagicToBuyMachine(name, price)} className="px-4 py-2 text-sm bg-green-500  rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-green-700 focus:bg-green-600 focus:text-indigo">Ja</button>
+                                <button onClick={() => setModalConfirm(<></>)} className="px-4 py-2  text-sm bg-red-500 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-red-700 focus:bg-red-600 focus:text-indigo">Nein</button>
                                 </div>
                             </div>
                         </div>

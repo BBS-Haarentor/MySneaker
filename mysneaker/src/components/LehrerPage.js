@@ -163,11 +163,11 @@ const LehrerPage = () => {
               <div className='flex flex-col'>
                 <div className='my-6'>
                   <label>Spiel Name</label>
-                  <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setCreateGameName(e.target.value)} placeholder="Spiel 1" required />
+                  <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameName(e.target.value)} placeholder="Spiel 1" required />
                 </div>
                 <div className='my-6'>
                   <label>Scenario Ordnung</label>
-                  <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setCreateGameScenarioOrder(e.target.value)} placeholder="ABCDEFG" required />
+                  <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameScenarioOrder(e.target.value)} placeholder="ABCDEFG" required />
                 </div>
                 <div className='my-6'>
                   <button onClick={onCreateGame} className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo">Spiel erstellen</button>
