@@ -20,6 +20,8 @@ class Cycle(CycleBase, table=True):
     current_cycle_index: int = Field(default=0)
     buy_sneaker: int = Field(default=0)
     buy_paint: int = Field(default=0)
+    sneaker_price: int = Field(default=0)
+    auction_price: int = Field(default=0)
     planned_production_1: int = Field(default=0)
     planned_production_2: int = Field(default=0)
     planned_production_3: int = Field(default=0)
