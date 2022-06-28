@@ -107,8 +107,8 @@ async def toggle_user_active_by_id(user_id: int, current_user: User = Depends(ge
 @router.delete("/delete/{user_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def delete_user(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    status = await get_user_status(user_id=user_id, session=session)
-    if status:
+    user_status = await get_user_status(user_id=user_id, session=session)
+    if user_status:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="It is not allowed to delete active Users. Please deactivate the User before deleting.")
     result: bool | None = await remove_user(id=user_id, session=session)
     if isinstance(result, NoneType):
