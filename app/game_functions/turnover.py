@@ -22,6 +22,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
     for i in range(0, len(stock_output) -1):
         _PreisAusschreibung=5_000
+        _UnternemensNummer=-1
         if _PreisAusschreibung > cycle_list[i].tender_offer_price:
             _UnternemensNummer=i
 
