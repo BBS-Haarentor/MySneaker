@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
 import KlassenDetailContainer from './KlassenDetailContainer';
+import Cookies from 'js-cookie';
+import Swal from 'sweetalert2'
 
 const KlasseContainer = ({ companyId, current_cycle_index }) => {
 
     const [select, setSelect] = useState("main");
     const [modal, setModal] = useState();
 
+    const [changePassword, setChangePassword] = useState()
+    const [changePasswordRepeat, setChangePasswordRepeat] = useState()
+
     const deleteUser = () => {
-        
+
     }
 
     if (companyId !== null) {
 
-        const changePasswordModal = async () => {
+        const changePasswordModal = async (companyId) => {
             setModal(<>
                 <div className="block">
                     <div
@@ -27,14 +32,14 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                             <div className='flex flex-col'>
                                 <div className='my-6'>
                                     <label>Neues Passwort</label>
-                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" placeholder="Neues Passwort" required />
+                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setChangePassword(e.target.value)} placeholder="Neues Passwort" required />
                                 </div>
                                 <div className='my-6'>
                                     <label>Neues Passwort wiederholen</label>
-                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" placeholder="Neues Passwort wiederholen" required />
+                                    <input type='password' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl rounded" onChange={(e) => setChangePasswordRepeat(e.target.value)} placeholder="Neues Passwort wiederholen" required />
                                 </div>
                                 <div className='my-6'>
-                                    <button className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo">Passwort ändern</button>
+                                    <button className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo" onClick={() => submitChangePassword(companyId)}>Passwort ändern</button>
                                 </div>
                             </div>
                             <div className="text-right space-x-5 mt-5">
@@ -46,6 +51,47 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
             </>)
         }
 
+        const submitChangePassword = (companyId) => {
+            if (changePassword === changePasswordRepeat) {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+                myHeaders.append('Access-Control-Allow-Origin', '*')
+
+                var requestOptions = {
+                    method: 'PUT',
+                    headers: myHeaders,
+                    body: JSON.stringify({
+                        id: companyId,
+                        new_pw: changePassword
+                    }),
+                };
+                fetch(process.env.REACT_APP_MY_API_URL + '/user/teacher/modify', requestOptions).then((element) => {
+                    if(element.status === 202) {
+                        setModal(<></>)
+                        setChangePassword()
+                        setChangePasswordRepeat()
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Das Passwort wurde geändert',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Es ist ein Fehler aufgetreten',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                })
+                
+            }
+        }
+
         const menues = () => {
             switch (select) {
                 case "main":
@@ -53,7 +99,7 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                         {modal}
                         <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%]  mx-12 overflow-hidden'>
 
-                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => changePasswordModal()}>
+                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => changePasswordModal(companyId)}>
                                 Passwort ändern
                             </button>
                             <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => { setSelect("input"); menues(); }}>
@@ -66,7 +112,7 @@ const KlasseContainer = ({ companyId, current_cycle_index }) => {
                     </>)
                 case "input":
                     return (<>
-                    <button className='px-4 right-0 m-4 py-2 text-sm bg-red-500 hover:bg-red-700 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold' onClick={() => setSelect("main")}>Zurück</button>
+                        <button className='px-4 right-0 m-4 py-2 text-sm bg-red-500 hover:bg-red-700 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold' onClick={() => setSelect("main")}>Zurück</button>
                         <KlassenDetailContainer cycle_index={current_cycle_index} userId={companyId} />
                     </>)
 

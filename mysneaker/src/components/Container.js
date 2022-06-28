@@ -59,7 +59,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 "sales_planned": 160,
                 "new_employees": 0,
                 "planned_production_1": 160,
-                "sales_bid": 130,
+                "sales_bid": 0,
                 "buy_new_machine_2": false,
                 "planned_production_2": 0,
                 "tender_offer_count": 0,
@@ -156,9 +156,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setForschungUndEntwickelung(data.current_cycle.research_invest)
         setEntnahmeAusDemLager(data.current_cycle.include_from_stock)
         setMarktSoll(data.current_cycle.sales_planned)
-        setMarktSollPreis(0)
+        setMarktSollPreis(data.current_cycle.sales_bid)
         setMarktIst(0)
-        setAussetschreibungSollPreis(data.current_cycle.sales_bid)
+        setAussetschreibungSollPreis(0)
         setAusschreibungIst(0)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
@@ -249,9 +249,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             "planned_workers_3": ZugeteilteMitarbeiter3,
             "include_from_stock": EntnahmeAusDemLager,
             "sales_planned": MarktSoll,
-            "sales_bid": AusschreibungSoll,
-            "tender_offer_count": 0,
-            "tender_offer_price": 0,
+            "sales_bid": MarktSollPreis,
+            "tender_offer_count": AusschreibungSoll,
+            "tender_offer_price": AusschreibungSollPreis,
             "research_invest": ForschungUndEntwickelung,
             "ad_invest": Werbung,
             "take_credit": AufnahmeDarlehen,
@@ -309,15 +309,24 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         [
             {
                 name: "Sneakerbox 200",
-                price: "12000"
+                price: "12000",
+                capacity:200,
+                price_per_Periode:4000,
+                price_per_unit:60
             },
             {
                 name: "Sneakerdream 500",
-                price: "25000"
+                price: "25000",
+                capacity:500,
+                price_per_Periode:6000,
+                price_per_unit:50
             },
             {
                 name: "Sneakergigant 1000",
-                price: "45000"
+                price: "45000",
+                capacity:1000,
+                price_per_Periode:8000,
+                price_per_unit:40
             }
         ])
 
@@ -347,13 +356,15 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
                         <div className='p-4 list-none xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%]  mx-12 overflow-hidden'>
-                            {availableMachine.map(({ name, price }) => {
+                            {availableMachine.map(({ name, price, capacity, price_per_Periode,  price_per_unit}) => {
                                 return (
                                     <li className='p-3 mx-3 shadow-lg rounded-3xl m-auto my-4 justify-around bg-white w-[90%]' onClick={() => Confirm(name, price)}>
                                         <h1 className='block mb-2'>{name}</h1>
                                         <hr className='w-[50%] text-center mx-auto border-none h-[2px] rounded-xl bg-[#4fd1c5] opacity-50' />
                                         <br />
-                                        <p></p>
+                                        <p>Kapazität pro Periode {capacity}</p>
+                                        <p>Maschinenkosten pro Periode {formatter.format(price_per_Periode)}</p>
+                                        <p>Fertigungskosten pro Stück {formatter.format(price_per_unit)}</p>
                                         <br />
                                         <hr className='w-[50%] text-center mx-auto border-none h-[2px] rounded-xl bg-[#4fd1c5] opacity-50' />
                                         <h2 className='block mt-2'>{formatter.format(price)}</h2>

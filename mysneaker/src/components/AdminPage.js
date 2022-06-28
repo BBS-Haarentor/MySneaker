@@ -13,6 +13,7 @@ const AdminPage = () => {
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
   myHeaders.append('Access-Control-Allow-Origin', '*')
+  myHeaders.append("accept", "application/json")
 
   useEffect(async () => {
 
@@ -48,7 +49,7 @@ const AdminPage = () => {
     })
 
     var requestOptions1 = {
-      method: 'DELETE',
+      method: 'GET',
       headers: myHeaders,
     };
     await fetch(process.env.REACT_APP_MY_API_URL + "/user/teacher_list", requestOptions1).then((element) => {
