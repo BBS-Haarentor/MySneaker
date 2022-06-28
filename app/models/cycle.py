@@ -22,7 +22,6 @@ class Cycle(CycleBase, table=True):
     include_from_stock: int = Field(default=0)
     sales_planned: int = Field(default=0)
     sales_bid: float = Field(default=0.0)
-    tender_offer_count: int = Field(default=0)
     tender_offer_price: float = Field(default=0.0)
     research_invest: float = Field(default=0.0)
     ad_invest: float = Field(default=0.0)

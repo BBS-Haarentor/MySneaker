@@ -20,12 +20,16 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     _VerkaufDurchWerbungMax = _NachfrageAufdemMarkt / 100 * scenario.factor_ad_take
     _NachfrageAufdemMarkt = _VerkaufDurchWerbungMax - _NachfrageAufdemMarkt  
 
+    for i in range(0, len(stock_output) -1):
+        _PreisAusschreibung=5_000
+        _UnternemensNummer=-1                                      
+        if _PreisAusschreibung > cycle_list[i].tender_offer_price:
+            _UnternemensNummer=i
+
     
     for i in range(0, len(stock_output) -1):
         _Kontostand= stock_list[i].account_balance
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
-        _StückzahlAusschreibung = cycle_list[i].tender_offer_count
-        _PreisAusschreibung = cycle_list[i].tender_offer_price
 
         _MaschienenKostenProPeriode=0.00
         _Maschiene1ProduktionskostenSneaker=0.00
@@ -84,6 +88,12 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _UnternehmenGeboteneStückzahl = cycle_list[i].sales_planned
         _UnternehmenPreise = cycle_list[i].sales_bid
 
+        if _UnternemensNummer == i:
+            _StückzahlAusschreibung=scenario[i].tender_offer_count
+            _PreisAusschreibung=cycle_list[i].tender_offer_price
+            _EinkommenAuschreibung=round(_StückzahlAusschreibung*_PreisAusschreibung, 0)
+        _Kontostand+=_EinkommenAuschreibung
+
 
         _Werbeanteil = round(100/_VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
         _VerkaufDurchWerbung = round(_VerkaufDurchWerbungMax/100 * _Werbeanteil, 0)              #Mximal?
@@ -113,6 +123,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
 
         #Entwickelung
+        _Buget_Kumuliert = _VorherigeEntwicklungsStufe
         _Buget_Kumuliert = stock_list[i].research_budget + cycle_list[i].research_invest  
         
         if _Buget_Kumuliert >= 2_500:                                                       
@@ -132,7 +143,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         stock_output[i].research_production_modifier = StuffeEntwickelung
         
         
-        
+
         if cycle_list[i].buy_new_machine != 0:
             if stock_list[i].machine_2_space == 0:
                 stock_output[i].machine_2_space = cycle_list[i].buy_new_machine

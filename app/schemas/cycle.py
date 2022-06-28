@@ -19,7 +19,6 @@ class CycleBase(SQLModel):
     include_from_stock: int
     sales_planned: int
     sales_bid: float
-    tender_offer_count: int
     tender_offer_price: float
     research_invest: float
     ad_invest: float
