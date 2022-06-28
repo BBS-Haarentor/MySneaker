@@ -1,3 +1,4 @@
+import logging
 from types import NoneType
 from fastapi import HTTPException
 from sqlmodel import select
@@ -253,13 +254,18 @@ async def set_back_cycle_index(game_id: int, new_index: int, session: AsyncSessi
     # delete all cycles after new index
     cycle_result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index >= new_index))
     cycles: list[Cycle] = cycle_result.all()
-    session.delete(cycles)
+    logging.warning(f"{cycles=}")
+    for c in cycles:
+        await session.delete(c)
     await session.commit()
     # delete all stocks after new index
-    stock_result = await session.exec(select(Stock).where(Stock.game_id == game.id).where(Stock.current_cycle_index >= new_index and Stock.current_cycle_index != 0))
+    stock_result = await session.exec(select(Stock).where(Stock.game_id == game.id).where(Stock.current_cycle_index >= new_index).where(Stock.current_cycle_index != 0))
     stocks: list[Stock] = stock_result.all()
-    session.delete(stocks)
+    logging.warning(f"{stocks=}")
+    for s in stocks:
+        await session.delete(s)
     await session.commit()
+    await session.flush()
     # setback index on game
     game.current_cycle_index = new_index
     session.add(game)
