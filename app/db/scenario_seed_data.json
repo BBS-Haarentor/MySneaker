@@ -17,13 +17,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.20,        
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":0,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "B",
@@ -41,13 +37,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":0,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "C",
@@ -65,13 +57,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":200,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "D",
@@ -89,13 +77,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":200,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "E",
@@ -113,13 +97,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":300,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "F",
@@ -137,13 +117,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":400,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "G",
@@ -161,13 +137,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":500,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "H",
@@ -185,13 +157,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":300,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "I",
@@ -209,13 +177,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":100,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         },
         {
             "char": "J",
@@ -233,13 +197,9 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "machine_purchase_cost": 1000.00,
             "sneaker_ask": 400,
             "tender_offer_count":200,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
+            "factor_ad_take": 0.1
         }
     ]
 }
