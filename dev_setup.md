@@ -134,7 +134,7 @@ schema: GameCreate
   "current_cycle_index": 0,
   "company_id": 2,
   "buy_sneaker": 100,
-  "buy_paint": 200,
+  "buy_paint": 210,
   "planned_production_1": 100,
   "planned_production_2": 0,
   "planned_production_3": 0,
