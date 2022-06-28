@@ -17,15 +17,24 @@ class ScenarioBase(SQLModel):
     employee_signup_bonus: float  | None
     employee_production_capacity: int | None
     employee_cost_modfier: float | None
-    machine_purchase_allowed: bool | None
-    machine_purchase_cost: float | None
     sneaker_ask: int | None
     factor_ad_take: float | None
     tender_offer_count: int | None
-    machine_production_capacity: int | None
+    
+    machine_purchase_allowed: bool | None
+    machine_purchase_cost1: float | None
+    machine_purchase_cost2: float | None
+    machine_purchase_cost3: float | None
+    machine_production_capacity1: int | None
+    machine_production_capacity2: int | None
+    machine_production_capacity3: int | None
     machine_employee_max: int | None
-    machine_maintainance_cost: float | None
-    production_cost_per_sneaker: float | None
+    machine_maintainance_cost1: float | None
+    machine_maintainance_cost2: float | None
+    machine_maintainance_cost3: float | None
+    production_cost_per_sneaker1: float | None
+    production_cost_per_sneaker2: float | None
+    production_cost_per_sneaker3: float | None
 
 
 class ScenarioCreate(ScenarioBase):

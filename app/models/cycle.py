@@ -30,5 +30,4 @@ class Cycle(CycleBase, table=True):
     payback_credit: float = Field(default=0.0)
     new_employees: int = Field(default=0)
     let_go_employees: int = Field(default=0)
-    buy_new_machine_2: bool = Field(default=False)
-    buy_new_machine_3: bool = Field(default=False)
+    buy_new_machine: int = Field(default=0)
