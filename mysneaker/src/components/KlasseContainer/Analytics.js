@@ -19,7 +19,7 @@ const Analytics = ({ myHeaders, gameId, cycle_index }) => {
                     method: 'PUT',
                     headers: myHeaders,
                 };
-                fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game&setabck_game/' + gameId + '/index/' + cycle_index, requestOptions).then((element) => {
+                fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/setback_game/' + gameId + '/index/' + cycle_index, requestOptions).then((element) => {
                     if (element.status === 202) {
                         Swal.fire(
                             'Zurück gesprungen!',
