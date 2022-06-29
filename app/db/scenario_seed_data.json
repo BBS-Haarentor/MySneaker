@@ -16,7 +16,7 @@
             "employee_signup_bonus": 100,
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.20,        
-            "machine_purchase_allowed": false,
+            "machine_purchase_allowed": true,
             "sneaker_ask": 400,
             "tender_offer_count":0,
             "factor_ad_take": 0.1
@@ -56,7 +56,7 @@
             "employee_signup_bonus": 100,
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
-            "machine_purchase_allowed": false,
+            "machine_purchase_allowed": true,
             "sneaker_ask": 400,
             "tender_offer_count":200,
             "factor_ad_take": 0.1
@@ -76,7 +76,7 @@
             "employee_signup_bonus": 200,
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
-            "machine_purchase_allowed": false,
+            "machine_purchase_allowed": true,
             "sneaker_ask": 400,
             "tender_offer_count":200,
             "factor_ad_take": 0.1
