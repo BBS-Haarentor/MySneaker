@@ -104,7 +104,6 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         stock_output[i].credit_taken = _Darlehenstand
             #credit aufgenommen
 
-        _Kontostand = stock_list[i].account_balance
         _Kontostand += cycle_list[i].take_credit
 
         
@@ -118,7 +117,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _Kontostand+=_EinkommenAuschreibung
 
         
-        _Werbeanteil = round(100/_VerkaufDurchWerbungMax*cycle_list[i].ad_invest)
+        _Werbeanteil = round(_VerkaufDurchWerbungMax/100*cycle_list[i].ad_invest)
         _VerkaufDurchWerbung = round(_VerkaufDurchWerbungMax/100 * _Werbeanteil, 0)              #Mximal?
         _StückzahlNachWerbeverkauf = _UnternehmenGeboteneStückzahl - _VerkaufDurchWerbung
 
