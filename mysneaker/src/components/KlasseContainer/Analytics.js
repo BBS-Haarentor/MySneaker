@@ -1,7 +1,7 @@
 import React from 'react'
 import Swal from 'sweetalert2'
 
-const Analytics = ({ myHeaders, gameId, cycle_index }) => {
+const Analytics = ({ myHeaders, gameId, cycle_index, current_cycle_index }) => {
 
     const setBackGame = () => {
         Swal.fire({
@@ -13,7 +13,7 @@ const Analytics = ({ myHeaders, gameId, cycle_index }) => {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Ja, zurückspringen',
             cancelButtonText: "Nein"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 var requestOptions = {
                     method: 'PUT',
@@ -25,17 +25,21 @@ const Analytics = ({ myHeaders, gameId, cycle_index }) => {
                             'Zurück gesprungen!',
                             'Sie sind jetzt in der Periode',
                             'success'
-                          )
+                        )
                     }
                 })
-              
+
             }
-          })
+        })
     }
 
     return (
         <>
-            <button className='my-6 w-[100%]  bg-red-400 text-white rounded-3xl shadow-lg p-3' onClick={() => setBackGame()}>Zu dieser Periode zurückspringen</button>
+            {current_cycle_index > cycle_index ?
+                <button className='my-6 w-[100%]  bg-red-400 text-white rounded-3xl shadow-lg p-3' onClick={() => setBackGame()}>Zu dieser Periode zurückspringen</button>
+                :
+                <></>
+            }
         </>
     )
 }

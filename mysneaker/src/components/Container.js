@@ -217,8 +217,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setEntnahmeAusDemLager(data.current_cycle.include_from_stock)
         setMarktSoll(data.current_cycle.sales_planned)
         setMarktSollPreis(data.current_cycle.sales_bid)
-        setMarktIst(data.current_cycle.real_sales)
-        setAussetschreibungSoll(data.current_cycle.tender_offer_count)
+        console.log(data.current_stock.real_sales)
+        setMarktIst(data.current_stock.real_sales)
+        setAussetschreibungSoll(data.scenario.tender_offer_count)
         setAusschreibungIst(0)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
@@ -274,7 +275,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                                 "take_credit": 0,
                                 "buy_sneaker": 0,
                                 "include_from_stock": 0,
-                                "payback_credit": 0
+                                "payback_credit": 0,
+                                "let_go_employees":0,
+                                "real_sales":0
                             }
                         }
 

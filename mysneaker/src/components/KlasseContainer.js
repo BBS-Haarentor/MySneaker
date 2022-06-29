@@ -154,7 +154,7 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
                                         i++;
                                         return (
                                             <p key={i} className={(myGame.current_cycle_index === (i - 1) ? 'hover:bg-gray-600 text-white hover:text-white bg-gray-500 cursor-pointer' : myGame.current_cycle_index < (i - 1) ? 'bg-slate-300 text-white cursor-not-allowed' : 'hover:bg-gray-300 bg-gray-200 cursor-pointer') + ' mr-2 inline-block p-1 w-8 text-center rounded-full'}
-                                                onClick={() => { setSelect("cycle_index"); setSelectCycleIndex((i - 1)); }}>{i}</p>
+                                                onClick={() => { if(myGame.current_cycle_index >= (i-1)) { setSelect("cycle_index"); setSelectCycleIndex((i - 1)); }}}>{i}</p>
                                         )
                                     })}
                                 </div>
@@ -168,7 +168,7 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
                 case "cycle_index":
                     return (<>
                         <button className='px-4 right-0 m-4 py-2 text-sm bg-red-500 hover:bg-red-700 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold' onClick={() => setSelect("main")}>Zurück</button>
-                        <Analytics myHeaders={myHeaders} gameId={gameId} cycle_index={selectCycleIndex} />
+                        <Analytics myHeaders={myHeaders} gameId={gameId} cycle_index={selectCycleIndex} current_cycle_index={current_cycle_index} />
                     </>)
 
             }
