@@ -39,25 +39,16 @@ const LoginPage = () => {
         setAlert("")
         try {
             const res = await fetch(process.env.REACT_APP_MY_API_URL + "/user/login", requestOptions)
+            const rawData = await res.json()
             if (res.status === 200) {
-                const rawData = await res.json()
                 Cookies.set("session", [rawData.access_token])
                 window.location.href = "/dashboard"
-            } else if (res.status === 422) {
+            } else {
                 setAlert(
                     <>
                         <div className="bg-red-100 border border-red-600 text-red-700 px-4 mx-11 py-3 rounded relative" role="alert">
                             <strong className="font-bold">Login Fehlgeschlagen!</strong>
-                            <span className="block sm:inline"> Bitte Passwort und Benutzername überprüfen</span>
-                        </div>
-                    </>
-                )
-            } else if(res.status === 401) {
-                setAlert(
-                    <>
-                        <div className="bg-red-100 border border-red-600 text-red-700 px-4 mx-11 py-3 rounded relative" role="alert">
-                            <strong className="font-bold">Login Fehlgeschlagen!</strong>
-                            <span className="block sm:inline"> Dein Account ist zurzeit nicht Akitviert</span>
+                            <span className="block sm:inline"> {rawData.detail}</span>
                         </div>
                     </>
                 )
