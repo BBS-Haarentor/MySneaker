@@ -37,6 +37,35 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     for i in range(0, len(stock_output)):
         _Kontostand= stock_list[i].account_balance
         logging.warning(f"\n\nNEW COMPANY\n\nStartKonto: {_Kontostand=}\n\n")
+
+        _sneakerkauf=cycle_list[i].buy_sneaker
+        _farbenkauf=cycle_list[i].buy_paint
+
+        _Kontostand-=_sneakerkauf*scenario.sneaker_price
+        _Kontostand-=_farbenkauf*scenario.paint_price
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         logging.warning(f"{_StückzahlMarkt=}")
