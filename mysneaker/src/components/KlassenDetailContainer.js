@@ -144,6 +144,14 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
  
 
     var AllMaschienenKosten = 0
+    var machine_2_name = ""
+    var machine_2_kapazität = 0
+    var machine_2_costpp = 0
+    var machine_2_fertigungskostenpp = 0
+    var machine_3_name = ""
+    var machine_3_kapazität = 0
+    var machine_3_costpp = 0
+    var machine_3_fertigungskostenpp = 0
 
     if (data.stock.machine_1_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
@@ -154,17 +162,41 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     }
     if (data.stock.machine_2_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
+        machine_2_name = "Sneakerbox 200"
+        machine_2_kapazität = data.scenario.machine_production_capacity1
+        machine_2_costpp = data.scenario.machine_maintainance_cost1
+        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
     }else if(data.stock.machine_2_space == 2){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
+        machine_2_name = "Sneakerdream 500"
+        machine_2_kapazität = data.scenario.machine_production_capacity2
+        machine_2_costpp = data.scenario.machine_maintainance_cost2
+        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
     }else if(data.stock.machine_2_space == 3){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
+        machine_2_name = "Sneakergigant 1000"
+        machine_2_kapazität = data.scenario.machine_production_capacity3
+        machine_2_costpp = data.scenario.machine_maintainance_cost3
+        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
     }
     if (data.stock.machine_3_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
+        machine_3_name = "Sneakerbox 200"
+        machine_3_kapazität = data.scenario.machine_production_capacity1
+        machine_3_costpp = data.scenario.machine_maintainance_cost1
+        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
     }else if(data.stock.machine_3_space == 2){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
+        machine_3_name = "Sneakerdream 500"
+        machine_3_kapazität = data.scenario.machine_production_capacity2
+        machine_3_costpp = data.scenario.machine_maintainance_cost2
+        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
     }else if(data.stock.machine_3_space == 3){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
+        machine_3_name = "Sneakergigant 1000"
+        machine_3_kapazität = data.scenario.machine_production_capacity3
+        machine_3_costpp = data.scenario.machine_maintainance_cost3
+        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
     }
    
 
@@ -225,6 +257,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                         const dataFromServer = await fetchData()
                         if (dataFromServer.cycle === null) {
                             dataFromServer.cycle = {
+                                "current_cycle_index": cycle_index,
                                 "buy_paint": 0,
                                 "sales_planned": 0,
                                 "new_employees": 0,
@@ -245,7 +278,8 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                                 "take_credit": 0,
                                 "buy_sneaker": 0,
                                 "include_from_stock": 0,
-                                "payback_credit": 0
+                                "payback_credit": 0,
+                                "let_go_employees":0
                             }
                         }
                         setData(dataFromServer)
@@ -283,6 +317,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
         myHeaders.append('Access-Control-Allow-Origin', '*')
 
         var raw = JSON.stringify({
+            "current_cycle_index": cycle_index,
             "buy_sneaker": parseInt(SneakerEinkaufMenge),
             "buy_paint": parseInt(FarbenEinkaufMenge),
             "planned_production_1": parseFloat(GeplanteProduktion),
@@ -541,7 +576,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                 Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-                {data.stock.machine_1_space != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+{data.stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} >
                     <table>
                         <tbody>
                             <tr>
@@ -629,30 +664,30 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
                 </div>}
 
-                {data.stock.machine_2_space != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                {data.stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion2 /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} >
                     <table>
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th className='text-[#4fd1c5]'>Sneakerbox 2000</th>
+                                <th className='text-[#4fd1c5]'>{machine_2_name}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             <tr>
                                 <td>Produktionskapazität</td>
-                                <td>{Produktionskapazität} Stk.</td>
+                                <td>{machine_2_kapazität} Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten p. Per.</td>
-                                <td>{formatter.format(Maschinenkosten)}</td>
+                                <td>{formatter.format(machine_2_costpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück</td>
-                                <td>60,00€</td>
+                                <td>{machine_2_fertigungskostenpp}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -724,30 +759,30 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.stock.machine_3_space != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                {data.stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion3 /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} >
                     <table>
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th className='text-[#4fd1c5]'>Sneakerbox 300</th>
+                                <th className='text-[#4fd1c5]'>{machine_3_name}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             <tr>
                                 <td>Produktionskapazität</td>
-                                <td>{Produktionskapazität} Stk.</td>
+                                <td>{machine_3_kapazität} Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten p. Per.</td>
-                                <td>{formatter.format(Maschinenkosten)}</td>
+                                <td>{formatter.format(machine_3_costpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück</td>
-                                <td>60,00€</td>
+                                <td>{machine_3_fertigungskostenpp}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -808,7 +843,11 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
 
                         </tbody>
                     </table>
-                </div> : buy_new_machine != 0 ? 
+                </div> 
+                :data.stock.machine_2_space == 0 ? 
+                <></>
+                :
+                 buy_new_machine != 0? 
                     <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                         <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                         <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
@@ -826,7 +865,6 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>
                 }
-
 
                 <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start ">
                     <table>
