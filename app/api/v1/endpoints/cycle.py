@@ -27,11 +27,12 @@ async def create_new_cycle_entry(cycle_data: CycleCreate, current_user: User = D
     return result
 
 
-@router.post("/teacher/new_entry", status_code=status.HTTP_201_CREATED, response_model=list[Cycle])
-async def create_new_cycle_entry_override(cycle_data: CycleCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Cycle]:
+@router.post("/teacher/new_entry", status_code=status.HTTP_201_CREATED, response_model=int)
+@teacher_auth_required
+async def create_new_cycle_entry_override(cycle_data: CycleCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int:
     result: int = await new_cycle_entry(cycle_data=cycle_data, session=session)
-    result_all = await get_cycles_by_user_id(cycle_data.company_id, session=session)
-    all_cycles: list[Cycle] = result_all
+
+    return result
 # get for all cycles for user and index
 # teacher edit tag? -> cerating user tag
 
