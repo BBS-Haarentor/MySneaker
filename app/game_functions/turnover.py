@@ -189,7 +189,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _MitarbeiterTotal = stock_list[i].employees_count + cycle_list[i].new_employees - cycle_list[i].let_go_employees
         
 
-        _Kontostand -= (_MitarbeiterTotal * scenario.employee_salary) * 1 + scenario.employee_cost_modfier
+        _Kontostand -= round((_MitarbeiterTotal * scenario.employee_salary) * scenario.employee_cost_modfier, 0)
         stock_output[i].employees_count = _MitarbeiterTotal - scenario.employee_count_modifier_permanent
 
 
