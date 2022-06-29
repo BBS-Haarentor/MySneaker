@@ -137,8 +137,11 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         
         
         _Werbeanteil = round(_VerkaufDurchWerbungMax/100*cycle_list[i].ad_invest)
+        logging.warning(f"{_Werbeanteil=}")  
         _VerkaufDurchWerbung = round(_VerkaufDurchWerbungMax/100 * _Werbeanteil, 0)              #Mximal?
+        logging.warning(f"{_VerkaufDurchWerbung=}")  
         _StückzahlNachWerbeverkauf = _UnternehmenGeboteneStückzahl - _VerkaufDurchWerbung
+        logging.warning(f"{_StückzahlNachWerbeverkauf=}")  
 
 
         if _NachfrageAufdemMarkt < _StückzahlNachWerbeverkauf:
@@ -149,13 +152,30 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
             _NachfrageAufdemMarkt = _NachfrageAufdemMarkt - _StückzahlNachWerbeverkauf
             _Übrig = 0
             _GesamterVerkauf = _StückzahlNachWerbeverkauf
+        logging.warning(f"{_NachfrageAufdemMarkt=}")  
+        logging.warning(f"{_GesamterVerkauf=}")  
+        logging.warning(f"{_Übrig=}")  
+        logging.warning(f"{_StückzahlNachWerbeverkauf=}")  
+
         _GesamterVerkauf = _GesamterVerkauf + _VerkaufDurchWerbung
+        logging.warning(f"{_GesamterVerkauf=}")  
+
         _Umsatz = _UnternehmenPreise * _GesamterVerkauf
+        logging.warning(f"{_Umsatz=}")  
 
         stock_output[i].real_sales = _GesamterVerkauf
+        logging.warning(f"{stock_output[i].real_sales=}")  
         stock_output[i].income_from_sales = _Umsatz
+        logging.warning(f"{stock_output[i].income_from_sales=}")  
+        
         _Kontostand += _Umsatz
+        logging.warning(f"{_Kontostand=}")  
+
         stock_output[i].finished_sneaker_count = _Übrig
+        logging.warning(f"{stock_output[i].finished_sneaker_count=}")  
+
+        logging.warning(f"\n\n--------- Checkpoint 3 ----------\n\n")
+
 
         _MitarbeiterTotal = stock_list[i].employees_count + cycle_list[i].new_employees - cycle_list[i].let_go_employees
         
