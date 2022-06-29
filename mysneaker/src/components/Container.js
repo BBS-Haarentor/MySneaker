@@ -141,6 +141,14 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
  
 
     var AllMaschienenKosten = 0
+    var machine_2_name = ""
+    var machine_2_kapazität = 0
+    var machine_2_costpp = 0
+    var machine_2_fertigungskostenpp = 0
+    var machine_3_name = ""
+    var machine_3_kapazität = 0
+    var machine_3_costpp = 0
+    var machine_3_fertigungskostenpp = 0
 
     if (data.current_stock.machine_1_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
@@ -151,17 +159,41 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     }
     if (data.current_stock.machine_2_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
+        machine_2_name = "Sneakerbox 200"
+        machine_2_kapazität = data.scenario.machine_production_capacity1
+        machine_2_costpp = data.scenario.machine_maintainance_cost1
+        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
     }else if(data.current_stock.machine_2_space == 2){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
+        machine_2_name = "Sneakerdream 500"
+        machine_2_kapazität = data.scenario.machine_production_capacity2
+        machine_2_costpp = data.scenario.machine_maintainance_cost2
+        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
     }else if(data.current_stock.machine_2_space == 3){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
+        machine_2_name = "Sneakergigant 1000"
+        machine_2_kapazität = data.scenario.machine_production_capacity3
+        machine_2_costpp = data.scenario.machine_maintainance_cost3
+        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
     }
     if (data.current_stock.machine_3_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
+        machine_3_name = "Sneakerbox 200"
+        machine_3_kapazität = data.scenario.machine_production_capacity1
+        machine_3_costpp = data.scenario.machine_maintainance_cost1
+        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
     }else if(data.current_stock.machine_3_space == 2){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
+        machine_3_name = "Sneakerdream 500"
+        machine_3_kapazität = data.scenario.machine_production_capacity2
+        machine_3_costpp = data.scenario.machine_maintainance_cost2
+        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
     }else if(data.current_stock.machine_3_space == 3){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
+        machine_3_name = "Sneakergigant 1000"
+        machine_3_kapazität = data.scenario.machine_production_capacity3
+        machine_3_costpp = data.scenario.machine_maintainance_cost3
+        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
     }
    
 
@@ -592,25 +624,25 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th className='text-[#4fd1c5]'>Sneakerbox 2000</th>
+                                <th className='text-[#4fd1c5]'>{machine_2_name}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             <tr>
                                 <td>Produktionskapazität</td>
-                                <td>{Produktionskapazität} Stk.</td>
+                                <td>{machine_2_kapazität} Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten p. Per.</td>
-                                <td>{formatter.format(Maschinenkosten)}</td>
+                                <td>{formatter.format(machine_2_costpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück</td>
-                                <td>60,00€</td>
+                                <td>{machine_2_fertigungskostenpp}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -687,25 +719,25 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th className='text-[#4fd1c5]'>Sneakerbox 300</th>
+                                <th className='text-[#4fd1c5]'>{machine_3_name}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             <tr>
                                 <td>Produktionskapazität</td>
-                                <td>{Produktionskapazität} Stk.</td>
+                                <td>{machine_3_kapazität} Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten p. Per.</td>
-                                <td>{formatter.format(Maschinenkosten)}</td>
+                                <td>{formatter.format(machine_3_costpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück</td>
-                                <td>60,00€</td>
+                                <td>{machine_3_fertigungskostenpp}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
