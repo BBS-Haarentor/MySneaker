@@ -48,9 +48,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         logging.warning(f"{_StückzahlMarkt=}")
 
-        _MaschienenKostenProPeriode1=0.00
-        _MaschienenKostenProPeriode2=0.00
-        _MaschienenKostenProPeriode3=0.00
+        _MaschienenKostenProPeriode=0.00
         _Maschiene1ProduktionskostenSneaker=0.00
         _Maschiene2ProduktionskostenSneaker=0.00
         _Maschiene3ProduktionskostenSneaker=0.00
@@ -59,37 +57,36 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
         if stock.machine_1_space==1:
             _Maschiene1ProduktionskostenSneaker=round(cycle_list[i].planned_production_1*scenario.production_cost_per_sneaker1*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode1+=scenario.machine_maintainance_cost1
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost1
         if stock.machine_1_space==2:
             _Maschiene1ProduktionskostenSneaker=round(cycle_list[i].planned_production_1*scenario.production_cost_per_sneaker2*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode1+=scenario.machine_maintainance_cost2
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost2
         if stock.machine_1_space==3:
             _Maschiene1ProduktionskostenSneaker=round(cycle_list[i].planned_production_1*scenario.production_cost_per_sneaker3*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode1+=scenario.machine_maintainance_cost3
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost3
 
         if stock.machine_2_space==1:
             _Maschiene2ProduktionskostenSneaker=round(cycle_list[i].planned_production_2*scenario.production_cost_per_sneaker1*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode2+=scenario.machine_maintainance_cost1
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost1
         if stock.machine_2_space==2:
             _Maschiene2ProduktionskostenSneaker=round(cycle_list[i].planned_production_2*scenario.production_cost_per_sneaker2*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode2+=scenario.machine_maintainance_cost2
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost2
         if stock.machine_2_space==3:
             _Maschiene2ProduktionskostenSneaker=round(cycle_list[i].planned_production_2*scenario.production_cost_per_sneaker3*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode2+=scenario.machine_maintainance_cost3
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost3
         
         if stock.machine_3_space==1:
             _Maschiene3ProduktionskostenSneaker=round(cycle_list[i].planned_production_3*scenario.production_cost_per_sneaker1*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode3+=scenario.machine_maintainance_cost1
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost1
         if stock.machine_3_space==2:
             _Maschiene3ProduktionskostenSneaker=round(cycle_list[i].planned_production_3*scenario.production_cost_per_sneaker2*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode3+=scenario.machine_maintainance_cost2
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost2
         if stock.machine_3_space==3:
             _Maschiene3ProduktionskostenSneaker=round(cycle_list[i].planned_production_3*scenario.production_cost_per_sneaker3*_VorherigeEntwicklungsStufe, 2)
-            _MaschienenKostenProPeriode3+=scenario.machine_maintainance_cost3
+            _MaschienenKostenProPeriode+=scenario.machine_maintainance_cost3
         
-        logging.warning(f"{_MaschienenKostenProPeriode1=}")
-        logging.warning(f"{_MaschienenKostenProPeriode2=}")
-        logging.warning(f"{_MaschienenKostenProPeriode3=}")
+        logging.warning(f"{_MaschienenKostenProPeriode=}")
+        
 
 
         _KostenSneakerProduktion=_Maschiene1ProduktionskostenSneaker+_Maschiene2ProduktionskostenSneaker+_Maschiene3ProduktionskostenSneaker
