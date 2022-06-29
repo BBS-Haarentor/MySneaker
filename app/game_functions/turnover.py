@@ -36,7 +36,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     
     for i in range(0, len(stock_output)):
         _Kontostand= stock_list[i].account_balance
-        logging.warning(f"NEW COMPANY\n\n\n\n{_Kontostand=}\n")
+        logging.warning(f"\n\nNEW COMPANY\n\nStartKonto: {_Kontostand=}\n\n")
     
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         logging.warning(f"{_StückzahlMarkt=}")
@@ -95,27 +95,46 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         logging.warning(f"{stock_output[i].sneaker_count=}")
         logging.warning(f"{stock_output[i].paint_count=}")
 
+        logging.warning(f"\n\n--------- Checkpoint 1 ----------\n\n")
+
 
         _AufgenommenerKreditVorperiode = stock_list[i].credit_taken
+        logging.warning(f"{_AufgenommenerKreditVorperiode=}")
+
         _Darlehenstand = cycle_list[i].take_credit + _AufgenommenerKreditVorperiode
+        logging.warning(f"{_Darlehenstand=}")
+
         #Abbezahlt / Aufgenommen
         _Abbezahlt = cycle_list[i].payback_credit
+        logging.warning(f"{_Abbezahlt=}")
+
         _Darlehenstand -= _Abbezahlt
+        logging.warning(f"{_Darlehenstand=}")
         stock_output[i].credit_taken = _Darlehenstand
             #credit aufgenommen
 
         _Kontostand += cycle_list[i].take_credit
-
+        logging.warning(f"{_Kontostand=}")
+        
+        logging.warning(f"\n\n--------- Checkpoint 2 ----------\n\n")
         
         _UnternehmenGeboteneStückzahl = cycle_list[i].sales_planned
+        logging.warning(f"{_UnternehmenGeboteneStückzahl=}")  
         _UnternehmenPreise = cycle_list[i].sales_bid
+        logging.warning(f"{_UnternehmenPreise=}")  
         _EinkommenAuschreibung = 0.0
         if _UnternemensNummer == i:
+            logging.warning(f"TENDER OFFER GOES TO {_UnternemensNummer=}")  
             _StückzahlAusschreibung=scenario.tender_offer_count
+            logging.warning(f"{_StückzahlAusschreibung=}")  
             _PreisAusschreibung=cycle_list[i].tender_offer_price
+            logging.warning(f"{_PreisAusschreibung=}")  
             _EinkommenAuschreibung=round(_StückzahlAusschreibung*_PreisAusschreibung, 2)
-        _Kontostand+=_EinkommenAuschreibung
+            logging.warning(f"{_EinkommenAuschreibung=}")  
 
+        _Kontostand+=_EinkommenAuschreibung
+        logging.warning(f"{_Kontostand=}")  
+        
         
         _Werbeanteil = round(_VerkaufDurchWerbungMax/100*cycle_list[i].ad_invest)
         _VerkaufDurchWerbung = round(_VerkaufDurchWerbungMax/100 * _Werbeanteil, 0)              #Mximal?
@@ -190,7 +209,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     #    stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
 
     
-    logging.warning(f"\n\n\n\n\n\n\n\n")
+    logging.warning(f"\n\n\n\n-------- END TURNOVER --------\n\n\n\n")
         # mock
     return stock_output
   
