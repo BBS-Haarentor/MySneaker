@@ -34,8 +34,48 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
         })
     }, [])
 
-    const deleteUser = () => {
+    const deleteUser = (companyId) => {
+        Swal.fire({
+            title: 'Benutzer Löschen?',
+            text: "Wollen Sie es wirklich den Benutzer Löschen?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7FFFD4',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ja, Löschen',
+            cancelButtonText: "Nein"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+                myHeaders.append('Access-Control-Allow-Origin', '*')
 
+                var requestOptions = {
+                    method: 'DELETE',
+                    headers: myHeaders,
+                };
+
+                fetch(process.env.REACT_APP_MY_API_URL + '/user/delete/' + companyId, requestOptions).then((element) => {
+                    if (element.status === 202) {
+                        Swal.fire(
+                            'Benutzer Gelöscht!',
+                            'Sie haben den Benutzer Erfolgreich gelöscht',
+                            'success'
+                        )
+                    } else {
+                        element.json().then((element1) => {
+                            Swal.fire(
+                                'Fehler!',
+                                element1.detail,
+                                'error'
+                            )
+                        })
+                    }
+                })
+
+            }
+        })
     }
 
     if (companyId !== null) {
@@ -126,7 +166,7 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
                             <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => { setSelect("input"); menues(); }}>
                                 Aktuelle Eingaben
                             </button>
-                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => deleteUser()}>
+                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => deleteUser(companyId)}>
                                 Benutzer Löschen
                             </button>
                         </div>
@@ -154,7 +194,7 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
                                         i++;
                                         return (
                                             <p key={i} className={(myGame.current_cycle_index === (i - 1) ? 'hover:bg-gray-600 text-white hover:text-white bg-gray-500 cursor-pointer' : myGame.current_cycle_index < (i - 1) ? 'bg-slate-300 text-white cursor-not-allowed' : 'hover:bg-gray-300 bg-gray-200 cursor-pointer') + ' mr-2 inline-block p-1 w-8 text-center rounded-full'}
-                                                onClick={() => { if(myGame.current_cycle_index >= (i-1)) { setSelect("cycle_index"); setSelectCycleIndex((i - 1)); }}}>{i}</p>
+                                                onClick={() => { if (myGame.current_cycle_index >= (i - 1)) { setSelect("cycle_index"); setSelectCycleIndex((i - 1)); } }}>{i}</p>
                                         )
                                     })}
                                 </div>
