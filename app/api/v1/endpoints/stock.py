@@ -35,11 +35,11 @@ async def get_all_my_stocks(current_user: User = Depends(get_current_active_user
     stock_list: list[Stock] = await get_stock_entries_by_user_id(user_id=current_user.id, session=session)
     return stock_list
 
-@router.get("/get_my_stock_by_index/{index}",status_code=status.HTTP_200_OK, response_model=list[Stock])
+@router.get("/get_my_stock_by_index/{index}",status_code=status.HTTP_200_OK, response_model=Stock)
 @base_auth_required
-async def get_all_my_stocks(index: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Stock]:
-    stock_list: list[Stock] = await get_stock_entry_by_user_id_and_cycle_id(user_id=current_user.id, index=index,  session=session)
-    return stock_list
+async def get_all_my_stocks(index: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Stock:
+    stock: Stock = await get_stock_entry_by_user_id_and_cycle_id(user_id=current_user.id, index=index,  session=session)
+    return stock
 
 
 
@@ -49,10 +49,10 @@ async def get_stocks_by_user(user_id: int, current_user: User = Depends(get_curr
     stock_list: list[Stock] = await get_stock_entries_by_user_id(user_id=user_id, session=session)
     return stock_list
 
-@router.get("/get_all_by_user/{user_id}/cycle_index/{index}", status_code=status.HTTP_200_OK, response_model=Stock)
+@router.get("/get_all_by_user/{user_id}/cycle_index/{index}", status_code=status.HTTP_200_OK, response_model=list[Stock])
 @teacher_auth_required
 async def get_stocks_by_user_and_index(user_id: int, index: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Stock]:
-    stock_list: Stock = await get_stock_entries_by_user_id_and_cycle_id(user_id=user_id, index=index,  session=session)
+    stock_list: list[Stock] = await get_stock_entries_by_user_id_and_cycle_id(user_id=user_id, index=index,  session=session)
     return stock_list
 
 
