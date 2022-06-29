@@ -187,16 +187,22 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
 
         _MitarbeiterTotal = stock_list[i].employees_count + cycle_list[i].new_employees - cycle_list[i].let_go_employees
-        
+        logging.warning(f"{_MitarbeiterTotal=}")  
 
-        _Kontostand -= (_MitarbeiterTotal * scenario.employee_salary) * 1 + scenario.employee_cost_modfier
+
+        _Kontostand -= (_MitarbeiterTotal * scenario.employee_salary) * (1 + scenario.employee_cost_modfier)
+        logging.warning(f"{_Kontostand=}")  
+
         stock_output[i].employees_count = _MitarbeiterTotal - scenario.employee_count_modifier_permanent
+        logging.warning(f"{stock_output[i].employees_count=}")  
 
 
         #Entwickelung
         StuffeEntwickelung = _VorherigeEntwicklungsStufe
+        logging.warning(f"{StuffeEntwickelung=}")  
+
         _Buget_Kumuliert = stock_list[i].research_budget + cycle_list[i].research_invest  
-        
+        logging.warning(f"{_Buget_Kumuliert=}")  
         if _Buget_Kumuliert >= 2_500:                                                       
             StuffeEntwickelung = 0.90                                                     
         if _Buget_Kumuliert >= 5_000:                                                        
@@ -207,9 +213,13 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
             StuffeEntwickelung = 0.72
         if _Buget_Kumuliert >= 12_500:                                                      
             StuffeEntwickelung = 0.70
+        
+        logging.warning(f"{StuffeEntwickelung=}")  
 
 
         _Kontostand -= cycle_list[i].research_invest
+        logging.warning(f"{_Kontostand=}")  
+
         stock_output[i].research_budget = _Buget_Kumuliert
         stock_output[i].research_production_modifier = StuffeEntwickelung
         
@@ -233,6 +243,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         
         
         stock_output[i].account_balance = _Kontostand
+        logging.warning(f"\n\nFINAL {_Kontostand=}\n\n")  
 
     #for stock in stock_list: #ersezten mit Logik
     #    stock_output.append(Stock(company_id=stock.company_id, game_id=stock.game_id, current_cycle_index=stock.current_cycle_index + 1))
