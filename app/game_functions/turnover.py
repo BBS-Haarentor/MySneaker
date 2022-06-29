@@ -48,10 +48,12 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         logging.warning(f"{_StückzahlMarkt=}")
 
-        _MaschienenKostenProPeriode=0.00
         _Maschiene1ProduktionskostenSneaker=0.00
         _Maschiene2ProduktionskostenSneaker=0.00
         _Maschiene3ProduktionskostenSneaker=0.00
+        _MaschienenKostenProPeriode1=0.00
+        _MaschienenKostenProPeriode2=0.00
+        _MaschienenKostenProPeriode3=0.00
         _VorherigeEntwicklungsStufe = stock_list[i].research_production_modifier
         logging.warning(f"{_VorherigeEntwicklungsStufe=}")
 
