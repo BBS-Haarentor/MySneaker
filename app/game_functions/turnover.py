@@ -95,7 +95,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _Kontostand-=_KostenSneakerProduktion
         logging.warning(f"{_Kontostand=}")
 
-        _Kontostand-=_MaschienenKostenProPeriode1+_MaschienenKostenProPeriode2+_MaschienenKostenProPeriode3
+        _Kontostand-=_MaschienenKostenProPeriode
         logging.warning(f"{_Kontostand=}")
         
         stock_output[i].sneaker_count = stock_list[i].sneaker_count + cycle_list[i].buy_sneaker - _StückzahlMarkt
