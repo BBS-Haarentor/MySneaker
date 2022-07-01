@@ -8,13 +8,9 @@ from app.models.stock import Stock
 async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool:
     if cycle.buy_sneaker<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 sneaker gekauft werden.")
-    if cycle.buy_sneaker>500: #nachfragen 
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht mehr als 500 sneaker gekauft werden.")
 
     if cycle.buy_paint<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 farben gekauft werden.")
-    if cycle.buy_sneaker>500: #nachfragen 
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht mehr als 1000 Faben gekauft werden.")
 
     if cycle.planned_production_1>( cycle.planned_workers_1*scenario.machine_production_capacity1):
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_1*scenario.machine_production_capacity1 + " arbeiter an der Maschiene arbeiten.")
