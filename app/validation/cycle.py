@@ -21,41 +21,41 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
     if cycle.planned_production_1<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
-    if stock.machine_2_space=1:
+    if stock.machine_2_space==1:
         if cycle.planned_production_2>( cycle.planned_workers_2*scenario.machine_production_capacity1):
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_2*scenario.machine_production_capacity1 + " arbeiter an der Maschiene arbeiten.")
         if cycle.planned_production_2<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
-    if stock.machine_2_space=2:
+    if stock.machine_2_space==2:
         if cycle.planned_production_2>( cycle.planned_workers_2*scenario.machine_production_capacity2):
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_2*scenario.machine_production_capacity2 + " arbeiter an der Maschiene arbeiten.")
         if cycle.planned_production_2<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
-    if stock.machine_2_space=3:
+    if stock.machine_2_space==3:
         if cycle.planned_production_2>( cycle.planned_workers_2*scenario.machine_production_capacity3):
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_2*scenario.machine_production_capacity3 + " arbeiter an der Maschiene arbeiten.")
         if cycle.planned_production_2<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
     
-    if stock.machine_3_space=1:
+    if stock.machine_3_space==1:
         if cycle.planned_production_3>( cycle.planned_workers_3*scenario.machine_production_capacity1):
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_3*scenario.machine_production_capacity1 + " arbeiter an der Maschiene arbeiten.")
         if cycle.planned_production_3<0:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
-    if stock.machine_3_space=2:
+    if stock.machine_3_space==2:
         if cycle.planned_production_3>( cycle.planned_workers_3*scenario.machine_production_capacity2):
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_3*scenario.machine_production_capacity2 + " arbeiter an der Maschiene arbeiten.")
         if cycle.planned_production_3<0:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
-    if stock.machine_3_space=3:
+    if stock.machine_3_space==3:
         if cycle.planned_production_3>( cycle.planned_workers_3*scenario.machine_production_capacity3):
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_3*scenario.machine_production_capacity3 + " arbeiter an der Maschiene arbeiten.")
         if cycle.planned_production_3<0:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
     if cycle.planned_workers_1>scenario.machine_employee_max:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + scenario.machine_employee_max + " arbeiter an der Maschiene arbeiten.")
