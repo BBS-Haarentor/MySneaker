@@ -13,43 +13,43 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 farben gekauft werden.")
 
     if cycle.planned_production_1>( cycle.planned_workers_1*scenario.machine_production_capacity1):
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_1*scenario.machine_production_capacity1} arbeiter an der Maschiene arbeiten.")
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_1*scenario.machine_production_capacity1} schue an der Maschiene Produziert werden.")
     if cycle.planned_production_1<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
     if stock.machine_2_space==1:
         if cycle.planned_production_2>( cycle.planned_workers_2*scenario.machine_production_capacity1):
-            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_2*scenario.machine_production_capacity1 + " arbeiter an der Maschiene arbeiten.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_2*scenario.machine_production_capacity1} schue an der Maschiene Produziert werden.")
         if cycle.planned_production_2<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
     if stock.machine_2_space==2:
         if cycle.planned_production_2>( cycle.planned_workers_2*scenario.machine_production_capacity2):
-            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_2*scenario.machine_production_capacity2 + " arbeiter an der Maschiene arbeiten.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_2*scenario.machine_production_capacity2} schue an der Maschiene Produziert werden.")
         if cycle.planned_production_2<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
     if stock.machine_2_space==3:
         if cycle.planned_production_2>( cycle.planned_workers_2*scenario.machine_production_capacity3):
-            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_2*scenario.machine_production_capacity3 + " arbeiter an der Maschiene arbeiten.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_2*scenario.machine_production_capacity3} schue an der Maschiene Produziert werden.")
         if cycle.planned_production_2<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
     
     if stock.machine_3_space==1:
         if cycle.planned_production_3>( cycle.planned_workers_3*scenario.machine_production_capacity1):
-            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_3*scenario.machine_production_capacity1 + " arbeiter an der Maschiene arbeiten.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_3*scenario.machine_production_capacity1} schue an der Maschiene Produziert werden.")
         if cycle.planned_production_3<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
     if stock.machine_3_space==2:
         if cycle.planned_production_3>( cycle.planned_workers_3*scenario.machine_production_capacity2):
-            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_3*scenario.machine_production_capacity2 + " arbeiter an der Maschiene arbeiten.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_3*scenario.machine_production_capacity2} schue an der Maschiene Produziert werden.")
         if cycle.planned_production_3<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
     if stock.machine_3_space==3:
         if cycle.planned_production_3>( cycle.planned_workers_3*scenario.machine_production_capacity3):
-            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + cycle.planned_workers_3*scenario.machine_production_capacity3 + " arbeiter an der Maschiene arbeiten.")
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_3*scenario.machine_production_capacity3} schue an der Maschiene Produziert werden.")
         if cycle.planned_production_3<0:
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
