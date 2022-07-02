@@ -54,17 +54,17 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
             raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Schuhe Produziert werden.")
 
     if cycle.planned_workers_1>scenario.machine_employee_max:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + scenario.machine_employee_max + " arbeiter an der Maschiene arbeiten.")
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {scenario.machine_employee_max} arbeiter an der Maschiene arbeiten.")
     if cycle.planned_workers_1<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Arbeiter an der Maschiene arbeiten.")
     
     if cycle.planned_workers_2>scenario.machine_employee_max:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + scenario.machine_employee_max + " arbeiter an der Maschiene arbeiten.")
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {scenario.machine_employee_max} arbeiter an der Maschiene arbeiten.")
     if cycle.planned_workers_2<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Arbeiter an der Maschiene arbeiten.")
 
     if cycle.planned_workers_3>scenario.machine_employee_max:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nur " + scenario.machine_employee_max + " arbeiter an der Maschiene arbeiten.")
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {scenario.machine_employee_max} arbeiter an der Maschiene arbeiten.")
     if cycle.planned_workers_3<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 Arbeiter an der Maschiene arbeiten.")
 
@@ -110,12 +110,12 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es kann nicht weniger als 0€ in Werbung investiert werden.")
 
     if cycle.take_credit<cycle.payback_credit:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Dein augenommener Credit Beträgt: " + cycle.take_credit + " und du möchtest " + cycle.payback_credit +" ab Bezahlen.")
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Dein augenommener Credit Beträgt: {cycle.take_credit} und du möchtest {cycle.payback_credit} ab Bezahlen.")
     if cycle.payback_credit>50_000: #wie Hohen Credit darf amnn maximal aufnehmen
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Dein unternahmen Darf nicht mehr als 50.000.00€ Credit aufnehemn.")
 
     if cycle.new_employees>stock.employees_count:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als " + stock.employees_count + " Arbeiter enlassen werden werden.")
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nicht weniger als {stock.employees_count} Arbeiter enlassen werden werden.")
 
     if scenario.machine_purchase_allowed == False:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="In dieser periode kann keine Maschiene gekauft werden.")
