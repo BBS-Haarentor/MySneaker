@@ -26,5 +26,6 @@ class Stock(StockBase, table=True):
     machine_1_space: int = Field(default=1)
     machine_2_space: int = Field(default=0)
     machine_3_space: int = Field(default=0)
+    insolvent: bool = Field(default=False)
     
     

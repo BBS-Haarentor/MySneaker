@@ -1,4 +1,5 @@
 from datetime import datetime
+from pydantic import validator
 from sqlalchemy import ForeignKey, Integer
 from sqlmodel import Field, UniqueConstraint, Column
 from app.schemas.user import UserBase
@@ -15,3 +16,11 @@ class User(UserBase, table=True):
     is_active: bool | None = Field(default=False)
     game_id: int | None = Field(sa_column=Column(Integer, ForeignKey("game.id", onupdate="CASCADE", ondelete="CASCADE")))
 
+
+    @validator('name')
+    def valid_name(cls, name):
+        try:
+            len(name) >= 3
+            return name
+        except ValueError:
+            raise ValueError("name must be 3 chars or longer")

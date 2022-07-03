@@ -21,6 +21,7 @@ class StockBase(SQLModel):
     machine_1_space: int | None
     machine_2_space: int | None
     machine_3_space: int | None
+    insolvent: bool | None
 
     
 

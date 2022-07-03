@@ -34,3 +34,16 @@ class GameResponse(GameBase):
     scenario_order: str 
     signup_enabled: bool
 
+
+class PlayerInfo(SQLModel):
+    company_id: int
+    name: str
+    index: int
+    account_balance: float
+    credit_taken: float
+    income: float
+    price: float
+    sold_sneakers: int
+    market_share: float
+    turnover_ready: bool
+    

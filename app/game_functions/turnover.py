@@ -25,6 +25,8 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
     logging.warning(f"{_NachfrageAufdemMarkt=}")
 
 
+    # sort out dead companies 
+    
     _UnternemensNummer=-1
     _PreisAusschreibung=5_000
     for i in range(0, len(stock_output)):
@@ -32,7 +34,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
             _UnternemensNummer=i
             logging.warning(f"{_PreisAusschreibung=}")
 
-
+    # tender offer
     
     for i in range(0, len(stock_output)):
         _Kontostand=stock_list[i].account_balance
@@ -45,7 +47,8 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         _Kontostand-=_farbenkauf*scenario.paint_price
         logging.warning(f"{_Kontostand=}")
 
-    
+        # Sneaker prod result and cost
+        
         _StückzahlMarkt = cycle_list[i].planned_production_1 + cycle_list[i].planned_production_2 + cycle_list[i].planned_production_3 + stock_list[i].finished_sneaker_count
         logging.warning(f"{_StückzahlMarkt=}")
 
@@ -105,7 +108,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
         logging.warning(f"{stock_output[i].paint_count=}")
 
         logging.warning(f"\n\n--------- Checkpoint 1 ----------\n\n")
-
+        # prod sneaker en
 
         _AufgenommenerKreditVorperiode = stock_list[i].credit_taken
         logging.warning(f"{_AufgenommenerKreditVorperiode=}")

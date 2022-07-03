@@ -10,7 +10,7 @@ from app.models.scenario import Scenario
 from app.models.user import User
 from app.models.cycle import Cycle
 from app.models.stock import Stock
-from app.schemas.game import GameCreate, GamePatch
+from app.schemas.game import GameCreate, GamePatch, PlayerInfo
 from starlette import status
 
 async def create_game(new_game_data: GameCreate, session: AsyncSession) -> int:
@@ -252,7 +252,7 @@ async def set_back_cycle_index(game_id: int, new_index: int, session: AsyncSessi
     if new_index > game.current_cycle_index:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"New index has to be {game.current_cycle_index=} or lower")
     # delete all cycles after new index
-    cycle_result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index >= new_index))
+    cycle_result = await session.exec(select(Cycle).where(Cycle.game_id == game.id).where(Cycle.current_cycle_index >= new_index).where(Cycle.current_cycle_index != 0))
     cycles: list[Cycle] = cycle_result.all()
     logging.warning(f"{cycles=}")
     for c in cycles:
@@ -299,3 +299,19 @@ async def edit_game(patch_data: GamePatch, session: AsyncSession) -> Game | None
     await session.refresh(game)
     
     return game
+
+
+async def get_game_info(game_id: int, session: AsyncSession) -> list[PlayerInfo]: 
+    result = await session.exec(select(Game).where(Game.id == game_id))
+    game: Game = result.one_or_none()
+    result2 = await session.exec(select(User).where(User.game_id == game_id))
+    user_list: list[User] = result.all()
+    
+    # get stocks and cycles 
+    
+    # parse PlayerInfo
+    
+    # get new cycles
+    
+    
+    return 

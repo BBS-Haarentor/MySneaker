@@ -21,5 +21,5 @@ async def init_async_db() -> None:
         COMMENT OUT THE LINE BELOW AFTER FIRST STARTUP.
         OTHERWISE THE DB WILL BE DROPPED ON RESTART.
         """
-        await conn.run_sync(SQLModel.metadata.drop_all)
+        #await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)

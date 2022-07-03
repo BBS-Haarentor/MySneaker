@@ -1,5 +1,7 @@
 import asyncio
+import logging
 from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 import time
 from fastapi import FastAPI, Request
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -37,8 +39,12 @@ async def add_process_time_header(request: Request, call_next):
 async def error_handling(request: Request, call_next):
     try:
         return await call_next(request)
-    except HTTPException as ex:
-        raise HTTPException(status_code=status.HTTP_418_IM_A_TEAPOT, detail="")
+    except Exception as ex:
+        code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        logging.warning(ex)
+        if isinstance(ex, HTTPException):
+            code = ex.status_code
+        return JSONResponse(status_code=code, content=ex.__str__())
 
 
 api.add_middleware(

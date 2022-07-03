@@ -119,7 +119,8 @@ def test_sort():
     logging.warning(f"{type(l2)=}")
 
     
-    
+    for i in range(0, len(id_sorted_garages)-1):
+        print(f"{id_sorted_garages[i]=}")
     
     
 if __name__ == '__main__':

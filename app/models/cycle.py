@@ -1,4 +1,5 @@
 from datetime import datetime
+from pydantic import validator
 from sqlalchemy import Column, ForeignKey, Integer
 from sqlmodel import Field
 from app.schemas.cycle import CycleBase
