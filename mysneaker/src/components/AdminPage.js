@@ -153,7 +153,7 @@ console.log(newTeacher + " " +newTeacherPassword )
                 return (
                   <tr onClick={() => showTeacher()}>
                     <td>{name}</td>
-                    <td>{date.getHours()}:{date.getSeconds()} {date.getDate()}.{date.getMonth()}.{date.getFullYear()}</td>
+                    <td>{("0" + (date.getHours()+2)).slice(-2)}:{("0" + date.getMinutes()).slice(-2)} {("0" + date.getDate()).slice(-2)}.{("0" + (date.getMonth()+1)).slice(-2)}.{date.getFullYear()}</td>
                     <td>
                       <button className='p-2' onClick={() => deleteTeacher(id)}>
                         <svg className='fill-red-500 hover:fill-red-600 h-5 w-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
