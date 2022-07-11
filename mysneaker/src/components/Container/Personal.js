@@ -23,12 +23,12 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Verfügbare Kapazität (MA)</td>
-                        <td>{Mitarbeiter - ZugeteilteMitarbeiter} Stk.</td>
+                        <td>{Mitarbeiter - ZugeteilteMitarbeiter} MA</td>
 
                     </tr>
                     <tr>
                         <td>benötigte MA </td>
-                        <td>{ZugeteilteMitarbeiter} Stk.</td>
+                        <td>{ZugeteilteMitarbeiter} MA</td>
 
                     </tr>
                     <tr>
@@ -38,7 +38,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Neueinstellungen</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input> Stk.</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input> MA</td>
 
                     </tr>
                     <tr>
@@ -48,17 +48,17 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Kündigungen/Rente/ etc.</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setKündigungen(e.target.value)} value={Kündigungen}></input> Stk.</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setKündigungen(e.target.value)} value={Kündigungen}></input> MA</td>
 
                     </tr>
                     <tr>
                         <td>Zugeteilte Mitarbeiter</td>
-                        <td>{parseInt(ZugeteilteMitarbeiter) + parseInt(ZugeteilteMitarbeiter2) + parseInt(ZugeteilteMitarbeiter3)} Stk.</td>
+                        <td>{parseInt(ZugeteilteMitarbeiter) + parseInt(ZugeteilteMitarbeiter2) + parseInt(ZugeteilteMitarbeiter3)} MA</td>
 
                     </tr>
                     <tr>
                         <td>Mitarbeiter nächste Periode</td>
-                        <td>{parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen} Stk.</td>
+                        <td>{parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen} MA</td>
 
 
                     </tr>
