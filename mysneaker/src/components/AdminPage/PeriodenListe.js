@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import Cookies from 'js-cookie';
+import EditScenarioModal from "./Modals/EditScenarioModal";
 
 const PeriodenListe = () => {
 
@@ -39,6 +40,7 @@ const PeriodenListe = () => {
             "description": "LOREM IPSUM"
         }
     ]);
+    const [modal, setModal] = useState(<></>);
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -60,8 +62,13 @@ const PeriodenListe = () => {
         })
     }, [])
 
+    function editScenario(char) {
+        setModal(<EditScenarioModal myHeaders={myHeaders} char={char} setModal={setModal}/>)
+    }
+
     return (
         <>
+            {modal}
             <div className='h-screen w-full overflow-hidden'>
                 <div
                     className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
@@ -92,7 +99,7 @@ const PeriodenListe = () => {
                                         <td>{scenario.char}</td>
                                         <td>{scenario.description}</td>
                                         <td>
-                                            <button className='p-2'>
+                                            <button className='p-2' onClick={() => editScenario(scenario.char)}>
 
                                                 <svg className='fill-yellow-600 hover:fill-yellow-700 h-5 w-5'
                                                      xmlns="http://www.w3.org/2000/svg"
