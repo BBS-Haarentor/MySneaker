@@ -997,6 +997,37 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     </table>
                     <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
                 </div>
+                <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th></th>
+                                <th className='text-[#4fd1c5]'>Statistik  (Produktion Plan)</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>pro Stück</td>
+                                <td>Gesamt</td>
+                            </tr>
+                            <tr>
+                                <td>Werkstoffkosten</td>
+                                <td>{formatter.format((SneakerKosten+FarbenKosten) /Gesamtproduktion)} Stk.</td>
+                                <td>{formatter.format((SneakerKosten+FarbenKosten))}</td>
+                            </tr>
+                            <tr>
+                                <td>Ausschreibung</td>
+                                <td>{AusschreibungIst} Stk.</td>
+                                <td>{formatter.format(UmsatzIst)}</td>
+                            </tr>
+                            <tr>
+                                <td>Gesamt</td>
+                                <td>{Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk. </td>
+                                <td>{formatter.format(UmsatzIst)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
+                </div>
                 <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " >
                     <img src="/img/undraw_finance.svg" className='h-[500px] w-0 xl:w-[500px] m-auto'></img>
                     <table>
