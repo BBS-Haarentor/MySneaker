@@ -708,7 +708,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     </table>
                 </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                    <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                    <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div> : data.scenario.machine_purchase_allowed ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
@@ -808,7 +808,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                  buy_new_machine != 0? 
                     <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                         <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                        <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                        <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div> 
                 : data.current_stock.machine_2_space == 0 ? 
                 <></> 
@@ -1005,10 +1005,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                         </tbody>
                     </table>
-                    <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
+                    <img src="/img/undraw_finance.svg" className='h-96 w-64 xl:w-96 m-4'></img>
                 </div>
                 <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
-                    <img src="/img/undraw_finance.svg" className='h-[500px] w-0 xl:w-[500px] m-auto'></img>
+                    <img src="/img/projections.svg" className='h-[500px] w-0 xl:w-[500px] m-auto p-10'></img>
                     <table>
                         <tbody>
                             <tr>
