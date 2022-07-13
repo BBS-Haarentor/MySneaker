@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import sha256 from 'crypto-js/sha256';
+import { useState } from "react";
 import Cookies from "js-cookie";
 
 const LoginPage = () => {

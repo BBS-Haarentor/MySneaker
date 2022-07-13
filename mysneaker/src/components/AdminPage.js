@@ -1,10 +1,10 @@
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import TeacherList from './AdminPage/TeacherList'
 import PeriodenListe from './AdminPage/PeriodenListe'
 
 const AdminPage = ({OnClick, state}) => {
 
-    useEffect(() => {
+    useEffect((OnClick) => {
         OnClick("Lehrer Liste")
     }, [])
 

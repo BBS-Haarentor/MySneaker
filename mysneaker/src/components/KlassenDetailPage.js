@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import QRCodeStyling from "qr-code-styling";
 import Cookies from 'js-cookie';
 import SideNavBar from './SideNavBar'
-import KlassenDetailContainer from './KlassenDetailContainer';
 import KlasseContainer from './KlasseContainer';
 
 const KlassenDetailPage = () => {
@@ -47,7 +46,7 @@ const KlassenDetailPage = () => {
     }
   });
 
-  const [url, setUrl] = useState(window.location.protocol + "//" + window.location.hostname + "/register/" + id);
+  const url = window.location.protocol + "//" + window.location.hostname + "/register/" + id;
   const [showModal, setShowModal] = useState(false)
   const [game, setGame] = useState({
     current_cycle_index: ""
@@ -55,7 +54,7 @@ const KlassenDetailPage = () => {
   const ref = useRef(null);
   const [infoModal, setInfoModal] = useState(<></>)
 
-  useEffect(async () => {
+  useEffect(() => {
     qrCode.update({
       data: url
     });
@@ -69,12 +68,12 @@ const KlassenDetailPage = () => {
 
     updateCompany()
 
-    await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
-      if (res.status === 200) {
-        let json = await res.json();
-        setGame(json)
-      }
-    })
+      fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
+        if (res.status === 200) {
+          let json = await res.json();
+          setGame(json)
+        }
+      })
   }, [url]);
 
   const updateCompany = async () => {
@@ -84,10 +83,10 @@ const KlassenDetailPage = () => {
     };
 
     await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_all_users_for_game/' + id, requestOptions)
-        .then(async (element) => {
-          let json = await element.json();
-          setCompanies(json)
-        })
+      .then(async (element) => {
+        let json = await element.json();
+        setCompanies(json)
+      })
   }
 
   const toggleTurnover = () => {
@@ -205,9 +204,9 @@ const KlassenDetailPage = () => {
     setShowModal(false)
   }
   const OnClick = (text) => {
-    if (text == "LehrerPage") {
+    if (text === "LehrerPage") {
       window.location.href = "/dashboard"
-    } else if (text == "Logout") {
+    } else if (text === "Logout") {
       window.location.href = "/logout"
     }
 
@@ -252,8 +251,10 @@ const KlassenDetailPage = () => {
                 {companies.map(({ name, id, is_active }) => {
                   if (is_active) {
                     return (
-                      <li className='p-3 shadow-lg rounded-3xl m-auto my-4 flex justify-around bg-white w-[90%]' onClick={() => changeCompanie(name, id)}><a>{name}</a></li>
+                      <li className='p-3 shadow-lg rounded-3xl m-auto my-4 flex justify-around bg-white w-[90%]' onClick={() => changeCompanie(name, id)}><p>{name}</p></li>
                     )
+                  } else {
+                    return (<></>)
                   }
                 }
                 )}

@@ -5,6 +5,9 @@ import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
 import Lager from './Container/Lager';
 import Personal from './Container/Personal';
+import Marketing from './Container/Marketing'
+import Planung from './Container/Planung'
+import VerkaufSoll from './Container/VerkaufSoll'
 
 const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingRef, PersonalRef, AbsatzRef }) => {
 
@@ -217,7 +220,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setEntnahmeAusDemLager(data.current_cycle.include_from_stock)
         setMarktSoll(data.current_cycle.sales_planned)
         setMarktSollPreis(data.current_cycle.sales_bid)
-        console.log(data.current_stock.real_sales)
         setMarktIst(data.current_stock.real_sales)
         setAussetschreibungSoll(data.scenario.tender_offer_count)
         setAusschreibungIst(0)
@@ -360,14 +362,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         return data
     }
 
-  
-
-
     const onBuyM2 = async () => {
 
         BuymaschineModal()
     }
-
 
     const onBuyM3 = async () => {
         BuymaschineModal()
@@ -824,107 +822,16 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 </div>
                 }
 
+                <Marketing MarketingRef={MarketingRef} setWerbung={setWerbung} Werbung={Werbung} setForschungUndEntwickelung={setForschungUndEntwickelung} 
+                ForschungUndEntwickelung={ForschungUndEntwickelung} />
 
-                <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start " ref={MarketingRef}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Marketing</th>
-                            </tr>
-                            <tr>
-                                <td>Werbung</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setWerbung(e.target.value)} value={Werbung}></input> €</td>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Forschung und Entwickelung</th>
-                            </tr>
-                            <tr>
-                                <td>Verbesserung der Maschinen</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input> €</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <img src="/img/undraw_mobile_marketing.svg" className='h-96 w-64 xl:w-96 m-4'></img>
-                </div>
-                <div className="p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Planung Umsatzerlöse</th>
-                            </tr>
-                            <tr>
-                                <td>Geplante Produktion</td>
-                                <td>{Gesamtproduktion} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Maximal Entnahme aus Lager</td>
-                                <td>{data.current_stock.finished_sneaker_count} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Entnahme aus dem Lager</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setEntnahmeAusDemLager(e.target.value)} value={EntnahmeAusDemLager}></input></td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtproduktion</td>
-                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager))} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Geplanteproduktion möglich</td>
-                                <td>{EntnahmeAusDemLager > MaximaleEntnahmeAusLager / 1 ? "Nein" : "Ja"}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className={Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "p-4 border-2 border-red-300 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start":"p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start"}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'   >Verkauf (Soll)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Geplante Stückzahl</td>
-                                <td>Preis je Einheit (Angebot)</td>
-                                <td>Geplanter Umsatz</td>
-                            </tr>
-                            <tr>
-                                <td>Markt</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSoll(e.target.value)} value={MarktSoll}></input> Stk.</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSollPreis(e.target.value)} value={MarktSollPreis}></input> €</td>
-                                <td>{formatter.format(MarktSoll * MarktSollPreis)}</td>
-                            </tr>
-                            <tr>
-                           
-                                <td>Ausschreibung</td>
-                              
-                                {data.scenario.tender_offer_count == 0 ? 
-                                <>
-                                    <td><input className="border-2 border-gray-300 rounded-lg text-gray-300" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll} disabled></input> Stk.</td>
-                                    <td><input className="border-2 border-gray-300 rounded-lg text-gray-300" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis} disabled></input> €</td>
-                                </>
-                                :
-                                <>
-                                    <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input> Stk.</td>
-                                    <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis}></input> €</td>
-                                </>
-                                }
-                                <td>{formatter.format(AusschreibungSoll * AusschreibungSollPreis)}</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtverkauf möglich</td>
-                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "Nein" : "Ja"}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <Planung AbsatzRef={AbsatzRef} Gesamtproduktion={Gesamtproduktion} setEntnahmeAusDemLager={setEntnahmeAusDemLager} EntnahmeAusDemLager={EntnahmeAusDemLager}
+                MaximaleEntnahmeAusLager={MaximaleEntnahmeAusLager} stock={data.current_stock} />
+
+                <VerkaufSoll Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} AusschreibungSoll={AusschreibungSoll} 
+                formatter={formatter} AusschreibungSollPreis={AusschreibungSollPreis} MarktSollPreis={MarktSollPreis} setAussetschreibungSoll={setAussetschreibungSoll}
+                setAussetschreibungSollPreis={setAussetschreibungSollPreis} setMarktSoll={setMarktSoll} scenario={data.scenario} setMarktSollPreis={setMarktSollPreis} />
+
                 <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
                     <table>
                         <tbody>

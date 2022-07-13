@@ -10,7 +10,7 @@ const SideNavBar = ({OnClick, state}) => {
     var [isLehe, setIsLehe] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false)
 
-    useEffect(async () => {
+    useEffect(() => {
         if (Cookies.get("session")) {
             setToken(Cookies.get("session"))
             var myHeaders = new Headers();
@@ -22,7 +22,7 @@ const SideNavBar = ({OnClick, state}) => {
                 headers: myHeaders,
             };
             try {
-                await fetch(process.env.REACT_APP_MY_API_URL + '/user/my_auth', requestOptions)
+                fetch(process.env.REACT_APP_MY_API_URL + '/user/my_auth', requestOptions)
                     .then(async (element) => {
                         if (element.status === 401) {
                             window.location.href = "/logout"
@@ -50,11 +50,11 @@ const SideNavBar = ({OnClick, state}) => {
             }
 
         }
-    })
+    }, [])
 
     return <div className=' h-screen overflow-y-auto overflow-x-hidden min-w-[300px] '>
         <div className='flex py-4 mx-auto justify-center '>
-            <img className='max-w-[20px] max-h-[20px]' src="https://img.icons8.com/ios/50/000000/sneakers.png"/>
+            <img className='max-w-[20px] max-h-[20px]' alt='Logo' src="https://img.icons8.com/ios/50/000000/sneakers.png"/>
             <h1 className='text-black ml-2 font-bold '>MySneaker</h1>
         </div>
         {isAdmin ? <>

@@ -5,7 +5,7 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
 
     return (
         <div className="p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 flex justify-around bg-white  snap-start">
-            <img src="/img/undraw_heavy_box.svg" className='h-96 w-0 xl:w-96 m-4'></img>
+            <img src="/img/undraw_heavy_box.svg" className='h-96 w-0 xl:w-96 m-4' alt=''></img>
             <table>
                 <tbody>
                     <tr>

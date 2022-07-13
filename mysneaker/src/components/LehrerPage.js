@@ -9,6 +9,30 @@ const LehrerPage = () => {
   const [companiesVerify, setCompaniesVerify] = useState([])
   const [createGameScenarioOrder, setCreateGameScenarioOrder] = useState("")
 
+  const getGames = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/teacher/my_games', requestOptions)
+        .then(async (element) => {
+          if (element.status === 401) {
+            window.location.href = "/"
+          }
+          let elementArray = await element.json()
+          await setData(elementArray)
+
+        }).then(() => {
+          getCompaniesVerify()
+        })
+  }
+
   useEffect(() => {
 
     getGames();
@@ -67,11 +91,13 @@ const LehrerPage = () => {
         body: raw
       };
 
-      const d1 = fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/create', requestOptions)
+      fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/create', requestOptions)
         .then(async (element) => {
           switch (element.status) {
             case 401:
               window.location.href = "/"
+              break;
+            default:
               break;
           }
           getGames()
@@ -114,32 +140,6 @@ const LehrerPage = () => {
     fetch(process.env.REACT_APP_MY_API_URL + '/user/toggle_active/' + id, requestOptions).then(() => getCompaniesVerify())
   }
 
-  const getGames = () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-
-    const d1 = fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/teacher/my_games', requestOptions)
-      .then(async (element) => {
-        if (element.status == 401) {
-          window.location.href = "/"
-        }
-        let klasses = [];
-        let elementArray = await element.json()
-
-
-        await setData(elementArray)
-
-      }).then(() => {
-        getCompaniesVerify()
-      })
-  }
 
   const onClickRegister = () => {
     setShowModal(true)

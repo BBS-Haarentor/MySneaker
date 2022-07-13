@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from 'react-router-dom';
-import Cookies from "js-cookie";
 import SideNavBar from "./SideNavBar";
 
 const RegisterPage = () => {
@@ -44,7 +43,7 @@ const RegisterPage = () => {
 
     const putData = async (requestOptions) => {
         document.getElementById('submit').disabled = true;
-        const res = await fetch(process.env.REACT_APP_MY_API_URL + "/user/create/student", requestOptions).then(async (element) => {
+        await fetch(process.env.REACT_APP_MY_API_URL + "/user/create/student", requestOptions).then(async (element) => {
             if (element.status === 201) {
                 setAlert(<>
                     <div className="bg-green-100 border border-green-600 text-green-600 px-4 mx-11 py-3 rounded relative" role="alert">
@@ -69,7 +68,7 @@ const RegisterPage = () => {
     }
 
     const OnClick = (text) => {
-        if (text == "Login") {
+        if (text === "Login") {
             window.location.href = "/dashboard"
         }
     }

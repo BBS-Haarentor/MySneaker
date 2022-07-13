@@ -37,12 +37,12 @@ const EditScenarioModal = ({setModal, char, myHeaders}) => {
         "production_cost_per_sneaker3": 40
     });
 
-    useEffect(async () => {
+    useEffect(() => {
         const requestOptions = {
             method: 'GET',
             headers: myHeaders,
         };
-        await fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/scenario/get_by_char/" + char, requestOptions).then((element) => {
+        fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/scenario/get_by_char/" + char, requestOptions).then((element) => {
             if (element.status === 200) {
                 element.json().then((element1) => {
                     setScenario(element1)

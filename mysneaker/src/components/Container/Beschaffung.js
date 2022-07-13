@@ -32,7 +32,7 @@ const Beschaffung = ({ data, LagerBeschaffungRef, setSneakerEinkaufMenge, setFar
                     </tr>
                 </tbody>
             </table>
-            <img src="/img/undraw_empty_cart.svg" className='h-96 w-0 xl:w-96 m-4'></img>
+            <img src="/img/undraw_empty_cart.svg" alt='empty' className='h-96 w-0 xl:w-96 m-4'></img>
         </div>
     )
 }

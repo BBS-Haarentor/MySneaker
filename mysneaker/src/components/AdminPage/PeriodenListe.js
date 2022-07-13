@@ -48,12 +48,12 @@ const PeriodenListe = () => {
     myHeaders.append('Access-Control-Allow-Origin', '*')
     myHeaders.append("accept", "application/json")
 
-    useEffect(async () => {
+    useEffect(() => {
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
         };
-        await fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/scenario/get_all_scenarios", requestOptions).then((element) => {
+        fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/scenario/get_all_scenarios", requestOptions).then((element) => {
             if (element.status === 200) {
                 element.json().then((element1) => {
                     setScenarios(element1)

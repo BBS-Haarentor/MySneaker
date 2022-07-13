@@ -85,7 +85,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
 
                 </tbody>
             </table>
-            <img src="/img/personal.svg" className='h-96 w-64 xl:w-96 m-auto'></img>
+            <img src="/img/personal.svg" alt='' className='h-96 w-64 xl:w-96 m-auto'></img>
 
         </div>
     )
