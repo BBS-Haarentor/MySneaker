@@ -8,6 +8,9 @@ import Personal from './Container/Personal';
 import Marketing from './Container/Marketing'
 import Planung from './Container/Planung'
 import VerkaufSoll from './Container/VerkaufSoll'
+import VerkaufIst from './Container/VerkaufIst'
+import Statistik from  './Container/Statistik'
+import Finanzen from './Container/Finanzen';
 
 const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingRef, PersonalRef, AbsatzRef }) => {
 
@@ -832,226 +835,19 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 formatter={formatter} AusschreibungSollPreis={AusschreibungSollPreis} MarktSollPreis={MarktSollPreis} setAussetschreibungSoll={setAussetschreibungSoll}
                 setAussetschreibungSollPreis={setAussetschreibungSollPreis} setMarktSoll={setMarktSoll} scenario={data.scenario} setMarktSollPreis={setMarktSollPreis} />
 
-                <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Verkauf (Ist)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Verkaufte Stück</td>
-                                <td>Umsatz</td>
-                            </tr>
-                            <tr>
-                                <td>Markt</td>
-                                <td>{MarktIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Ausschreibung</td>
-                                <td>{AusschreibungIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk. </td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
-                </div>
-                <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Statistik  (Produktion Plan)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>pro Stück</td>
-                                <td>Gesamt</td>
-                            </tr>
-                            <tr>
-                                <td>Umsatz</td>
-                                <td>{formatter.format(MarktSollPreis)}</td>
-                                <td>{formatter.format((MarktSoll*MarktSollPreis))}</td>
-                            </tr>
-                            <tr>
-                                <td>Werkstoffkosten</td>
-                                <td>{formatter.format((SneakerKosten+FarbenKosten) /Gesamtproduktion)}</td>
-                                <td>{formatter.format((SneakerKosten+FarbenKosten))}</td>
-                            </tr>
-                            <tr>
-                                <td>Fertigungskosten</td>
-                                <td>{formatter.format(FertigungskostenProStückFE)}</td>
-                                <td>{formatter.format(FertigungskostenProStückFE * Gesamtproduktion)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkosten</td>
-                                <td>{formatter.format(AllMaschienenKosten / Gesamtproduktion)} Stk. </td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Personalkosten</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP))/Gesamtproduktion)} Stk. </td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtkosten</td>
-                                <td>{formatter.format(((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE)} Stk. </td>
-                                <td>{formatter.format((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion)}</td>
-                            </tr>
-                            <tr>
-                                <td>Gewinn</td>
-                                <td>{formatter.format( MarktSollPreis - (((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE))} Stk. </td>
-                                <td>{formatter.format((MarktSoll*MarktSollPreis) - ((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion))}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <img src="/img/undraw_finance.svg" className='h-96 w-64 xl:w-96 m-4'></img>
-                </div>
-                <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
-                    <img src="/img/projections.svg" className='h-[500px] w-0 xl:w-[500px] m-auto p-10'></img>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th ></th>
-                                <th className='text-[#4fd1c5]'>Finanzen</th>
+                <VerkaufIst AusschreibungIst={AusschreibungIst} MarktIst={MarktIst} UmsatzIst={UmsatzIst} formatter={formatter} />
 
-                            </tr>
-                            <tr>
-                                <td className='w-80'></td>
-                                <td className='text-[#4fd1c5] w-40' >PLAN</td>
-                                <td className='text-[#4fd1c5] w-40'>IST</td>
-                            </tr>
-                            <tr>
-                                <td>Kontostand</td>
-                                <td>{formatter.format(data.current_stock.account_balance)}</td>
-                                <td>{formatter.format(data.current_stock.account_balance)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maximale Darlehenshöhe</td>
-                                <td>50.000€</td>
-                                <td>50.000€</td>
-                            </tr>
-                            <tr>
-                                <td>Darlehensstand (Beginn Periode)</td>
-                                <td>{formatter.format(data.current_stock.credit_taken)}</td>
-                                <td>{formatter.format(data.current_stock.credit_taken)}</td>
-                            </tr>
-                            <tr>
-                                <td>Aufnahme Darlehen</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg w-[90%]" min="0" type="number" onChange={(e) => setAufnahmeDarlehen(e.target.value)} value={AufnahmeDarlehen}></input> €</td>
-                                <td>{formatter.format(AufnahmeDarlehen)}</td>
-                            </tr>
-                            <tr>
-                                <td>Darlehensstand (Ende Periode)</td>
-                                <td>{formatter.format(data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                                <td>{formatter.format(data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                            </tr>
-                            <tr>
-                                <td>Einkauf Sneaker</td>
-                                <td>{formatter.format(SneakerKosten)}</td>
-                                <td>{formatter.format(SneakerKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Einkauf Farben</td>
-                                <td>{formatter.format(FarbenKosten)}</td>
-                                <td>{formatter.format(FarbenKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Fertige Erz.</td>
-                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
-                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Sneaker</td>
-                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
-                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Farben</td>
-                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkosten</td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Produktionskosten</td>
-                                <td>{formatter.format(GesamtkostenProduktion - Maschinenkosten)}</td>
-                                <td>{formatter.format(GesamtkostenProduktion - Maschinenkosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkauf</td>
-                                <td>{formatter.format(newMaschienPrize)}</td>
-                                <td>{formatter.format(newMaschienPrize)}</td>
-                            </tr>
-                            <tr>
-                                <td>Kosten Neueinstellung</td>
-                                <td>{formatter.format(Neueinstellungen * 100)}</td>
-                                <td>{formatter.format(Neueinstellungen * 100)}</td>
-                            </tr>
-                            <tr>
-                                <td>Löhne/Gehälter</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
-                            </tr>
-                            <tr>
-                                <td>Werbekosten</td>
-                                <td>{formatter.format(Werbung)}</td>
-                                <td>{formatter.format(Werbung)}</td>
-                            </tr>
-                            <tr>
-                                <td>Rationalisierung</td>
-                                <td>{formatter.format(ForschungUndEntwickelung)}</td>
-                                <td>{formatter.format(ForschungUndEntwickelung)}</td>
-                            </tr>
-                            <tr>
-                                <td>Zinsen (Darlehen)</td>
-                                <td>{((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
-                                <td>{((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
-                            </tr>
-                            <tr>
-                                <td>Rückzahlung Darlehen</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
-                            </tr>
-                            <tr>
-                                <td>Umsatzerlöse</td>
-                                <td>{formatter.format(UmsatzSoll)}</td>
-                                <td>{formatter.format(Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst)))}</td>
-                            </tr>
-                            <tr>
-                                <td>Saldo</td>
-                                <td>{formatter.format(SaldoSoll)}</td>
-                                <td>{formatter.format(SaldoIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Höhe Kontokorrentkredit</td>
-                                <td>{formatter.format(HöheKontokorrentkreditSoll)}</td>
-                                <td>{formatter.format(HöheKontokorrentkreditIst) }</td>
-                            </tr>
-                            <tr>
-                                <td>Zinsen (Kontokorrentkredit)</td>
-                                <td>{formatter.format(HöheKontokorrentkreditSoll * 0.12)}</td>
-                                <td>{formatter.format(HöheKontokorrentkreditIst * 0.12)}</td>
-                            </tr>
-                            <tr>
-                                <td>Kontostand</td>
-                                <td>{formatter.format(SaldoSoll + (HöheKontokorrentkreditSoll * 0.12))}</td>
-                                <td>{formatter.format(SaldoIst + (HöheKontokorrentkreditIst * 0.12)) }</td>
-                            </tr>
+                <Statistik AllMaschienenKosten={AllMaschienenKosten} FarbenKosten={FarbenKosten} FertigungskostenProStückFE={FertigungskostenProStückFE} Gesamtproduktion={GeplanteProduktion}
+                MarktSoll={MarktSoll} MarktSollPreis={MarktSollPreis} Mitarbeiter={Mitarbeiter} PersonalnebenkostenInP={PersonalnebenkostenInP} SneakerKosten={SneakerKosten} formatter={formatter} />
 
-                        </tbody>
-                    </table>
-                </div>
+                <Finanzen AllMaschienenKosten={AllMaschienenKosten} AufnahmeDarlehen={AufnahmeDarlehen} AusschreibungIst={AusschreibungIst} AusschreibungSoll={AusschreibungSoll}
+                FarbenEinkaufMenge={FarbenEinkaufMenge} FarbenKosten={FarbenKosten} FinanzenRef={FinanzenRef} ForschungUndEntwickelung={ForschungUndEntwickelung} 
+                GesamtkostenProduktion={GesamtkostenProduktion} Gesamtproduktion={Gesamtproduktion} HöheKontokorrentkreditIst={HöheKontokorrentkreditIst} 
+                HöheKontokorrentkreditSoll={HöheKontokorrentkreditSoll} MarktIst={MarktIst} MarktSoll={MarktSoll} Maschinenkosten={Maschinenkosten} Mitarbeiter={Mitarbeiter}
+                Neueinstellungen={Neueinstellungen} PersonalnebenkostenInP={PersonalnebenkostenInP} RueckzahlungDarlehen={RueckzahlungDarlehen} SaldoIst={SaldoIst}
+                SaldoSoll={SaldoSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} SneakerKosten={SneakerKosten} UmsatzSoll={UmsatzSoll} Werbung={Werbung} formatter={formatter}
+                newMaschienPrize={newMaschienPrize} scenario={data.scenario} setAufnahmeDarlehen={setAufnahmeDarlehen} setRueckzahlungDarlehen={setRueckzahlungDarlehen}
+                stock={data.current_stock} />
                 <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={onSubmit}>Abgeben/Speichern</button>
             </div>
         </>
