@@ -750,7 +750,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     </table>
                 </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                    <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                    <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div> : data.scenario.machine_purchase_allowed ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
@@ -850,7 +850,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                  buy_new_machine != 0? 
                     <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                         <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                        <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                        <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div> 
                 : data.stock.machine_2_space == 0 ? 
                 <></> 
@@ -1010,23 +1010,43 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                                 <td>Gesamt</td>
                             </tr>
                             <tr>
+                                <td>Umsatz</td>
+                                <td>{formatter.format(MarktSollPreis)}</td>
+                                <td>{formatter.format((MarktSoll*MarktSollPreis))}</td>
+                            </tr>
+                            <tr>
                                 <td>Werkstoffkosten</td>
-                                <td>{formatter.format((SneakerKosten+FarbenKosten) /Gesamtproduktion)} Stk.</td>
+                                <td>{formatter.format((SneakerKosten+FarbenKosten) /Gesamtproduktion)}</td>
                                 <td>{formatter.format((SneakerKosten+FarbenKosten))}</td>
                             </tr>
                             <tr>
-                                <td>Ausschreibung</td>
-                                <td>{AusschreibungIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
+                                <td>Fertigungskosten</td>
+                                <td>{formatter.format(FertigungskostenProStückFE)}</td>
+                                <td>{formatter.format(FertigungskostenProStückFE * Gesamtproduktion)}</td>
                             </tr>
                             <tr>
-                                <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk. </td>
-                                <td>{formatter.format(UmsatzIst)}</td>
+                                <td>Maschinenkosten</td>
+                                <td>{formatter.format(AllMaschienenKosten / Gesamtproduktion)} Stk. </td>
+                                <td>{formatter.format(AllMaschienenKosten)}</td>
+                            </tr>
+                            <tr>
+                                <td>Personalkosten</td>
+                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP))/Gesamtproduktion)} Stk. </td>
+                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
+                            </tr>
+                            <tr>
+                                <td>Gesamtkosten</td>
+                                <td>{formatter.format(((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE)} Stk. </td>
+                                <td>{formatter.format((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion)}</td>
+                            </tr>
+                            <tr>
+                                <td>Gewinn</td>
+                                <td>{formatter.format( MarktSollPreis - (((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE))} Stk. </td>
+                                <td>{formatter.format((MarktSoll*MarktSollPreis) - ((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion))}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
+                    <img src="/img/undraw_finance.svg" className='h-96 w-64 xl:w-96 m-4'></img>
                 </div>
                 <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " >
                     <img src="/img/undraw_finance.svg" className='h-[500px] w-0 xl:w-[500px] m-auto'></img>
