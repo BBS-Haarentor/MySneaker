@@ -521,7 +521,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             {modalConfirm}
             <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
 
-                <Beschaffung LagerBeschaffungRef={LagerBeschaffungRef} data={data} setSneakerEinkaufMenge={setSneakerEinkaufMenge} 
+                <Beschaffung LagerBeschaffungRef={LagerBeschaffungRef} scenario={data.scenario} setSneakerEinkaufMenge={setSneakerEinkaufMenge} 
                 setFarbenEinkaufMenge={setFarbenEinkaufMenge} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} 
                 formatter={formatter} FarbenKosten={FarbenKosten} SneakerKosten={SneakerKosten} />
 

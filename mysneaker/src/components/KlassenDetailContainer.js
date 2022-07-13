@@ -1,10 +1,16 @@
 import React from 'react'
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
 import Beschaffung from './Container/Beschaffung'
 import Lager from './Container/Lager';
 import Personal from './Container/Personal';
+import Marketing from './Container/Marketing'
+import Planung from './Container/Planung'
+import VerkaufSoll from './Container/VerkaufSoll'
+import VerkaufIst from './Container/VerkaufIst'
+import Statistik from  './Container/Statistik'
+import Finanzen from './Container/Finanzen';
 
 const KlassenDetailContainer = ({ userId, cycle_index }) => {
 
@@ -12,91 +18,91 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
 
     const [data, setData] = useState(
         {
-                    "stock": {
-                        "company_id":5,
-                        "id":1,
-                        "current_cycle_index":0,
-                        "paint_count":0,
-                        "employees_count":8,
-                        "account_balance":5000.0,
-                        "real_sales":0,
-                        "research_production_modifier":0.0,
-                        "machine_2_space":0,
-                        "creation_date":"2022-06-28T14:15:24.174701",
-                        "game_id":1,
-                        "sneaker_count":0,
-                        "finished_sneaker_count":0,
-                        "research_budget":0.0,
-                        "credit_taken":0.0,
-                        "income_from_sales":0.0,
-                        "machine_1_space":1,
-                        "machine_3_space":0
-                    },
-                    "scenario": {
-                        "employee_count_modifier_temporary":0,
-                        "factor_ad_take":0.1,
-                        "machine_production_capacity3":1000,
-                        "production_cost_per_sneaker3":40.0,
-                        "char":"A",
-                        "employee_count_modifier_permanent":0,
-                        "tender_offer_count":0,
-                        "description":"LOREM IPSUM",
-                        "factor_interest_rate":0.04,
-                        "machine_purchase_allowed":false,
-                        "machine_employee_max":10,
-                        "sneaker_price":60.0,
-                        "employee_salary":400.0,
-                        "machine_purchase_cost1":12000.0,
-                        "machine_maintainance_cost1":4000.0,
-                        "paint_price":10.0,
-                        "employee_signup_bonus":100.0,
-                        "machine_purchase_cost2":25000.0,
-                        "machine_maintainance_cost2":6000.0,
-                        "storage_fee_sneaker":4.0,
-                        "employee_production_capacity":10,
-                        "machine_purchase_cost3":45000.0,
-                        "machine_maintainance_cost3":8000.0,
-                        "storage_fee_paint":1.0,
-                        "employee_cost_modfier":0.2,
-                        "machine_production_capacity1":200,
-                        "production_cost_per_sneaker1":60.0,
-                        "id":1,
-                        "storage_fee_finished_sneaker":8.0,
-                        "sneaker_ask":400,
-                        "machine_production_capacity2":500,
-                        "production_cost_per_sneaker2":50.0
-                    },
-                    "cycle": {
-                        "id": 1,
-                        "buy_paint": 320,
-                        "sales_planned": 160,
-                        "new_employees": 0,
-                        "planned_production_1": 160,
-                        "sales_bid": 0,
-                        "buy_new_machine": 0,
-                        "planned_production_2": 0,
-                        "tender_offer_count": 0,
-                        "buy_new_machine_3": false,
-                        "creation_date": null,
-                        "planned_production_3": 0,
-                        "tender_offer_price": 0,
-                        "game_id": 1,
-                        "planned_workers_1": 8,
-                        "research_invest": 2500,
-                        "entry_date": "2022-06-05T20:27:11.340557",
-                        "current_cycle_index": 0,
-                        "planned_workers_2": 0,
-                        "ad_invest": 0,
-                        "company_id": 2,
-                        "planned_workers_3": 0,
-                        "take_credit": 0,
-                        "buy_sneaker": 160,
-                        "include_from_stock": 0,
-                        "payback_credit": 0
-                    }
-                }
-            )
-    
+            "stock": {
+                "company_id": 5,
+                "id": 1,
+                "current_cycle_index": 0,
+                "paint_count": 0,
+                "employees_count": 8,
+                "account_balance": 5000.0,
+                "real_sales": 0,
+                "research_production_modifier": 0.0,
+                "machine_2_space": 0,
+                "creation_date": "2022-06-28T14:15:24.174701",
+                "game_id": 1,
+                "sneaker_count": 0,
+                "finished_sneaker_count": 0,
+                "research_budget": 0.0,
+                "credit_taken": 0.0,
+                "income_from_sales": 0.0,
+                "machine_1_space": 1,
+                "machine_3_space": 0
+            },
+            "scenario": {
+                "employee_count_modifier_temporary": 0,
+                "factor_ad_take": 0.1,
+                "machine_production_capacity3": 1000,
+                "production_cost_per_sneaker3": 40.0,
+                "char": "A",
+                "employee_count_modifier_permanent": 0,
+                "tender_offer_count": 0,
+                "description": "LOREM IPSUM",
+                "factor_interest_rate": 0.04,
+                "machine_purchase_allowed": false,
+                "machine_employee_max": 10,
+                "sneaker_price": 60.0,
+                "employee_salary": 400.0,
+                "machine_purchase_cost1": 12000.0,
+                "machine_maintainance_cost1": 4000.0,
+                "paint_price": 10.0,
+                "employee_signup_bonus": 100.0,
+                "machine_purchase_cost2": 25000.0,
+                "machine_maintainance_cost2": 6000.0,
+                "storage_fee_sneaker": 4.0,
+                "employee_production_capacity": 10,
+                "machine_purchase_cost3": 45000.0,
+                "machine_maintainance_cost3": 8000.0,
+                "storage_fee_paint": 1.0,
+                "employee_cost_modfier": 0.2,
+                "machine_production_capacity1": 200,
+                "production_cost_per_sneaker1": 60.0,
+                "id": 1,
+                "storage_fee_finished_sneaker": 8.0,
+                "sneaker_ask": 400,
+                "machine_production_capacity2": 500,
+                "production_cost_per_sneaker2": 50.0
+            },
+            "cycle": {
+                "id": 1,
+                "buy_paint": 320,
+                "sales_planned": 160,
+                "new_employees": 0,
+                "planned_production_1": 160,
+                "sales_bid": 0,
+                "buy_new_machine": 0,
+                "planned_production_2": 0,
+                "tender_offer_count": 0,
+                "buy_new_machine_3": false,
+                "creation_date": null,
+                "planned_production_3": 0,
+                "tender_offer_price": 0,
+                "game_id": 1,
+                "planned_workers_1": 8,
+                "research_invest": 2500,
+                "entry_date": "2022-06-05T20:27:11.340557",
+                "current_cycle_index": 0,
+                "planned_workers_2": 0,
+                "ad_invest": 0,
+                "company_id": 2,
+                "planned_workers_3": 0,
+                "take_credit": 0,
+                "buy_sneaker": 160,
+                "include_from_stock": 0,
+                "payback_credit": 0
+            }
+        }
+    )
+
     const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState(data.cycle.buy_sneaker)
     const [FarbenEinkaufMenge, setFarbenEinkaufMenge] = useState(data.cycle.buy_paint)
     const SneakerKosten = data.scenario.sneaker_price * SneakerEinkaufMenge
@@ -138,10 +144,10 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
     var GesamtkostenProduktion = Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion;
-    var UmsatzIst =  data.current_stock.income_from_sales;
+    var UmsatzIst = data.stock.income_from_sales;
     var UmsatzSoll = MarktSoll * MarktSollPreis + AusschreibungSoll * AusschreibungSollPreis;
-    
- 
+
+
 
     var AllMaschienenKosten = 0
     var machine_2_name = ""
@@ -155,9 +161,9 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
 
     if (data.stock.machine_1_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
-    }else if(data.stock.machine_1_space == 2){
+    } else if (data.stock.machine_1_space == 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
-    }else if(data.stock.machine_1_space == 3){
+    } else if (data.stock.machine_1_space == 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
     }
     if (data.stock.machine_2_space == 1) {
@@ -166,13 +172,13 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
         machine_2_kapazität = data.scenario.machine_production_capacity1
         machine_2_costpp = data.scenario.machine_maintainance_cost1
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    }else if(data.stock.machine_2_space == 2){
+    } else if (data.stock.machine_2_space == 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
         machine_2_name = "Sneakerdream 500"
         machine_2_kapazität = data.scenario.machine_production_capacity2
         machine_2_costpp = data.scenario.machine_maintainance_cost2
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    }else if(data.stock.machine_2_space == 3){
+    } else if (data.stock.machine_2_space == 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
         machine_2_name = "Sneakergigant 1000"
         machine_2_kapazität = data.scenario.machine_production_capacity3
@@ -185,20 +191,20 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
         machine_3_kapazität = data.scenario.machine_production_capacity1
         machine_3_costpp = data.scenario.machine_maintainance_cost1
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    }else if(data.stock.machine_3_space == 2){
+    } else if (data.stock.machine_3_space == 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
         machine_3_name = "Sneakerdream 500"
         machine_3_kapazität = data.scenario.machine_production_capacity2
         machine_3_costpp = data.scenario.machine_maintainance_cost2
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    }else if(data.stock.machine_3_space == 3){
+    } else if (data.stock.machine_3_space == 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
         machine_3_name = "Sneakergigant 1000"
         machine_3_kapazität = data.scenario.machine_production_capacity3
         machine_3_costpp = data.scenario.machine_maintainance_cost3
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
     }
-   
+
 
     //const [modal, setModal] = useState()
 
@@ -279,7 +285,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                                 "buy_sneaker": 0,
                                 "include_from_stock": 0,
                                 "payback_credit": 0,
-                                "let_go_employees":0
+                                "let_go_employees": 0
                             }
                         }
                         setData(dataFromServer)
@@ -321,26 +327,26 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             "buy_sneaker": parseInt(SneakerEinkaufMenge),
             "buy_paint": parseInt(FarbenEinkaufMenge),
             "planned_production_1": parseFloat(GeplanteProduktion),
-            "planned_production_2":  parseFloat(GeplanteProduktion2),
-            "planned_production_3":  parseFloat(GeplanteProduktion3),
-            "planned_workers_1":  parseFloat(ZugeteilteMitarbeiter),
-            "planned_workers_2":  parseFloat(ZugeteilteMitarbeiter2),
-            "planned_workers_3":  parseInt(ZugeteilteMitarbeiter3),
+            "planned_production_2": parseFloat(GeplanteProduktion2),
+            "planned_production_3": parseFloat(GeplanteProduktion3),
+            "planned_workers_1": parseFloat(ZugeteilteMitarbeiter),
+            "planned_workers_2": parseFloat(ZugeteilteMitarbeiter2),
+            "planned_workers_3": parseInt(ZugeteilteMitarbeiter3),
             "include_from_stock": EntnahmeAusDemLager,
-            "sales_planned":  parseFloat(MarktSoll),
-            "sales_bid":  parseFloat(MarktSollPreis),
-            "tender_offer_count":  parseFloat(AusschreibungSoll),
-            "tender_offer_price":  parseFloat(AusschreibungSollPreis),
-            "research_invest":  parseFloat(ForschungUndEntwickelung),
-            "ad_invest":  parseFloat(Werbung),
-            "take_credit": parseFloat( AufnahmeDarlehen),
-            "payback_credit":  parseFloat(RueckzahlungDarlehen),
-            "new_employees":parseInt(Neueinstellungen),
-            "let_go_employees":parseInt(Kündigungen),
-            "buy_new_machine": buy_new_machine, 
-            "machine_1_space":1,
-            "machine_2_space":machine_2_space,
-            "machine_3_space":machine_3_space,
+            "sales_planned": parseFloat(MarktSoll),
+            "sales_bid": parseFloat(MarktSollPreis),
+            "tender_offer_count": parseFloat(AusschreibungSoll),
+            "tender_offer_price": parseFloat(AusschreibungSollPreis),
+            "research_invest": parseFloat(ForschungUndEntwickelung),
+            "ad_invest": parseFloat(Werbung),
+            "take_credit": parseFloat(AufnahmeDarlehen),
+            "payback_credit": parseFloat(RueckzahlungDarlehen),
+            "new_employees": parseInt(Neueinstellungen),
+            "let_go_employees": parseInt(Kündigungen),
+            "buy_new_machine": buy_new_machine,
+            "machine_1_space": 1,
+            "machine_2_space": machine_2_space,
+            "machine_3_space": machine_3_space,
         });
 
         var requestOptions = {
@@ -379,7 +385,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
         }
     }
 
-   
+
 
     const onBuyM2 = async () => {
 
@@ -394,28 +400,28 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     const [availableMachine, setAvailableMachine] = useState(
         [
             {
-                id:1,
+                id: 1,
                 name: "Sneakerbox 200",
                 price: "12000",
-                capacity:200,
-                price_per_Periode:4000,
-                price_per_unit:60
+                capacity: 200,
+                price_per_Periode: 4000,
+                price_per_unit: 60
             },
             {
-                id:2,
+                id: 2,
                 name: "Sneakerdream 500",
                 price: "25000",
-                capacity:500,
-                price_per_Periode:6000,
-                price_per_unit:50
+                capacity: 500,
+                price_per_Periode: 6000,
+                price_per_unit: 50
             },
             {
-                id:3,
+                id: 3,
                 name: "Sneakergigant 1000",
                 price: "45000",
-                capacity:1000,
-                price_per_Periode:8000,
-                price_per_unit:40
+                capacity: 1000,
+                price_per_Periode: 8000,
+                price_per_unit: 40
             }
         ])
 
@@ -430,10 +436,10 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     }, [])*/
 
 
-    var SaldoSoll = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
-    var SaldoIst = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung)  + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    var SaldoSoll = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) + parseFloat(ForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    var SaldoIst = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) + parseFloat(ForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
 
-   
+
     var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
     var HöheKontokorrentkreditIst = SaldoIst < 0 ? SaldoIst : 0
 
@@ -450,9 +456,9 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                         className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
                         <div className='p-4 list-none xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%]  mx-12 overflow-hidden'>
-                            {availableMachine.map(({ name, price, id, capacity, price_per_Periode,  price_per_unit}) => {
+                            {availableMachine.map(({ name, price, id, capacity, price_per_Periode, price_per_unit }) => {
                                 return (
-                                    <li className='p-3 mx-3 shadow-lg rounded-3xl m-auto my-4 justify-around bg-white w-[90%]' onClick={() => Confirm(name, price , id)}>
+                                    <li className='p-3 mx-3 shadow-lg rounded-3xl m-auto my-4 justify-around bg-white w-[90%]' onClick={() => Confirm(name, price, id)}>
                                         <h1 className='block mb-2'>{name}</h1>
                                         <hr className='w-[50%] text-center mx-auto border-none h-[2px] rounded-xl bg-[#4fd1c5] opacity-50' />
                                         <br />
@@ -477,7 +483,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
         )
     }
 
-    const Confirm = (name, price,id) => {
+    const Confirm = (name, price, id) => {
         setModalConfirm(<></>)
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -502,7 +508,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     'Du hast den kauf Erfolgreich Abgeschlossen!',
                     'success'
                 ).then(() => {
-                    doMagicToBuyMachine(name, price ,id)
+                    doMagicToBuyMachine(name, price, id)
                     setModalBuyMaschine(<></>)
                 })
 
@@ -541,8 +547,8 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             </>
         )*/
     }
-    const doMagicToBuyMachine = (name, preis,id) => {
-       
+    const doMagicToBuyMachine = (name, preis, id) => {
+
         setBuy_new_machine(id)
         setNewMaschienPrize(preis)
         setModalConfirm(<></>)
@@ -558,25 +564,25 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     return (
         <>
 
-{modalBuyMaschine}
+            {modalBuyMaschine}
             {modalConfirm}
             <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
 
-                <Beschaffung LagerBeschaffung data={data} setSneakerEinkaufMenge={setSneakerEinkaufMenge} 
-                setFarbenEinkaufMenge={setFarbenEinkaufMenge} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} 
-                formatter={formatter} FarbenKosten={FarbenKosten} SneakerKosten={SneakerKosten} />
+                <Beschaffung  scenario={data.scenario} setSneakerEinkaufMenge={setSneakerEinkaufMenge}
+                    setFarbenEinkaufMenge={setFarbenEinkaufMenge} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge}
+                    formatter={formatter} FarbenKosten={FarbenKosten} SneakerKosten={SneakerKosten} />
 
                 <Lager data={data.stock} Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} formatter={formatter}
-                AusschreibungSoll={AusschreibungSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} MarktIst={MarktIst} 
-                AusschreibungIst={AusschreibungIst} />
-                
-                <Personal Personal Mitarbeiter={Mitarbeiter} ZugeteilteMitarbeiter={ZugeteilteMitarbeiter} setNeueinstellungen={setNeueinstellungen} 
-                Neueinstellungen={Neueinstellungen} setKündigungen={setKündigungen} Kündigungen={Kündigungen} ZugeteilteMitarbeiter2={ZugeteilteMitarbeiter2} 
-                ZugeteilteMitarbeiter3={ZugeteilteMitarbeiter3} formatter={formatter} PersonalnebenkostenInP={PersonalnebenkostenInP} setPersonalnebenkosten={setPersonalnebenkosten}
-                Personalnebenkosten={Personalnebenkosten} data={data} />
+                    AusschreibungSoll={AusschreibungSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} MarktIst={MarktIst}
+                    AusschreibungIst={AusschreibungIst} />
+
+                <Personal Mitarbeiter={Mitarbeiter} ZugeteilteMitarbeiter={ZugeteilteMitarbeiter} setNeueinstellungen={setNeueinstellungen}
+                    Neueinstellungen={Neueinstellungen} setKündigungen={setKündigungen} Kündigungen={Kündigungen} ZugeteilteMitarbeiter2={ZugeteilteMitarbeiter2}
+                    ZugeteilteMitarbeiter3={ZugeteilteMitarbeiter3} formatter={formatter} PersonalnebenkostenInP={PersonalnebenkostenInP} setPersonalnebenkosten={setPersonalnebenkosten}
+                    Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-{data.stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} >
+                {data.stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -664,7 +670,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
                 </div>}
 
-                {data.stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion2 /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} >
+                {data.stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -751,15 +757,15 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                 </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                     <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                </div> : data.scenario.machine_purchase_allowed ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                </div> : data.scenario.machine_purchase_allowed ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
-                    <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
+                    <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer Maschine nicht möglich</h1>
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion3 /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} >
+                {data.stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} >
                     <table>
                         <tbody>
                             <tr>
@@ -843,349 +849,52 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
 
                         </tbody>
                     </table>
-                </div> 
-                :data.stock.machine_2_space == 0 ? 
-                <></>
-                :
-                 buy_new_machine != 0? 
-                    <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
-                        <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                        <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                </div> 
-                : data.stock.machine_2_space == 0 ? 
-                <></> 
-                : data.scenario.machine_purchase_allowed ?  
-                <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
-                    <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
-                </div> 
-                : 
-                <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
-                    <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
-                    <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>
+                    : data.stock.machine_2_space == 0 ?
+                        <></>
+                        :
+                        buy_new_machine != 0 ?
+                            <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                                <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
+                                <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                            </div>
+                            : data.stock.machine_2_space == 0 ?
+                                <></>
+                                : data.scenario.machine_purchase_allowed ?
+                                    <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                                        <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
+                                        <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
+                                    </div>
+                                    :
+                                    <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                                        <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
+                                        <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
+                                    </div>
                 }
 
-                <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start ">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Marketing</th>
-                            </tr>
-                            <tr>
-                                <td>Werbung</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setWerbung(e.target.value)} value={Werbung}></input> €</td>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Forschung und Entwickelung</th>
-                            </tr>
-                            <tr>
-                                <td>Verbesserung der Maschinen</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input> €</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <img src="/img/undraw_mobile_marketing.svg" className='h-96 w-64 xl:w-96 m-4'></img>
-                </div>
-                <div className="p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" >
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Planung Umsatzerlöse</th>
-                            </tr>
-                            <tr>
-                                <td>Geplante Produktion</td>
-                                <td>{Gesamtproduktion} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Maximal Entnahme aus Lager</td>
-                                <td>{data.stock.finished_sneaker_count} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Entnahme aus dem Lager</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setEntnahmeAusDemLager(e.target.value)} value={EntnahmeAusDemLager}></input></td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtproduktion</td>
-                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager))} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Geplanteproduktion möglich</td>
-                                <td>{EntnahmeAusDemLager > MaximaleEntnahmeAusLager / 1 ? "Nein" : "Ja"}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className={Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "p-4 border-2 border-red-300 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start":"p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start"}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'   >Verkauf (Soll)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Geplante Stückzahl</td>
-                                <td>Preis je Einheit (Angebot)</td>
-                                <td>Geplanter Umsatz</td>
-                            </tr>
-                            <tr>
-                                <td>Markt</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSoll(e.target.value)} value={MarktSoll}></input> Stk.</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSollPreis(e.target.value)} value={MarktSollPreis}></input> €</td>
-                                <td>{formatter.format(MarktSoll * MarktSollPreis)}</td>
-                            </tr>
-                            <tr>
-                           
-                                <td>Ausschreibung</td>
-                              
-                                {data.scenario.tender_offer_count == 0 ? 
-                                <>
-                                    <td><input className="border-2 border-gray-300 rounded-lg text-gray-300" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll} disabled></input> Stk.</td>
-                                    <td><input className="border-2 border-gray-300 rounded-lg text-gray-300" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis} disabled></input> €</td>
-                                </>
-                                :
-                                <>
-                                    <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input> Stk.</td>
-                                    <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis}></input> €</td>
-                                </>
-                                }
-                                <td>{formatter.format(AusschreibungSoll * AusschreibungSollPreis)}</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtverkauf Möglich</td>
-                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "Nein" : "Ja"}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Verkauf (Ist)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Verkaufte Stück</td>
-                                <td>Umsatz</td>
-                            </tr>
-                            <tr>
-                                <td>Markt</td>
-                                <td>{MarktIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Ausschreibung</td>
-                                <td>{AusschreibungIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk. </td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
-                </div>
-                <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Statistik  (Produktion Plan)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>pro Stück</td>
-                                <td>Gesamt</td>
-                            </tr>
-                            <tr>
-                                <td>Umsatz</td>
-                                <td>{formatter.format(MarktSollPreis)}</td>
-                                <td>{formatter.format((MarktSoll*MarktSollPreis))}</td>
-                            </tr>
-                            <tr>
-                                <td>Werkstoffkosten</td>
-                                <td>{formatter.format((SneakerKosten+FarbenKosten) /Gesamtproduktion)}</td>
-                                <td>{formatter.format((SneakerKosten+FarbenKosten))}</td>
-                            </tr>
-                            <tr>
-                                <td>Fertigungskosten</td>
-                                <td>{formatter.format(FertigungskostenProStückFE)}</td>
-                                <td>{formatter.format(FertigungskostenProStückFE * Gesamtproduktion)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkosten</td>
-                                <td>{formatter.format(AllMaschienenKosten / Gesamtproduktion)} Stk. </td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Personalkosten</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP))/Gesamtproduktion)} Stk. </td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtkosten</td>
-                                <td>{formatter.format(((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE)} Stk. </td>
-                                <td>{formatter.format((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion)}</td>
-                            </tr>
-                            <tr>
-                                <td>Gewinn</td>
-                                <td>{formatter.format( MarktSollPreis - (((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE))} Stk. </td>
-                                <td>{formatter.format((MarktSoll*MarktSollPreis) - ((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion))}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <img src="/img/undraw_finance.svg" className='h-96 w-64 xl:w-96 m-4'></img>
-                </div>
-                <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " >
-                    <img src="/img/undraw_finance.svg" className='h-[500px] w-0 xl:w-[500px] m-auto'></img>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th ></th>
-                                <th className='text-[#4fd1c5]'>Finanzen</th>
+                <Marketing setWerbung={setWerbung} Werbung={Werbung} setForschungUndEntwickelung={setForschungUndEntwickelung}
+                    ForschungUndEntwickelung={ForschungUndEntwickelung} />
 
-                            </tr>
-                            <tr>
-                                <td className='w-80'></td>
-                                <td className='text-[#4fd1c5] w-40' >PLAN</td>
-                                <td className='text-[#4fd1c5] w-40'>IST</td>
-                            </tr>
-                            <tr>
-                                <td>Kontostand</td>
-                                <td>{formatter.format(data.stock.account_balance)}</td>
-                                <td>{formatter.format(data.stock.account_balance)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maximale Darlehenshöhe</td>
-                                <td>50.000€</td>
-                                <td>50.000€</td>
-                            </tr>
-                            <tr>
-                                <td>Darlehensstand (Beginn Periode)</td>
-                                <td>{formatter.format(data.stock.credit_taken)}</td>
-                                <td>{formatter.format(data.stock.credit_taken)}</td>
-                            </tr>
-                            <tr>
-                                <td>Aufnahme Darlehen</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAufnahmeDarlehen(e.target.value)} value={AufnahmeDarlehen}></input> €</td>
-                                <td>{formatter.format(AufnahmeDarlehen)}</td>
-                            </tr>
-                            <tr>
-                                <td>Darlehensstand (Ende Periode)</td>
-                                <td>{formatter.format(data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                                <td>{formatter.format(data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                            </tr>
-                            <tr>
-                                <td>Einkauf Sneaker</td>
-                                <td>{formatter.format(SneakerKosten)}</td>
-                                <td>{formatter.format(SneakerKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Einkauf Farben</td>
-                                <td>{formatter.format(FarbenKosten)}</td>
-                                <td>{formatter.format(FarbenKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Fertige Erz.</td>
-                                <td>{formatter.format((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
-                                <td>{formatter.format((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Sneaker</td>
-                                <td>{formatter.format((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
-                                <td>{formatter.format((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Farben</td>
-                                <td>{formatter.format(((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                                <td>{formatter.format(((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkosten</td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Produktionskosten</td>
-                                <td>{formatter.format(GesamtkostenProduktion - Maschinenkosten)}</td>
-                                <td>{formatter.format(GesamtkostenProduktion - Maschinenkosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkauf</td>
-                                <td>{formatter.format(newMaschienPrize)}</td>
-                                <td>{formatter.format(newMaschienPrize)}</td>
-                            </tr>
-                            <tr>
-                                <td>Kosten Neueinstellung</td>
-                                <td>{formatter.format(Neueinstellungen * 100)}</td>
-                                <td>{formatter.format(Neueinstellungen * 100)}</td>
-                            </tr>
-                            <tr>
-                                <td>Löhne/Gehälter</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
-                            </tr>
-                            <tr>
-                                <td>Werbekosten</td>
-                                <td>{formatter.format(Werbung)}</td>
-                                <td>{formatter.format(Werbung)}</td>
-                            </tr>
-                            <tr>
-                                <td>Rationalisierung</td>
-                                <td>{formatter.format(ForschungUndEntwickelung)}</td>
-                                <td>{formatter.format(ForschungUndEntwickelung)}</td>
-                            </tr>
-                            <tr>
-                                <td>Zinsen (Darlehen)</td>
-                                <td>{((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
-                                <td>{((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
-                            </tr>
-                            <tr>
-                                <td>Rückzahlung Darlehen</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
-                            </tr>
-                            <tr>
-                                <td>Umsatzerlöse</td>
-                                <td>{formatter.format(UmsatzSoll)}</td>
-                                <td>{formatter.format(Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst)))}</td>
-                            </tr>
-                            <tr>
-                                <td>Saldo</td>
-                                <td>{formatter.format(SaldoSoll)}</td>
-                                <td>{formatter.format(SaldoIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Höhe Kontokorrentkredit</td>
-                                <td>{formatter.format(HöheKontokorrentkreditSoll)}</td>
-                                <td>{formatter.format(HöheKontokorrentkreditIst) }</td>
-                            </tr>
-                            <tr>
-                                <td>Zinsen (Kontokorrentkredit)</td>
-                                <td>{formatter.format(HöheKontokorrentkreditSoll * 0.12)}</td>
-                                <td>{formatter.format(HöheKontokorrentkreditIst * 0.12)}</td>
-                            </tr>
-                            <tr>
-                                <td>Kontostand</td>
-                                <td>{formatter.format(SaldoSoll + (HöheKontokorrentkreditSoll * 0.12))}</td>
-                                <td>{formatter.format(SaldoIst + (HöheKontokorrentkreditIst * 0.12)) }</td>
-                            </tr>
+                <Planung Gesamtproduktion={Gesamtproduktion} setEntnahmeAusDemLager={setEntnahmeAusDemLager} EntnahmeAusDemLager={EntnahmeAusDemLager}
+                    MaximaleEntnahmeAusLager={MaximaleEntnahmeAusLager} stock={data.stock} />
 
-                        </tbody>
-                    </table>
-                </div>
+                <VerkaufSoll Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} AusschreibungSoll={AusschreibungSoll}
+                    formatter={formatter} AusschreibungSollPreis={AusschreibungSollPreis} MarktSollPreis={MarktSollPreis} setAussetschreibungSoll={setAussetschreibungSoll}
+                    setAussetschreibungSollPreis={setAussetschreibungSollPreis} setMarktSoll={setMarktSoll} scenario={data.scenario} setMarktSollPreis={setMarktSollPreis} />
+
+                <VerkaufIst AusschreibungIst={AusschreibungIst} MarktIst={MarktIst} UmsatzIst={UmsatzIst} formatter={formatter} />
+
+                <Statistik AllMaschienenKosten={AllMaschienenKosten} FarbenKosten={FarbenKosten} FertigungskostenProStückFE={FertigungskostenProStückFE} Gesamtproduktion={GeplanteProduktion}
+                    MarktSoll={MarktSoll} MarktSollPreis={MarktSollPreis} Mitarbeiter={Mitarbeiter} PersonalnebenkostenInP={PersonalnebenkostenInP} SneakerKosten={SneakerKosten} formatter={formatter} />
+
+                <Finanzen AllMaschienenKosten={AllMaschienenKosten} AufnahmeDarlehen={AufnahmeDarlehen} AusschreibungIst={AusschreibungIst} AusschreibungSoll={AusschreibungSoll}
+                    FarbenEinkaufMenge={FarbenEinkaufMenge} FarbenKosten={FarbenKosten} ForschungUndEntwickelung={ForschungUndEntwickelung}
+                    GesamtkostenProduktion={GesamtkostenProduktion} Gesamtproduktion={Gesamtproduktion} HöheKontokorrentkreditIst={HöheKontokorrentkreditIst}
+                    HöheKontokorrentkreditSoll={HöheKontokorrentkreditSoll} MarktIst={MarktIst} MarktSoll={MarktSoll} Maschinenkosten={Maschinenkosten} Mitarbeiter={Mitarbeiter}
+                    Neueinstellungen={Neueinstellungen} PersonalnebenkostenInP={PersonalnebenkostenInP} RueckzahlungDarlehen={RueckzahlungDarlehen} SaldoIst={SaldoIst}
+                    SaldoSoll={SaldoSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} SneakerKosten={SneakerKosten} UmsatzSoll={UmsatzSoll} Werbung={Werbung} formatter={formatter}
+                    newMaschienPrize={newMaschienPrize} scenario={data.scenario} setAufnahmeDarlehen={setAufnahmeDarlehen} setRueckzahlungDarlehen={setRueckzahlungDarlehen}
+                    stock={data.stock} />
                 <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={onSubmit}>Abgeben/Speichern</button>
             </div>
         </>

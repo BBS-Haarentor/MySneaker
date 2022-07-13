@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Beschaffung = ({ data, LagerBeschaffungRef, setSneakerEinkaufMenge, setFarbenEinkaufMenge, formatter, SneakerKosten, SneakerEinkaufMenge, FarbenEinkaufMenge, FarbenKosten }) => {
+const Beschaffung = ({ scenario, LagerBeschaffungRef, setSneakerEinkaufMenge, setFarbenEinkaufMenge, formatter, SneakerKosten, SneakerEinkaufMenge, FarbenEinkaufMenge, FarbenKosten }) => {
 
     return (
         <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
@@ -13,8 +13,8 @@ const Beschaffung = ({ data, LagerBeschaffungRef, setSneakerEinkaufMenge, setFar
                     </tr>
                     <tr>
                         <td>Einstandspreis</td>
-                        <td>{formatter.format(data.scenario.sneaker_price)}</td>
-                        <td>{formatter.format(data.scenario.paint_price)}</td>
+                        <td>{formatter.format(scenario.sneaker_price)}</td>
+                        <td>{formatter.format(scenario.paint_price)}</td>
                     </tr>
                     <tr>
                         <td>Einkauf (Menge)</td>
