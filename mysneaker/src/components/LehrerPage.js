@@ -13,6 +13,10 @@ const LehrerPage = () => {
 
     getGames();
 
+    setInterval(() => {
+      getCompaniesVerify()
+    }, 2000)
+
   }, [])
 
   const getCompaniesVerify = () => {
@@ -89,12 +93,11 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    fetch(process.env.REACT_APP_MY_API_URL + '/user/' + id, requestOptions).then((element) => {
+    fetch(process.env.REACT_APP_MY_API_URL + '/user/delete/' + id, requestOptions).then((element) => {
       if (element.status === 200) {
+        getCompaniesVerify();
       }
     })
-
-    getCompaniesVerify();
   }
 
   const activeUser = (id) => {

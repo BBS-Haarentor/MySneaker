@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 import Analytics from './KlasseContainer/Analytics';
 
-const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
+const KlasseContainer = ({ updateCompany, companyId, current_cycle_index, gameId }) => {
 
     const [select, setSelect] = useState("main");
     const [modal, setModal] = useState();
@@ -51,29 +51,41 @@ const KlasseContainer = ({ companyId, current_cycle_index, gameId }) => {
                 myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
                 myHeaders.append('Access-Control-Allow-Origin', '*')
 
-                var requestOptions = {
-                    method: 'DELETE',
-                    headers: myHeaders,
+                var requestOptions1 = {
+                    method: 'PUT',
+                    headers: myHeaders
                 };
 
-                fetch(process.env.REACT_APP_MY_API_URL + '/user/delete/' + companyId, requestOptions).then((element) => {
-                    if (element.status === 202) {
-                        Swal.fire(
-                            'Benutzer Gelöscht!',
-                            'Sie haben den Benutzer Erfolgreich gelöscht',
-                            'success'
-                        )
-                    } else {
-                        element.json().then((element1) => {
-                            Swal.fire(
-                                'Fehler!',
-                                element1.detail,
-                                'error'
-                            )
-                        })
-                    }
-                })
+                fetch(process.env.REACT_APP_MY_API_URL + '/user/toggle_active/' + companyId, requestOptions1).then((element) => {
+                    if(element.status === 202) {
 
+                    }
+                }).then(() => {
+                    var requestOptions = {
+                        method: 'DELETE',
+                        headers: myHeaders
+                    };
+
+                    fetch(process.env.REACT_APP_MY_API_URL + '/user/delete/' + companyId, requestOptions).then((element) => {
+                        if (element.status === 200) {
+                            updateCompany()
+                            setSelect("main")
+                            Swal.fire(
+                                'Benutzer Gelöscht!',
+                                'Sie haben den Benutzer Erfolgreich gelöscht',
+                                'success'
+                            )
+                        } else {
+                            element.json().then((element1) => {
+                                Swal.fire(
+                                    'Fehler!',
+                                    element1.detail,
+                                    'error'
+                                )
+                            })
+                        }
+                    })
+                });
             }
         })
     }

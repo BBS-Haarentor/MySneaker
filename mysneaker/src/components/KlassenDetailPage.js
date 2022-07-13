@@ -15,6 +15,11 @@ const KlassenDetailPage = () => {
   const [register, setRegister] = useState(false)
   const [selectCompanie, setSelectCompanie] = useState(null)
 
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+  myHeaders.append('Access-Control-Allow-Origin', '*')
+
   const changeCompanie = (name, id) => {
     if (!selectCompanie) {
       setSelectCompanie({
@@ -57,21 +62,12 @@ const KlassenDetailPage = () => {
 
     qrCode.append(ref.current);
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-    myHeaders.append('Access-Control-Allow-Origin', '*')
-
     var requestOptions = {
       method: 'GET',
       headers: myHeaders,
     };
 
-    await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_all_users_for_game/' + id, requestOptions)
-      .then(async (element) => {
-        let json = await element.json();
-        setCompanies(json)
-      })
+    updateCompany()
 
     await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
       if (res.status === 200) {
@@ -80,6 +76,19 @@ const KlassenDetailPage = () => {
       }
     })
   }, [url]);
+
+  const updateCompany = async () => {
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+    };
+
+    await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_all_users_for_game/' + id, requestOptions)
+        .then(async (element) => {
+          let json = await element.json();
+          setCompanies(json)
+        })
+  }
 
   const toggleTurnover = () => {
     var myHeaders = new Headers();
@@ -233,7 +242,7 @@ const KlassenDetailPage = () => {
         <div className='h-screen w-full overflow-hidden'>
           <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12 overflow-x-hidden'>
 
-            <KlasseContainer companyId={selectCompanie !== null ? selectCompanie.id : null} gameId={id} current_cycle_index={game.current_cycle_index} />
+            <KlasseContainer updateCompany={updateCompany} companyId={selectCompanie !== null ? selectCompanie.id : null} gameId={id} current_cycle_index={game.current_cycle_index} />
 
 
           </div>
