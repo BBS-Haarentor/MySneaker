@@ -3,8 +3,9 @@ import React from 'react'
 const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen, AufnahmeDarlehen, RueckzahlungDarlehen, SneakerKosten, FarbenKosten, Gesamtproduktion, MarktSoll, 
     AusschreibungSoll, MarktIst, AusschreibungIst, SneakerEinkaufMenge, FarbenEinkaufMenge, AllMaschienenKosten, GesamtkostenProduktion, Maschinenkosten, 
     newMaschienPrize, Neueinstellungen, Mitarbeiter, PersonalnebenkostenInP, Werbung, ForschungUndEntwickelung, setRueckzahlungDarlehen, UmsatzSoll, SaldoIst, 
-    SaldoSoll, HöheKontokorrentkreditIst, HöheKontokorrentkreditSoll }) => {
+    SaldoSoll, HöheKontokorrentkreditIst, HöheKontokorrentkreditSoll, UmsatzIst }) => {
 
+        console.log(UmsatzIst)
     return (
         <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
                     <img src="/img/projections.svg" className='h-[500px] w-0 xl:w-[500px] m-auto p-10'></img>
@@ -118,7 +119,7 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             <tr>
                                 <td>Umsatzerlöse</td>
                                 <td>{formatter.format(UmsatzSoll)}</td>
-                                <td>{formatter.format(Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst)))}</td>
+                                <td>{formatter.format(UmsatzIst)}</td>
                             </tr>
                             <tr>
                                 <td>Saldo</td>
