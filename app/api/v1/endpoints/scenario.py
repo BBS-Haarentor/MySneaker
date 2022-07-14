@@ -28,7 +28,7 @@ async def get_scenario_by_character(char: str, current_user: User = Depends(get_
 
 @router.get("/get_all_scenarios", status_code=status.HTTP_200_OK, response_model=list[Scenario])
 @base_auth_required
-async def get_all_scenarios_as_list(session: AsyncSession = Depends(get_async_session)) -> list[Scenario]:
+async def get_all_scenarios_as_list(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Scenario]:
     scenario_list: list[Scenario] = await get_all_scenarios(session=session)
     return scenario_list
 
