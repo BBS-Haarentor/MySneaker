@@ -3,25 +3,30 @@ import React from 'react';
 export const ThemeContext = React.createContext();
 
 export const ThemeProvider = ({ initialTheme, children }) => {
-    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
-  
-  // Whenever the user explicitly chooses light mode
-  localStorage.theme = 'light'
-  
-  // Whenever the user explicitly chooses dark mode
-  localStorage.theme = 'dark'
-  
-  // Whenever the user explicitly chooses to respect the OS preference
-  localStorage.removeItem('theme')
+  // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+  if (localStorage.getItem('color-theme')) {
+    if (localStorage.getItem('color-theme') === 'light') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('color-theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('color-theme', 'light');
+    }
 
-    return (
-        <ThemeContext.Provider>
-            {children}
-        </ThemeContext.Provider>
-    );
+    // if NOT set via local storage previously
+  } else {
+    if (document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('color-theme', 'light');
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('color-theme', 'dark');
+    }
+  }
+
+  return (
+    <ThemeContext.Provider>
+      {children}
+    </ThemeContext.Provider>
+  );
 };

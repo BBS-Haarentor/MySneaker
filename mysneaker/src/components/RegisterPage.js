@@ -75,7 +75,7 @@ const RegisterPage = () => {
 
 
     return (
-        <div className='h-screen w-screen bg-[#f7fafc] flex'>
+        <div className='h-screen w-screen dark:bg-[#1a202c] bg-[#f7fafc] flex'>
             <SideNavBar OnClick={OnClick} state={"Register"} />
             <div className="h-full w-full flex justify-center align-middle items-center">
                 <div className="w-10/12 max-w-xl mr-[300px]">
@@ -88,10 +88,10 @@ const RegisterPage = () => {
                     </div>
                     <form className="" onSubmit={onSubmit}>
                         <div className="grid">
-                            <p className="px-11 py-3" >Benutzername</p>
-                            <input className="text-[#a3b1c2] mb-3 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={userName} placeholder="Dein Benutzername" onChange={(e) => setUserName(e.target.value)} type="text" ></input>
-                            <p className="px-11 py-3">Passwort</p>
-                            <input autoComplete="password" className="text-[#a3b1c2] mb-2 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={password} placeholder="Dein Passwort" onChange={(e) => setPassword(e.target.value)} type="password"></input>
+                            <p className="px-11 py-3 dark:text-white" >Benutzername</p>
+                            <input className="text-[#a3b1c2] mb-3 mx-11 p-3 border-2 dark:bg-[#1f2733] dark:border-[#282d3c] rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={userName} placeholder="Dein Benutzername" onChange={(e) => setUserName(e.target.value)} type="text" ></input>
+                            <p className="px-11 py-3 dark:text-white">Passwort</p>
+                            <input autoComplete="password" className="text-[#a3b1c2] dark:bg-[#1f2733] dark:border-[#282d3c] mb-2 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={password} placeholder="Dein Passwort" onChange={(e) => setPassword(e.target.value)} type="password"></input>
                             <input className="bg-[#4fd1c5] p-3 mx-11 rounded-3xl mt-10 text-white disabled:opacity-75" id="submit" type="submit"></input>
                         </div>
                     </form>

@@ -204,7 +204,7 @@ const LehrerPage = () => {
                 <tbody>
                   {companiesVerify.map(({ name, grade_name, id }, index) =>
                     <>
-                      <tr key={index} className='p-4 shadow-lg rounded-3xl m-auto my-3 flex justify-around dark:bg-[#1f2733] dark:text-white bg-white w-[90%]'>
+                      <tr key={index} className='p-4 shadow-lg rounded-3xl m-auto my-3 flex justify-around dark:bg-[#28303c] dark:text-white bg-white w-[90%]'>
                         <td>{name}</td>
                         <td>{grade_name}</td>
                         <td>
