@@ -7,9 +7,34 @@ import LehrerPage from './components/LehrerPage';
 import KlassenDetailPage from './components/KlassenDetailPage'
 import RegisterPage from './components/RegisterPage';
 import Logout from './components/Logout';
+import { useEffect } from 'react';
 
 
 function App() {
+
+    useEffect(() => {
+        console.log(localStorage.getItem('color-theme'))
+        if (localStorage.getItem('color-theme')) {
+            if (localStorage.getItem('color-theme') === 'light') {
+              document.documentElement.classList.add('light');
+              window.localStorage.setItem('color-theme', 'light');
+            } else {
+              document.documentElement.classList.add('dark');
+              window.localStorage.setItem('color-theme', 'dark');
+            }
+        
+            // if NOT set via local storage previously
+          } else {
+            if (document.documentElement.classList.contains('dark')) {
+              document.documentElement.classList.add('dark');
+              localStorage.setItem('color-theme', 'dark');
+            } else {
+              document.documentElement.classList.add('light');
+              localStorage.setItem('color-theme', 'light');
+            }
+          }
+    })
+
     return (
         <div className="dark:bg-[#1a202c] bg-[#f7fafc]">
             <Router>
