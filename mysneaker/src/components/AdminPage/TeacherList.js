@@ -133,7 +133,7 @@ const TeacherList = () => {
         <>
             {modal}
             <div className='h-screen w-full overflow-hidden'>
-                <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
+                <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 dark:bg-[#1f2733] dark:text-white bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
                     <table className='w-full text-center'>
                         <tbody>
                         <tr>
@@ -171,7 +171,7 @@ const TeacherList = () => {
                     </table>
                 </div>
                 <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
-                    <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => createTeacher()}>
+                    <button className='inline-block dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => createTeacher()}>
                         Lehrer Hinzufügen
                     </button>
                 </div>

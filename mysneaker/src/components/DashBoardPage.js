@@ -75,7 +75,7 @@ const DashBoardPage = () => {
 
 
     return (
-        <div className="h-screen w-screen bg-[#f7fafc] flex">
+        <div className="h-screen w-screen flex">
             <SideNavBar OnClick={OnClick} state={state}/>
 
             {state == "Login" ?

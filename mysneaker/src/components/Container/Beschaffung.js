@@ -3,7 +3,7 @@ import React from 'react'
 const Beschaffung = ({ scenario, LagerBeschaffungRef, setSneakerEinkaufMenge, setFarbenEinkaufMenge, formatter, SneakerKosten, SneakerEinkaufMenge, FarbenEinkaufMenge, FarbenKosten }) => {
 
     return (
-        <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
+        <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
             <table>
                 <tbody>
                     <tr>
@@ -18,8 +18,8 @@ const Beschaffung = ({ scenario, LagerBeschaffungRef, setSneakerEinkaufMenge, se
                     </tr>
                     <tr>
                         <td>Einkauf (Menge)</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setFarbenEinkaufMenge(e.target.value)} value={FarbenEinkaufMenge}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setSneakerEinkaufMenge(e.target.value)} value={SneakerEinkaufMenge}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setFarbenEinkaufMenge(e.target.value)} value={FarbenEinkaufMenge}></input></td>
                     </tr>
                     <tr>
                         <td>Kosten pro Werkstoff</td>

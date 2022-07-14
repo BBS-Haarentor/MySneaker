@@ -4,7 +4,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
 
 
     return (
-        <div className="p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={PersonalRef}>
+        <div className="p-4 xl:col-span-3 shadow-lg rounded-3xl dark:bg-[#1f2733] dark:text-white m-2 bg-white flex justify-center snap-start" ref={PersonalRef}>
             <table>
                 <tbody>
                     <tr>
@@ -38,7 +38,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Neueinstellungen</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input> MA</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input> MA</td>
 
                     </tr>
                     <tr>
@@ -48,7 +48,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Kündigungen/Rente/ etc.</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setKündigungen(e.target.value)} value={Kündigungen}></input> MA</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setKündigungen(e.target.value)} value={Kündigungen}></input> MA</td>
 
                     </tr>
                     <tr>

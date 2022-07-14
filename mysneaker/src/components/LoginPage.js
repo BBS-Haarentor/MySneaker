@@ -77,10 +77,10 @@ const LoginPage = () => {
                 </div>
                 <form className="" onSubmit={onSubmit}>
                     <div className="grid">
-                        <p className="px-11 py-3" >Benutzername</p>
-                        <input className="text-[#a3b1c2] mb-3 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={userName} placeholder="Dein Benutzername" onChange={(e) => setUserName(e.target.value)} type="text" ></input>
-                        <p className="px-11 py-3">Passwort</p>
-                        <input autoComplete="password" className="text-[#a3b1c2] mb-2 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={password} placeholder="Dein Passwort" onChange={(e) => setPassword(e.target.value)} type="password"></input>
+                        <p className="px-11 py-3 dark:text-white" >Benutzername</p>
+                        <input className="text-[#a3b1c2] dark:bg-[#1f2733] dark:border-[#282d3c] mb-3 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] focus:outline-none focus:border-[#4fd1c5]" value={userName} placeholder="Dein Benutzername" onChange={(e) => setUserName(e.target.value)} type="text" ></input>
+                        <p className="px-11 py-3 dark:text-white">Passwort</p>
+                        <input autoComplete="password" className="text-[#a3b1c2] dark:bg-[#1f2733] mb-2 mx-11 p-3 border-2 rounded-3xl border-[#cbd5e0] dark:border-[#282d3c] focus:outline-none focus:border-[#4fd1c5]" value={password} placeholder="Dein Passwort" onChange={(e) => setPassword(e.target.value)} type="password"></input>
                         <input className="bg-[#4fd1c5] p-3 mx-11 rounded-3xl mt-10 text-white" type="submit"></input>
                     </div>
                 </form>

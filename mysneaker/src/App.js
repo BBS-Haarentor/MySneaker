@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import DashBoardPage from './components/DashBoardPage';
 import MainPage from './components/MainPage';
@@ -10,19 +10,21 @@ import Logout from './components/Logout';
 
 
 function App() {
-  return (
-      <Router>
-        <Routes>
-          <Route path='/dashboard' element={<DashBoardPage />} />
-          <Route path='/' element={<MainPage />} />
-          <Route path='/tutorial' element={<Tutorial />} />
-          <Route path='/ler' element={<LehrerPage />} />
-          <Route path='/ler/:id' element={<KlassenDetailPage />} />
-          <Route path='/register/:id' element={<RegisterPage />} />
-          <Route path='/logout' element={<Logout />} />
-        </Routes>
-      </Router>
-  );
+    return (
+        <div className="dark:bg-[#1a202c] bg-[#f7fafc]">
+            <Router>
+                <Routes>
+                    <Route path='/dashboard' element={<DashBoardPage/>}/>
+                    <Route path='/' element={<MainPage/>}/>
+                    <Route path='/tutorial' element={<Tutorial/>}/>
+                    <Route path='/ler' element={<LehrerPage/>}/>
+                    <Route path='/ler/:id' element={<KlassenDetailPage/>}/>
+                    <Route path='/register/:id' element={<RegisterPage/>}/>
+                    <Route path='/logout' element={<Logout/>}/>
+                </Routes>
+            </Router>
+        </div>
+    );
 }
 
 export default App;

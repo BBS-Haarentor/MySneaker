@@ -4,7 +4,7 @@ import PeriodenListe from './AdminPage/PeriodenListe'
 
 const AdminPage = ({OnClick, state}) => {
 
-    useEffect((OnClick) => {
+    useEffect(() => {
         OnClick("Lehrer Liste")
     }, [])
 

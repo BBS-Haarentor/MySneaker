@@ -9,8 +9,13 @@ const SideNavBar = ({OnClick, state}) => {
     const [token, setToken] = useState();
     var [isLehe, setIsLehe] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false)
+    const [logo, setLogo] = useState("https://img.icons8.com/ios/50/000000/sneakers.png")
 
     useEffect(() => {
+        if(window.document.documentElement.classList[0] === "dark") {
+            setLogo("https://img.icons8.com/ios/50/ffffff/sneakers.png")
+        }
+
         if (Cookies.get("session")) {
             setToken(Cookies.get("session"))
             var myHeaders = new Headers();
@@ -48,14 +53,13 @@ const SideNavBar = ({OnClick, state}) => {
             } catch (error) {
                 setIsLehe(false)
             }
-
         }
     }, [])
 
     return <div className=' h-screen overflow-y-auto overflow-x-hidden min-w-[300px] '>
         <div className='flex py-4 mx-auto justify-center '>
-            <img className='max-w-[20px] max-h-[20px]' alt='Logo' src="https://img.icons8.com/ios/50/000000/sneakers.png"/>
-            <h1 className='text-black ml-2 font-bold '>MySneaker</h1>
+            <img className='max-w-[20px] max-h-[20px]' alt='Logo' src={logo}/>
+            <h1 className='text-black dark:text-white ml-2 font-bold '>MySneaker</h1>
         </div>
         {isAdmin ? <>
                 <Spacer/>
@@ -64,7 +68,7 @@ const SideNavBar = ({OnClick, state}) => {
                 <Spacer/>
                 <NavBarButton text="Logout" state={state} onClick={OnClick}></NavBarButton>
             </> :
-            isLehe ? <> <NavBarButton text="LehrerPage" state={state} onClick={OnClick}></NavBarButton> <NavBarButton
+            isLehe ? <><Spacer/> <NavBarButton text="LehrerPage" state={state} onClick={OnClick}></NavBarButton><Spacer/> <NavBarButton
                     text="Logout" state={state} onClick={OnClick}></NavBarButton></> :
                 (token === undefined ? <NavBarButton text="Login" state={state} onClick={OnClick}></NavBarButton> : <>
                     <Spacer></Spacer>

@@ -16,7 +16,7 @@ const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, Entnahme
     }
 
     return (
-        <div className="p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
+        <div className="p-4 shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
             <table>
                 <tbody>
                     <tr>
@@ -33,7 +33,7 @@ const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, Entnahme
                     </tr>
                     <tr>
                         <td>Entnahme aus dem Lager</td>
-                        <td><input className="border-2 w-[100%] border-[#4fd1c5] rounded-lg" min="0" max={MaximaleEntnahmeAusLager} type="number" onChange={(e) => setEntnahmeAusDemLagerFunction(e.target.value)} value={EntnahmeAusDemLager}></input></td>
+                        <td><input className="border-2 w-[100%] border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" max={MaximaleEntnahmeAusLager} type="number" onChange={(e) => setEntnahmeAusDemLagerFunction(e.target.value)} value={EntnahmeAusDemLager}></input></td>
                     </tr>
                     <tr>
                         <td>Gesamtproduktion</td>

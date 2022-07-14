@@ -35,7 +35,7 @@ const Analytics = ({ myHeaders, gameId, cycle_index, current_cycle_index }) => {
 
     return (
         <>
-            <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
+            <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl dark:bg-[#28303c] m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
                 <table className='w-full text-center'>
                     <tbody>
                         <tr>

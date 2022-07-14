@@ -3,7 +3,7 @@ import React from 'react'
 const Beschaffung = ({ formatter, MarktSollPreis, MarktSoll, SneakerKosten, FarbenKosten, Gesamtproduktion, FertigungskostenProStückFE, AllMaschienenKosten, Mitarbeiter, PersonalnebenkostenInP }) => {
 
     return (
-        <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
+        <div className=" p-4 shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
                     <table>
                         <tbody>
                             <tr>

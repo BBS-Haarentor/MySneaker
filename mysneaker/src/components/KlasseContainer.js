@@ -20,7 +20,7 @@ const KlasseContainer = ({updateCompany, companyId, current_cycle_index, gameId}
     myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
     myHeaders.append('Access-Control-Allow-Origin', '*')
 
-    useEffect((gameId, myHeaders) => {
+    useEffect(() => {
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
@@ -185,18 +185,18 @@ const KlasseContainer = ({updateCompany, companyId, current_cycle_index, gameId}
                         <div
                             className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%]  mx-12 overflow-hidden'>
 
-                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'
+                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 dark:bg-[#1f2733] dark:shadow-gray-700 dark:shadow-md bg-white w-[82%] my-12'
                                     onClick={() => changePasswordModal(companyId)}>
                                 Passwort ändern
                             </button>
-                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'
+                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white dark:bg-[#1f2733] dark:shadow-gray-700 dark:shadow-md w-[82%] my-12'
                                     onClick={() => {
                                         setSelect("input");
                                         menues();
                                     }}>
                                 Aktuelle Eingaben
                             </button>
-                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'
+                            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white dark:bg-[#1f2733] dark:shadow-gray-700 dark:shadow-md w-[82%] my-12'
                                     onClick={() => deleteUser(companyId)}>
                                 Benutzer Löschen
                             </button>

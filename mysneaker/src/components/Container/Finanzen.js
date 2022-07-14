@@ -6,7 +6,7 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
     SaldoSoll, HöheKontokorrentkreditIst, HöheKontokorrentkreditSoll }) => {
 
     return (
-        <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
+        <div className=" p-4 shadow-lg xl:col-span-3 dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
                     <img src="/img/projections.svg" className='h-[500px] w-0 xl:w-[500px] m-auto p-10'></img>
                     <table>
                         <tbody>
@@ -37,7 +37,7 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Aufnahme Darlehen</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg w-[90%]" min="0" type="number" onChange={(e) => setAufnahmeDarlehen(e.target.value)} value={AufnahmeDarlehen}></input> €</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg w-[90%] dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setAufnahmeDarlehen(e.target.value)} value={AufnahmeDarlehen}></input> €</td>
                                 <td>{formatter.format(AufnahmeDarlehen)}</td>
                             </tr>
                             <tr>
@@ -112,8 +112,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Rückzahlung Darlehen</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
+                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
+                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
                             </tr>
                             <tr>
                                 <td>Umsatzerlöse</td>
