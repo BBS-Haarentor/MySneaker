@@ -3,6 +3,8 @@ from app.crud.dummy_repo import Dummy, DummyPost, DummyRepository
 from sqlmodel.ext.asyncio.session import AsyncSession
 from starlette import status
 from app.db.session import get_async_session
+
+
 router = APIRouter()
 
 
@@ -25,3 +27,11 @@ async def post_new_dummy(post_data: DummyPost, session: AsyncSession = Depends(g
     new_dummy: Dummy = await repo.add_new_dummy(dummy_data=post_data)
     
     return new_dummy.id
+
+@router.get("/no_dep_get/{dummy_id}", status_code=status.HTTP_200_OK)
+async def no_dep_get(dummy_id: int) -> Dummy:
+    async with get_async_session() as session:
+        repo = DummyRepository(session=session)
+        dummy: Dummy = await repo.get_dummy_by_id(dummy_id=dummy_id)
+    
+        return dummy

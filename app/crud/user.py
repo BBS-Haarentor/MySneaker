@@ -221,6 +221,7 @@ async def get_teacher_list(session: AsyncSession) -> list[User]:
     teacher_list: list[User] = result.all()
     return teacher_list
 
+
 async def get_user_status(user_id: int, session: AsyncSession) -> bool | None:
     result = await session.exec(select(User).where(User.id == user_id))
     user: User | None = result.one_or_none()

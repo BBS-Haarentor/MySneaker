@@ -125,10 +125,7 @@ class Game():
         
         raise NotImplementedError
     
-    def _update_dead_(self, index: int) -> None:
-        if self.output_stocks[index].credit_taken > 50_000:
-            self.output_stocks[index].insolvent = True
-        return None
+
     
     def _update_account_balance_(self, update: int, index: int) -> None:
         self.output_stocks[index].account_balance += update
@@ -137,10 +134,16 @@ class Game():
             self.output_stocks[index].account_balance = 0
         return None
     
+    
     def _update_credit_balance_(self, update: int, index: int) -> None:
         self.output_stocks[index].credit_taken += update
         return None
     
+    
+    def _update_dead_(self, index: int) -> None:
+        if self.output_stocks[index].credit_taken > 50_000:
+            self.output_stocks[index].insolvent = True
+        return None    
     
     def _pay_employees_(self, index: int) -> None:
         _employee_salaries_: float = round((self.scenario.employee_salary * self.input_stocks[index].employees_count) , 2) 

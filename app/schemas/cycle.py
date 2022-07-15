@@ -1,10 +1,11 @@
 from datetime import datetime
 from sqlmodel import SQLModel
 
+from app.schemas.base import BaseSchema
 
-class CycleBase(SQLModel):
-    id: int | None
-    entry_date: datetime | None
+
+class CycleBase(BaseSchema):
+
     game_id: int | None
     current_cycle_index: int | None
     company_id: int | None

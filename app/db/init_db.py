@@ -1,14 +1,5 @@
-import logging
-from fastapi import Depends
-from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import SQLModel
-from sqlalchemy.orm import declarative_base
-from app.core.config import SETTINGS
-from app.crud.user import create_user
-  
-from app.db.session import engine, get_async_session
-from app.models.user import User
-from app.schemas.user import UserPost
+from app.db.session import engine
 
 
 async def init_db() -> None:
