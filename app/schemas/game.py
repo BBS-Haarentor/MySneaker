@@ -1,10 +1,10 @@
 from datetime import datetime
 from sqlmodel import SQLModel
 
+from app.schemas.base import BaseSchema
 
-class GameBase(SQLModel):
-    id: int | None
-    creation_date: datetime | None
+
+class GameBase(BaseSchema):
     grade_name: str
     owner_id: int | None
     current_cycle_index: int  | None
@@ -37,13 +37,13 @@ class GameResponse(GameBase):
 
 class PlayerInfo(SQLModel):
     company_id: int
-    name: str
-    index: int
-    account_balance: float
-    credit_taken: float
-    income: float
-    price: float
-    sold_sneakers: int
-    market_share: float
-    turnover_ready: bool
-    
+    name: str | None
+    index: int | None
+    account_balance: float | None  
+    credit_taken: float | None  
+    income_from_sales: float | None  
+    sales_bid: float | None  
+    real_sales: int | None  
+    insolvent: bool | None  
+    turnover_ready: bool | None   
+    market_share: float | None    

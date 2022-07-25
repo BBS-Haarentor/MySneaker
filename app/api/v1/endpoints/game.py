@@ -19,8 +19,9 @@ from app.models.scenario import Scenario
 from app.models.stock import Stock
 from app.models.user import User
 from app.models.game import Game
-from app.schemas.game import GameCreate, GamePatch, GameResponse
+from app.schemas.game import GameCreate, GamePatch, GameResponse, PlayerInfo
 from app.schemas.user import UserResponse, UserResponseWithGradeName
+from app.services.game_service import GameService
 
 
 
@@ -217,15 +218,30 @@ async def delete_game(game_id: int, current_user: User = Depends(get_current_act
 
 @router.put("/setback_game/{game_id}/index/{index}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
-async def setback_game_by_id_and_index(game_id: int, index: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int | None:
+async def setback_game_by_id_and_index(game_id: int, 
+                                       index: int, 
+                                       current_user: User = Depends(get_current_active_user), 
+                                       session: AsyncSession = Depends(get_async_session)) -> int | None:
     return await set_back_cycle_index(game_id=game_id, new_index=index, session=session)
 
 
 @router.get("/game_state/{game_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
-async def get_game_state_by_id(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+async def get_game_state_by_id(game_id: int, 
+                               current_user: User = Depends(get_current_active_user), 
+                               session: AsyncSession = Depends(get_async_session)) -> bool:
     result: bool | None = await get_game_state(game_id=game_id, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
         return result
+    
+@router.get("/info/{game_id}/index/{index}", status_code=200, response_model=list[PlayerInfo])
+@teacher_auth_required
+async def get_game_info_by_game_and_index(game_id: int, 
+                                          index: int, 
+                                          current_user: User = Depends(get_current_active_user), 
+                                          session: AsyncSession = Depends(get_async_session)) -> list[PlayerInfo]:
+    game_service: GameService = GameService(session=session)
+    return await game_service.get_game_info(game_id=game_id, index=index)
+

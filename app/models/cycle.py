@@ -8,7 +8,8 @@ from app.schemas.cycle import CycleBase
 class Cycle(CycleBase, table=True):
     __tablename__ = 'cycle'
     id: int | None = Field(default=None, index=True, primary_key=True)
-    entry_date: datetime = Field(datetime.now()) 
+    creation_date: float | None = Field(default=datetime.now().timestamp())
+    last_edit: float | None = Field(default=datetime.now().timestamp())
     game_id: int | None = Field(sa_column=Column(Integer, ForeignKey("game.id", onupdate="CASCADE", ondelete="CASCADE")))
     company_id: int | None = Field(sa_column=Column(Integer, ForeignKey("user.id", onupdate="CASCADE", ondelete="CASCADE")))
     current_cycle_index: int = Field(default=0)

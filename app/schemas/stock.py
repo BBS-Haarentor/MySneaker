@@ -1,9 +1,8 @@
 from datetime import datetime
-from sqlmodel import SQLModel
+from app.schemas.base import BaseSchema
 
 
-class StockBase(SQLModel):
-    id: int | None
+class StockBase(BaseSchema):
     game_id: int 
     company_id: int
     creation_date: datetime | None

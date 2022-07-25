@@ -5,6 +5,6 @@ from sqlmodel import SQLModel
 
 
 class BaseSchema(SQLModel):
-    id: int
-    creation_date: datetime
-    last_edit: datetime
+    id: int | None
+    creation_date: float | None
+    last_edit: float | None

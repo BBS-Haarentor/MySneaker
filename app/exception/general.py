@@ -6,35 +6,17 @@ from types import NoneType
 class NotFoundError(Exception):
 
     entity_name: str
-    type_identifier: str = entity_name
 
-    def __init__(self, entity_id, type_identifier):
-        if isinstance(type_identifier, NoneType):
-            self.type_identifier = self.entity_name
-        super().__init__(f"{self.entity_name} not found, id: {entity_id}, of type: {type_identifier}")
+    def __init__(self, entity_id):
+        super().__init__(f"{self.entity_name} not found, id: {entity_id}")
 
 
 
 
-class UserNotFoundError(NotFoundError):
-
-    entity_name: str = "User"
+class ValidationError(Exception):
+    calling_service: str
     
-
-
-class GameNotFoundError(NotFoundError):
-
-    entity_name: str = "Game"
-    
-
- 
-
-class StockNotFoundError(NotFoundError):
-
-    entity_name: str = "Stock"
-    
-    
-class GroupNotFoundError(NotFoundError):
-
-    entity_name: str = "Group"
-    
+    def __init__(self, entity_id, calling_service) -> None:
+        self.calling_service = calling_service
+        super().__init__(f"{self.calling_service.__str__()} produced a ValidationError for {calling_service=}:  - with: {entity_id=}")
+        

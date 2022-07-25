@@ -20,7 +20,6 @@ async def get_cycle_entry_by_id(cycle_id: int, session: AsyncSession) -> Cycle |
 
 
 async def new_cycle_entry(cycle_data: CycleCreate, session: AsyncSession) -> int:
-    cycle_data.entry_date = datetime.now()
     new_cycle = Cycle.from_orm(cycle_data)
     session.add(new_cycle)
     await session.commit()
@@ -40,7 +39,7 @@ async def get_current_cycle_by_user_id(user_id: int, session: AsyncSession) -> C
     game: Game = await get_game_by_id(id=user.game_id , session=session)
     if isinstance(game, NoneType):
         return None
-    result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == game.current_cycle_index).order_by(Cycle.entry_date.desc()))
+    result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == game.current_cycle_index).order_by(Cycle.creation_date.desc()))
     return result.first()
 
 async def get_cycle_by_user_id_and_index(user_id: int, index: int, session: AsyncSession) -> Cycle | None:
@@ -50,5 +49,5 @@ async def get_cycle_by_user_id_and_index(user_id: int, index: int, session: Asyn
     game: Game = await get_game_by_id(id=user.game_id , session=session)
     if isinstance(game, NoneType):
         return None
-    result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == index).order_by(Cycle.entry_date.desc()))
+    result = await session.exec(select(Cycle).where(Cycle.company_id == user.id).where(Cycle.current_cycle_index == index).order_by(Cycle.creation_date.desc()))
     return result.first()

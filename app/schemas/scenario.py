@@ -1,8 +1,10 @@
+from datetime import datetime
 from sqlmodel import SQLModel
 
+from app.schemas.base import BaseSchema
 
-class ScenarioBase(SQLModel):
-    id: int | None
+
+class ScenarioBase(BaseSchema):
     char: str 
     description: str 
     sneaker_price: float | None
@@ -39,4 +41,5 @@ class ScenarioBase(SQLModel):
 
 class ScenarioCreate(ScenarioBase):
     pass
+
 

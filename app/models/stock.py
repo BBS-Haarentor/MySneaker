@@ -7,6 +7,8 @@ from app.schemas.stock import StockBase
 class Stock(StockBase, table=True):
     __tablename__ = 'stock'
     id: int | None = Field(default=None, primary_key=True)
+    creation_date: float | None = Field(default=datetime.now().timestamp())
+    last_edit: float | None = Field(default=datetime.now().timestamp())
     game_id: int | None = Field(sa_column=Column(Integer, ForeignKey("game.id", onupdate="CASCADE", ondelete="CASCADE")))
     company_id: int | None = Field(sa_column=Column(Integer, ForeignKey("user.id", onupdate="CASCADE", ondelete="CASCADE")))
     creation_date: datetime | None = Field(datetime.now()) 

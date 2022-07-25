@@ -12,6 +12,8 @@ from app.schemas.cycle import CycleCreate
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from app.services.cycle_service import CycleService
+
 
 router = APIRouter()
 
@@ -23,31 +25,17 @@ async def create_new_cycle_entry(cycle_data: CycleCreate, current_user: User = D
     game: Game = await get_game_by_id(id=current_user.game_id, session=session)
     cycle_data.current_cycle_index = game.current_cycle_index
     cycle_data.game_id = game.id
-    result: int = await new_cycle_entry(cycle_data=cycle_data, session=session)
+    cycle_service: CycleService = CycleService(session=session)
+    result: int = await cycle_service.new_cycle_entry(cycle_data=cycle_data)
     return result
 
 
 @router.post("/teacher/new_entry", status_code=status.HTTP_201_CREATED, response_model=int)
 @teacher_auth_required
 async def create_new_cycle_entry_override(cycle_data: CycleCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int:
-    result: int = await new_cycle_entry(cycle_data=cycle_data, session=session)
-
+    cycle_service: CycleService = CycleService(session=session)
+    result: int = await cycle_service.new_cycle_entry(cycle_data=cycle_data)
     return result
-# get for all cycles for user and index
-# teacher edit tag? -> cerating user tag
-
-"""
-@router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK)
-@base_auth_required
-async def get_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Cycle:
-    result: Cycle | None = await get_cycle_entry_by_id(cycle_id=id, session=session)
-    #game_owner_check(user_id=current_user.id, game_id session=session)
-    
-    participant_check: bool | None = await check_user_in_game(game_id=id, user_id=current_user.id, session=session)
-    if not participant_check:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Current User is not in this Game")
-    return result
-"""
 
 
 @router.get("/my_cycles", status_code=status.HTTP_200_OK, response_model=list[Cycle])

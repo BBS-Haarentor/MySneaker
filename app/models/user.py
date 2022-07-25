@@ -9,6 +9,8 @@ class User(UserBase, table=True):
     __tablename__ = 'user'
     __table_args__ = (UniqueConstraint("name"),)
     id: int | None = Field(default=None, primary_key=True)
+    creation_date: float | None = Field(default=datetime.now().timestamp())
+    last_edit: float | None = Field(default=datetime.now().timestamp())
     last_login: datetime | None = Field(datetime.now()) 
     name: str = Field(default=None, index=True)
     email: str | None = Field(default=None)

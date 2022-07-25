@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlmodel import Field, UniqueConstraint
 from app.schemas.scenario import ScenarioBase
 
@@ -6,6 +7,8 @@ class Scenario(ScenarioBase, table=True):
     __tablename__ = 'scenario'
     __table_args__ = (UniqueConstraint("char"),)
     id: int | None = Field(default=None, primary_key=True)
+    creation_date: float | None = Field(default=datetime.now().timestamp())
+    last_edit: float | None = Field(default=datetime.now().timestamp())
     char: str 
     description: str
     sneaker_price: float  = Field(default=20)

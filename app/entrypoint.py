@@ -41,9 +41,9 @@ async def error_handling(request: Request, call_next):
         return await call_next(request)
     except Exception as ex:
         code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        if isinstance(ex, IndexError):
+            code = status.HTTP_404_NOT_FOUND
         logging.warning(ex)
-        if isinstance(ex, HTTPException):
-            code = ex.status_code
         return JSONResponse(status_code=code, content=ex.__str__())
 
 

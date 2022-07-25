@@ -1,9 +1,10 @@
 from datetime import datetime
 from sqlmodel import SQLModel
 
+from app.schemas.base import BaseSchema
 
-class UserBase(SQLModel):
-    id: int | None
+
+class UserBase(BaseSchema):
     name: str
     last_login: datetime | None
     email: str | None
