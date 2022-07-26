@@ -9,9 +9,37 @@ const LehrerPage = () => {
   const [companiesVerify, setCompaniesVerify] = useState([])
   const [createGameScenarioOrder, setCreateGameScenarioOrder] = useState("")
 
+  const getGames = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/teacher/my_games', requestOptions)
+        .then(async (element) => {
+          if (element.status === 401) {
+            window.location.href = "/"
+          }
+          let elementArray = await element.json()
+          await setData(elementArray)
+
+        }).then(() => {
+          getCompaniesVerify()
+        })
+  }
+
   useEffect(() => {
 
     getGames();
+
+    setInterval(() => {
+      getCompaniesVerify()
+    }, 2000)
 
   }, [])
 
@@ -63,11 +91,13 @@ const LehrerPage = () => {
         body: raw
       };
 
-      const d1 = fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/create', requestOptions)
+      fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/create', requestOptions)
         .then(async (element) => {
           switch (element.status) {
             case 401:
               window.location.href = "/"
+              break;
+            default:
               break;
           }
           getGames()
@@ -89,12 +119,11 @@ const LehrerPage = () => {
       redirect: 'follow'
     };
 
-    fetch(process.env.REACT_APP_MY_API_URL + '/user/' + id, requestOptions).then((element) => {
+    fetch(process.env.REACT_APP_MY_API_URL + '/user/delete/' + id, requestOptions).then((element) => {
       if (element.status === 200) {
+        getCompaniesVerify();
       }
     })
-
-    getCompaniesVerify();
   }
 
   const activeUser = (id) => {
@@ -111,32 +140,6 @@ const LehrerPage = () => {
     fetch(process.env.REACT_APP_MY_API_URL + '/user/toggle_active/' + id, requestOptions).then(() => getCompaniesVerify())
   }
 
-  const getGames = () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-
-    const d1 = fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/teacher/my_games', requestOptions)
-      .then(async (element) => {
-        if (element.status == 401) {
-          window.location.href = "/"
-        }
-        let klasses = [];
-        let elementArray = await element.json()
-
-
-        await setData(elementArray)
-
-      }).then(() => {
-        getCompaniesVerify()
-      })
-  }
 
   const onClickRegister = () => {
     setShowModal(true)
@@ -157,30 +160,30 @@ const LehrerPage = () => {
           <div
             className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
             <div
-              className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+              className="text-center dark:bg-[#1f2733] dark:text-white bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
               <span className="font-bold block text-xl mb-3">Spiel Erstellen</span>
               <div className='flex flex-col'>
                 <div className='my-6'>
                   <label>Spiel Name</label>
-                  <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameName(e.target.value)} placeholder="Spiel 1" required />
+                  <input type='text' className="w-[100%] dark:text-white p-2 dark:bg-[#1f2733] dark:border-[#282d3c] border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameName(e.target.value)} placeholder="Spiel 1" required />
                 </div>
                 <div className='my-6'>
                   <label>Scenario Ordnung</label>
-                  <input type='text' className="w-[100%] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameScenarioOrder(e.target.value)} placeholder="ABCDEFG" required />
+                  <input type='text' className="w-[100%] dark:text-white dark:bg-[#1f2733] dark:border-[#282d3c] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameScenarioOrder(e.target.value)} placeholder="ABCDEFG" required />
                 </div>
                 <div className='my-6'>
                   <button onClick={onCreateGame} className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo">Spiel erstellen</button>
                 </div>
               </div>
               <div className="text-right space-x-5 mt-5">
-                <button onClick={disableModal} className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
+                <button onClick={disableModal} className="px-4 dark:bg-[#1f2733] dark:text-white py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen</button>
               </div>
             </div>
           </div>
         </div>
         <div className='grid grid-cols-2 w-screen h-screen'>
-          <div className='shadow-lg bg-white w-[90%] h-[90%] rounded-3xl overflow-y-auto my-auto mx-12'>
+          <div className='shadow-lg dark:bg-[#1f2733] dark:text-white bg-white w-[90%] h-[90%] rounded-3xl overflow-y-auto my-auto mx-12'>
             {data.map((element, index) => {
               return (
                 <a key={index} href={'/ler/' + element.id}>
@@ -194,14 +197,14 @@ const LehrerPage = () => {
             })}
           </div>
           <div className='flex flex-col justify-center self-center'>
-            <button className='my-6 mx-16 bg-white rounded-3xl shadow-lg p-4' onClick={() => onClickRegister()}>Spiel Erstellen</button>
-            <div className=' shadow-lg bg-white rounded-3xl mx-16 my-auto overflow-y-auto
+            <button className='my-6 dark:bg-[#1f2733] dark:text-white mx-16 bg-white rounded-3xl shadow-lg p-4' onClick={() => onClickRegister()}>Spiel Erstellen</button>
+            <div className=' shadow-lg dark:bg-[#1f2733] dark:text-white bg-white rounded-3xl mx-16 my-auto overflow-y-auto
           h-96'>
               <table className='w-full'>
                 <tbody>
                   {companiesVerify.map(({ name, grade_name, id }, index) =>
                     <>
-                      <tr key={index} className='p-4 shadow-lg rounded-3xl m-auto my-3 flex justify-around bg-white w-[90%]'>
+                      <tr key={index} className='p-4 shadow-lg rounded-3xl m-auto my-3 flex justify-around dark:bg-[#28303c] dark:text-white bg-white w-[90%]'>
                         <td>{name}</td>
                         <td>{grade_name}</td>
                         <td>

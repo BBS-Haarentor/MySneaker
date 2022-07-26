@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import QRCodeStyling from "qr-code-styling";
 import Cookies from 'js-cookie';
 import SideNavBar from './SideNavBar'
-import KlassenDetailContainer from './KlassenDetailContainer';
 import KlasseContainer from './KlasseContainer';
 
 const KlassenDetailPage = () => {
@@ -14,6 +13,11 @@ const KlassenDetailPage = () => {
 
   const [register, setRegister] = useState(false)
   const [selectCompanie, setSelectCompanie] = useState(null)
+
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+  myHeaders.append('Access-Control-Allow-Origin', '*')
 
   const changeCompanie = (name, id) => {
     if (!selectCompanie) {
@@ -39,10 +43,13 @@ const KlassenDetailPage = () => {
     imageOptions: {
       crossOrigin: "anonymous",
       margin: 20
+    },
+    backgroundOptions: {
+      color: "transparent"
     }
   });
 
-  const [url, setUrl] = useState(window.location.protocol + "//" + window.location.hostname + "/register/" + id);
+  const url = window.location.protocol + "//" + window.location.hostname + "/register/" + id;
   const [showModal, setShowModal] = useState(false)
   const [game, setGame] = useState({
     current_cycle_index: ""
@@ -50,18 +57,29 @@ const KlassenDetailPage = () => {
   const ref = useRef(null);
   const [infoModal, setInfoModal] = useState(<></>)
 
-  useEffect(async () => {
+  useEffect(() => {
     qrCode.update({
       data: url
     });
 
     qrCode.append(ref.current);
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-    myHeaders.append('Access-Control-Allow-Origin', '*')
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+    };
 
+    updateCompany()
+
+      fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
+        if (res.status === 200) {
+          let json = await res.json();
+          setGame(json)
+        }
+      })
+  }, [url]);
+
+  const updateCompany = async () => {
     var requestOptions = {
       method: 'GET',
       headers: myHeaders,
@@ -72,14 +90,7 @@ const KlassenDetailPage = () => {
         let json = await element.json();
         setCompanies(json)
       })
-
-    await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
-      if (res.status === 200) {
-        let json = await res.json();
-        setGame(json)
-      }
-    })
-  }, [url]);
+  }
 
   const toggleTurnover = () => {
     var myHeaders = new Headers();
@@ -196,9 +207,9 @@ const KlassenDetailPage = () => {
     setShowModal(false)
   }
   const OnClick = (text) => {
-    if (text == "LehrerPage") {
+    if (text === "LehrerPage") {
       window.location.href = "/dashboard"
-    } else if (text == "Logout") {
+    } else if (text === "Logout") {
       window.location.href = "/logout"
     }
 
@@ -217,9 +228,9 @@ const KlassenDetailPage = () => {
           <div
             className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
             <div
-              className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+              className="text-center dark:bg-[#1f2733] bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-              <span className="font-bold block text-xl mb-3">QR-Code</span>
+              <span className="font-bold dark:text-white block text-xl mb-3">QR-Code</span>
               <div className='flex'>
                 <div className='block text-xl m-auto justify-center' ref={ref} />
               </div>
@@ -231,20 +242,22 @@ const KlassenDetailPage = () => {
         </div>
 
         <div className='h-screen w-full overflow-hidden'>
-          <div className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12 overflow-x-hidden'>
+          <div className='mt-12 p-4 xl:col-span-2 dark:bg-[#1f2733] dark:border-[#282d3c] dark:text-white  shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12 overflow-x-hidden'>
 
-            <KlasseContainer companyId={selectCompanie !== null ? selectCompanie.id : null} gameId={id} current_cycle_index={game.current_cycle_index} />
+            <KlasseContainer updateCompany={updateCompany} companyId={selectCompanie !== null ? selectCompanie.id : null} gameId={id} current_cycle_index={game.current_cycle_index} />
 
 
           </div>
           <div className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
-            <div className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[160%] overflow-y-auto my-12'>
+            <div className='inline-block dark:bg-[#1f2733] dark:border-[#282d3c] dark:text-white  shadow-lg rounded-3xl m-2 h-32 bg-white w-[160%] overflow-y-auto my-12'>
               <ul>
                 {companies.map(({ name, id, is_active }) => {
                   if (is_active) {
                     return (
-                      <li className='p-3 shadow-lg rounded-3xl m-auto my-4 flex justify-around bg-white w-[90%]' onClick={() => changeCompanie(name, id)}><a>{name}</a></li>
+                      <li className='p-3 shadow-lg rounded-3xl m-auto my-4 flex justify-around dark:bg-[#28303c]  bg-white w-[90%]' onClick={() => changeCompanie(name, id)}><p>{name}</p></li>
                     )
+                  } else {
+                    return (<></>)
                   }
                 }
                 )}
@@ -252,10 +265,10 @@ const KlassenDetailPage = () => {
             </div>
             <div className='absolute m-auto' />
             <div></div>
-            <button className={'inline-block border-2 shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12 '} onClick={() => onClickRegister()}>
+            <button className={'inline-block border-2 dark:bg-[#1f2733] dark:border-[#282d3c] dark:text-white  shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12 '} onClick={() => onClickRegister()}>
               QR-Code anzeigen
             </button>
-            <button className='inline-block shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => toggleTurnover()}>
+            <button className='inline-block shadow-lg dark:bg-[#1f2733] dark:border-[#282d3c] dark:text-white  rounded-3xl m-2 h-32 bg-white w-[82%] my-12' onClick={() => toggleTurnover()}>
               Periode abschließen
             </button>
           </div>

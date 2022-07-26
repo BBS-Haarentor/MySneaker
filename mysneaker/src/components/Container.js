@@ -5,6 +5,12 @@ import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
 import Lager from './Container/Lager';
 import Personal from './Container/Personal';
+import Marketing from './Container/Marketing'
+import Planung from './Container/Planung'
+import VerkaufSoll from './Container/VerkaufSoll'
+import VerkaufIst from './Container/VerkaufIst'
+import Statistik from  './Container/Statistik'
+import Finanzen from './Container/Finanzen';
 
 const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingRef, PersonalRef, AbsatzRef }) => {
 
@@ -135,7 +141,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
     var GesamtkostenProduktion = Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion;
-    var UmsatzIst = 0;
+    var UmsatzIst = data.current_stock.income_from_sales;
     var UmsatzSoll = MarktSoll * MarktSollPreis + AusschreibungSoll * AusschreibungSollPreis;
     
  
@@ -217,7 +223,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setEntnahmeAusDemLager(data.current_cycle.include_from_stock)
         setMarktSoll(data.current_cycle.sales_planned)
         setMarktSollPreis(data.current_cycle.sales_bid)
-        console.log(data.current_stock.real_sales)
         setMarktIst(data.current_stock.real_sales)
         setAussetschreibungSoll(data.scenario.tender_offer_count)
         setAusschreibungIst(0)
@@ -360,14 +365,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         return data
     }
 
-  
-
-
     const onBuyM2 = async () => {
 
         BuymaschineModal()
     }
-
 
     const onBuyM3 = async () => {
         BuymaschineModal()
@@ -520,7 +521,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             {modalConfirm}
             <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
 
-                <Beschaffung LagerBeschaffungRef={LagerBeschaffungRef} data={data} setSneakerEinkaufMenge={setSneakerEinkaufMenge} 
+                <Beschaffung LagerBeschaffungRef={LagerBeschaffungRef} scenario={data.scenario} setSneakerEinkaufMenge={setSneakerEinkaufMenge} 
                 setFarbenEinkaufMenge={setFarbenEinkaufMenge} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} 
                 formatter={formatter} FarbenKosten={FarbenKosten} SneakerKosten={SneakerKosten} />
 
@@ -534,7 +535,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-                {data.current_stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.current_stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion /1 ? "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -575,7 +576,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -593,7 +594,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -618,11 +619,11 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                         </tbody>
                     </table>
-                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                </div> : <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
                 </div>}
 
-                {data.current_stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion2 /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.current_stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion2 /1 ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -663,7 +664,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion2(e.target.value)} value={GeplanteProduktion2}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setGeplanteProduktion2(e.target.value)} value={GeplanteProduktion2}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -681,7 +682,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter2(e.target.value)} value={ZugeteilteMitarbeiter2}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter2(e.target.value)} value={ZugeteilteMitarbeiter2}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -706,18 +707,18 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                         </tbody>
                     </table>
-                </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                </div> : buy_new_machine != 0 ? <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                    <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                </div> : data.scenario.machine_purchase_allowed ?  <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                </div> : data.scenario.machine_purchase_allowed ?  <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
-                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
-                    <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
+                </div> : <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer Maschine nicht möglich</h1>
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.current_stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion3 /1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.current_stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20)  && MaximalproduzierbareAnzahl >= GeplanteProduktion3 /1 ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -758,7 +759,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion3(e.target.value)} value={GeplanteProduktion3}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setGeplanteProduktion3(e.target.value)} value={GeplanteProduktion3}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -776,7 +777,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -806,294 +807,47 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 <></>
                 :
                  buy_new_machine != 0? 
-                    <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                    <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                         <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                        <img src="/img/workonprogress.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                        <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div> 
                 : data.current_stock.machine_2_space == 0 ? 
                 <></> 
                 : data.scenario.machine_purchase_allowed ?  
-                <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
                 </div> 
                 : 
-                <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>
                 }
 
+                <Marketing MarketingRef={MarketingRef} setWerbung={setWerbung} Werbung={Werbung} setForschungUndEntwickelung={setForschungUndEntwickelung} 
+                ForschungUndEntwickelung={ForschungUndEntwickelung} />
 
-                <div className=" p-4  xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white flex justify-around snap-start " ref={MarketingRef}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Marketing</th>
-                            </tr>
-                            <tr>
-                                <td>Werbung</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setWerbung(e.target.value)} value={Werbung}></input> €</td>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Forschung und Entwickelung</th>
-                            </tr>
-                            <tr>
-                                <td>Verbesserung der Maschinen</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setForschungUndEntwickelung(e.target.value)} value={ForschungUndEntwickelung}></input> €</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <img src="/img/undraw_mobile_marketing.svg" className='h-96 w-64 xl:w-96 m-4'></img>
-                </div>
-                <div className="p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Planung Umsatzerlöse</th>
-                            </tr>
-                            <tr>
-                                <td>Geplante Produktion</td>
-                                <td>{Gesamtproduktion} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Maximal Entnahme aus Lager</td>
-                                <td>{data.current_stock.finished_sneaker_count} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Entnahme aus dem Lager</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setEntnahmeAusDemLager(e.target.value)} value={EntnahmeAusDemLager}></input></td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtproduktion</td>
-                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager))} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Geplanteproduktion möglich</td>
-                                <td>{EntnahmeAusDemLager > MaximaleEntnahmeAusLager / 1 ? "Nein" : "Ja"}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className={Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "p-4 border-2 border-red-300 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start":"p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start"}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'   >Verkauf (Soll)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Geplante Stückzahl</td>
-                                <td>Preis je Einheit (Angebot)</td>
-                                <td>Geplanter Umsatz</td>
-                            </tr>
-                            <tr>
-                                <td>Markt</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSoll(e.target.value)} value={MarktSoll}></input> Stk.</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setMarktSollPreis(e.target.value)} value={MarktSollPreis}></input> €</td>
-                                <td>{formatter.format(MarktSoll * MarktSollPreis)}</td>
-                            </tr>
-                            <tr>
-                           
-                                <td>Ausschreibung</td>
-                              
-                                {data.scenario.tender_offer_count == 0 ? 
-                                <>
-                                    <td><input className="border-2 border-gray-300 rounded-lg text-gray-300" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll} disabled></input> Stk.</td>
-                                    <td><input className="border-2 border-gray-300 rounded-lg text-gray-300" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis} disabled></input> €</td>
-                                </>
-                                :
-                                <>
-                                    <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll}></input> Stk.</td>
-                                    <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis}></input> €</td>
-                                </>
-                                }
-                                <td>{formatter.format(AusschreibungSoll * AusschreibungSollPreis)}</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))} Stk.</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtverkauf Möglich</td>
-                                <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "Nein" : "Ja"}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className=" p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>Verkauf (Ist)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Verkaufte Stück</td>
-                                <td>Umsatz</td>
-                            </tr>
-                            <tr>
-                                <td>Markt</td>
-                                <td>{MarktIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Ausschreibung</td>
-                                <td>{AusschreibungIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk. </td>
-                                <td>{formatter.format(UmsatzIst)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
-                </div>
-                <div className=" p-4 shadow-lg xl:col-span-3 rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
-                    <img src="/img/undraw_finance.svg" className='h-[500px] w-0 xl:w-[500px] m-auto'></img>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th ></th>
-                                <th className='text-[#4fd1c5]'>Finanzen</th>
+                <Planung AbsatzRef={AbsatzRef} Gesamtproduktion={Gesamtproduktion} setEntnahmeAusDemLager={setEntnahmeAusDemLager} EntnahmeAusDemLager={EntnahmeAusDemLager}
+                MaximaleEntnahmeAusLager={MaximaleEntnahmeAusLager} stock={data.current_stock} />
 
-                            </tr>
-                            <tr>
-                                <td className='w-80'></td>
-                                <td className='text-[#4fd1c5] w-40' >PLAN</td>
-                                <td className='text-[#4fd1c5] w-40'>IST</td>
-                            </tr>
-                            <tr>
-                                <td>Kontostand</td>
-                                <td>{formatter.format(data.current_stock.account_balance)}</td>
-                                <td>{formatter.format(data.current_stock.account_balance)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maximale Darlehenshöhe</td>
-                                <td>50.000€</td>
-                                <td>50.000€</td>
-                            </tr>
-                            <tr>
-                                <td>Darlehensstand (Beginn Periode)</td>
-                                <td>{formatter.format(data.current_stock.credit_taken)}</td>
-                                <td>{formatter.format(data.current_stock.credit_taken)}</td>
-                            </tr>
-                            <tr>
-                                <td>Aufnahme Darlehen</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setAufnahmeDarlehen(e.target.value)} value={AufnahmeDarlehen}></input> €</td>
-                                <td>{formatter.format(AufnahmeDarlehen)}</td>
-                            </tr>
-                            <tr>
-                                <td>Darlehensstand (Ende Periode)</td>
-                                <td>{formatter.format(data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                                <td>{formatter.format(data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                            </tr>
-                            <tr>
-                                <td>Einkauf Sneaker</td>
-                                <td>{formatter.format(SneakerKosten)}</td>
-                                <td>{formatter.format(SneakerKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Einkauf Farben</td>
-                                <td>{formatter.format(FarbenKosten)}</td>
-                                <td>{formatter.format(FarbenKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Fertige Erz.</td>
-                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
-                                <td>{formatter.format((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Sneaker</td>
-                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
-                                <td>{formatter.format((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
-                            </tr>
-                            <tr>
-                                <td>Lagerkosten Farben</td>
-                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                                <td>{formatter.format(((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkosten</td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Produktionskosten</td>
-                                <td>{formatter.format(GesamtkostenProduktion - Maschinenkosten)}</td>
-                                <td>{formatter.format(GesamtkostenProduktion - Maschinenkosten)}</td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkauf</td>
-                                <td>{formatter.format(newMaschienPrize)}</td>
-                                <td>{formatter.format(newMaschienPrize)}</td>
-                            </tr>
-                            <tr>
-                                <td>Kosten Neueinstellung</td>
-                                <td>{formatter.format(Neueinstellungen * 100)}</td>
-                                <td>{formatter.format(Neueinstellungen * 100)}</td>
-                            </tr>
-                            <tr>
-                                <td>Löhne/Gehälter</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
-                            </tr>
-                            <tr>
-                                <td>Werbekosten</td>
-                                <td>{formatter.format(Werbung)}</td>
-                                <td>{formatter.format(Werbung)}</td>
-                            </tr>
-                            <tr>
-                                <td>Rationalisierung</td>
-                                <td>{formatter.format(ForschungUndEntwickelung)}</td>
-                                <td>{formatter.format(ForschungUndEntwickelung)}</td>
-                            </tr>
-                            <tr>
-                                <td>Zinsen (Darlehen)</td>
-                                <td>{((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
-                                <td>{((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate).toFixed(2) + "€"}</td>
-                            </tr>
-                            <tr>
-                                <td>Rückzahlung Darlehen</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setRueckzahlungDarlehen(e.target.value)} value={RueckzahlungDarlehen}></input>}</td>
-                            </tr>
-                            <tr>
-                                <td>Umsatzerlöse</td>
-                                <td>{formatter.format(UmsatzSoll)}</td>
-                                <td>{formatter.format(Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst)))}</td>
-                            </tr>
-                            <tr>
-                                <td>Saldo</td>
-                                <td>{formatter.format(SaldoSoll)}</td>
-                                <td>{formatter.format(SaldoIst)}</td>
-                            </tr>
-                            <tr>
-                                <td>Höhe Kontokorrentkredit</td>
-                                <td>{formatter.format(HöheKontokorrentkreditSoll)}</td>
-                                <td>{formatter.format(HöheKontokorrentkreditIst) }</td>
-                            </tr>
-                            <tr>
-                                <td>Zinsen (Kontokorrentkredit)</td>
-                                <td>{formatter.format(HöheKontokorrentkreditSoll * 0.12)}</td>
-                                <td>{formatter.format(HöheKontokorrentkreditIst * 0.12)}</td>
-                            </tr>
-                            <tr>
-                                <td>Kontostand</td>
-                                <td>{formatter.format(SaldoSoll + (HöheKontokorrentkreditSoll * 0.12))}</td>
-                                <td>{formatter.format(SaldoIst + (HöheKontokorrentkreditIst * 0.12)) }</td>
-                            </tr>
+                <VerkaufSoll Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} AusschreibungSoll={AusschreibungSoll} 
+                formatter={formatter} AusschreibungSollPreis={AusschreibungSollPreis} MarktSollPreis={MarktSollPreis} setAussetschreibungSoll={setAussetschreibungSoll}
+                setAussetschreibungSollPreis={setAussetschreibungSollPreis} setMarktSoll={setMarktSoll} scenario={data.scenario} setMarktSollPreis={setMarktSollPreis} />
 
-                        </tbody>
-                    </table>
-                </div>
+                <VerkaufIst AusschreibungIst={AusschreibungIst} MarktIst={MarktIst} UmsatzIst={UmsatzIst} formatter={formatter} />
+
+                <Statistik AllMaschienenKosten={AllMaschienenKosten} FarbenKosten={FarbenKosten} FertigungskostenProStückFE={FertigungskostenProStückFE} Gesamtproduktion={GeplanteProduktion}
+                MarktSoll={MarktSoll} MarktSollPreis={MarktSollPreis} Mitarbeiter={Mitarbeiter} PersonalnebenkostenInP={PersonalnebenkostenInP} SneakerKosten={SneakerKosten} formatter={formatter} />
+
+                <Finanzen AllMaschienenKosten={AllMaschienenKosten} AufnahmeDarlehen={AufnahmeDarlehen} AusschreibungIst={AusschreibungIst} AusschreibungSoll={AusschreibungSoll}
+                FarbenEinkaufMenge={FarbenEinkaufMenge} FarbenKosten={FarbenKosten} FinanzenRef={FinanzenRef} ForschungUndEntwickelung={ForschungUndEntwickelung} 
+                GesamtkostenProduktion={GesamtkostenProduktion} Gesamtproduktion={Gesamtproduktion} HöheKontokorrentkreditIst={HöheKontokorrentkreditIst} 
+                HöheKontokorrentkreditSoll={HöheKontokorrentkreditSoll} MarktIst={MarktIst} MarktSoll={MarktSoll} Maschinenkosten={Maschinenkosten} Mitarbeiter={Mitarbeiter}
+                Neueinstellungen={Neueinstellungen} PersonalnebenkostenInP={PersonalnebenkostenInP} RueckzahlungDarlehen={RueckzahlungDarlehen} SaldoIst={SaldoIst}
+                SaldoSoll={SaldoSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} SneakerKosten={SneakerKosten} UmsatzSoll={UmsatzSoll} Werbung={Werbung} formatter={formatter}
+                newMaschienPrize={newMaschienPrize} scenario={data.scenario} setAufnahmeDarlehen={setAufnahmeDarlehen} setRueckzahlungDarlehen={setRueckzahlungDarlehen}
+                stock={data.current_stock} UmsatzIst={UmsatzIst} />
                 <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={onSubmit}>Abgeben/Speichern</button>
             </div>
         </>

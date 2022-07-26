@@ -7,13 +7,13 @@ const NavBarButton = ({text , state, onClick}) => {
     var textstyle = ""
     if(text === state){
           icon = "/img/" + text + "-w.png"
-          style = "bg-white shadow-md";
+          style = "dark:bg-[#1f2733] bg-white shadow-md dark:shadow-gray-800";
           iconstyle = "bg-[#4fd1c5]"
-          textstyle = ""
+          textstyle = "dark:text-white"
     }else{
          icon = "/img/" + text + ".png"
-         iconstyle = "bg-white"
-         style = "bg-[#F7FAFC]"
+         iconstyle = "dark:bg-[#1f2733] bg-white"
+         style = "dark:bg-[#1f2733] bg-[#F7FAFC]"
          textstyle = "text-[#a0aec0]"
     }
 
