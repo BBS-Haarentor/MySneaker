@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models.game import Game
@@ -56,5 +57,6 @@ class ScenarioService():
 
 
     async def update_scenario(self, update_data: ScenarioBase) -> Scenario:
+        update_data.last_edit: float = datetime.now().timestamp()
         return await self.scenario_repo.update(update_data=update_data)
         

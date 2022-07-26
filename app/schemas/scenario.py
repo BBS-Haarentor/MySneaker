@@ -6,7 +6,7 @@ from app.schemas.base import BaseSchema
 
 class ScenarioBase(BaseSchema):
     char: str 
-    description: str 
+    description: str | None
     sneaker_price: float | None
     paint_price: float | None
     storage_fee_sneaker: float | None 

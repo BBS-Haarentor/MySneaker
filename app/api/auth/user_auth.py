@@ -85,7 +85,7 @@ def admin_auth_required(func):
 async def game_owner_check(user_id: int, game_id: int, session: AsyncSession) -> bool:
     game: Game = await get_game_by_id(id=game_id, session=session)
     
-    return game.owner_id == user_id
+    return (game.owner_id is user_id)
 
 
 async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session))-> User | None:

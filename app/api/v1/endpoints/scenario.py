@@ -4,7 +4,7 @@ from urllib import response
 from fastapi import APIRouter, Body, Depends, HTTPException
 from starlette import status
 from app.api.auth.api_key_auth import get_api_key
-from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user
+from app.api.auth.user_auth import admin_auth_required, base_auth_required, get_current_active_user, teacher_auth_required
 from app.crud.scenario import add_new_scenario, get_all_scenarios, get_scenario_by_char
 from app.db.session import get_async_session
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -24,7 +24,7 @@ async def get_scenario_by_character_v2(char: str, current_user: User = Depends(g
     scenario_service = ScenarioService(session=session)
     if len(char) != 1:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-    return await scenario_service.get_scenario_by_char(char=char)
+    return await scenario_service.get_scenario_by_char(char=char.upper())
     
 
 @router.get("/get_all_scenarios", status_code=status.HTTP_200_OK, response_model=list[Scenario])
@@ -53,3 +53,10 @@ async def init_scenarios(api_key: APIKey = Depends(get_api_key), session: AsyncS
     await session.commit()
     scenario_list: list[Scenario] = await get_all_scenarios(session=session)
     return scenario_list
+
+@router.put("/edit", status_code=status.HTTP_202_ACCEPTED)
+@teacher_auth_required
+async def edit_scenario_by_char(update_data: Scenario, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Scenario:
+    scenario_service: ScenarioService = ScenarioService(session=session)
+    updated_scenario: Scenario = await scenario_service.update_scenario(update_data=update_data)
+    return updated_scenario
