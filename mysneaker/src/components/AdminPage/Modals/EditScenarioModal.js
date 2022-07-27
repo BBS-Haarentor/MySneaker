@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2'
 
-const EditScenarioModal = ({setModal, char, myHeaders}) => {
+const EditScenarioModal = ({ setModal, char, myHeaders }) => {
 
     const [scenario, setScenario] = useState({
-        "id": 0,
         "char": "string",
         "description": "string",
         "sneaker_price": 20,
@@ -36,6 +36,9 @@ const EditScenarioModal = ({setModal, char, myHeaders}) => {
         "production_cost_per_sneaker2": 50,
         "production_cost_per_sneaker3": 40
     });
+    const [sneaker_ask, setSneaker_Ask] = useState(0);
+    const [machine_purchase_allowed, setMachine_purchase_allowed] = useState(scenario.machine_purchase_allowed);
+    const [bezugspreis, setBezugspreis] = useState("");
 
     useEffect(() => {
         const requestOptions = {
@@ -46,10 +49,52 @@ const EditScenarioModal = ({setModal, char, myHeaders}) => {
             if (element.status === 200) {
                 element.json().then((element1) => {
                     setScenario(element1)
+                    setSneaker_Ask(element1.sneaker_ask)
+                    setMachine_purchase_allowed(element1.machine_purchase_allowed)
                 })
             }
         })
-    })
+    }, [])
+
+    const saveScenario = () => {
+
+        scenario.sneaker_ask = parseInt(sneaker_ask);
+        scenario.machine_purchase_allowed = machine_purchase_allowed;
+
+
+        var raw = JSON.stringify(scenario);
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: myHeaders,
+            body: raw
+        };
+        fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/scenario/edit", requestOptions).then((element) => {
+            if (element.status === 202) {
+                element.json().then((element1) => {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Die Änderungen wurden Erfolgreich Übermittelt',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setModal(<></>)
+                })
+            } else {
+                element.json().then((element1) => {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Es ist ein Fehler aufgetreten',
+                        text: element1.detail,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                });
+            }
+        })
+    }
 
     return (
         <>
@@ -70,31 +115,32 @@ const EditScenarioModal = ({setModal, char, myHeaders}) => {
                                     <div className="grid grid-cols-6 gap-6">
                                         <div className="col-span-6 sm:col-span-3">
                                             <label htmlFor="reference-price"
-                                                   className="block text-sm font-medium text-gray-700">Bezugspreis</label>
+                                                className="block text-sm font-medium text-gray-700">Bezugspreis</label>
                                             <input type="number" name="reference-price" id="reference-price"
-                                                   className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md"/>
+                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">
                                             <label htmlFor="total-amount"
-                                                   className="block text-sm font-medium text-gray-700">Nachgefragte
+                                                className="block text-sm font-medium text-gray-700">Nachgefragte
                                                 Gesamtmenge</label>
-                                            <input type="number" value={scenario.sneaker_ask} name="total-amount" id="total-amount"
-                                                   className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md"/>
+                                            <input type="number" value={sneaker_ask} onChange={(e) => setSneaker_Ask(e.target.value)} name="total-amount" id="total-amount"
+                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
                                         <div className="col-span-4 sm:col-span-4">
                                             <label htmlFor="buymachine"
-                                                   className="block text-sm font-medium text-gray-700">Maschinen
+                                                className="block text-sm font-medium text-gray-700">Maschinen
                                                 Kaufen</label>
-                                            <input type="checkbox" checked={scenario.machine_purchase_allowed} name="buymachine" id="buymachine"
-                                                   className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"/>
+                                            <input type="checkbox" checked={machine_purchase_allowed} onClick={(e) => setMachine_purchase_allowed(e.target.checked)} name="buymachine" id="buymachine"
+                                                className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
                                     </div>
                                 </div>
                                 <div className='my-6'>
                                     <button
+                                        onClick={() => saveScenario()}
                                         className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo">Periode
                                         Speichern
                                     </button>

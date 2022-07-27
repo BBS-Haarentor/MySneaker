@@ -13,7 +13,6 @@ import { useEffect } from 'react';
 function App() {
 
     useEffect(() => {
-        console.log(localStorage.getItem('color-theme'))
         if (localStorage.getItem('color-theme')) {
             if (localStorage.getItem('color-theme') === 'light') {
               document.documentElement.classList.add('light');
@@ -22,10 +21,8 @@ function App() {
               document.documentElement.classList.add('dark');
               window.localStorage.setItem('color-theme', 'dark');
             }
-        
-            // if NOT set via local storage previously
           } else {
-            if (document.documentElement.classList.contains('dark')) {
+            if (window.matchMedia("(prefers-color-scheme:dark)").matches) {
               document.documentElement.classList.add('dark');
               localStorage.setItem('color-theme', 'dark');
             } else {
