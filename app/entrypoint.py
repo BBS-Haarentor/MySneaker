@@ -57,7 +57,6 @@ api.add_middleware(
 
 @api.on_event("startup")
 async def setup_db():
-    await asyncio.sleep(3)
     await init_async_db()
 
 

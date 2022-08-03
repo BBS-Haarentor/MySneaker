@@ -2,6 +2,7 @@ from datetime import datetime
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models.game import Game
+from app.api.auth.util import pwd_context
 
 from app.models.user import User
 from app.repositories.game_repository import GameRepository
@@ -13,12 +14,9 @@ from app.schemas.user import UserBase, UserPost
 class UserService():
 
     user_repo: UserRepository
-    scenario_repo: ScenarioRepository
-    game_repo: GameRepository
     
     def __init__(self, session: AsyncSession):
-        self.scenario_repo = ScenarioRepository(session=session)
-        self.game_repo = GameRepository(session=session)
+        self.user_repo = UserRepository(session=session)
         
         
     async def get_user_by_id(self, id: int) -> User:
@@ -43,3 +41,16 @@ class UserService():
         self.user_repo.delete(id=id)
         return None
     
+    
+    async def authenticate_user(self, name: str, password: str) -> User:
+        user: User = await self.user_repo.get_user_by_name(name=name)
+        if not pwd_context.verify(password, user.hashed_pw):
+            raise NotImplementedError
+        else:
+            await self.update_last_login(user=user)
+            return user
+        
+        
+    async def game_owner_check(self, user_id: int, game_id: int) -> bool:
+        game: Game = await self.game_repo.get(id=game_id)
+        return (game.owner_id is user_id)

@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.api.auth.user_auth import base_auth_required, game_owner_check, get_current_active_user, teacher_auth_required
+from app.api.auth.user_auth import game_owner_check, get_current_active_user
+from app.api.auth.util import teacher_auth_required, base_auth_required, admin_auth_required
+
 from app.crud.stock import get_stock_entries_by_user_id, get_stock_entries_by_user_id_and_cycle_id, get_stock_entry_by_user_id_and_cycle_id, new_stock_entry
 from app.db.session import get_async_session
 

@@ -47,6 +47,7 @@ class ScenarioService():
     async def get_all_scenario_chars(self) -> list[str]:
         return await self.scenario_repo.get_all_chars()
    
+   
     async def get_all_scenarios(self) -> list[Scenario]:
         return await self.scenario_repo.get_all()
     
