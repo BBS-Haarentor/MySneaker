@@ -3,12 +3,12 @@ from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
 from app.core.config import SETTINGS, cls_factory
-from app.api.auth.user_auth import base_auth_required, get_current_active_user, admin_auth_required, authenticate_user, create_access_token, init_admin, init_teachers, teacher_auth_required
 from app.crud.game import get_game_by_id
 from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_admingroup, check_user_in_basegroup, check_user_in_group, check_user_in_teachergroup
 from app.crud.stock import new_stock_entry
 from app.crud.user import create_user, get_teacher_list, get_user_by_id, get_user_by_id_or_name, get_user_status, remove_user, toggle_user_active, update_pw, update_user
 from app.db.session import get_async_session
+from app.db.init_db import init_admin, init_teachers
 from app.models.game import Game
 from app.models.groups import BaseGroup
 from app.models.stock import Stock
@@ -20,7 +20,8 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi.security.api_key import APIKey
 from fastapi.security import OAuth2PasswordRequestForm
-from app.api.auth.util import pwd_context, hash_pw
+from app.api.auth.util import pwd_context, hash_pw, base_auth_required, get_current_active_user, admin_auth_required, teacher_auth_required, create_access_token
+from app.services.user_service import UserService
 
 router = APIRouter()
 
@@ -121,7 +122,8 @@ async def delete_user(user_id: int, current_user: User = Depends(get_current_act
 
 @router.post("/login")
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_async_session)):
-    user: User | bool = await authenticate_user(session=session, username=form_data.username, password=form_data.password)
+    user_service: UserService = UserService(session=session)
+    user: User = await user_service.authenticate_user(name=form_data.username, password=form_data.password)
     if not user or not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

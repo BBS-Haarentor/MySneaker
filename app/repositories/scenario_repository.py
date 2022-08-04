@@ -4,7 +4,9 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.repositories.crud_repository import CRUDRepository, NotFoundError
 from app.models.scenario import Scenario
 
+
 class ScenarioRepository(CRUDRepository):
+        
         
     def __init__(self, session: AsyncSession):
         super().__init__(session=session, type_identifier=Scenario())
@@ -22,6 +24,7 @@ class ScenarioRepository(CRUDRepository):
         if isinstance(scenario, NoneType):
             raise ScenarioNotFoundError(entity_id=char)
         return scenario
+
 
     async def get_all_chars(self) -> list[str]:
         result = await self.session.exec(select(Scenario.char))
@@ -41,6 +44,7 @@ class ScenarioRepository(CRUDRepository):
         result = await self.session.exec(select(Scenario))
         scenario_list: list[Scenario] = result.all()
         return scenario_list
+
 
 class ScenarioNotFoundError(NotFoundError):
 

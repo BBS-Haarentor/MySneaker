@@ -4,8 +4,7 @@ from urllib import response
 from fastapi import APIRouter, Body, Depends, HTTPException
 from starlette import status
 from app.api.auth.api_key_auth import get_api_key
-from app.api.auth.user_auth import get_current_active_user
-from app.api.auth.util import teacher_auth_required, base_auth_required, admin_auth_required
+from app.api.auth.util import teacher_auth_required, base_auth_required, admin_auth_required, get_current_active_user
 
 from app.crud.scenario import add_new_scenario, get_all_scenarios, get_scenario_by_char
 from app.db.session import get_async_session

@@ -7,14 +7,16 @@ from app.exception.general import NotFoundError
 from app.schemas.base import BaseSchema
 
 class CRUDRepository():
+    
     session: AsyncSession
     type_identifier: BaseSchema
+
     
     def __init__(self, session: AsyncSession, type_identifier: BaseSchema) -> None:
         self.session = session
         self.type_identifier = type_identifier
-        
-        
+    
+    
     async def create(self, create_data: BaseSchema) -> int:
         create_data.creation_date = datetime.now().timestamp()
         create_data.last_edit = datetime.now().timestamp()
@@ -49,10 +51,8 @@ class CRUDRepository():
         result = await self.session.exec(select(self.type_identifier.__class__).where(self.type_identifier.__class__.id == id))
         entity = result.one_or_none()
         if isinstance(entity, NoneType):
-            raise NotFoundError(entity_id=id, type_identifier=self.type_identifier.__class__)
+            raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__)
         self.session.delete(entity)
         await self.session.commit()
         await self.session.flush()
         return None
-    
-    

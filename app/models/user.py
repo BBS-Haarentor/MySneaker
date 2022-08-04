@@ -11,7 +11,7 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     creation_date: float | None = Field(default=datetime.now().timestamp())
     last_edit: float | None = Field(default=datetime.now().timestamp())
-    last_login: datetime | None = Field(datetime.now()) 
+    last_login: float | None = Field(default=datetime.now().timestamp()) 
     name: str = Field(default=None, index=True)
     email: str | None = Field(default=None)
     hashed_pw: str

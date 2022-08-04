@@ -23,7 +23,7 @@ def hash_pw(unhashed_pw: str):
     return pwd_context.hash(unhashed_pw)
 
 
-def create_access_token(self, data: dict, expires_delta: timedelta | None = None):
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -35,7 +35,8 @@ def create_access_token(self, data: dict, expires_delta: timedelta | None = None
 
 
 async def get_current_active_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_async_session))-> User | None:
-    user_repo: UserRepository(session=session)
+    #user_repo: UserRepository(session=session)
+    user_repo: UserRepository = UserRepository(session=session)
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -51,7 +52,7 @@ async def get_current_active_user(token: str = Depends(oauth2_scheme), session: 
     except JWTError:
         raise credentials_exception
     try:
-        current_user: User = await user_repo.get_user_by_name(search_name=token_data.username)
+        current_user: User = await user_repo.get_user_by_name(name=token_data.username)
     except UserNotFoundError:
         raise credentials_exception
     if not current_user.is_active:

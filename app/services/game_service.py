@@ -14,17 +14,19 @@ from app.repositories.game_repository import GameRepository
 from app.repositories.scenario_repository import ScenarioRepository
 from app.repositories.stock_repository import StockRepository
 from app.repositories.user_repository import UserRepository
-from app.schemas.game import PlayerInfo
+from app.schemas.game import GameCreate, PlayerInfo
 from app.schemas.scenario import ScenarioCreate
 
 
 class GameService():
+
 
     game_repo: GameRepository
     scenario_repo: ScenarioRepository
     user_repo: UserRepository
     stock_repo: StockRepository
     cycle_repo: CycleRepository
+    
     
     def __init__(self, session: AsyncSession):
         self.game_repo = GameRepository(session=session)
@@ -34,8 +36,25 @@ class GameService():
         self.cycle_repo = CycleRepository(session=session)
         
         
-    def get_game_by_user_id(self, user_id: int) -> Game:
-        pass
+    async def get_game_by_player_id(self, player_id: int) -> Game:
+        player: User = await self.user_repo.get(id=player_id)
+        game: Game = await self.game_repo.get(id=player.game_id)
+        return game
+    
+    
+    async def get_ids_by_owner_id(self, owner_id: int) -> list[int]:
+        ids: list[int] = await self.game_repo.get_game_ids_by_owner(owner_id=owner_id)
+        return ids
+        
+        
+    async def get_game_by_id(self, game_id: int) -> Game:
+        game: Game = await self.game_repo.get(id=game_id)
+        return game
+        
+    async def create_game(self, create_data: GameCreate) -> int:
+        game_id: int = await self.game_repo.create(create_data=create_data)
+        return game_id
+    
         
     async def get_player_info(self, user_id: int, index: int) -> PlayerInfo:
         info = PlayerInfo(company_id=user_id, index=index)

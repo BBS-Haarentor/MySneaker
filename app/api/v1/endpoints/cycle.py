@@ -1,7 +1,6 @@
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException, Request
-from app.api.auth.user_auth import game_owner_check, get_current_active_user
-from app.api.auth.util import teacher_auth_required, base_auth_required
+from app.api.auth.util import teacher_auth_required, base_auth_required, get_current_active_user
 from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_entry_by_id, get_cycles_by_user_id, new_cycle_entry
 from app.crud.game import get_game_by_id
 from app.crud.user import check_user_in_game

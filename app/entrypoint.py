@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import traceback
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 import time
@@ -43,7 +44,7 @@ async def error_handling(request: Request, call_next):
         code = status.HTTP_500_INTERNAL_SERVER_ERROR
         if isinstance(ex, IndexError):
             code = status.HTTP_404_NOT_FOUND
-        logging.warning(ex)
+        logging.warning(traceback.format_exc())
         return JSONResponse(status_code=code, content=ex.__str__())
 
 

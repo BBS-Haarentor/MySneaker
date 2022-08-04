@@ -13,12 +13,17 @@ from app.schemas.user import UserBase, UserPost
 
 class UserService():
 
+
     user_repo: UserRepository
-    
+    game_repo: GameRepository
+
+
     def __init__(self, session: AsyncSession):
         self.user_repo = UserRepository(session=session)
-        
-        
+        self.game_repo = GameRepository(session=session)
+
+    
+    
     async def get_user_by_id(self, id: int) -> User:
         return await self.user_repo.get(id=id)
     

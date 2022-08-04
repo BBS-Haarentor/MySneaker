@@ -1,12 +1,12 @@
+import logging
 import re
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlmodel import select
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.api.auth.user_auth import get_current_active_user
 
-from app.api.auth.util import teacher_auth_required, base_auth_required, admin_auth_required
+from app.api.auth.util import teacher_auth_required, base_auth_required, admin_auth_required, get_current_active_user
 
 from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_by_user_id_and_index
 from app.crud.game import create_game, delete_game_by_id, edit_game, get_all_game_ids, get_all_games_by_owner, get_all_users_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, get_game_state, set_back_cycle_index, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
@@ -22,9 +22,8 @@ from app.models.user import User
 from app.models.game import Game
 from app.schemas.game import GameCreate, GamePatch, GameResponse, PlayerInfo
 from app.schemas.user import UserResponse, UserResponseWithGradeName
+from app.services.cycle_service import CycleService
 from app.services.game_service import GameService
-
-
 
 
 router = APIRouter()
@@ -35,36 +34,39 @@ router = APIRouter()
 async def post_new_game(game_init_data: GameCreate, 
                         current_user: User = Depends(get_current_active_user), 
                         session: AsyncSession = Depends(get_async_session)) -> int: 
-    if game_init_data.owner_id == None:
+    if isinstance(game_init_data.owner_id, NoneType):
         game_init_data.owner_id = current_user.id
     game_service: GameService = GameService(session=session)
-    
-    #new_game_id: int = await game_service
-    new_game_id = await create_game(game_init_data, session)
-    return new_game_id
+    game_id: int = await game_service.create_game(create_data=game_init_data)
+    return game_id
+
 
 @router.get("/get_all_ids",status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def get_all_my_game_ids(current_user: User = Depends(get_current_active_user), 
                               session: AsyncSession = Depends(get_async_session)) -> list[int]:
-    all_game_ids: list[int] = await get_all_game_ids(user_id=current_user.id, session=session)
+    game_service: GameService = GameService(session=session)
+    all_game_ids: list[int] = await game_service.get_ids_by_owner_id(owner_id=current_user.id)
     return all_game_ids
+    
     
 @router.get("/get_by_id/{game_id}", status_code=status.HTTP_200_OK, response_model=GameResponse)
 @teacher_auth_required
 async def get_by_id(game_id: int, 
                     current_user: User = Depends(get_current_active_user), 
                     session: AsyncSession = Depends(get_async_session)) -> Game | None:
-    result: Game | None = await get_game_by_id(id=game_id, session=session)
-    return result
+    game_service: GameService = GameService(session=session)
+    game: Game = await game_service.get_game_by_id(game_id=game_id)
+    return game
+
 
 @router.get("/get_all_game_ids_by_teacher/{user_id}",status_code=status.HTTP_200_OK)
 @admin_auth_required
 async def get_all_game_ids_by_user_id(user_id: int, 
                                       current_user: User = Depends(get_current_active_user), 
                                       session: AsyncSession = Depends(get_async_session)) -> list[int]:
-    all_game_ids: list[int] = await get_all_game_ids(user_id=current_user.id, session=session)
-    # do stuff
+    game_service: GameService = GameService(session=session)
+    all_game_ids: list[int] = await game_service.get_ids_by_owner_id(owner_id=user_id)
     return all_game_ids
     
     
@@ -72,7 +74,8 @@ async def get_all_game_ids_by_user_id(user_id: int,
 @base_auth_required
 async def get_my_game(current_user: User = Depends(get_current_active_user), 
                       session: AsyncSession = Depends(get_async_session)) -> Game:
-    game: Game = await get_game_by_id(current_user.game_id, session=session)
+    game_service: GameService = GameService(session=session)
+    game: Game = await game_service.get_game_by_id(game_id=current_user.game_id)
     return game
 
 
@@ -81,6 +84,8 @@ async def get_my_game(current_user: User = Depends(get_current_active_user),
 async def get_my_summary(current_user: User = Depends(get_current_active_user), 
                          session: AsyncSession = Depends(get_async_session)): 
     #current_cycle = await get_cy
+   
+    #current_cycle: Cycle = await cycle_service.get_current_cycle_by_user_id(user_id=current_user.id)
     current_cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
     game: Game = await get_game_by_id(current_user.game_id, session=session)
     current_stock: Stock = await get_stock_entry_by_user_id_and_cycle_id(user_id=current_user.id, index=game.current_cycle_index, session=session)
@@ -135,7 +140,7 @@ async def get_all_games_by_user_id(user_id: int,
     return game_list
     
 
-@router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK) # Umschlagsrechnung
+@router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def turnover(game_id: int, 
                    current_user: User = Depends(get_current_active_user), 
