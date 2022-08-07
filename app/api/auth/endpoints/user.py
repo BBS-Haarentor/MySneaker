@@ -13,7 +13,7 @@ from app.models.game import Game
 from app.models.groups import BaseGroup
 from app.models.stock import Stock
 from app.models.user import User
-from app.schemas.group import GroupPatch
+from app.schemas.group import GroupBase
 from app.schemas.user import UserPostElevated, UserPostStudent, UserPwChange, UserResponse
 from starlette import status
 from sqlmodel import select
@@ -161,36 +161,6 @@ async def modify_by_teacher(update_data: UserPwChange, current_user: User = Depe
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No User found by the supplied id")
     
     return user
-
-
-@router.post("/groups/", status_code=status.HTTP_202_ACCEPTED)
-@admin_auth_required
-async def patch_role(patch_data: GroupPatch, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    result : User | None = await get_user_by_id(patch_data.to_be_patched_user_id)
-    if isinstance(result, NoneType):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="user not found")
-
-    # remove from groups
-    for grp in patch_data.remove_groups:
-        group = cls_factory(grp)
-        # check whether user already in group
-        group_check_result: User | None = await check_user_in_group(user_id=patch_data.to_be_patched_user_id, target_group=group)
-        if isinstance(group_check_result, User):
-            session.exec(select(group.__class__).where(group.__class__.user_id == patch_data.to_be_patched_user_id))
-        else: 
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User not member of one or more group in remove_groups")
-    '''
-    # add to groups
-    for grp in patch_data.add_groups: 
-        group = cls_factory(grp)
-        group_check_result: User | None = await check_user_in_group(user_id=patch_data.to_be_patched_user_id, target_group=group)
-        if isinstance(group_check_result, User):
-            result = await session.exec(select(group.__class__).where(group.__class__.user_id == patch_data.to_be_patched_user_id))
-            group_entry = result.
-        else: 
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already member of one or more group in add_groups")
-    '''
-    raise NotImplementedError
 
 
 @router.get("/me", status_code=status.HTTP_200_OK, response_model=UserResponse)

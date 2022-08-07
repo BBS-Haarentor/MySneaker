@@ -27,11 +27,11 @@ class CRUDRepository():
         return entity.id
     
     
-    async def get(self, id: int) -> BaseSchema:
+    async def read(self, id: int) -> BaseSchema:
         result = await self.session.exec(select(self.type_identifier.__class__).where(self.type_identifier.__class__.id == id))
         entity: BaseSchema = result.one_or_none()
         if isinstance(entity, NoneType):
-            raise NotFoundError(entity_id=id, type_identifier=self.type_identifier.__class__)
+            raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__.__str__())
         return entity
     
     
@@ -51,7 +51,7 @@ class CRUDRepository():
         result = await self.session.exec(select(self.type_identifier.__class__).where(self.type_identifier.__class__.id == id))
         entity = result.one_or_none()
         if isinstance(entity, NoneType):
-            raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__)
+            raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__.__str__())
         self.session.delete(entity)
         await self.session.commit()
         await self.session.flush()

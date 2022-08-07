@@ -1,6 +1,4 @@
 import json
-import logging
-from urllib import response
 from fastapi import APIRouter, Body, Depends, HTTPException
 from starlette import status
 from app.api.auth.api_key_auth import get_api_key

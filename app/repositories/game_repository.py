@@ -18,6 +18,7 @@ class GameRepository(CRUDRepository):
     
     
     
+    
 class GameNotFoundError(NotFoundError):
 
     entity_name: str = "Game"

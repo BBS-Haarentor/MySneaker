@@ -26,7 +26,6 @@ api.include_router(v1_router, prefix="/api/v1", tags=["v1"])
 api.include_router(user_router, prefix="/user", tags=["user"])
 
 
-# middleware to add a process-time field in the response-header
 @api.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     start_time = time.time()
@@ -56,8 +55,7 @@ api.add_middleware(
     allow_headers=["*"],
 )
 
+
 @api.on_event("startup")
 async def setup_db():
     await init_async_db()
-
-

@@ -37,8 +37,8 @@ class GameService():
         
         
     async def get_game_by_player_id(self, player_id: int) -> Game:
-        player: User = await self.user_repo.get(id=player_id)
-        game: Game = await self.game_repo.get(id=player.game_id)
+        player: User = await self.user_repo.read(id=player_id)
+        game: Game = await self.game_repo.read(id=player.game_id)
         return game
     
     
@@ -48,8 +48,9 @@ class GameService():
         
         
     async def get_game_by_id(self, game_id: int) -> Game:
-        game: Game = await self.game_repo.get(id=game_id)
+        game: Game = await self.game_repo.read(id=game_id)
         return game
+        
         
     async def create_game(self, create_data: GameCreate) -> int:
         game_id: int = await self.game_repo.create(create_data=create_data)
@@ -58,7 +59,7 @@ class GameService():
         
     async def get_player_info(self, user_id: int, index: int) -> PlayerInfo:
         info = PlayerInfo(company_id=user_id, index=index)
-        user: User = await self.user_repo.get(id=user_id)
+        user: User = await self.user_repo.read(id=user_id)
         info.name = user.name
         s: Stock = await self.stock_repo.get_newest_stock_by_user_and_index(user_id=user_id, index=index)
         logging.warning(f"{s=}")
@@ -86,7 +87,7 @@ class GameService():
     async def get_game_info(self, game_id: int, index: int) -> list[PlayerInfo]: 
         # if index <= 0:
         #     raise HTTPException(status_code=418, detail="lol index nö")
-        game: Game = await self.game_repo.get(id=game_id)
+        game: Game = await self.game_repo.read(id=game_id)
         if index < 0 or index > game.current_cycle_index:
             raise IndexError("Index out of bounds")
         #ValidationError(entity_id=None, calling_service="Game")
@@ -109,3 +110,5 @@ class GameService():
         #     cycles.append(c)
         
         return infos
+    
+    
