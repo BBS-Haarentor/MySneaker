@@ -4,9 +4,8 @@ import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 import Analytics from './KlasseContainer/Analytics';
 
-const KlasseContainer = ({updateCompany, companyId, current_cycle_index, gameId}) => {
+const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_cycle_index, gameId}) => {
 
-    const [select, setSelect] = useState("main");
     const [modal, setModal] = useState();
     const [selectCycleIndex, setSelectCycleIndex] = useState();
 

@@ -5,7 +5,6 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
     newMaschienPrize, Neueinstellungen, Mitarbeiter, PersonalnebenkostenInP, Werbung, ForschungUndEntwickelung, setRueckzahlungDarlehen, UmsatzSoll, SaldoIst, 
     SaldoSoll, HöheKontokorrentkreditIst, HöheKontokorrentkreditSoll, UmsatzIst }) => {
 
-        console.log(UmsatzIst)
     return (
         <div className=" p-4 shadow-lg xl:col-span-3 dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
                     <img src="/img/projections.svg" className='h-[500px] w-0 xl:w-[500px] m-auto p-10'></img>
