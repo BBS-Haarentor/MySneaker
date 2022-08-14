@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models.game import Game
@@ -40,6 +41,7 @@ class UserService():
     async def create_teacher(self, create_data: UserPostElevated) -> int:
         user: User = await self.user_repo.create(create_data=create_data)
         self.basegroup_repo.create(create_data=TeacherGroup(user_id=user.id))
+        logging.warning("lol")
         return user.id
     
     
@@ -49,6 +51,10 @@ class UserService():
         self.basegroup_repo.create(create_data=AdminGroup(user_id=user.id))
         return user.id
     
+    
+    async def read_players_by_game_id(self, game_id: int) -> list[User]:
+        users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
+        return users
     
     
     async def get_user_by_id(self, id: int) -> User:

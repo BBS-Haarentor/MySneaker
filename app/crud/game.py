@@ -125,7 +125,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     # check every user has valid cycle and stock data
     
     # sort by company_id 
-    id_sorted_cycles: list[Cycle] = sorted(unsorted_cycle_list, key= lambda x: (x.company_id, -x.entry_date.timestamp()))
+    id_sorted_cycles: list[Cycle] = sorted(unsorted_cycle_list, key= lambda x: (x.company_id, -x.creation_date))
     filtered_id_sorted_cycles: list[Cycle] = []
     for elem in id_sorted_cycles:
         if not any(u.company_id == elem.company_id for u in filtered_id_sorted_cycles):

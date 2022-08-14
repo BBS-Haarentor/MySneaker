@@ -12,6 +12,7 @@ class ScenarioRepository(CRUDRepository):
         super().__init__(session=session, type_identifier=Scenario())
         
         
+        
     async def get_all_scenarios(self) -> list[Scenario]:
         result = await self.session.exec(select(Scenario))
         scenarios: list[Scenario] = result.all()

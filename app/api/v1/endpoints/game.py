@@ -1,5 +1,3 @@
-import logging
-import re
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlmodel import select
@@ -24,6 +22,7 @@ from app.schemas.game import GameCreate, GamePatch, GameResponse, PlayerInfo
 from app.schemas.user import UserResponse, UserResponseWithGradeName
 from app.services.cycle_service import CycleService
 from app.services.game_service import GameService
+from app.services.user_service import UserService
 
 
 router = APIRouter()
@@ -56,8 +55,7 @@ async def get_by_id(game_id: int,
                     current_user: User = Depends(get_current_active_user), 
                     session: AsyncSession = Depends(get_async_session)) -> Game | None:
     game_service: GameService = GameService(session=session)
-    game: Game = await game_service.get_game_by_id(game_id=game_id)
-    return game
+    return await game_service.get_game_by_id(game_id=game_id)
 
 
 @router.get("/get_all_game_ids_by_teacher/{user_id}",status_code=status.HTTP_200_OK)
@@ -66,8 +64,7 @@ async def get_all_game_ids_by_user_id(user_id: int,
                                       current_user: User = Depends(get_current_active_user), 
                                       session: AsyncSession = Depends(get_async_session)) -> list[int]:
     game_service: GameService = GameService(session=session)
-    all_game_ids: list[int] = await game_service.get_ids_by_owner_id(owner_id=user_id)
-    return all_game_ids
+    return await game_service.get_ids_by_owner_id(owner_id=user_id)
     
     
 @router.get("/student/my_game", status_code=status.HTTP_200_OK, response_model=GameResponse)
@@ -75,16 +72,14 @@ async def get_all_game_ids_by_user_id(user_id: int,
 async def get_my_game(current_user: User = Depends(get_current_active_user), 
                       session: AsyncSession = Depends(get_async_session)) -> Game:
     game_service: GameService = GameService(session=session)
-    game: Game = await game_service.get_game_by_id(game_id=current_user.game_id)
-    return game
+    return await game_service.get_game_by_id(game_id=current_user.game_id)
 
 
-@router.get("/student/my_summary", status_code=status.HTTP_200_OK)
+@router.get("/student/my_summary", status_code=status.HTTP_200_OK)#
 @base_auth_required
 async def get_my_summary(current_user: User = Depends(get_current_active_user), 
                          session: AsyncSession = Depends(get_async_session)): 
-    #current_cycle = await get_cy
-   
+    #current_cycle = await get_cycle
     #current_cycle: Cycle = await cycle_service.get_current_cycle_by_user_id(user_id=current_user.id)
     current_cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
     game: Game = await get_game_by_id(current_user.game_id, session=session)
@@ -93,7 +88,7 @@ async def get_my_summary(current_user: User = Depends(get_current_active_user),
     return { "current_stock" : current_stock, "scenario" : current_scenario, "current_cycle" : current_cycle }
 
 
-@router.get("/student/my_summary/{index}", status_code=status.HTTP_200_OK)
+@router.get("/student/my_summary/{index}", status_code=status.HTTP_200_OK)#
 @base_auth_required
 async def get_my_summary_by_index(index: int, 
                                   current_user: User = Depends(get_current_active_user), 
@@ -106,7 +101,7 @@ async def get_my_summary_by_index(index: int,
     return { "stock" : stock, "scenario" : scenario, "cycle" : cycle }
 
 
-@router.get("/teacher/summary/user/{user_id}/index/{index}", status_code=status.HTTP_200_OK)
+@router.get("/teacher/summary/user/{user_id}/index/{index}", status_code=status.HTTP_200_OK)#
 @teacher_auth_required
 async def get_my_summary(user_id: int, 
                          index: int, 
@@ -123,24 +118,28 @@ async def get_my_summary(user_id: int,
     
 
 
-@router.get("/teacher/my_games",status_code=status.HTTP_200_OK, response_model=list[GameResponse])
+@router.get("/teacher/my_games",status_code=status.HTTP_200_OK, response_model=list[GameResponse])#
 @teacher_auth_required
 async def get_all_my_games(current_user: User = Depends(get_current_active_user), 
                            session: AsyncSession = Depends(get_async_session)) -> list[Game]:
+    game_service: GameService = GameService(session=session)
+    return await game_service.get_games_by_owner_id(owner_id=current_user.id)
     game_list: list[Game] = await get_all_games_by_owner(user_id=current_user.id, session=session)
     return game_list
     
     
-@router.get("/all_games_by_teacher/{user_id}",status_code=status.HTTP_200_OK, response_model=list[GameResponse])
+@router.get("/all_games_by_teacher/{user_id}",status_code=status.HTTP_200_OK, response_model=list[GameResponse])#
 @admin_auth_required
 async def get_all_games_by_user_id(user_id: int, 
                                    current_user: User = Depends(get_current_active_user), 
                                    session: AsyncSession = Depends(get_async_session)) -> list[Game]:
+    game_service: GameService = GameService(session=session)
+    return await game_service.get_games_by_owner_id(owner_id=user_id)
     game_list: list[Game] = await get_all_games_by_owner(user_id=user_id, session=session)
     return game_list
     
 
-@router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK)
+@router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK)#
 @teacher_auth_required
 async def turnover(game_id: int, 
                    current_user: User = Depends(get_current_active_user), 
@@ -163,20 +162,26 @@ async def turnover(game_id: int,
         return new_index
 
 
-@router.get("/current_cycle_index/{game_id}", status_code=status.HTTP_200_OK)
+@router.get("/current_cycle_index/{game_id}", status_code=status.HTTP_200_OK)#
 @base_auth_required
 async def get_cycle_index(game_id: int, 
                           current_user: User = Depends(get_current_active_user), 
                           session: AsyncSession = Depends(get_async_session)) -> int:
+    game_service: GameService = GameService(session=session)
+    game: Game = await game_service.get_game_by_id(game_id=game_id)
+    return game.current_cycle_index
     game: Game = await get_game_by_id(id=game_id, session=session)
     return game.current_cycle_index
 
 
-@router.put("/edit", status_code=status.HTTP_202_ACCEPTED, response_model=GameResponse)
+@router.put("/edit", status_code=status.HTTP_202_ACCEPTED, response_model=GameResponse)#
 @teacher_auth_required
 async def game_patch(game_patch: GamePatch, 
                      current_user: User = Depends(get_current_active_user), 
-                     session: AsyncSession = Depends(get_async_session)) -> GameResponse | None:
+                     session: AsyncSession = Depends(get_async_session)) -> Game:
+    game_service: GameService = GameService(session=session)
+    updated_game: Game = await game_service.patch_game(patch_data=game_patch)
+    return updated_game
     updated_game: Game | None = await edit_game(patch_data=game_patch, session=session)
     if isinstance(updated_game, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No game found by that id")
@@ -184,15 +189,17 @@ async def game_patch(game_patch: GamePatch,
         return updated_game
 
 
-@router.put("/toggle_active/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/toggle_active/{game_id}", status_code=status.HTTP_202_ACCEPTED)#
 @teacher_auth_required
 async def toggle_active(game_id: int, 
                         current_user: User = Depends(get_current_active_user), 
                         session: AsyncSession = Depends(get_async_session)) -> bool:
+    game_service: GameService = GameService(session=session)
+    return await game_service.toggle_active(game_id=game_id)
     result: bool = await toggle_game_state(id=game_id, session=session)
     return result
 
-@router.get("/current_cycles/{game_id}", status_code=status.HTTP_200_OK, response_model=list[Cycle])
+@router.get("/current_cycles/{game_id}", status_code=status.HTTP_200_OK, response_model=list[Cycle])#
 @teacher_auth_required
 async def get_current_cycle(game_id: int, 
                             current_user: User = Depends(get_current_active_user), 
@@ -201,27 +208,42 @@ async def get_current_cycle(game_id: int,
     return cycle_list
 
 
-@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[UserResponse])
+@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[UserResponse])#
 @teacher_auth_required
 async def get_all_users_for_game_by_game_id(game_id: int, 
                                             current_user: User = Depends(get_current_active_user), 
                                             session: AsyncSession = Depends(get_async_session)) -> list[User]:
+    user_service: UserService = UserService(session=session)
+    return await user_service.read_players_by_game_id(game_id=game_id)
     user_list: list[User] = await get_all_users_for_game(game_id=game_id, session=session)
     return user_list
 
-@router.get("/get_all_users_for_my_games", status_code=status.HTTP_200_OK, response_model=list[UserResponseWithGradeName])
+@router.get("/get_all_users_for_my_games", status_code=status.HTTP_200_OK, response_model=list[UserResponseWithGradeName])#
 @teacher_auth_required
 async def get_all_users_for_my_games(current_user: User = Depends(get_current_active_user), 
                                      session: AsyncSession = Depends(get_async_session)) -> list[UserResponseWithGradeName]:
+    user_service: UserService = UserService(session=session)
+    game_service: GameService = GameService(session=session)
+    ids: list[int] = await game_service.get_games_by_owner_id(owner_id=current_user.id)
+    all_users: list[User] = []
+    for game_id in ids:
+        users: list[User] = await user_service.read_players_by_game_id(game_id=game_id)
+        all_users.append(users)
+    output_list: list[UserResponseWithGradeName] = []
+    output_list= [output_list.append(UserResponseWithGradeName.parse_obj(u)) for u in all_users]
+
+    return output_list
     user_list: list[UserResponseWithGradeName] = await get_all_users_for_teacher(user_id=current_user.id, session=session)
-    
     return user_list
 
-@router.put("/activate_signup/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+
+@router.put("/activate_signup/{game_id}", status_code=status.HTTP_202_ACCEPTED)#
 @teacher_auth_required
 async def activate_signup(game_id:int, 
                           current_user: User = Depends(get_current_active_user), 
                           session: AsyncSession = Depends(get_async_session)) -> bool:
+    game_service: GameService = GameService(session=session)
+    return await game_service.activate_signup(game_id=game_id)
     signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)
     if signup_status == False:
         sec_signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)
@@ -231,26 +253,29 @@ async def activate_signup(game_id:int,
             raise HTTPException(status_code=status.HTTP_409_CONFLICT)
 
 
-
-@router.put("/toggle_signup/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/toggle_signup/{game_id}", status_code=status.HTTP_202_ACCEPTED)#
 @teacher_auth_required
 async def toggle_signup(game_id: int, 
                         current_user: User = Depends(get_current_active_user), 
                         session: AsyncSession = Depends(get_async_session)) -> bool:
+    game_service: GameService = GameService(session=session)
+    return await game_service.toggle_signup(game_id=game_id)
     signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)
     return signup_status
     
     
-@router.get("/current_stocks/{game_id}", status_code=status.HTTP_200_OK, response_model=list[Stock])
+@router.get("/current_stocks/{game_id}", status_code=status.HTTP_200_OK, response_model=list[Stock])#deprecated?
 @teacher_auth_required
 async def get_current_cycle(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Stock]:
     stock_list: list[Stock] = await get_current_stocks_by_game_id(id=game_id, session=session)
     return stock_list
 
 
-@router.delete("/delete/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@router.delete("/delete/{game_id}", status_code=status.HTTP_202_ACCEPTED)#
 @teacher_auth_required
 async def delete_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    game_service: GameService = GameService(session=session)
+    return await game_service.delete_game(game_id=game_id)
     # check game active
     state = await get_game_state(game_id=game_id, session=session)
     if isinstance(state, NoneType):
@@ -268,7 +293,7 @@ async def setback_game_by_id_and_index(game_id: int,
     return await set_back_cycle_index(game_id=game_id, new_index=index, session=session)
 
 
-@router.get("/game_state/{game_id}", status_code=status.HTTP_200_OK)
+@router.get("/game_state/{game_id}", status_code=status.HTTP_200_OK)#deprecated?
 @teacher_auth_required
 async def get_game_state_by_id(game_id: int, 
                                current_user: User = Depends(get_current_active_user), 

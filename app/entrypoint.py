@@ -21,7 +21,7 @@ if settings.MODE == "DEBUG":
 elif settings.MODE == "PROD":
     api = FastAPI(docs_url=None)
 
-api.include_router(v1_router, prefix="/api/v1", tags=["v1"])
+api.include_router(v1_router, prefix="/api/v1")
 
 api.include_router(user_router, prefix="/user", tags=["user"])
 

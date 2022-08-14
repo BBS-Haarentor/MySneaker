@@ -3,7 +3,7 @@ from app.models.game import Game
 from app.models.scenario import Scenario
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.schemas.scenario import ScenarioCreate
+from app.schemas.scenario import ScenarioPost
 
 
 async def get_scenario_by_id(id: int, session: AsyncSession) -> Scenario | None:
@@ -36,7 +36,7 @@ async def get_scenario_by_index(game_id: int, index: int, session: AsyncSession)
     return scenario_result.one_or_none()
 
 
-async def add_new_scenario(new_scenario_data: ScenarioCreate, session: AsyncSession) -> Scenario:
+async def add_new_scenario(new_scenario_data: ScenarioPost, session: AsyncSession) -> Scenario:
     scenario = Scenario.from_orm(new_scenario_data)
     session.add(scenario)
     await session.commit()

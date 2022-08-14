@@ -6,7 +6,7 @@ from app.models.game import Game
 from app.models.scenario import Scenario
 from app.repositories.game_repository import GameRepository
 from app.repositories.scenario_repository import ScenarioRepository
-from app.schemas.scenario import ScenarioBase, ScenarioCreate
+from app.schemas.scenario import ScenarioBase, ScenarioPost
 
 
 class ScenarioService():
@@ -40,7 +40,7 @@ class ScenarioService():
         return await self.scenario_repo.read_by_char(char=search_char)
 
 
-    async def add_new_scenario(self, new_scenario_data: ScenarioCreate) -> int:
+    async def add_new_scenario(self, new_scenario_data: ScenarioPost) -> int:
         return await self.scenario_repo.create(create_data=new_scenario_data)
 
 

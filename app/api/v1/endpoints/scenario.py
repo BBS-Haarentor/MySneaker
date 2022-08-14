@@ -11,7 +11,7 @@ from fastapi.security.api_key import APIKey
 
 from app.models.scenario import Scenario
 from app.models.user import User
-from app.schemas.scenario import ScenarioCreate
+from app.schemas.scenario import ScenarioPost
 from app.services.scenario_service import ScenarioService
 
 
@@ -38,7 +38,7 @@ async def get_all_scenarios_as_list(current_user: User = Depends(get_current_act
 
 @router.post("/new_scenario", status_code=status.HTTP_201_CREATED)
 @admin_auth_required
-async def create_new_scenario(scenario_data: ScenarioCreate, 
+async def create_new_scenario(scenario_data: ScenarioPost, 
                               current_user: User = Depends(get_current_active_user), 
                               session: AsyncSession = Depends(get_async_session)) -> Scenario:
     scenario_service = ScenarioService(session=session)
