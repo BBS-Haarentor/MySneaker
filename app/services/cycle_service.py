@@ -18,7 +18,7 @@ class CycleService():
         
 
     async def get_cycle_entry_by_id(self, id: int) -> Cycle:
-        cycle: Cycle = await self.cycle_repository.get(id=id)
+        cycle: Cycle = await self.cycle_repository.read(id=id)
         return cycle
 
 

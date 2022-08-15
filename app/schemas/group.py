@@ -1,31 +1,19 @@
 from sqlmodel import SQLModel
 
+from app.schemas.base import BaseSchema
 
-class GroupBase(SQLModel):
-    entry_id: int | None
+
+class GroupBase(BaseSchema):
     user_id: int | None
 
 
-class AddToGroup(SQLModel):
-    user_id: int
+class AdminBase(GroupBase):
+    pass
 
 
-class AdminBase(SQLModel):
-    entry_id: int | None
-    user_id: int | None
+class TeacherBase(GroupBase):
+    pass
 
 
-class TeacherBase(SQLModel):
-    entry_id: int | None
-    user_id: int | None
-
-
-class BaseGroupBase(SQLModel):
-    entry_id: int | None
-    user_id: int | None
-
-
-class GroupPatch(SQLModel):
-    to_be_patched_user_id: int
-    remove_groups: list[str]
-    add_groups: list[str]
+class BaseGroupBase(GroupBase):
+    pass

@@ -39,7 +39,7 @@ class ScenarioBase(BaseSchema):
     production_cost_per_sneaker3: float | None
 
 
-class ScenarioCreate(ScenarioBase):
+class ScenarioPost(ScenarioBase):
     pass
 
 

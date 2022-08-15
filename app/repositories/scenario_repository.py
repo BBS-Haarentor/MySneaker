@@ -4,10 +4,13 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.repositories.crud_repository import CRUDRepository, NotFoundError
 from app.models.scenario import Scenario
 
+
 class ScenarioRepository(CRUDRepository):
+        
         
     def __init__(self, session: AsyncSession):
         super().__init__(session=session, type_identifier=Scenario())
+        
         
         
     async def get_all_scenarios(self) -> list[Scenario]:
@@ -16,12 +19,13 @@ class ScenarioRepository(CRUDRepository):
         return scenarios
     
     
-    async def get_scenario_by_char(self, char: str) -> Scenario:
+    async def read_by_char(self, char: str) -> Scenario:
         result = await self.session.exec(select(Scenario).where(Scenario.char == char))
         scenario: Scenario = result.one_or_none()
         if isinstance(scenario, NoneType):
             raise ScenarioNotFoundError(entity_id=char)
         return scenario
+
 
     async def get_all_chars(self) -> list[str]:
         result = await self.session.exec(select(Scenario.char))
@@ -29,18 +33,7 @@ class ScenarioRepository(CRUDRepository):
         if len(chars) <= 0:
             raise ScenarioNotFoundError(entity_id=None)
         return chars
-            
-            
-    async def get_all_chars(self) -> list[str]:
-        result = await self.session.exec(select(Scenario.char))
-        char_list: list[str] = result.all()
-        return char_list
 
-
-    async def get_all(self) -> list[Scenario]:
-        result = await self.session.exec(select(Scenario))
-        scenario_list: list[Scenario] = result.all()
-        return scenario_list
 
 class ScenarioNotFoundError(NotFoundError):
 
