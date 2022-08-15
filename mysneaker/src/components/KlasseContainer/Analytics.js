@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Swal from 'sweetalert2'
-import { Line } from 'react-chartjs-2';
+import {Line} from 'react-chartjs-2';
+import MarketShare from './charts/MarketShare'
 
 const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
 
@@ -127,8 +128,12 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
                 </table>
             </div>
             {current_cycle_index > cycle_index ?
-                <button className='my-6 w-[100%]  bg-red-400 text-white rounded-3xl shadow-lg p-3'
-                        onClick={() => setBackGame()}>Zu dieser Periode zurückspringen</button>
+                <>
+                    <MarketShare companys={companyInfo.filter(value => value.index === cycle_index)}/>
+                    <button className='my-6 w-[100%]  bg-red-400 text-white rounded-3xl shadow-lg p-3'
+                            onClick={() => setBackGame()}>Zu dieser Periode zurückspringen
+                    </button>
+                </>
                 :
                 <></>
             }
