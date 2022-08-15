@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  #frontend:
-  #  build: ./mysneaker/
-  #  volumes:
-  #    - .:/mysneaker/
-  #  ports:
-  #    - 80:80
+  frontend:
+    build: ./mysneaker/
+    volumes:
+      - .:/mysneaker/
+    ports:
+      - 80:80
 
   api:
     build: .
