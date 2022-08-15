@@ -50,7 +50,7 @@ async def init_scenarios(api_key: APIKey = Depends(get_api_key),
                          session: AsyncSession = Depends(get_async_session)) -> list[Scenario]:
     new_scenarios = []
     # read from json file
-    with open('./app/db/scenario_seed_data.json') as file:
+    with open('./app/db/seeds/scenario_seed_data.json') as file:
         json_data = json.load(file)
     # convert json to orm
     for _ in json_data["data"]:
