@@ -1,3 +1,4 @@
+import logging
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlmodel import select
@@ -218,21 +219,32 @@ async def get_all_users_for_game_by_game_id(game_id: int,
     user_list: list[User] = await get_all_users_for_game(game_id=game_id, session=session)
     return user_list
 
-@router.get("/get_all_users_for_my_games", status_code=status.HTTP_200_OK, response_model=list[UserResponseWithGradeName])#
+@router.get("/get_all_users_for_my_games", status_code=status.HTTP_200_OK)#
 @teacher_auth_required
 async def get_all_users_for_my_games(current_user: User = Depends(get_current_active_user), 
                                      session: AsyncSession = Depends(get_async_session)) -> list[UserResponseWithGradeName]:
     user_service: UserService = UserService(session=session)
     game_service: GameService = GameService(session=session)
-    ids: list[int] = await game_service.get_games_by_owner_id(owner_id=current_user.id)
-    all_users: list[User] = []
+    ids: list[int] = await game_service.get_ids_by_owner_id(owner_id=current_user.id)
+    all_users = []
     for game_id in ids:
+        game: Game = await game_service.get_game_by_id(game_id=game_id)
         users: list[User] = await user_service.read_players_by_game_id(game_id=game_id)
-        all_users.append(users)
-    output_list: list[UserResponseWithGradeName] = []
-    output_list= [output_list.append(UserResponseWithGradeName.parse_obj(u)) for u in all_users]
+        for iu in users:
+            ur: UserResponseWithGradeName = UserResponseWithGradeName.parse_obj(iu)
+            ur.grade_name = game.grade_name
+            all_users.append(ur)
+            
 
-    return output_list
+    #for u in all_users:
+    #    logging.warning(f"++++++++++++++++")
+    #    logging.warning(f"{type(u)=}")
+    #    ur = UserResponseWithGradeName(id=u.id)
+    #    for key, value in u.items():
+    #        setattr(ur, key, value)
+    #    output_list.append(ur)
+    #return [(UserResponseWithGradeName.parse_obj(u)) for u in all_users]
+    return all_users
     user_list: list[UserResponseWithGradeName] = await get_all_users_for_teacher(user_id=current_user.id, session=session)
     return user_list
 

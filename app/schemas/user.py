@@ -56,10 +56,10 @@ class UserPwChange(SQLModel):
     
 class UserResponseWithGradeName(SQLModel):
     id: int
-    name: str
-    last_login: datetime
+    name: str | None
+    last_login: datetime | None
     email: str | None
-    is_active: bool
+    is_active: bool | None
     game_id: int | None
     grade_name: str | None
     

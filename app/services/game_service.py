@@ -48,7 +48,7 @@ class GameService():
         
     
     async def get_games_by_owner_id(self, owner_id: int) -> list[Game]:
-        ids: list[int] = await self.get_games_by_owner_id(owner_id=owner_id)
+        ids: list[int] = await self.game_repo.get_game_ids_by_owner(owner_id=owner_id)
         games: list[Game] = []
         for i in ids: 
             games.append(await self.game_repo.read(id=i))
@@ -144,3 +144,7 @@ class GameService():
                 i.market_share = round(i.real_sales / total_sold, 2)
         return infos
         
+        
+    async def turnover(self, game_id: int) -> int:
+        
+        return 
