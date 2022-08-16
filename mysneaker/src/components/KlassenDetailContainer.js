@@ -277,7 +277,6 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                                 "tender_offer_price": 0,
                                 "planned_workers_1": 0,
                                 "research_invest": 0,
-                                "current_cycle_index": 0,
                                 "planned_workers_2": 0,
                                 "ad_invest": 0,
                                 "planned_workers_3": 0,
@@ -582,7 +581,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-                {data.stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
+                {data.stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -623,13 +622,13 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] dark:bg-[#1f2733] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion(e.target.value)} value={GeplanteProduktion}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "Ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -641,13 +640,13 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] dark:bg-[#1f2733] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -670,7 +669,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
                 </div>}
 
-                {data.stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
+                {data.stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -711,13 +710,13 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion2(e.target.value)} value={GeplanteProduktion2}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] dark:bg-[#1f2733] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion2(e.target.value)} value={GeplanteProduktion2}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "Ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -729,13 +728,13 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter2(e.target.value)} value={ZugeteilteMitarbeiter2}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] dark:bg-[#1f2733] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter2(e.target.value)} value={ZugeteilteMitarbeiter2}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -757,15 +756,15 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                 </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                     <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                </div> : data.scenario.machine_purchase_allowed ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                </div> : data.scenario.machine_purchase_allowed ? <div className="p-4 In dieser Periode ist der Kauf einer Maschine nicht möglich shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
-                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer Maschine nicht möglich</h1>
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} >
+                {data.stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"} >
                     <table>
                         <tbody>
                             <tr>
@@ -806,13 +805,13 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion3(e.target.value)} value={GeplanteProduktion3}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] dark:bg-[#1f2733] rounded-lg" min="0" type="number" onChange={(e) => setGeplanteProduktion3(e.target.value)} value={GeplanteProduktion3}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "Ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -824,13 +823,13 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] dark:bg-[#1f2733] rounded-lg" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -854,19 +853,19 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                         <></>
                         :
                         buy_new_machine != 0 ?
-                            <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                            <div className="p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                                 <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                                 <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                             </div>
                             : data.stock.machine_2_space == 0 ?
                                 <></>
                                 : data.scenario.machine_purchase_allowed ?
-                                    <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                                    <div className="p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                                         <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                                         <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
                                     </div>
                                     :
-                                    <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                                    <div className="p-4 shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                                         <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
                                         <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                                     </div>

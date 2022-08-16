@@ -38,7 +38,8 @@ const EditScenarioModal = ({ setModal, char, myHeaders }) => {
     });
     const [sneaker_ask, setSneaker_Ask] = useState(0);
     const [machine_purchase_allowed, setMachine_purchase_allowed] = useState(scenario.machine_purchase_allowed);
-    const [bezugspreis, setBezugspreis] = useState("");
+    const [sneakerBezugspreis, setSneakerBezugspreis] = useState(scenario.sneaker_price);
+    const [colorBezugspreis, setColorBezugspreis] = useState(scenario.paint_price);
 
     useEffect(() => {
         const requestOptions = {
@@ -60,6 +61,8 @@ const EditScenarioModal = ({ setModal, char, myHeaders }) => {
 
         scenario.sneaker_ask = parseInt(sneaker_ask);
         scenario.machine_purchase_allowed = machine_purchase_allowed;
+        scenario.sneaker_price = parseInt(sneakerBezugspreis)
+        scenario.paint_price = parseInt(colorBezugspreis)
 
 
         var raw = JSON.stringify(scenario);
@@ -114,10 +117,17 @@ const EditScenarioModal = ({ setModal, char, myHeaders }) => {
                                 <div className="px-4 py-5 sm:p-6">
                                     <div className="grid grid-cols-6 gap-6">
                                         <div className="col-span-6 sm:col-span-3">
-                                            <label htmlFor="reference-price"
-                                                className="block text-sm font-medium text-gray-700">Bezugspreis</label>
-                                            <input type="number" name="reference-price" id="reference-price"
+                                            <label
+                                                className="block text-sm font-medium text-lg text-gray-700">Bezugspreis</label>
+                                            <label
+                                                className="block text-sm font-medium mt-2 text-gray-700">Sneaker</label>
+                                            <input type="number" name="reference-price" value={sneakerBezugspreis} onChange={(e) => setSneakerBezugspreis(e.target.value)} id="reference-price"
                                                 className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
+                                            <label
+                                                className="block text-sm font-medium mt-2 text-gray-700">Farbe</label>
+                                            <input type="number" name="reference-price" value={colorBezugspreis} onChange={(e) => setColorBezugspreis(e.target.value)} id="reference-price"
+                                                   className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
+
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">

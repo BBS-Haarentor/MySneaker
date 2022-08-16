@@ -5,21 +5,7 @@ import MarketShare from './charts/MarketShare'
 
 const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
 
-    const [companyInfo, setCompanyInfo] = useState([
-        {
-            "company_id": 5,
-            "name": "s1",
-            "index": 0,
-            "account_balance": 50000,
-            "credit_taken": 0,
-            "income_from_sales": 0,
-            "sales_bid": null,
-            "real_sales": 0,
-            "insolvent": false,
-            "turnover_ready": true,
-            "market_share": null
-        }
-    ])
+    const [companyInfo, setCompanyInfo] = useState([])
 
     const formatter = new Intl.NumberFormat('de-de', {
         style: 'currency',
@@ -33,9 +19,11 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
             headers: myHeaders,
         };
         fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/info/' + gameId + '/index/' + cycle_index, requestOptions).then((element) => {
-            return element.json();
-        }).then(value => {
-            setCompanyInfo(value)
+            if (element.status === 200) {
+                element.json().then(element1 => {
+                    setCompanyInfo(element1)
+                });
+            }
         })
     }, [])
 
@@ -72,7 +60,7 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
     return (
         <>
             <div
-                className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl dark:bg-[#28303c] m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
+                className='mt-12 mx-auto p-4 xl:col-span-2 shadow-lg rounded-3xl dark:bg-[#28303c] m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
                 <table className='w-full text-center'>
                     <tbody>
                     <tr>
@@ -129,7 +117,9 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
             </div>
             {current_cycle_index > cycle_index ?
                 <>
-                    <MarketShare companys={companyInfo.filter(value => value.index === cycle_index)}/>
+                    <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar my-12 w-[90%] mx-auto'>
+                        <MarketShare companys={companyInfo.filter(value => value.index === cycle_index)}/>
+                    </div>
                     <button className='my-6 w-[100%]  bg-red-400 text-white rounded-3xl shadow-lg p-3'
                             onClick={() => setBackGame()}>Zu dieser Periode zurückspringen
                     </button>
