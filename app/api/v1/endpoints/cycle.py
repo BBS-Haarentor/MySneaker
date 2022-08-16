@@ -24,7 +24,7 @@ router = APIRouter()
 async def create_new_cycle_entry(cycle_data: CycleCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int:
     cycle_data.company_id = current_user.id
     game_service: GameService = GameService(session=session)
-    game: Game = await game_service.get(id=current_user.game_id)
+    game: Game = await game_service.get_game_by_id(game_id=current_user.game_id)
 
     #game: Game = await get_game_by_id(id=current_user.game_id, session=session)
     cycle_data.current_cycle_index = game.current_cycle_index
