@@ -1,14 +1,9 @@
-
-from contextlib import contextmanager
 from typing import AsyncGenerator
-from fastapi import Depends
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlmodel import Session, create_engine
-
+from sqlmodel import create_engine
 from app.core.config import SETTINGS
-
 
 
 postgres_async_schema = "postgresql+asyncpg"
@@ -21,7 +16,6 @@ engine_async_postgres = create_async_engine(postgre_conn_str, echo=True, future=
 engine_async_sqlite = create_async_engine(sqlite_conn_str, echo=True, future=True)
 
 engine_sqlite = create_engine(f"sqlite://{SETTINGS.DATABASE_URL_SQLITE}", echo=True)
-
 
 
 #engine = engine_async_sqlite
@@ -37,12 +31,3 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
             yield session
         finally:
             await session.close()
-
-
-async def get_session():
-    with Session(engine) as session:
-        try:
-            yield session
-        finally:
-            session.close()
-

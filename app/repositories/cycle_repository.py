@@ -4,6 +4,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.repositories.crud_repository import CRUDRepository, NotFoundError
 from app.models.cycle import Cycle
 
+
 class CycleRepository(CRUDRepository):
     
     
@@ -22,4 +23,3 @@ class CycleRepository(CRUDRepository):
 class CycleNotFoundError(NotFoundError):
 
     entity_name: str = "Cycle"
-    

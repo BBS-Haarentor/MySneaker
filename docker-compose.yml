@@ -10,7 +10,7 @@ services:
 
   api:
     build: .
-    command: uvicorn app.entrypoint:api --host 0.0.0.0
+    command: uvicorn app.entrypoint:api --host 0.0.0.0 --reload
     volumes:
       - .:/app
     ports:
