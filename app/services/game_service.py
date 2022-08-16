@@ -105,16 +105,19 @@ class GameService():
     
     
     async def get_player_info(self, user_id: int, index: int) -> PlayerInfo:
-        info = PlayerInfo(company_id=user_id, index=index)
+        #info = PlayerInfo(company_id=user_id, index=index)
         user: User = await self.user_repo.read(id=user_id)
+        sid: int = await self.stock_repo.get_stock_id_by_user_and_index(user_id=user_id, index=index)
+        s: Stock = await self.stock_repo.read(id=sid)
+        info: PlayerInfo = PlayerInfo.parse_obj(s)
         info.name = user.name
-        s: Stock = await self.stock_repo.get_newest_stock_by_user_and_index(user_id=user_id, index=index)
+        info.index = index
 
         if index > 0:
             prev_c: Cycle = await self.cycle_repo.get_newest_cycle_by_user_and_index(user_id=user_id, index=(index - 1))
             info.sales_bid = prev_c.sales_bid
-        info.account_balance = s.account_balance
-        info.credit_taken = s.credit_taken
+        info.account_balance = float(s.account_balance)
+        info.credit_taken = float(s.credit_taken)
         info.income_from_sales = s.income_from_sales
         info.real_sales = s.real_sales
         info.insolvent = s.insolvent
