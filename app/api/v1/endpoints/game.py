@@ -209,15 +209,23 @@ async def get_current_cycle(game_id: int,
     return cycle_list
 
 
-@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED, response_model=list[UserResponse])#
+@router.get("/get_all_users_for_game/{game_id}", status_code=status.HTTP_202_ACCEPTED)#
 @teacher_auth_required
 async def get_all_users_for_game_by_game_id(game_id: int, 
                                             current_user: User = Depends(get_current_active_user), 
                                             session: AsyncSession = Depends(get_async_session)) -> list[User]:
     user_service: UserService = UserService(session=session)
-    return await user_service.read_players_by_game_id(game_id=game_id)
-    user_list: list[User] = await get_all_users_for_game(game_id=game_id, session=session)
-    return user_list
+    game_service: GameService = GameService(session=session)
+
+    users: list[User] = await user_service.read_players_by_game_id(game_id=game_id)
+    game: Game = await game_service.get_game_by_id(game_id=game_id)
+    responses: list = []
+    for u in users:
+        ur: UserResponseWithGradeName = UserResponseWithGradeName.parse_obj(u)
+        ur.grade_name = game.grade_name
+        responses.append(ur)
+    #user_list: list[User] = await get_all_users_for_game(game_id=game_id, session=session)
+    return responses
 
 @router.get("/get_all_users_for_my_games", status_code=status.HTTP_200_OK)#
 @teacher_auth_required
