@@ -10,15 +10,24 @@ const MarketShare = ({companys}) => {
 
     console.log(companys)
 
+
+    const companyNames = []
+    const companyData = []
+
+    companys.map(value => {
+        companyNames.push(value.name)
+        companyData.push(value.market_share)
+    })
+
     return (
         <>
             <Pie
                 data={{
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: companyNames,
                     datasets: [
                         {
-                            label: '# of votes',
-                            data: [12, 19, 3, 5, 2, 3],
+                            label: '# Marktanteil',
+                            data: [companyData],
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
                                 'rgba(54, 162, 235, 0.2)',
