@@ -27,7 +27,8 @@ class GamePatch(GameBase):
 class GameResponse(GameBase):
     id: int
     grade_name: str
-    creation_date: datetime
+    creation_date: float
+    last_edit: float | None
     owner_id: int
     current_cycle_index: int    
     is_active: bool 
