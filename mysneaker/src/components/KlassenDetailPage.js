@@ -73,12 +73,16 @@ const KlassenDetailPage = () => {
 
     updateCompany()
 
+    try {
       fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
         if (res.status === 200) {
           let json = await res.json();
           setGame(json)
         }
       })
+    } catch (error) {
+
+    }
   }, [url]);
 
   const updateCompany = async () => {
