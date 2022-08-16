@@ -17,7 +17,7 @@ class UserRepository(CRUDRepository):
         result = await self.session.exec(select(User).where(User.name == name))
         user: User | None = result.one_or_none()
         if isinstance(user, NoneType):
-            raise UserNotFoundError(entity_id=name)
+            raise UserNotFoundError(entity_id=name, detail="")
         return user
     
     
@@ -25,7 +25,7 @@ class UserRepository(CRUDRepository):
         result = await self.session.exec(select(User).where(User.game_id == game_id))
         users: list[User] = result.all()
         if len(users) <= 0:
-            raise GameNotFoundError(entity_id=game_id)
+            raise GameNotFoundError(entity_id=game_id, detail="")
         return users
 
 
@@ -33,11 +33,17 @@ class UserRepository(CRUDRepository):
         result = await self.session.exec(select(User).join(TeacherGroup).where(User.id == TeacherGroup.user_id))
         teachers: list[User] = result.all()
         if len(teachers <= 0):
-            raise UserNotFoundError(entity_id=None)
+            raise UserNotFoundError(entity_id=None, detail="")
         return teachers
+    
+    
+    async def read_players_by_game_id(self, game_id: int):
+        result = await self.session.exec(select(User).where(User.game_id == game_id))
+        return 
     
     
 class UserNotFoundError(NotFoundError):
 
     entity_name: str = "User"
-    
+    def __init__(self, entity_id, detail) -> None:
+        super().__init__(entity_id=entity_id, entity_name=self.entity_name, detail=detail)

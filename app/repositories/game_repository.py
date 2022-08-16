@@ -23,3 +23,5 @@ class GameRepository(CRUDRepository):
 class GameNotFoundError(NotFoundError):
 
     entity_name: str = "Game"
+    def __init__(self, entity_id, detail) -> None:
+        super().__init__(entity_id=entity_id, entity_name=self.entity_name, detail=detail)

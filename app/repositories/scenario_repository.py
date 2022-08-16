@@ -23,7 +23,7 @@ class ScenarioRepository(CRUDRepository):
         result = await self.session.exec(select(Scenario).where(Scenario.char == char))
         scenario: Scenario = result.one_or_none()
         if isinstance(scenario, NoneType):
-            raise ScenarioNotFoundError(entity_id=char)
+            raise ScenarioNotFoundError(entity_id=char, detail="")
         return scenario
 
 
@@ -31,11 +31,12 @@ class ScenarioRepository(CRUDRepository):
         result = await self.session.exec(select(Scenario.char))
         chars = result.all()
         if len(chars) <= 0:
-            raise ScenarioNotFoundError(entity_id=None)
+            raise ScenarioNotFoundError(entity_id=None, detail="")
         return chars
 
 
 class ScenarioNotFoundError(NotFoundError):
 
     entity_name: str = "Scenario"
-    
+    def __init__(self, entity_id, detail) -> None:
+        super().__init__(entity_id=entity_id, entity_name=self.entity_name, detail=detail)

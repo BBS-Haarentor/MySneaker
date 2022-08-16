@@ -1,11 +1,20 @@
 
 
+from types import NoneType
+
+
 class NotFoundError(Exception):
 
     entity_name: str
+    detail: str
 
-    def __init__(self, entity_id):
+    def __init__(self, entity_id, entity_name: str | None, detail: str | None):
+        if not isinstance(detail, NoneType):
+            self.detail = detail
+        if not isinstance(entity_name, NoneType):
+            self.entity_name = entity_name
         super().__init__(f"{self.entity_name} not found, id: {entity_id}")
+
 
 
 class ServiceError(Exception):

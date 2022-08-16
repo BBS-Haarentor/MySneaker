@@ -243,18 +243,7 @@ async def get_all_users_for_my_games(current_user: User = Depends(get_current_ac
             ur.grade_name = game.grade_name
             all_users.append(ur)
             
-
-    #for u in all_users:
-    #    logging.warning(f"++++++++++++++++")
-    #    logging.warning(f"{type(u)=}")
-    #    ur = UserResponseWithGradeName(id=u.id)
-    #    for key, value in u.items():
-    #        setattr(ur, key, value)
-    #    output_list.append(ur)
-    #return [(UserResponseWithGradeName.parse_obj(u)) for u in all_users]
     return all_users
-    user_list: list[UserResponseWithGradeName] = await get_all_users_for_teacher(user_id=current_user.id, session=session)
-    return user_list
 
 
 @router.put("/activate_signup/{game_id}", status_code=status.HTTP_202_ACCEPTED)#

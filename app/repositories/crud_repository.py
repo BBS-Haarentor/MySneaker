@@ -31,9 +31,10 @@ class CRUDRepository():
         result = await self.session.exec(select(self.type_identifier.__class__).where(self.type_identifier.__class__.id == id))
         entity: BaseSchema = result.one_or_none()
         if isinstance(entity, NoneType):
-            raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__.__str__())
+            raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__.__name__ ,detail="Called from CRUD-Repository")
         return entity
-    
+                #raise NotFoundError(entity_id=id, detail=f"type_identifier: {self.type_identifier.__class__.__name__}")
+
     
     async def update(self, update_data: BaseSchema) -> BaseSchema:
         result = await self.session.exec(select(self.type_identifier.__class__).where(self.type_identifier.__class__.id == update_data.id))
@@ -51,7 +52,7 @@ class CRUDRepository():
         result = await self.session.exec(select(self.type_identifier.__class__).where(self.type_identifier.__class__.id == id))
         entity = result.one_or_none()
         if isinstance(entity, NoneType):
-            raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__.__str__())
+            raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__.__name__ ,detail="Called from CRUD-Repository")
         self.session.delete(entity)
         await self.session.commit()
         await self.session.flush()

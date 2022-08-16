@@ -116,11 +116,11 @@ class GameService():
         if index > 0:
             prev_c: Cycle = await self.cycle_repo.get_newest_cycle_by_user_and_index(user_id=user_id, index=(index - 1))
             info.sales_bid = prev_c.sales_bid
-        info.account_balance = float(s.account_balance)
-        info.credit_taken = float(s.credit_taken)
-        info.income_from_sales = s.income_from_sales
-        info.real_sales = s.real_sales
-        info.insolvent = s.insolvent
+        #info.account_balance = float(s.account_balance)
+        #info.credit_taken = float(s.credit_taken)
+        #info.income_from_sales = s.income_from_sales
+        #info.real_sales = s.real_sales
+        #info.insolvent = s.insolvent
 
         info.turnover_ready = False
         try:

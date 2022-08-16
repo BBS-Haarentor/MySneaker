@@ -16,10 +16,12 @@ class CycleRepository(CRUDRepository):
         result = await self.session.exec(select(Cycle).where(Cycle.company_id == user_id).where(Cycle.current_cycle_index == index).order_by(Cycle.creation_date.desc()))
         cycle: Cycle | None = result.first()
         if isinstance(cycle, NoneType):
-            raise CycleNotFoundError(entity_id=None)
+            raise CycleNotFoundError(entity_id=None, detail="Called from CycleRepository")
         return cycle
 
 
 class CycleNotFoundError(NotFoundError):
 
     entity_name: str = "Cycle"
+    def __init__(self, entity_id, detail) -> None:
+        super().__init__(entity_id=entity_id, entity_name=self.entity_name, detail=detail)

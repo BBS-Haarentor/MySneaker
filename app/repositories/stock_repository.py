@@ -16,7 +16,7 @@ class StockRepository(CRUDRepository):
         result = await self.session.exec(select(Stock.id).where(Stock.company_id == user_id).order_by(Stock.creation_date.desc()))
         ids: list[int] = result.all()
         if len(ids <= 0):
-            raise StockNotFoundError()
+            raise StockNotFoundError(entity_id=user_id, detail="")
         return ids
     
     
@@ -24,10 +24,13 @@ class StockRepository(CRUDRepository):
         result = await self.session.exec(select(Stock.id).where(Stock.company_id == user_id).where(Stock.current_cycle_index == index).order_by(Stock.creation_date.desc()))
         id: int | None = result.first()
         if isinstance(id, NoneType):
-            raise StockNotFoundError()
+            raise StockNotFoundError(entity_id=user_id, detail="")
         return id
     
     
+
 class StockNotFoundError(NotFoundError):
 
     entity_name: str = "Stock"
+    def __init__(self, entity_id, detail) -> None:
+        super().__init__(entity_id=entity_id, entity_name=self.entity_name, detail=detail)

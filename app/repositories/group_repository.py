@@ -28,7 +28,7 @@ class GroupRepository(CRUDRepository):
         result = await self.session.exec(select(User).join(target_group.__class__).where(User.id == user_id))
         validated_user: User | None = result.one_or_none()
         if isinstance(validated_user, NoneType):
-            raise GroupNotFoundError(entity_id=user_id)
+            raise GroupNotFoundError(entity_id=user_id, detail=f"relevant group: {target_group.__class__.__name__}")
         return validated_user
 
 
@@ -41,5 +41,7 @@ class GroupRepository(CRUDRepository):
 
 
 class GroupNotFoundError(NotFoundError):
-    
+
     entity_name: str = "Group"
+    def __init__(self, entity_id, detail) -> None:
+        super().__init__(entity_id=entity_id, entity_name=self.entity_name, detail=detail)
