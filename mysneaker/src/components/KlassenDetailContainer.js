@@ -346,6 +346,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             "machine_1_space": 1,
             "machine_2_space": machine_2_space,
             "machine_3_space": machine_3_space,
+            "company_id": userId
         });
 
         var requestOptions = {
@@ -753,10 +754,10 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
 
                         </tbody>
                     </table>
-                </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                     <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
-                </div> : data.scenario.machine_purchase_allowed ? <div className="p-4 In dieser Periode ist der Kauf einer Maschine nicht möglich shadow-lg rounded-3xl m-2 bg-white  snap-start" >
+                </div> : data.scenario.machine_purchase_allowed ? <div className="p-4 In dieser Periode ist der Kauf einer Maschine nicht möglich shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
                     <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >

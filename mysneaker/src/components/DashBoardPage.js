@@ -20,7 +20,6 @@ const DashBoardPage = () => {
 
     const OnClick = (text) => {
         setState(text)
-        console.log(text)
         if (text === "Lager/Beschaffung") {
             LagerBeschaffungRef.current?.scrollIntoView({behavior: 'smooth'});
         } else if (text === "Personal") {
