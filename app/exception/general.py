@@ -1,5 +1,3 @@
-
-
 from types import NoneType
 
 
@@ -41,3 +39,14 @@ class ValidationError(Exception):
         self.entity_name = entity_name
         self.detail = detail
         super().__init__(f"{calling_service} produced a ValidationError for {entity_name=}")
+
+
+class GameError(Exception):
+    
+    calling_method: str
+    detail: str
+    
+    def __init__(self, calling_method: str , detail: str) -> None:
+        self.calling_method = calling_method
+        self.detail = detail
+        super().__init__(f"{calling_method} produced a GameError")

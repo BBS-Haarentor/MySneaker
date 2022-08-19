@@ -21,6 +21,7 @@ from app.models.user import User
 from app.models.game import Game
 from app.schemas.game import GameCreate, GamePatch, GameResponse, PlayerInfo
 from app.schemas.user import UserResponse, UserResponseWithGradeName
+from app.services import user_service
 from app.services.cycle_service import CycleService
 from app.services.game_service import GameService
 from app.services.user_service import UserService
@@ -68,12 +69,17 @@ async def get_all_game_ids_by_user_id(user_id: int,
     return await game_service.get_ids_by_owner_id(owner_id=user_id)
     
     
-@router.get("/student/my_game", status_code=status.HTTP_200_OK, response_model=GameResponse)
+@router.get("/student/my_game", status_code=status.HTTP_200_OK)
 @base_auth_required
 async def get_my_game(current_user: User = Depends(get_current_active_user), 
                       session: AsyncSession = Depends(get_async_session)) -> Game:
     game_service: GameService = GameService(session=session)
-    return await game_service.get_game_by_id(game_id=current_user.game_id)
+    user_service: UserService = UserService(session=session)
+    game: Game = await game_service.get_game_by_id(game_id=current_user.game_id)
+    res = game.dict(exclude_none=True)
+    owner: User = await user_service.get_user_by_id(id=game.owner_id)
+    res["teacher_name"] = owner.name
+    return res
 
 
 @router.get("/student/my_summary", status_code=status.HTTP_200_OK)#

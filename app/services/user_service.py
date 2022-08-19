@@ -34,13 +34,13 @@ class UserService():
 
     async def create_student(self, create_data: UserPostStudent) -> int: 
         user: User = await self.user_repo.create(create_data=create_data)
-        self.basegroup_repo.create(create_data=BaseGroup(user_id=user.id))
+        await self.basegroup_repo.create(create_data=BaseGroup(user_id=user.id))
         return user.id
     
     
     async def create_teacher(self, create_data: UserPostElevated) -> int:
         user: User = await self.user_repo.create(create_data=create_data)
-        self.basegroup_repo.create(create_data=TeacherGroup(user_id=user.id))
+        await self.basegroup_repo.create(create_data=TeacherGroup(user_id=user.id))
         logging.warning("lol")
         return user.id
     
@@ -48,7 +48,7 @@ class UserService():
     
     async def create_admin(self, create_data: UserPostElevated) -> int:
         user: User = await self.user_repo.create(create_data=create_data)
-        self.basegroup_repo.create(create_data=AdminGroup(user_id=user.id))
+        await self.basegroup_repo.create(create_data=AdminGroup(user_id=user.id))
         return user.id
     
     
