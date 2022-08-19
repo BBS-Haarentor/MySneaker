@@ -12,6 +12,10 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
     if cycle.buy_paint<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht weniger als 0 farben gekauft werden.")
 
+    if cycle.sales_planned<0:
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können keine Negativen Schuhe verkauft werden.") 
+
+
     if cycle.planned_production_1>( cycle.planned_workers_1*scenario.machine_production_capacity1):
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nur {cycle.planned_workers_1*scenario.machine_production_capacity1} schue an der Maschiene Produziert werden.")
     if cycle.planned_production_1<0:
@@ -74,17 +78,19 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
 
     if cycle.sales_planned<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht mehr schuhe verkauft werden als vorhanden sind")
-
-    if cycle.sales_bid<0:
-        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht mehr schuhe verkauft werden als vorhanden sind")
-    if cycle.sales_bid>(cycle.planned_production_1+cycle.planned_production_2+cycle.planned_production_3+cycle.include_from_stock):
+    if cycle.sales_planned>(cycle.planned_production_1+cycle.planned_production_2+cycle.planned_production_3+cycle.include_from_stock):
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es können nicht mehr schuhe verkauft werden als peoduktiert wurden und auf lager sind")
 
+    if cycle.sales_bid>300:
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es darf nicht mehr geld für sneakers verlankt werden als 300€")
+    if cycle.sales_bid<0:
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Dein Unternehmen Bezahlt geld um sneaker zu verkaufen.")
 
     if cycle.tender_offer_price>300:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es darf nicht mehr geld für sneakers verlankt werden als 300€")
-    if cycle.tender_offer_price<0: #Klärungs bedarf
+    if cycle.tender_offer_price<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Dein Unternehmen Bezahlt geld um sneaker zu verkaufen.")
+
 
     if cycle.research_invest<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Dein Unternehmen kann nicht weniger als 0€ in die entwickelung stecken")
@@ -109,10 +115,15 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
     if cycle.ad_invest<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Es kann nicht weniger als 0€ in Werbung investiert werden.")
 
+    if cycle.ad_invest<stock.account_balance+( 50_000-cycle.take_credit ):
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Du kannst nicht mehr geld ausgeben als du hast und maximal höhe and Kredit hergeben.")
+
     if cycle.take_credit<cycle.payback_credit:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Dein augenommener Credit Beträgt: {cycle.take_credit} und du möchtest {cycle.payback_credit} ab Bezahlen.")
     if cycle.payback_credit>50_000: #wie Hohen Credit darf amnn maximal aufnehmen
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Dein unternahmen Darf nicht mehr als 50.000.00€ Credit aufnehemn.")
+    if cycle.payback_credit<0:
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Du kanst nicht mehr mehr zurückzahlen also du aufgenommen hast.")
 
     if cycle.new_employees>stock.employees_count:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Es können nicht weniger als {stock.employees_count} Arbeiter enlassen werden werden.")
