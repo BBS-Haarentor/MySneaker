@@ -5,7 +5,7 @@ from app.schemas.base import BaseSchema
 class StockBase(BaseSchema):
     game_id: int 
     company_id: int
-    creation_date: datetime | None
+    creation_date: float | None
     current_cycle_index: int 
     sneaker_count: int | None
     paint_count: int | None
