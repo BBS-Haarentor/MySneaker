@@ -190,7 +190,7 @@ const LehrerPage = () => {
                   <div className='flex border-[#4fd1c5] border-solid border-2 rounded-2xl w-[90%] h-30 m-[5%]'>
                     <div className='text-5xl self-center justify-center m-auto text-[#4fd1c5]'>
                       <p>{element.grade_name}</p>
-                      <p className='text-3xl m-auto text-[#a3b1c2]'>Erstellt am: {new Date(element.creation_date).getDate() + '.' + (new Date(element.creation_date).getMonth() + 1) + '.' + new Date(element.creation_date).getFullYear()}</p>
+                      <p className='text-3xl m-auto text-[#a3b1c2]'>Erstellt am: {("0" + new Date(element.creation_date*1000).getDate()).slice(-2) + '.' + ("0" + (new Date(element.creation_date*1000).getMonth() + 1)).slice(-2) + '.' + new Date(element.creation_date*1000).getFullYear()}</p>
                     </div>
                   </div>
                 </a>)

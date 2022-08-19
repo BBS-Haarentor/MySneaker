@@ -19,7 +19,7 @@ const Beschaffung = ({ Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, Ausschr
                             <tr>
                                 <td>Markt</td>
                                 <td><input className="border-2 border-[#4fd1c5] w-[80%] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setMarktSoll(e.target.value)} value={MarktSoll}></input> Stk.</td>
-                                <td><input className="border-2 border-[#4fd1c5] w-[90%] rounded-lg dark:bg-[#1f2733]" min="0" max="300" type="number" onChange={(e) => e.target.value <= 300 ? e.target.value >= 0 ? setMarktSollPreis(e.target.value) : setMarktSollPreis(0) : setMarktSoll(300) } value={MarktSollPreis}></input> €</td>
+                                <td><input className="border-2 border-[#4fd1c5] w-[90%] rounded-lg dark:bg-[#1f2733]" min="0" max="300" type="number" onChange={(e) => e.target.value <= 300 ? e.target.value >= 0 ? setMarktSollPreis(e.target.value) : setMarktSollPreis(0) : setMarktSollPreis(300) } value={MarktSollPreis}></input> €</td>
                                 <td>{formatter.format(MarktSoll * MarktSollPreis)}</td>
                             </tr>
                             <tr>
