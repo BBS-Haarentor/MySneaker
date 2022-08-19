@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
-import TeacherList from './AdminPage/TeacherList'
-import PeriodenListe from './AdminPage/PeriodenListe'
+import TeacherList from './TeacherList'
+import PeriodenListe from './PeriodenListe'
 
 const AdminPage = ({OnClick, state}) => {
 

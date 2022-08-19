@@ -1,6 +1,6 @@
 import React from 'react';
-import NavBarButton from './NavBarComponents/NavBarButton';
-import Spacer from './NavBarComponents/Spacer';
+import NavBarButton from './Utils/NavBarComponents/NavBarButton';
+import Spacer from './Utils/NavBarComponents/Spacer';
 import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 
@@ -82,7 +82,7 @@ const SideNavBar = ({ OnClick, state }) => {
                             fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/student/my_game', requestOptions).then(async (element1) => {
                                 if (element1.status === 200) {
                                     let json = await element1.json()
-                                    document.getElementById("teacher").innerHTML = json.owner_id
+                                    document.getElementById("teacher").innerHTML = json.teacher_name
                                     document.getElementById("grade_name").innerHTML = json.grade_name
                                     document.getElementById("scenario").innerHTML = json.current_cycle_index
                                 }

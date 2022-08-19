@@ -1,12 +1,11 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import LoginPage from './components/LoginPage';
 import DashBoardPage from './components/DashBoardPage';
 import MainPage from './components/MainPage';
 import Tutorial from './components/tutorial';
-import LehrerPage from './components/LehrerPage';
-import KlassenDetailPage from './components/KlassenDetailPage'
+import LehrerPage from './components/LehrerPage/LehrerPage';
+import KlassenDetailPage from './components/LehrerPage/KlassenDetailPage'
 import RegisterPage from './components/RegisterPage';
-import Logout from './components/Logout';
+import Logout from './components/Utils/Logout';
 import { useEffect } from 'react';
 
 

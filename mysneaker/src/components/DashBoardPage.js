@@ -1,10 +1,10 @@
 import SideNavBar from "./SideNavBar"
 import {useState, useEffect, useRef} from "react";
 import LoginPage from "./LoginPage";
-import LehrerPage from "./LehrerPage";
+import LehrerPage from "./LehrerPage/LehrerPage";
 import Container from "./Container";
 import Cookies from "js-cookie";
-import AdminPage from "./AdminPage";
+import AdminPage from "./AdminPage/AdminPage";
 
 const DashBoardPage = () => {
     const MarketingRef = useRef(null);
@@ -15,7 +15,6 @@ const DashBoardPage = () => {
     const AbsatzRef = useRef(null);
 
     const [state, setState] = useState((Cookies.get("session") === undefined || Cookies.get("session") === "" ? "Login" : "Lager/Beschaffung"))
-    var [isLehe, setIsLehe] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const OnClick = (text) => {
@@ -37,7 +36,7 @@ const DashBoardPage = () => {
         }
 
     }
-    var [isLehe, setIsLehe] = useState(false);
+    const [isLehe, setIsLehe] = useState(false);
 
     useEffect(() => {
         if (Cookies.get("session")) {

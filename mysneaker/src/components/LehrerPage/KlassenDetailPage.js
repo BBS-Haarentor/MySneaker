@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom';
 import {useState, useEffect, useRef} from "react";
 import QRCodeStyling from "qr-code-styling";
 import Cookies from 'js-cookie';
-import SideNavBar from './SideNavBar'
+import SideNavBar from '../SideNavBar'
 import KlasseContainer from './KlasseContainer';
 
 const KlassenDetailPage = () => {

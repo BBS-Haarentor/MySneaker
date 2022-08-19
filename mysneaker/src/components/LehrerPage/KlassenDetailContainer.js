@@ -2,15 +2,15 @@ import React from 'react'
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
-import Beschaffung from './Container/Beschaffung'
-import Lager from './Container/Lager';
-import Personal from './Container/Personal';
-import Marketing from './Container/Marketing'
-import Planung from './Container/Planung'
-import VerkaufSoll from './Container/VerkaufSoll'
-import VerkaufIst from './Container/VerkaufIst'
-import Statistik from  './Container/Statistik'
-import Finanzen from './Container/Finanzen';
+import Beschaffung from '../Container/Beschaffung'
+import Lager from '../Container/Lager';
+import Personal from '../Container/Personal';
+import Marketing from '../Container/Marketing'
+import Planung from '../Container/Planung'
+import VerkaufSoll from '../Container/VerkaufSoll'
+import VerkaufIst from '../Container/VerkaufIst'
+import Statistik from '../Container/Statistik'
+import Finanzen from '../Container/Finanzen';
 
 const KlassenDetailContainer = ({ userId, cycle_index }) => {
 
