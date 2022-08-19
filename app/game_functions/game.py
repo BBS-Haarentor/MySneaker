@@ -3,10 +3,9 @@ from dataclasses import dataclass
 from app.models.cycle import Cycle
 from app.models.stock import Stock
 from app.models.scenario import Scenario
+from sqlmodel import SQLModel
 
-
-@dataclass
-class MachineType():
+class MachineBase():
     
     name: str
     purchase_cost: float
@@ -17,14 +16,22 @@ class MachineType():
     employee_production_capacity: int 
     
 
-@dataclass
-class Machine():
+class Machine(MachineBase):
     
-    type: MachineType
+    owner_id: int
     slot: int
     
     planned_production: int
     planned_workers: int
+    
+    
+def create_machines(stocks: list[Stock])-> list[Machine]:
+    machines: list[Machine] = []
+    for s in stocks:
+        
+        pass
+    return machines
+    
 
 
 class Game():
@@ -35,7 +42,7 @@ class Game():
     
     dead_stocks: list
     dead_cycles: list
-    machines: dict
+    machines: list[Machine]
     research_levels: dict
     
     output_stocks: list[Stock]
@@ -90,11 +97,11 @@ class Game():
             2: self.input_stocks[index].machine_3_space
             }
         for k, v in slots:
-            new_machine: Machine = Machine()
             if v > 0:
                 new_machine: Machine = Machine()
                 
                 self.machines[index].append()
+        ####
         if self.input_stocks[index].machine_1_space > 0:
             new_machine: Machine = Machine()
             self.machines[index].append(new_machine)
@@ -181,11 +188,19 @@ class Game():
             pass
         raise NotImplementedError
 
+
+    def _buy_new_machine_(self, index: int) -> None:
+        if self.input_cycles[index].buy_new_machine > 0:
     
+            raise NotImplementedError
+
+
     def _produce_sneaker_(self) -> None:
         raise NotImplementedError
 
         
+    ######### sales #########
+    
     def _sell_sneaker_(self) -> None:
         raise NotImplementedError
 
@@ -198,10 +213,6 @@ class Game():
         raise NotImplementedError
 
     
-    def _buy_new_machine_(self, index: int) -> None:
-        if self.input_cycles[index].buy_new_machine > 0:
-    
-            raise NotImplementedError
 
     
 
