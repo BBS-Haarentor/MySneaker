@@ -98,7 +98,7 @@ class GameService():
     async def delete_game(self, game_id: int) -> None:
         game: Game = await self.game_repo.read(id=game_id)
         if game.is_active:
-            raise ServiceError(entity_id=game_id, calling_service=self.__class__.__str__(), detail="Game is active. Please deactivate before deleting.")
+            raise ServiceError(entity_id=game_id, entity_name="Game" ,calling_service=self.__class__.__str__(), detail="Game is active. Please deactivate before deleting.")
         else:
             await self.game_repo.delete(id=game_id)
         return None
@@ -114,7 +114,7 @@ class GameService():
         info.index = index
 
         if index > 0:
-            prev_c: Cycle = await self.cycle_repo.get_newest_cycle_by_user_and_index(user_id=user_id, index=(index - 1))
+            prev_c: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(user_id=user_id, index=(index - 1))
             info.sales_bid = prev_c.sales_bid
         #info.account_balance = float(s.account_balance)
         #info.credit_taken = float(s.credit_taken)
@@ -124,7 +124,7 @@ class GameService():
 
         info.turnover_ready = False
         try:
-            c: Cycle = await self.cycle_repo.get_newest_cycle_by_user_and_index(user_id=user_id, index=index)
+            c: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(user_id=user_id, index=index)
             info.turnover_ready = True
         except CycleNotFoundError:
             pass
@@ -142,7 +142,6 @@ class GameService():
             infos.append(await self.get_player_info(user_id=u.id, index=index))
         if index > 0:
             total_sold: int = sum(x.real_sales for x in infos)
-            logging.warning(f"{total_sold=}")
             for i in infos:
                 i.market_share = round(i.real_sales / total_sold, 2)
         return infos

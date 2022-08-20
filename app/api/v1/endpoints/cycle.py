@@ -41,7 +41,7 @@ async def create_new_cycle_entry_override(cycle_data: CycleCreate, current_user:
     cycle_id: int = await cycle_service.new_cycle_entry(cycle_data=cycle_data)
     return cycle_id
 
-
+#deprecated?
 @router.get("/my_cycles", status_code=status.HTTP_200_OK, response_model=list[Cycle])
 @base_auth_required
 async def my_cycles(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Cycle]:
