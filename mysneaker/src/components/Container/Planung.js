@@ -33,7 +33,7 @@ const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, Entnahme
                     </tr>
                     <tr>
                         <td>Entnahme aus dem Lager</td>
-                        <td><input className="border-2 w-[100%] border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" max={MaximaleEntnahmeAusLager} type="number" onChange={(e) => setEntnahmeAusDemLagerFunction(e.target.value)} value={EntnahmeAusDemLager}></input></td>
+                        <td><input className="border-2 w-[100%] border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" max={MaximaleEntnahmeAusLager} type="number" onChange={(e) => e.target.value >= 0 ? setEntnahmeAusDemLagerFunction(e.target.value) : setEntnahmeAusDemLagerFunction(0)} value={EntnahmeAusDemLager}></input></td>
                     </tr>
                     <tr>
                         <td>Gesamtproduktion</td>
