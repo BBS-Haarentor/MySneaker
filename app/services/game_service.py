@@ -2,7 +2,8 @@ import logging
 from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.exception.general import ServiceError
+from app.exception.general import NotFoundError, ServiceError
+from app.game_functions.game import Turnover
 from app.models.cycle import Cycle
 from app.models.game import Game
 
@@ -54,11 +55,6 @@ class GameService():
             games.append(await self.game_repo.read(id=i))
         return games
     
-    
-    async def get_players_by_game_id(self, game_id: int) -> list:
-        
-        return 
-    
             
     async def get_game_by_id(self, game_id: int) -> Game:
         game: Game = await self.game_repo.read(id=game_id)
@@ -105,7 +101,6 @@ class GameService():
     
     
     async def get_player_info(self, user_id: int, index: int) -> PlayerInfo:
-        #info = PlayerInfo(company_id=user_id, index=index)
         user: User = await self.user_repo.read(id=user_id)
         sid: int = await self.stock_repo.get_stock_id_by_user_and_index(user_id=user_id, index=index)
         s: Stock = await self.stock_repo.read(id=sid)
@@ -116,11 +111,6 @@ class GameService():
         if index > 0:
             prev_c: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(user_id=user_id, index=(index - 1))
             info.sales_bid = prev_c.sales_bid
-        #info.account_balance = float(s.account_balance)
-        #info.credit_taken = float(s.credit_taken)
-        #info.income_from_sales = s.income_from_sales
-        #info.real_sales = s.real_sales
-        #info.insolvent = s.insolvent
 
         info.turnover_ready = False
         try:
@@ -148,5 +138,28 @@ class GameService():
         
         
     async def turnover(self, game_id: int) -> int:
+        game: Game = await self.game_repo.read(id=game_id)
+        _current_index: int = game.current_cycle_index
         
+        users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
+        cycles: list = [cycles.append(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        stocks: list = [cycles.append(await self.stock_repo.get_stock_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        scenario: Scenario = self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
+        
+        turnover: Turnover = Turnover(input_cycles=cycles, input_stocks=stocks, scenario=scenario)
+        turnover
         return 
+    
+    
+    async def set_back_cycle_index(self, game_id: int, new_index: int) -> int:
+        game: Game = await self.game_repo.read(id=game_id)
+        if new_index > game.current_cycle_index or new_index < 0:
+            raise IndexError("Index can not be higher than current index and not lower than 0.")
+        try:
+            await self.cycle_repo.delete_cycles_after_including_index(game_id=game_id, new_index=new_index)
+            await self.stock_repo.delete_stocks_after_including_index(game_id=game_id, new_index=(new_index + 1))
+        except NotFoundError:
+            pass
+        game.current_cycle_index = new_index
+        updated_game: Game = await self.game_repo.update(update_data=game)
+        return updated_game.current_cycle_index
