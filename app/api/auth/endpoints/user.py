@@ -3,7 +3,7 @@ from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
 from app.core.config import SETTINGS, cls_factory
-from app.crud.game import get_game_by_id
+from app.crud.game import get_all_games_by_owner, get_game_by_id
 from app.crud.groups import add_user_to_admingroup, add_user_to_basegroup, add_user_to_teachergroup, check_user_in_admingroup, check_user_in_basegroup, check_user_in_group, check_user_in_teachergroup
 from app.crud.stock import new_stock_entry
 from app.crud.user import create_user, get_teacher_list, get_user_by_id, get_user_by_id_or_name, get_user_status, remove_user, toggle_user_active, update_pw, update_user
@@ -112,6 +112,9 @@ async def delete_user(user_id: int, current_user: User = Depends(get_current_act
     if user_status:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="It is not allowed to delete active Users. Please deactivate the User before deleting.")
     result: bool | None = await remove_user(id=user_id, session=session)
+    games: list[Game] = await get_all_games_by_owner(user_id=user_id, session=session)
+    if len(games <= 0): 
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"It is not allowed to delete Users that own games. Delete or move ownership of these games: {[games.id for g in games]}")
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     if result == True:
