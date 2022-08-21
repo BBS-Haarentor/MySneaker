@@ -94,7 +94,7 @@ class GameService():
     async def delete_game(self, game_id: int) -> None:
         game: Game = await self.game_repo.read(id=game_id)
         if game.is_active:
-            raise ServiceError(entity_id=game_id, entity_name="Game" ,calling_service=self.__class__.__str__(), detail="Game is active. Please deactivate before deleting.")
+            raise ServiceError(entity_id=game_id, entity_name="Game" ,calling_service=self.__class__.__name__, detail="Game is active. Please deactivate before deleting.")
         else:
             await self.game_repo.delete(id=game_id)
         return None

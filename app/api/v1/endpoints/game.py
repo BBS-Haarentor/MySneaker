@@ -16,6 +16,7 @@ from app.crud.scenario import get_scenario_by_index
 from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id, get_stock_entry_by_user_id_and_cycle_id
 from app.crud.user import get_all_users_for_teacher, get_user_by_id
 from app.db.session import get_async_session
+from app.exception.general import NotFoundError
 from app.game_functions.game import Turnover
 from app.models.cycle import Cycle
 from app.models.scenario import Scenario
@@ -246,12 +247,15 @@ async def get_all_users_for_my_games(current_user: User = Depends(get_current_ac
     all_users = []
     for game_id in ids:
         game: Game = await game_service.get_game_by_id(game_id=game_id)
-        users: list[User] = await user_service.read_players_by_game_id(game_id=game_id)
-        for iu in users:
-            ur: UserResponseWithGradeName = UserResponseWithGradeName.parse_obj(iu)
-            ur.grade_name = game.grade_name
-            all_users.append(ur)
+        try:
+            users: list[User] = await user_service.read_players_by_game_id(game_id=game_id)
             
+            for iu in users:
+                ur: UserResponseWithGradeName = UserResponseWithGradeName.parse_obj(iu)
+                ur.grade_name = game.grade_name
+                all_users.append(ur)
+        except NotFoundError:
+            pass            
     return all_users
 
 
