@@ -38,7 +38,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Neueinstellungen</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setNeueinstellungen(e.target.value)} value={Neueinstellungen}></input> MA</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setNeueinstellungen(e.target.value) : setNeueinstellungen(0)} value={Neueinstellungen}></input> MA</td>
 
                     </tr>
                     <tr>
@@ -48,7 +48,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Kündigungen/Rente/ etc.</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setKündigungen(e.target.value)} value={Kündigungen}></input> MA</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setKündigungen(e.target.value) : setKündigungen(0)} value={Kündigungen}></input> MA</td>
 
                     </tr>
                     <tr>
