@@ -49,6 +49,10 @@ const PeriodenListe = () => {
     myHeaders.append("accept", "application/json")
 
     useEffect(() => {
+        updateScenarioList()
+    }, [])
+
+    const updateScenarioList = () => {
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
@@ -60,10 +64,10 @@ const PeriodenListe = () => {
                 })
             }
         })
-    }, [])
+    }
 
     function editScenario(char) {
-        setModal(<EditScenarioModal myHeaders={myHeaders} char={char} setModal={setModal}/>)
+        setModal(<EditScenarioModal updateScenarioList={updateScenarioList} myHeaders={myHeaders} char={char} setModal={setModal}/>)
     }
 
     return (
@@ -116,12 +120,7 @@ const PeriodenListe = () => {
                         </tbody>
                     </table>
                 </div>
-                <div
-                    className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
-                    <button className='inline-block dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'>
-                        Periode Hinzufügen
-                    </button>
-                </div>
+
             </div>
         </>
     )

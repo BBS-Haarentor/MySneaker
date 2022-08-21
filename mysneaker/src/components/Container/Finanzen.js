@@ -27,8 +27,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Maximale Darlehenshöhe</td>
-                                <td>50.000€</td>
-                                <td>50.000€</td>
+                                <td>50.000,00€</td>
+                                <td>50.000,00€</td>
                             </tr>
                             <tr>
                                 <td>Darlehensstand (Beginn Periode)</td>

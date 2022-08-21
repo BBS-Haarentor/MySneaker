@@ -84,7 +84,7 @@ const SideNavBar = ({ OnClick, state }) => {
                                     let json = await element1.json()
                                     document.getElementById("teacher").innerHTML = json.teacher_name
                                     document.getElementById("grade_name").innerHTML = json.grade_name
-                                    document.getElementById("scenario").innerHTML = json.current_cycle_index
+                                    document.getElementById("scenario").innerHTML = json.scenario_order[json.current_cycle_index]
                                 }
                             })
                         }

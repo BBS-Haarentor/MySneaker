@@ -3,7 +3,7 @@
     "data": [
         {
             "char": "A",
-            "description": "LOREM IPSUM",
+            "description": "Politik  Aufgrund der hohen Überschüsse in den Sozialkassen ist in den kommenden Perioden mit einer Absenkung der Sozialbeiträge (Personalnebenkosten) zu rechnen.  Markteinschätzung  Der wirtschaftliche Aufschwung gewinnt an Dynamik. Die Nachfrage am Markt nach Sneakern dürfte gegenüber der Vorperiode um ca. 50 % zunehmen. ",
             "sneaker_price": 60,
             "paint_price": 10,
             "storage_fee_sneaker": 4.00,
@@ -23,7 +23,7 @@
         },
         {
             "char": "B",
-            "description": "LOREM IPSUM",
+            "description": "Politik  Aufgrund der hohen Überschüsse in den Sozialkassen sinken die die Personalnebenkosten von derzeit 20% auf 18 %.  Markteinschätzung  Wichtige Indexwerte wie der IFO-Geschäftsklimaindex oder das DIW-Konjunkturbarometer steigen weiterhin deutlich, was eine gesteigerte Wirtschaftsleistung für die kommende Periode erwarten lässt. Die Nachfrage am Markt nach Sneakern dürfte gegenüber der Vorperiode weiter zunehmen.",
             "sneaker_price": 65,
             "paint_price": 10,
             "storage_fee_sneaker": 4.00,
@@ -37,13 +37,13 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "sneaker_ask": 400,
+            "sneaker_ask": 600,
             "tender_offer_count":0,
             "factor_ad_take": 0.1
         },
         {
             "char": "C",
-            "description": "LOREM IPSUM",
+            "description": "Politik  Aufgrund der prosperierenden Wirtschaftslage müssen Sie nach den Nullrunden der Perioden Eins und Zwei die Löhne und Gehälter um 10% anpassen.  Markteinschätzung  Die Nachfrage am Markt nach Sneakern dürfte gegenüber der Vorperiode weiter zunehmen. Eine erste Ausschreibung erfolgt in Höhe von 200 Einheiten. Verkauft wird an den günstigsten Anbieter.",
             "sneaker_price": 65,
             "paint_price": 12,
             "storage_fee_sneaker": 4.00,
@@ -57,13 +57,13 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": true,
-            "sneaker_ask": 400,
+            "sneaker_ask": 800,
             "tender_offer_count":200,
             "factor_ad_take": 0.1
         },
         {
             "char": "D",
-            "description": "LOREM IPSUM",
+            "description": "Politik  Aufgrund gesetzlicher Neuerungen bei der Dokumentation des Bewerbungsprozesses verteuert dieser sich von 100,00 € auf 200,00 €.  Markteinschätzung  Weiterhin kann ein kräftiges Wachstum auf dem Markt für Sneaker erwartet werden, dass mittelfristig anhalten wird.",
             "sneaker_price": 70,
             "paint_price": 12,
             "storage_fee_sneaker": 4.00,
@@ -77,13 +77,13 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": true,
-            "sneaker_ask": 400,
+            "sneaker_ask": 1000,
             "tender_offer_count":200,
             "factor_ad_take": 0.1
         },
         {
             "char": "E",
-            "description": "LOREM IPSUM",
+            "description": "Politik  Markteinschätzung  Die Kapazitätsgrenze für den Sneakermarkt ist nicht erreicht, dennoch erwarten die ersten Experten eine baldige Marktsättigung. Das ifo-Institut ist hingegen von einem weiterhin robusten Wachstume überzeugt. Interne Unternehmensfaktoren  Aufgrund des hohen Marktwachstums hat die Personalabteilung massive Probleme geeignete Mitarbeiter*innen zu finden, d. h. in dieser Periode kann kein neues Personal eingestellt werden.",
             "sneaker_price": 80,
             "paint_price": 15,
             "storage_fee_sneaker": 4.00,
@@ -97,13 +97,13 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "sneaker_ask": 400,
+            "sneaker_ask": 1200,
             "tender_offer_count":300,
             "factor_ad_take": 0.1
         },
         {
             "char": "F",
-            "description": "LOREM IPSUM",
+            "description": "Politik Markteinschätzung  Die Kapazitätsgrenze für den Sneakermarkt ist nicht erreicht, dennoch erwarten die ersten Experten eine baldige Marktsättigung. Das ifo-Institut ist hingegen von einem weiterhin robusten Wachstume überzeugt.",
             "sneaker_price": 80,
             "paint_price": 15,
             "storage_fee_sneaker": 4.00,
@@ -116,14 +116,14 @@
             "employee_signup_bonus": 200,
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
-            "machine_purchase_allowed": false,
-            "sneaker_ask": 400,
+            "machine_purchase_allowed": true,
+            "sneaker_ask": 1500,
             "tender_offer_count":400,
             "factor_ad_take": 0.1
         },
         {
             "char": "G",
-            "description": "LOREM IPSUM",
+            "description": "Markteinschätzung  Aufgrund der gesunkenen Konjunkturerwartungen ist die Grenze des Wachstums erreicht, voraussichtlich wird der Gesamtmarkt stabil bleiben. Kurz- bis mittelfristig sind jedoch Rückschläge nicht ausgeschlossen.",
             "sneaker_price": 85,
             "paint_price": 16,
             "storage_fee_sneaker": 4.00,
@@ -136,14 +136,14 @@
             "employee_signup_bonus": 200,
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
-            "machine_purchase_allowed": false,
-            "sneaker_ask": 400,
+            "machine_purchase_allowed": true,
+            "sneaker_ask": 1500,
             "tender_offer_count":500,
             "factor_ad_take": 0.1
         },
         {
             "char": "H",
-            "description": "LOREM IPSUM",
+            "description": "Markteinschätzung  Der negative Konjunkturausblick hat sich bestätigt, es ist von einem leichten Rückgang im Gesamtmarkt auszugehen.",
             "sneaker_price": 75,
             "paint_price": 12,
             "storage_fee_sneaker": 4.00,
@@ -156,14 +156,14 @@
             "employee_signup_bonus": 200,
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
-            "machine_purchase_allowed": false,
-            "sneaker_ask": 400,
+            "machine_purchase_allowed": true,
+            "sneaker_ask": 1400,
             "tender_offer_count":300,
             "factor_ad_take": 0.1
         },
         {
             "char": "I",
-            "description": "LOREM IPSUM",
+            "description": "Markteinschätzung  Die Abwärtsbewegung der Wirtschaft ist nun nicht mehr zu stoppen, wesentliche Branchen befinden sich im freien Fall. Die gestiegene Sparneigung der Konsumenten trifft auch den Markt für Sneaker, ein deutlicher Einbruch ist erwartbar.",
             "sneaker_price": 65,
             "paint_price": 10,
             "storage_fee_sneaker": 4.00,
@@ -177,13 +177,13 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "sneaker_ask": 400,
+            "sneaker_ask": 1000,
             "tender_offer_count":100,
             "factor_ad_take": 0.1
         },
         {
             "char": "J",
-            "description": "LOREM IPSUM",
+            "description": "Markteinschätzung  Nach dem drastischen Einbruch des Marktes deutet sich nunmehr eine vorsichtige Erholung an.",
             "sneaker_price": 65,
             "paint_price": 10,
             "storage_fee_sneaker": 4.00,
@@ -197,7 +197,7 @@
             "employee_production_capacity": 10,
             "employee_cost_modfier": 0.18,
             "machine_purchase_allowed": false,
-            "sneaker_ask": 400,
+            "sneaker_ask": 1200,
             "tender_offer_count":200,
             "factor_ad_take": 0.1
         }

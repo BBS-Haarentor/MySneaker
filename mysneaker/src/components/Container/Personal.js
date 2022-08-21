@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinstellungen, Neueinstellungen, setKündigungen, Kündigungen, ZugeteilteMitarbeiter2, ZugeteilteMitarbeiter3, formatter, PersonalnebenkostenInP, setPersonalnebenkosten, Personalnebenkosten,data }) => {
+const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinstellungen, Neueinstellungen, setKündigungen, Kündigungen, ZugeteilteMitarbeiter2, ZugeteilteMitarbeiter3, formatter, PersonalnebenkostenInP, setPersonalnebenkosten, Personalnebenkosten,employee_signup_bonus,data }) => {
 
 
     return (
@@ -43,7 +43,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Kosten Neueinstellung</td>
-                        <td>100,00€</td>
+                        <td>{formatter.format(data.scenario.employee_signup_bonus)}</td>
 
                     </tr>
                     <tr>
@@ -64,7 +64,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Kosten pro MA</td>
-                        <td>500,00 €</td>
+                        <td>{formatter.format(data.scenario.employee_salary)}</td>
 
                     </tr>
                     <tr>
@@ -74,12 +74,12 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Personalkosten akt. Periode</td>
-                        <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
+                        <td>{formatter.format(Mitarbeiter * (data.scenario.employee_salary * (PersonalnebenkostenInP)))}</td>
 
                     </tr>
                     <tr>
                         <td>Personalkosten folg. Periode</td>
-                        <td>{formatter.format((parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen) * (500 * (PersonalnebenkostenInP)))}</td>
+                        <td>{formatter.format((parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen) * (data.scenario.employee_salary * (PersonalnebenkostenInP)))}</td>
 
                     </tr>
 
