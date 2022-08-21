@@ -21,7 +21,7 @@ class Scenario(ScenarioBase, table=True):
     factor_interest_rate: float = Field(default=0.04)
     employee_salary: float = Field(default=400)
     employee_signup_bonus: float = Field(default=100.00)
-    employee_production_capacity: int = Field(default=10)
+    employee_production_capacity: int = Field(default=20)
     employee_cost_modfier: float = Field(default=0.00)
     sneaker_ask: int = Field(default=400)
     factor_ad_take: float = Field(default=0.1)

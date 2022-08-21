@@ -47,7 +47,6 @@ async def create_new_cycle_entry_override(cycle_data: CycleCreate, current_user:
 async def my_cycles(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Cycle]:
     cycle_service: CycleService = CycleService(session=session)
     cycle_list: list[Cycle] = await cycle_service.get_cycles_by_user_id(user_id=current_user.id)
-
     #cycle_list: list[Cycle] = await get_cycles_by_user_id(user_id=current_user.id, session=session)
     return cycle_list
 
@@ -57,8 +56,6 @@ async def my_cycles(current_user: User = Depends(get_current_active_user), sessi
 async def get_by_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Cycle:
     cycle_service: CycleService = CycleService(session=session)
     cycle: Cycle = await cycle_service.get_current_cycle_by_user_id(user_id=current_user.id)
-
-    #cycle: Cycle | None = await get_cycles_by_user_id(user_id=user_id, session=session)
     return cycle
 
 
@@ -67,5 +64,4 @@ async def get_by_id(user_id: int, current_user: User = Depends(get_current_activ
 async def my_current_cycle(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Cycle:
     cycle_service: CycleService = CycleService(session=session)
     cycle: Cycle = await cycle_service.get_current_cycle_by_user_id(user_id=current_user.id)
-    #cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
     return cycle

@@ -147,7 +147,7 @@ class GameService():
         scenario: Scenario = self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
         
         turnover: Turnover = Turnover(input_cycles=cycles, input_stocks=stocks, scenario=scenario)
-        turnover
+        turnover.turnover()
         return 
     
     

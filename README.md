@@ -111,3 +111,22 @@ valid game_create body:
   "scenario_order": "NEWORDER"
 
 }
+
+# seeds
+
+
+
+# tests
+
+call tests manually by running:
+note: ommit _.py_ on the filename when referencing classes this way
+
+(Windows)(bash)
+``` 
+python.exe -m unittest app.tests.<testfilename>.<TestClass>
+```
+
+(Unix)(bash)
+``` 
+python -m unittest app.tests.<testfilename>.<TestClass>
+```

@@ -1,7 +1,9 @@
 
 
 import logging
+from re import I
 import unittest
+from app.game_functions.game import Turnover
 #from app.game_functions.turnover import mock_turnover
 from app.models.cycle import Cycle
 
@@ -34,7 +36,7 @@ class TestTurnover(unittest.TestCase):
             "machine_maintainance_cost": 4000.00,
             "production_cost_per_sneaker": 60.00
         }
-        user_1_stock = {
+        user_1_cycle = {
             "game_id": 1,
             "current_cycle_index": 0,
             "company_id": 2,
@@ -60,7 +62,7 @@ class TestTurnover(unittest.TestCase):
             "buy_new_machine_3": False
         }
 
-        user_2_stock = {
+        user_2_cycle = {
             "game_id": 1,
             "current_cycle_index": 0,
             "company_id": 2,
@@ -90,12 +92,12 @@ class TestTurnover(unittest.TestCase):
             "id": 0,
             "game_id": 0,
             "company_id": 0,
-            "creation_date": "2022-06-14T07:11:56.288Z",
+            "creation_date": 12345.0,
             "current_cycle_index": 0,
             "sneaker_count": 0,
             "paint_count": 0,
             "finished_sneaker_count": 0,
-            "employees_count": 0,
+            "employees_count": 8,
             "research_budget": 0,
             "account_balance": 0,
             "credit_taken": 0,
@@ -107,33 +109,38 @@ class TestTurnover(unittest.TestCase):
             "research_production_modifier": 0
         }
 
-        self.scenario: Scenario = Scenario.from_orm(scenarion_dict)
-        logging.error(f"{self.scenario=}")
+        self.scenario: Scenario = Scenario.parse_obj(scenarion_dict)
         self.stock_list: list[Stock] = []
         self.cycle_list: list[Cycle] = []
 
-        user_1_stock: Stock = Stock.from_orm(default_stock)
+        user_1_stock: Stock = Stock.parse_obj(default_stock)
         user_1_stock.company_id = 5
+        self.stock_list.append(user_1_stock)
+        user_2_stock: Stock = Stock.parse_obj(default_stock)
+        user_2_stock.company_id = 6
+        self.stock_list.append(user_2_stock)
 
-        self.stock_list.append(Stock.from_orm(user_1_stock))
+        
+        self.cycle_list.append(Cycle.parse_obj(user_1_cycle))
+        self.cycle_list.append(Cycle.parse_obj(user_2_cycle))
+
 
     def test_type_safety_scenario(self):
-        self.assertIsInstance(self.scenario.__class__, Scenario().__class__)
+        self.assertIsInstance(self.scenario, Scenario)
 
     def test_type_safety_cycle_list(self):
-        self.assertIsInstance(self.cycle_list.__class__, list.__class__)
-        self.assertIsInstance(self.cycle_list[0].__class__, Cycle().__class__)
+        self.assertIsInstance(self.cycle_list, list)
+        self.assertIsInstance(self.cycle_list[0], Cycle)
 
-    def test_type_safety_stock_list(self):
-        self.assertIsInstance(self.stock_list.__class__, list.__class__)
-        self.assertIsInstance(self.stock_list[0].__class__, Stock().__class__)
 
-    def test_turnover_management_parameters(self):
 
-        #result_stocks: list[Stock] = mock_turnover(scenario=self.scenario, stock_list=self.stock_list, cycle_list=self.cycle_list)
-
-        self.assertEqual(0, 0)
-
+    def test_game_init(self):
+        
+        turnover = Turnover(input_cycles=self.cycle_list, input_stocks=self.stock_list, scenario=self.scenario)
+        for c in turnover.companies:
+            print(f"{c.stock=} - {c.cycle=} - {c.result_stock=}")
+            logging.warning(f"{c.stock=} - {c.cycle=} - {c.result_stock=}")
+        result = turnover._sell_sneaker_()
 
 if __name__ == "__main__":
     unittest.main()

@@ -19,7 +19,24 @@ class CycleRepository(CRUDRepository):
             raise CycleNotFoundError(entity_id=None, detail="Called from CycleRepository")
         return cycle
 
-
+    async def read_cycle_ids_by_user_and_index(self, user_id: int, index: int) -> list[int]:
+        result = await self.session.exec(select(Cycle.id).where(Cycle.company_id == user_id).where(Cycle.current_cycle_index == index))
+        ids: list[int] | None = result.all()
+        if len(ids) == 0:
+            raise CycleNotFoundError(entity_id=None, detail="Called from CycleRepository")
+        return ids
+    
+    async def delete_cycles_after_including_index(self, game_id: int , new_index: int) -> None:
+        result = await self.session.exec(select(Cycle).where(Cycle.game_id == game_id).where(Cycle.current_cycle_index <= new_index))
+        cycles: list[Cycle] = result.all()
+        if len(cycles) == 0:
+            raise CycleNotFoundError(entity_id=None, detail="Called from CycleRepository")
+        for c in cycles:
+            await self.delete(id=c.id)
+        return None
+        
+    
+    
 class CycleNotFoundError(NotFoundError):
 
     entity_name: str = "Cycle"

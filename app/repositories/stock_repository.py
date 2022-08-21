@@ -28,6 +28,21 @@ class StockRepository(CRUDRepository):
         return id
     
     
+    async def get_stock_by_user_and_index(self, user_id: int, index: int) -> Stock:
+        result = await self.session.exec(select(Stock).where(Stock.company_id == user_id).where(Stock.current_cycle_index == index).order_by(Stock.creation_date.desc()))
+        stock: Stock | None = result.first()
+        if isinstance(stock, NoneType):
+            raise StockNotFoundError(entity_id=user_id, detail="")
+        return stock
+    
+    async def delete_stocks_after_including_index(self, game_id: int, new_index: int) -> None:
+        result = await self.session.exec(select(Stock).where(Stock.game_id == game_id).where(Stock.current_cycle_index <= new_index))
+        stocks: list[Stock] = result.all()
+        if len(stocks) == 0:
+            raise StockNotFoundError(entity_id=None, detail="No Stocks found to delete. Called from StockRepository")
+        for s in stocks:
+            await self.delete(id=s.id)
+        return None
 
 class StockNotFoundError(NotFoundError):
 

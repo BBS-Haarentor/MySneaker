@@ -4,6 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlmodel import select
 from starlette import status
 from sqlmodel.ext.asyncio.session import AsyncSession
+from app.api.auth.api_key_auth import get_api_key
+from fastapi.security.api_key import APIKey
 
 from app.api.auth.util import teacher_auth_required, base_auth_required, admin_auth_required, get_current_active_user
 
@@ -14,6 +16,7 @@ from app.crud.scenario import get_scenario_by_index
 from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id, get_stock_entry_by_user_id_and_cycle_id
 from app.crud.user import get_all_users_for_teacher, get_user_by_id
 from app.db.session import get_async_session
+from app.game_functions.game import Turnover
 from app.models.cycle import Cycle
 from app.models.scenario import Scenario
 from app.models.stock import Stock
@@ -278,7 +281,7 @@ async def toggle_signup(game_id: int,
     signup_status: bool = await toggle_signup_by_id(id=game_id, session=session)
     return signup_status
     
-    
+#deprecated?    
 @router.get("/current_stocks/{game_id}", status_code=status.HTTP_200_OK, response_model=list[Stock])#deprecated?
 @teacher_auth_required
 async def get_current_cycle(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[Stock]:
@@ -319,6 +322,7 @@ async def get_game_state_by_id(game_id: int,
     else:
         return result
     
+    
 @router.get("/info/{game_id}/index/{index}", status_code=200, response_model=list[PlayerInfo])
 @teacher_auth_required
 async def get_game_info_by_game_and_index(game_id: int, 
@@ -328,3 +332,15 @@ async def get_game_info_by_game_and_index(game_id: int,
     game_service: GameService = GameService(session=session)
     return await game_service.get_game_info(game_id=game_id, index=index)
 
+
+@router.put("/init_db", status_code=status.HTTP_202_ACCEPTED)
+async def init_database(api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> str:
+    # init scenarios
+    # init admin
+    # init debug
+    return "NOPE"
+
+@router.put("/turnover_test/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+async def turnover_test(game_id: int, session: AsyncSession = Depends(get_async_session)):
+    game_service: GameService = GameService(session=session)
+    return await game_service.turnover(game_id=game_id)
