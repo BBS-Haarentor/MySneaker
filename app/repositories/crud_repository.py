@@ -53,7 +53,7 @@ class CRUDRepository():
         entity = result.one_or_none()
         if isinstance(entity, NoneType):
             raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__.__name__ ,detail="Called from CRUD-Repository")
-        self.session.delete(entity)
+        await self.session.delete(entity)
         await self.session.commit()
         await self.session.flush()
         return None
