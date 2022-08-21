@@ -12,7 +12,7 @@ from app.api.auth.util import teacher_auth_required, base_auth_required, admin_a
 from app.crud.cycle import get_current_cycle_by_user_id, get_cycle_by_user_id_and_index
 from app.crud.game import create_game, delete_game_by_id, edit_game, get_all_game_ids, get_all_games_by_owner, get_all_users_for_game, get_current_cycles_by_game_id, get_current_stocks_by_game_id, get_game_by_id, get_game_state, set_back_cycle_index, toggle_game_state, toggle_signup_by_id, turnover_next_cycle
 from app.crud.groups import check_user_in_admingroup
-from app.crud.scenario import get_scenario_by_index
+from app.crud.scenario import get_scenario_by_char, get_scenario_by_index
 from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id, get_stock_entry_by_user_id_and_cycle_id
 from app.crud.user import get_all_users_for_teacher, get_user_by_id
 from app.db.session import get_async_session
@@ -95,7 +95,7 @@ async def get_my_summary(current_user: User = Depends(get_current_active_user),
     current_cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
     game: Game = await get_game_by_id(current_user.game_id, session=session)
     current_stock: Stock = await get_stock_entry_by_user_id_and_cycle_id(user_id=current_user.id, index=game.current_cycle_index, session=session)
-    current_scenario: Scenario = await get_scenario_by_index(game_id=game.id, index=game.current_cycle_index, session=session)
+    current_scenario: Scenario = await get_scenario_by_char(game.scenario_order[game.current_cycle_index], session=session)
     return { "current_stock" : current_stock, "scenario" : current_scenario, "current_cycle" : current_cycle }
 
 
