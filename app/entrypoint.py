@@ -13,7 +13,7 @@ from app.db.init_db import init_async_db
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 
-from app.exception.general import NotFoundError
+from app.exception.general import NotFoundError, ServiceError
 
 
 settings = Settings()
@@ -44,7 +44,9 @@ async def error_handling(request: Request, call_next):
     except Exception as ex:
         code = status.HTTP_500_INTERNAL_SERVER_ERROR
         if isinstance(ex, IndexError) or isinstance(ex, NotFoundError):
-            code = status.HTTP_404_NOT_FOUND         
+            code = status.HTTP_404_NOT_FOUND 
+        if isinstance(ex, ServiceError):
+            code = status.HTTP_403_FORBIDDEN
         logging.warning(traceback.format_exc())
         return JSONResponse(status_code=code, content=ex.__str__())
 
