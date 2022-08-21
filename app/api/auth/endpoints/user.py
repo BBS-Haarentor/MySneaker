@@ -1,4 +1,5 @@
 from datetime import timedelta
+import logging
 from types import NoneType
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.auth.api_key_auth import get_api_key
@@ -111,16 +112,29 @@ async def delete_user(user_id: int, current_user: User = Depends(get_current_act
     user_status = await get_user_status(user_id=user_id, session=session)
     if user_status:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="It is not allowed to delete active Users. Please deactivate the User before deleting.")
-    result: bool | None = await remove_user(id=user_id, session=session)
     games: list[Game] = await get_all_games_by_owner(user_id=user_id, session=session)
-    if len(games <= 0): 
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"It is not allowed to delete Users that own games. Delete or move ownership of these games: {[games.id for g in games]}")
+    logging.warning(f"{len(games)=}")
+    if len(games) > 0: 
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"It is not allowed to delete Users that own games. Delete or move ownership of the games with the ids: {[g.id for g in games]}")
+    result: bool | None = await remove_user(id=user_id, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     if result == True:
         return { "success" }
     elif result == False:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@router.delete("/delete_student/{user_id}", status_code=status.HTTP_200_OK)
+@teacher_auth_required
+async def delete_student(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+    
+    return 
+
+@router.delete("/delete_teacher/{user_id}", status_code=status.HTTP_200_OK)
+@admin_auth_required
+async def delete_teacher(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+    return
 
 
 @router.post("/login")
