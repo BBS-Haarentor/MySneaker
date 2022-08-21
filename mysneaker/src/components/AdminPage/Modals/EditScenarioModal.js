@@ -40,6 +40,7 @@ const EditScenarioModal = ({ setModal, char, myHeaders }) => {
     const [machine_purchase_allowed, setMachine_purchase_allowed] = useState(scenario.machine_purchase_allowed);
     const [sneakerBezugspreis, setSneakerBezugspreis] = useState(scenario.sneaker_price);
     const [colorBezugspreis, setColorBezugspreis] = useState(scenario.paint_price);
+    const [sneaker_ask_auction, setSneaker_ask_auction] = useState(scenario.paint_price);
 
     useEffect(() => {
         const requestOptions = {
@@ -63,7 +64,7 @@ const EditScenarioModal = ({ setModal, char, myHeaders }) => {
         scenario.machine_purchase_allowed = machine_purchase_allowed;
         scenario.sneaker_price = parseInt(sneakerBezugspreis)
         scenario.paint_price = parseInt(colorBezugspreis)
-
+        scenario.tender_offer_count = parseInt(sneaker_ask_auction)
 
         var raw = JSON.stringify(scenario);
 
@@ -135,6 +136,13 @@ const EditScenarioModal = ({ setModal, char, myHeaders }) => {
                                                 className="block text-sm font-medium text-gray-700">Nachgefragte
                                                 Gesamtmenge</label>
                                             <input type="number" value={sneaker_ask} onChange={(e) => setSneaker_Ask(e.target.value)} name="total-amount" id="total-amount"
+                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
+                                        </div>
+                                        <div className="col-span-6 sm:col-span-3">
+                                            <label htmlFor="total-amount"
+                                                className="block text-sm font-medium text-gray-700">Ausschreibungs
+                                                Gesamtmenge</label>
+                                            <input type="number" value={sneaker_ask_auction} onChange={(e) => setSneaker_ask_auction(e.target.value)} name="total-amount-auction" id="total-amount-auction"
                                                 className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
