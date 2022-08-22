@@ -128,22 +128,12 @@ class GameService():
             raise IndexError("Index out of bounds")
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
         infos: list[PlayerInfo] = []
+        for u in users:
+            infos.append(await self.get_player_info(user_id=u.id, index=index))
         if index > 0:
-            for u in users:
-                infos.append(await self.get_player_info(user_id=u.id, index=index-1))
             total_sold: int = sum(x.real_sales for x in infos)
-            if total_sold != 0:
-                for i in infos:
-                    i.market_share = round(i.real_sales / total_sold, 2)
-            for u in users:
-                info = await self.get_player_info(user_id=u.id, index=index)
-                print(info)
-                infos[index-1].turnover_ready = info.turnover_ready
-        else:
-            for u in users:
-                infos.append(await self.get_player_info(user_id=u.id, index=index))
-        
-           
+            for i in infos:
+                i.market_share = round(i.real_sales / total_sold, 2)
         return infos
         
         
