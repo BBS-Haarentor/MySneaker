@@ -320,8 +320,10 @@ class Turnover():
             # do income stuff
             
             # do costly stuff
-            
-            self._pay_employees_(company=c)
+            c._pay_employees_()
+            c._take_and_pay_back_credit()
+            c._pay_interest()
+            c._pay_machine_maintenance_()
             pass
         
         # do group stuff
@@ -338,8 +340,16 @@ class Turnover():
     def _sell_sneaker_tender_(self) -> None:
         key = lambda x: x.cycle.tender_offer_price
         batched_companies = self.__sort_and_group(companies=self.companies , key=key)
-        sorted_lowest_price_company = random.choice(batched_companies[0])
-        raise NotImplementedError
+        sorted_companies = sorted([x for x in batched_companies if x.cycle.tender_offer_price], key=lambda x: (x._for_sale >= self.scenario.tender_offer_count))
+        lowest_price_company = random.choice(sorted_companies[0])
+        
+        # sell tender
+        lowest_price_company._for_sale -= self.scenario.tender_offer_count
+        _income_tender = round(self.scenario.tender_offer_count * lowest_price_company.cycle.tender_offer_price, 2)
+        lowest_price_company.result_stock.income_from_sales += _income_tender
+        lowest_price_company.result_stock.real_sales += self.scenario.tender_offer_count
+        lowest_price_company._update_account_balance_(update= + _income_tender)
+        return None
     
     
     def __general_sales_in_batch(self, companies: list[Company], sales: int, key):
@@ -367,12 +377,12 @@ class Turnover():
             _remaining_sales: int = self.__general_sales_in_batch(companies=b, sales=_remaining_sales, key=sales_key)
         self._remaining_sales_ad = _remaining_sales
         
-        return batched_companies
+        return _remaining_sales
 
 
     def _sell_sneaker_(self):
         _remaining_sales: int = self._remaining_sales
-        key = lambda x: x.cycle.ad_invest
+        key = lambda x: x.cycle.sales_bid
         batched_companies = self.__sort_and_group(companies=self.companies , key=key)
         # sell in batches
         sales_key = lambda c: c.cycle.sales_bid
@@ -382,6 +392,11 @@ class Turnover():
         
         return batched_companies
     
+    
+    
+    
+    
+    ####
     def __normal_sales_randomly_in_batch(self, companies: list[Company], sales: int):# -> None:
         # do shuffle
         _remaining_sales: int = sales
