@@ -138,7 +138,7 @@ class GameService():
             for u in users:
                 info = await self.get_player_info(user_id=u.id, index=index)
                 print(info)
-                infos[index].turnover_ready = info.turnover_ready
+                infos[index-1].turnover_ready = info.turnover_ready
         else:
             for u in users:
                 infos.append(await self.get_player_info(user_id=u.id, index=index))
