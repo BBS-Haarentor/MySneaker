@@ -132,8 +132,9 @@ class GameService():
             for u in users:
                 infos.append(await self.get_player_info(user_id=u.id, index=index-1))
             total_sold: int = sum(x.real_sales for x in infos)
-            for i in infos:
-                i.market_share = round(i.real_sales / total_sold, 2)
+            if total_sold != 0:
+                for i in infos:
+                    i.market_share = round(i.real_sales / total_sold, 2)
             for u in users:
                 info = await self.get_player_info(user_id=u.id, index=index)
                 print(info)
