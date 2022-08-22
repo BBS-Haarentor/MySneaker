@@ -15,6 +15,7 @@ router = APIRouter()
 
 
 @router.post("/create", status_code=status.HTTP_201_CREATED, response_model=Stock)
+@teacher_auth_required
 async def create_stock_entry(stock_data: StockCreate, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> Stock:
     stock_data.company_id = current_user.id
     new_stock: Stock = await new_stock_entry(entry_data=stock_data, session=session)

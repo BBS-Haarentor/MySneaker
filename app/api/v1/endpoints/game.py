@@ -17,7 +17,7 @@ from app.crud.stock import get_stock_entries_by_user_id_and_cycle_id, get_stock_
 from app.crud.user import get_all_users_for_teacher, get_user_by_id
 from app.db.session import get_async_session
 from app.exception.general import NotFoundError
-from app.game_functions.game import Turnover
+from app.game_functions.turnover_v2 import Turnover
 from app.models.cycle import Cycle
 from app.models.scenario import Scenario
 from app.models.stock import Stock
@@ -312,14 +312,8 @@ async def get_current_cycle(game_id: int, current_user: User = Depends(get_curre
 async def delete_game(game_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
     game_service: GameService = GameService(session=session)
     return await game_service.delete_game(game_id=game_id)
-    # check game active
-    state = await get_game_state(game_id=game_id, session=session)
-    if isinstance(state, NoneType):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    if state:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="It is not allowed to delete an active game. Please deactivate the Game before deleting.")
-    return await delete_game_by_id(id=game_id, session=session) 
 
+# TODO: refactor dis
 @router.put("/setback_game/{game_id}/index/{index}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
 async def setback_game_by_id_and_index(game_id: int, 
@@ -357,6 +351,7 @@ async def init_database(api_key: APIKey = Depends(get_api_key), session: AsyncSe
     # init admin
     # init debug
     return "NOPE"
+
 
 @router.put("/turnover_test/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 async def turnover_test(game_id: int, session: AsyncSession = Depends(get_async_session)):

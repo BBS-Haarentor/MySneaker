@@ -1,10 +1,8 @@
 
 
 import logging
-from re import I
 import unittest
-from app.game_functions.game import Turnover
-#from app.game_functions.turnover import mock_turnover
+from app.game_functions.turnover_v2 import Turnover
 from app.models.cycle import Cycle
 
 from app.models.scenario import Scenario
@@ -140,7 +138,7 @@ class TestTurnover(unittest.TestCase):
         for c in turnover.companies:
             print(f"{c.stock=} - {c.cycle=} - {c.result_stock=}")
             logging.warning(f"{c.stock=} - {c.cycle=} - {c.result_stock=}")
-        result = turnover._sell_sneaker_()
+        result = turnover._sell_sneaker()
 
 if __name__ == "__main__":
     unittest.main()

@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.exception.general import NotFoundError, ServiceError
-from app.game_functions.game import Turnover
+from app.game_functions.turnover_v2 import Turnover
 from app.models.cycle import Cycle
 from app.models.game import Game
 
@@ -17,6 +17,7 @@ from app.repositories.stock_repository import StockRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.game import GameCreate, GamePatch, PlayerInfo
 from app.schemas.scenario import ScenarioPost
+from app.schemas.stock import StockCreate
 
 
 class GameService():
@@ -147,8 +148,8 @@ class GameService():
         scenario: Scenario = self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
         
         turnover: Turnover = Turnover(input_cycles=cycles, input_stocks=stocks, scenario=scenario)
-        turnover.turnover()
-        return 
+        new_stocks: list[StockCreate] = turnover.turnover()
+        return new_stocks
     
     
     async def set_back_cycle_index(self, game_id: int, new_index: int) -> int:
