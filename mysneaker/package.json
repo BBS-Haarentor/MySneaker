@@ -11,6 +11,8 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.1",
     "faker": "^6.6.6",
+    "flowbite": "^1.5.2",
+    "flowbite-react": "^0.1.10",
     "js-cookie": "^3.0.1",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "^17.0.2",

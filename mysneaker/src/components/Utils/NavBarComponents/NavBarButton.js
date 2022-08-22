@@ -20,7 +20,7 @@ const NavBarButton = ({text , state, onClick}) => {
 
   return <button  onClick={()=>onClick(text)} className={style + ' rounded-3xl min-h-14 min-w-[220px] flex py-4 mx-auto my-5 select-none'} >
        <div className={iconstyle + " rounded-xl w-[30px] h-[30px] self-center ml-[20px] mr-3 items-center"}>
-          <img src={icon} className='max-w-[20px] max-h-[20px] mt-[5px] ml-[5px] '></img>
+          <img src={icon} alt={text} className='max-w-[20px] max-h-[20px] mt-[5px] ml-[5px] '></img>
        </div>
       <p className={'self-center ' + textstyle} >{text}</p>
   </button>;

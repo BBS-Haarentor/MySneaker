@@ -119,9 +119,18 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     unsorted_cycle_list: list[Cycle] = cycle_result.all()
 
     stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index).where(Stock.game_id == game.id))
-    unsorted_stock_list: list[Stock] = stock_result.all()
+    old_unsorted_stock_list: list[Stock] = stock_result.all()
     
-
+    
+    unsorted_stock_list : list[Stock]  = []   
+    for i in old_unsorted_stock_list:
+        if isinstance(i.company_id, NoneType):
+           pass
+        else:
+            unsorted_stock_list.append(i)
+    
+    print(unsorted_stock_list)
+    
     # check every user has valid cycle and stock data
     
     # sort by company_id 
