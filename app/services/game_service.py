@@ -1,4 +1,5 @@
 import logging
+from types import NoneType
 from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -100,38 +101,39 @@ class GameService():
             await self.game_repo.delete(id=game_id)
         return None
     
-    
+    #resultbased
     async def get_player_info(self, user_id: int, index: int) -> PlayerInfo:
         user: User = await self.user_repo.read(id=user_id)
-        sid: int = await self.stock_repo.get_stock_id_by_user_and_index(user_id=user_id, index=index)
-        s: Stock = await self.stock_repo.read(id=sid)
-        info: PlayerInfo = PlayerInfo.parse_obj(s)
+        
+        try:
+            sid: int = await self.stock_repo.get_stock_id_by_user_and_index(user_id=user_id, index=(index + 1))
+            s: Stock = await self.stock_repo.read(id=sid)
+            info: PlayerInfo = PlayerInfo.parse_obj(s)
+        except NotFoundError:
+            info: PlayerInfo = PlayerInfo(company_id=user_id)
+            pass
         info.name = user.name
         info.index = index
-
-        if index > 0:
-            prev_c: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(user_id=user_id, index=(index - 1))
-            info.sales_bid = prev_c.sales_bid
-
         info.turnover_ready = False
         try:
-            c: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(user_id=user_id, index=index)
+            prev_c: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(user_id=user_id, index=(index))
+            info.sales_bid = prev_c.sales_bid
             info.turnover_ready = True
-        except CycleNotFoundError:
+        except NotFoundError:
             pass
-
         return info
         
     
     async def get_game_info(self, game_id: int, index: int) -> list[PlayerInfo]: 
         game: Game = await self.game_repo.read(id=game_id)
-        if index < 0 or index > game.current_cycle_index:
+        if index < 0 or index > len(game.scenario_order):
             raise IndexError("Index out of bounds")
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
         infos: list[PlayerInfo] = []
         for u in users:
             infos.append(await self.get_player_info(user_id=u.id, index=index))
-        if index > 0:
+        
+        if index > 0 and not isinstance(infos[0].real_sales, NoneType):
             total_sold: int = sum(x.real_sales for x in infos)
             for i in infos:
                 i.market_share = round(i.real_sales / total_sold, 2)
