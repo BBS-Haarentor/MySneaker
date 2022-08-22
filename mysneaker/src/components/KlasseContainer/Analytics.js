@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import Swal from 'sweetalert2'
-import {Line} from 'react-chartjs-2';
 import MarketShare from './charts/MarketShare'
 
 const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {

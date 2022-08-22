@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
 import Beschaffung from '../Container/Beschaffung'
@@ -159,45 +159,45 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
     var machine_3_costpp = 0
     var machine_3_fertigungskostenpp = 0
 
-    if (data.stock.machine_1_space == 1) {
+    if (data.stock.machine_1_space === 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
-    } else if (data.stock.machine_1_space == 2) {
+    } else if (data.stock.machine_1_space === 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
-    } else if (data.stock.machine_1_space == 3) {
+    } else if (data.stock.machine_1_space === 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
     }
-    if (data.stock.machine_2_space == 1) {
+    if (data.stock.machine_2_space === 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
         machine_2_name = "Sneakerbox 200"
         machine_2_kapazität = data.scenario.machine_production_capacity1
         machine_2_costpp = data.scenario.machine_maintainance_cost1
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    } else if (data.stock.machine_2_space == 2) {
+    } else if (data.stock.machine_2_space === 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
         machine_2_name = "Sneakerdream 500"
         machine_2_kapazität = data.scenario.machine_production_capacity2
         machine_2_costpp = data.scenario.machine_maintainance_cost2
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    } else if (data.stock.machine_2_space == 3) {
+    } else if (data.stock.machine_2_space === 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
         machine_2_name = "Sneakergigant 1000"
         machine_2_kapazität = data.scenario.machine_production_capacity3
         machine_2_costpp = data.scenario.machine_maintainance_cost3
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
     }
-    if (data.stock.machine_3_space == 1) {
+    if (data.stock.machine_3_space === 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
         machine_3_name = "Sneakerbox 200"
         machine_3_kapazität = data.scenario.machine_production_capacity1
         machine_3_costpp = data.scenario.machine_maintainance_cost1
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    } else if (data.stock.machine_3_space == 2) {
+    } else if (data.stock.machine_3_space === 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
         machine_3_name = "Sneakerdream 500"
         machine_3_kapazität = data.scenario.machine_production_capacity2
         machine_3_costpp = data.scenario.machine_maintainance_cost2
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    } else if (data.stock.machine_3_space == 3) {
+    } else if (data.stock.machine_3_space === 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
         machine_3_name = "Sneakergigant 1000"
         machine_3_kapazität = data.scenario.machine_production_capacity3
@@ -559,7 +559,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                     Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-                {data.stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"}>
+                {data.stock.machine_1_space !== 0 ? <div className={ZugeteilteMitarbeiter === Math.ceil(GeplanteProduktion / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -624,7 +624,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter === Math.ceil(GeplanteProduktion / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -644,10 +644,10 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                         </tbody>
                     </table>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
-                    <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
+                    <img alt="add maschine" src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div>}
 
-                {data.stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
+                {data.stock.machine_2_space !== 0 ? <div className={ZugeteilteMitarbeiter2 === Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -712,7 +712,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter2 === Math.ceil(GeplanteProduktion2 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -731,18 +731,18 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
 
                         </tbody>
                     </table>
-                </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
+                </div> : buy_new_machine !== 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                    <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                    <img alt={"Neue Maschine Bestellt"} src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div> : data.scenario.machine_purchase_allowed ? <div className="p-4 In dieser Periode ist der Kauf einer Maschine nicht möglich shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
+                    <img alt={"Neue Maschine Kaufen"} src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer Maschine nicht möglich</h1>
-                    <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
+                    <img alt={"Kaufen nicht mögliche"} src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"} >
+                {data.stock.machine_3_space !== 0 ? <div className={ZugeteilteMitarbeiter3 === Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"} >
                     <table>
                         <tbody>
                             <tr>
@@ -807,7 +807,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{ZugeteilteMitarbeiter3 === Math.ceil(GeplanteProduktion3 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -827,25 +827,25 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                         </tbody>
                     </table>
                 </div>
-                    : data.stock.machine_2_space == 0 ?
+                    : data.stock.machine_2_space === 0 ?
                         <></>
                         :
-                        buy_new_machine != 0 ?
+                        buy_new_machine !== 0 ?
                             <div className="p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                                 <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                                <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                                <img alt={"Maschine Bestellt"} src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                             </div>
-                            : data.stock.machine_2_space == 0 ?
+                            : data.stock.machine_2_space === 0 ?
                                 <></>
                                 : data.scenario.machine_purchase_allowed ?
                                     <div className="p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                                         <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                                        <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
+                                        <img alt={"Neue Maschine Kaufen"} src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
                                     </div>
                                     :
                                     <div className="p-4 shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                                         <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
-                                        <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
+                                        <img alt={"Kaufen nicht möglich"} src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                                     </div>
                 }
 
