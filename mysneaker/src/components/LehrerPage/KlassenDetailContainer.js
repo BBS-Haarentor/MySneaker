@@ -12,7 +12,7 @@ import VerkaufIst from '../Container/VerkaufIst'
 import Statistik from '../Container/Statistik'
 import Finanzen from '../Container/Finanzen';
 
-const KlassenDetailContainer = ({ userId, cycle_index }) => {
+const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
 
 
 
@@ -346,7 +346,8 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             "machine_1_space": 1,
             "machine_2_space": machine_2_space,
             "machine_3_space": machine_3_space,
-            "company_id": userId
+            "company_id": userId,
+            "game_id": parseInt(game_id)
         });
 
         var requestOptions = {

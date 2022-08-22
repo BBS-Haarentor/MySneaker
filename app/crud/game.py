@@ -121,6 +121,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     stock_result = await session.exec(select(Stock).where(Stock.current_cycle_index == game.current_cycle_index).where(Stock.game_id == game.id))
     unsorted_stock_list: list[Stock] = stock_result.all()
     
+    print(unsorted_stock_list)
 
     # check every user has valid cycle and stock data
     
