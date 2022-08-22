@@ -135,7 +135,9 @@ class GameService():
             for i in infos:
                 i.market_share = round(i.real_sales / total_sold, 2)
             for u in users:
-                infos[index].turnover_ready = await self.get_player_info(user_id=u.id, index=index).turnover_ready
+                info = await self.get_player_info(user_id=u.id, index=index)
+                print(info)
+                infos[index].turnover_ready = info.turnover_ready
         else:
             for u in users:
                 infos.append(await self.get_player_info(user_id=u.id, index=index))
