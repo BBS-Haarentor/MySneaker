@@ -122,7 +122,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     old_unsorted_stock_list: list[Stock] = stock_result.all()
     
     
-    unsorted_stock_list =  list[Stock]   
+    unsorted_stock_list : list[Stock]  = []   
     for i in old_unsorted_stock_list:
         if isinstance(i.company_id, NoneType):
            pass
