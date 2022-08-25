@@ -107,27 +107,35 @@ class Company():
 
 
 
-    def _update_account_balance_(self, update: float) -> None:
-        result = self.result_stock.account_balance + update
-        self.result_stock.account_balance = round(result, 2)
+    def pay_interest(self) -> None:
+        _credit_interest_fee: float = round(self.stock.credit_taken * self.scenario.factor_interest_rate, 2)
+        tx: Transaction = create_transaction(amount= + (_credit_interest_fee),
+                             company_id=self.company_id, 
+                             detail={ "_credit_interest_fee": _credit_interest_fee})
+        self.add_tx([tx]) 
+        return None
+
+    def take_credit(self) -> None:
+        _take_credit: float = self.cycle.take_credit
+        self._update_credit(update= + (_take_credit))
+        tx: Transaction = create_transaction(amount= + (_take_credit),
+                             company_id=self.company_id, 
+                             detail={ "_take_credit": _take_credit})
+        self.add_tx([tx]) 
         return None
 
 
-    def _pay_interest(self) -> None:
-        _interest_fee: float = round(self.stock.credit_taken * self.scenario.factor_interest_rate, 2)
-        self._update_account_balance_(update= - (_interest_fee))
-        return None
-
-
-    def _take_and_pay_back_credit(self) -> None:
-        self._update_account_balance_(update= - (self.cycle.payback_credit))
-        self._update_credit(update= - (self.cycle.payback_credit))
-        self._update_credit(update= + (self.cycle.take_credit))
+    def payback_credit(self) -> None:
+        _payback: float = self.cycle.payback_credit
+        self._update_credit(update= - (_payback))
+        tx: Transaction = create_transaction(amount= + (_payback),
+                             company_id=self.company_id, 
+                             detail={ "_payback": _payback})
+        self.add_tx([tx]) 
         return None
 
 
     def _update_credit(self, update: float) -> None:
-        
         result = self.result_stock.credit_taken + update
         self.result_stock.credit_taken = round(result, 2)
         return None
@@ -140,52 +148,58 @@ class Company():
         return None
     
     
-    def _update_dead(self) -> None:
+    def update_dead(self) -> None:
         self._check_account_balance()
         if self.result_stock.credit_taken > 50_000:
             self.result_stock.insolvent = True
         return None    
     
     
-    def _pay_employees(self) -> None:
-        _employee_salaries_: float = round((self.scenario.employee_salary * self.stock.employees_count) , 2) 
-        self._update_account_balance_(update= -(_employee_salaries_) )
+    def pay_employees(self) -> None:
+        _employee_salaries: float = round((self.scenario.employee_salary * self.stock.employees_count) , 2) 
+        tx: Transaction = create_transaction(amount= - (_employee_salaries),
+                                     company_id=self.company_id, 
+                                     detail={ "_employee_salaries": _employee_salaries})
+        self.add_tx([tx]) 
         return None
 
 
-    def _update_employee_count(self) -> None:
+    def update_employee_count(self) -> None:
         self.result_stock.employees_count -= self.cycle.let_go_employees
         self.result_stock.employees_count += self.cycle.new_employees
-        _signup_bonuses_: float = round((self.cycle.new_employees * self.scenario.employee_signup_bonus), 2)
-        self._update_account_balance_(update= - (_signup_bonuses_) )
+        _signup_bonuses: float = round((self.cycle.new_employees * self.scenario.employee_signup_bonus), 2)
+        tx: Transaction = create_transaction(amount= - (_signup_bonuses),
+                                             company_id=self.company_id, 
+                                             detail={ "_signup_bonuses": _signup_bonuses})
+        self.add_tx([tx]) 
         self.result_stock.employees_count += self.scenario.employee_count_modifier_permanent
         return None
 
 
-    def _pay_machine_maintenance(self) -> None:
-        _cumulative_cost: float = 0
-        
+    def pay_machine_maintenance(self) -> None:
         for m in self.machines:
-            _cumulative_cost += m.type.maintainance_cost
-            
-        self._update_account_balance_(update= - (_cumulative_cost) )
-        
+            _machine_maintainance_cost = m.type.maintainance_cost
+            tx: Transaction = create_transaction(amount= - (_machine_maintainance_cost), 
+                                                 company_id=self.company_id, 
+                                                 detail={ "_machine_maintainance_cost": _machine_maintainance_cost,
+                                                         "_machine_type" : m.type})
+            self.add_tx([tx]) 
         return None
 
 
-    def _buy_new_machine(self) -> None:
+    def buy_new_machine(self) -> None:
         if self.cycle.buy_new_machine > 0:
             if self.stock.machine_2_space > 0:
                 self.result_stock.machine_3_space = self.cycle.buy_new_machine
             else:
                self.result_stock.machine_2_space = self.cycle.buy_new_machine
             _machine_type: MachineType = MachineType.parse_obj(self.machine_types[self.cycle.buy_new_machine])
-            self._update_account_balance_(update= - (_machine_type.purchase_cost) )
-            
+            tx: Transaction = create_transaction(amount= - (_machine_type.purchase_cost), company_id=self.company_id, detail={ "_machine_purchase_cost": _machine_type.purchase_cost })
+            self.add_tx([tx])        
         return None 
     
     
-    def _update_research(self) -> None:
+    def update_research(self) -> None:
         research_levels = {
             2_500: 0.90,
             5_000: 0.82,
@@ -214,7 +228,7 @@ class Company():
         return None
 
 
-    def _do_inventory(self) -> None: 
+    def do_inventory(self) -> None: 
         
         self.result_stock.sneaker_count += self.cycle.buy_sneaker
         _purchase_cost_sneaker: float = round(self.cycle.buy_sneaker * self.scenario.sneaker_price, 2)
@@ -233,7 +247,7 @@ class Company():
         self.add_tx(tx=[tx1, tx2, tx4, tx4, tx5])
         return None
 
-    def _produce_sneakers(self) -> None:
+    def produce_sneakers(self) -> None:
         _produced_sneakers: int = 0
         _production_cost: float = 0.0
         for m in self.machines:
@@ -243,13 +257,20 @@ class Company():
         self._new_shoes_shelf = _produced_sneakers
         self._for_sale = self._new_shoes_shelf + self.cycle.include_from_stock
         self.result_stock.finished_sneaker_count -= self.cycle.include_from_stock
-        tx: Transaction = create_transaction(amount= - (_production_cost), company_id=self.company_id, detail={ "_running_cost": _production_cost })
+        tx: Transaction = create_transaction(amount= - (_production_cost), company_id=self.company_id, detail={ "_production_cost": _production_cost })
         self.add_tx([tx])
         return None
     
     def add_tx(self, txs: list[Transaction]) -> None:
         for tx in txs:
             self.ledger.append(tx)
+        return None
+    
+    
+    def process_transactions(self) -> None:
+        for tx in self.ledger:
+            
+            pass
         return None
     
     

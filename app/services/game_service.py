@@ -140,17 +140,17 @@ class GameService():
         return infos
         
         
-    async def turnover(self, game_id: int) -> int:
+    async def turnover(self, game_id: int):# -> int:
         game: Game = await self.game_repo.read(id=game_id)
         _current_index: int = game.current_cycle_index
         
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
-        cycles: list = [cycles.append(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
-        stocks: list = [cycles.append(await self.stock_repo.get_stock_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        cycles: list = [(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        stocks: list = [(await self.stock_repo.get_stock_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
         scenario: Scenario = self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
         
         turnover: Turnover = Turnover(input_cycles=cycles, input_stocks=stocks, scenario=scenario)
-        new_stocks: list[StockCreate] = turnover.turnover()
+        new_stocks: list = turnover.turnover()
         return new_stocks
     
     

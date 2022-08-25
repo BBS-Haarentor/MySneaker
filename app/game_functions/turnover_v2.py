@@ -1,15 +1,13 @@
+import inspect
 from itertools import groupby
 import logging
 import random
 from app.game_functions.company import Company
+from app.game_functions.utils import Transaction, create_transaction
 from app.models.cycle import Cycle
 from app.models.stock import Stock
 from app.models.scenario import Scenario
-from app.schemas.stock import StockCreate
-
-
-
-
+from app.schemas.stock import StockCreate, StockInternal
 
 
 class Turnover():
@@ -57,33 +55,48 @@ class Turnover():
                 self.companies.remove(c)
         return None
     
+    
     def __process_dead(self) -> None:
-        
+        """Called after all operations on alive companies
+
+        Returns:
+            NoneType: Mutates self.companies & self.dead_companies
+        """
+        for dc in self.dead_companies:
+            dc.result_stock = StockInternal(dc.stock)
+            self.companies.append(dc)
         return None
     
-    def turnover(self) -> list[StockCreate]:
+    
+    def turnover(self):# -> list[StockCreate]:
     
         # do single stuff
         for c in self.companies:
-            c._pay_employees()
-            c._produce_sneakers()
-            c._take_and_pay_back_credit()
-            c._pay_interest()
-            c._pay_machine_maintenance()
-            c._buy_new_machine()
-            c._do_inventory()
-            c._update_employee_count()
-            c._update_research()
+            c.pay_employees()
+            c.produce_sneakers()
+            c.pay_interest()
+            c.pay_machine_maintenance()
+            c.buy_new_machine()
+            c.update_employee_count()
+            c.update_research()
+            c.take_credit()
+            c.payback_credit()
+            c.update_dead()
             
-            c._update_dead()
-
         
         # do group stuff
         self._sell_sneaker_tender()
         self._sell_sneaker_ad()
         self._sell_sneaker()
         
-        return None
+        
+        for c in self.companies:
+            c.do_inventory()
+            c.process_transactions()
+        
+        self.__process_dead()
+        
+        return [ [x.result_stock, x.ledger] for x in self.companies ]
 
 
     def __sort_and_group(self, companies: list[Company], key):
@@ -102,11 +115,13 @@ class Turnover():
         _income_tender = round(self.scenario.tender_offer_count * lowest_price_company.cycle.tender_offer_price, 2)
         lowest_price_company.result_stock.income_from_sales += _income_tender
         lowest_price_company.result_stock.real_sales += self.scenario.tender_offer_count
-        lowest_price_company._update_account_balance_(update= + _income_tender)
+        
+        tx: Transaction = create_transaction(amount= + (_income_tender), company_id=self.company_id, detail={ "_income_tender": _income_tender })
+        lowest_price_company.add_tx([tx])
         return None
     
     
-    def __general_sales_in_batch(self, companies: list[Company], sales: int, key):
+    def __general_sales_in_batch(self, companies: list[Company], sales: int, price_key):
         _remaining_sales: int = sales
         companies.sort(key= lambda x: random)
         while _remaining_sales > 0:
@@ -114,8 +129,16 @@ class Turnover():
                 if _remaining_sales > 0:
                     c._for_sale -= 1
                     c.result_stock.real_sales += 1
-                    c._update_account_balance_(update= + key(c))
-                    c.result_stock.income_from_sales += key(c)
+                    
+                    curframe = inspect.currentframe()
+                    callframe = inspect.getouterframes(curframe)
+                    issuer = callframe[1][3]
+                    
+                    tx: Transaction = create_transaction(amount= + (price_key(c)), company_id=self.company_id, detail={ "sale_price_sneaker": (price_key(c)),
+                                                                                                                       "sale_type": issuer})
+                    c.add_tx([tx])
+                                        
+                    c.result_stock.income_from_sales += price_key(c)
                     _remaining_sales -= 1
         for c in companies:
             c.result_stock.finished_sneaker_count = c._for_sale
@@ -124,12 +147,12 @@ class Turnover():
     
     def _sell_sneaker_ad(self) -> None:
         _remaining_sales: int = self._remaining_sales_ad
-        key = lambda x: x.cycle.ad_invest
-        batched_companies = self.__sort_and_group(companies=self.companies , key=key)
+        sort_key = lambda x: - x.cycle.ad_invest
+        batched_companies = self.__sort_and_group(companies=self.companies , key=sort_key)
         # sell in batches
         sales_key = lambda c: c.cycle.sales_bid
         for b in batched_companies:
-            _remaining_sales: int = self.__general_sales_in_batch(companies=b, sales=_remaining_sales, key=sales_key)
+            _remaining_sales: int = self.__general_sales_in_batch(companies=b, sales=_remaining_sales, price_key=sales_key)
         self._remaining_sales_ad = _remaining_sales
         
         return _remaining_sales
@@ -137,52 +160,12 @@ class Turnover():
 
     def _sell_sneaker(self):
         _remaining_sales: int = self._remaining_sales
-        key = lambda x: x.cycle.sales_bid
-        batched_companies = self.__sort_and_group(companies=self.companies , key=key)
+        sort_key = lambda x: x.cycle.sales_bid
+        batched_companies = self.__sort_and_group(companies=self.companies , key=sort_key)
         # sell in batches
         sales_key = lambda c: c.cycle.sales_bid
         for b in batched_companies:
-            _remaining_sales: int = self.__general_sales_in_batch(companies=b, sales=_remaining_sales, key=sales_key)
+            _remaining_sales: int = self.__general_sales_in_batch(companies=b, sales=_remaining_sales, price_key=sales_key)
         self._remaining_sales = _remaining_sales
         
         return _remaining_sales
-    
-    
-    
-    
-    
-    ####
-    def __normal_sales_randomly_in_batch(self, companies: list[Company], sales: int):# -> None:
-        # do shuffle
-        _remaining_sales: int = sales
-        companies.sort(key= lambda x: random)
-        while _remaining_sales > 0:
-            for c in companies:
-                if _remaining_sales > 0:
-                    c._for_sale -= 1
-                    c.result_stock.real_sales += 1
-                    c._update_account_balance_(update= + (c.cycle.sales_bid))
-                    c.result_stock.income_from_sales += (c.cycle.sales_bid)
-                    _remaining_sales -= 1
-        for c in companies:
-            c.result_stock.finished_sneaker_count = c._for_sale
-        key_normal = lambda c: c.cycle.sales_bid,
-        key_normal = lambda c: c.cycle.tender_offer_price
-
-        
-        return _remaining_sales
-        
-    ######### sales #########
-    def _sell_sneaker(self):
-
-        _remaining_sales: int = self._remaining_sales
-        # s_key = lambda x: x.cycle.sales_bid
-
-        batched_companies = [list(v) for k, v in groupby(sorted(self.companies, key=lambda x: x.cycle.sales_bid), key=lambda x: x.cycle.sales_bid)]
-        #sorted_list: list = sorted(lel, key= lambda x : x[0].cycle.sales_bid)
-        for inner_list in batched_companies:
-            _remaining_sales: int = self.__normal_sales_randomly_in_batch(companies=inner_list, sales=_remaining_sales)
-        # for elem in companies:
-        #     if not any(tc.cycle.sales_bid == elem.cycle.sales_bid for tc in sorted_companies):
-        #         pass
-        return batched_companies
