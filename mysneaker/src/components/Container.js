@@ -345,7 +345,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Die Abgabe war Erfolgreich',
+                title: 'Die Abgabe war erfolgreich',
                 showConfirmButton: false,
                 timer: 1500
             })

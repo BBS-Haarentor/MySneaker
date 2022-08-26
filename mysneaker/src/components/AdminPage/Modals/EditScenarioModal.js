@@ -77,7 +77,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         scenario.paint_price = parseInt(colorBezugspreis)
         scenario.tender_offer_count = parseInt(sneaker_ask_auction)
         scenario.employee_signup_bonus = parseInt(employee_signup_bonus)
-        scenario.employee_cost_modfier = parseInt(employee_cost_modfier / 100)
+        scenario.employee_cost_modfier = parseFloat(employee_cost_modfier / 100)
         scenario.employee_salary = parseInt(employee_salary)
         scenario.description = description;
 
