@@ -17,7 +17,7 @@ const VerkaufIst = ({ UmsatzIst, MarktIst, AusschreibungIst, formatter }) => {
                             </tr>
                             <tr>
                                 <td>Markt</td>
-                                <td>{MarktIst} Stk.</td>
+                                <td>{MarktIst-AusschreibungIst} Stk.</td>
                                 <td>{formatter.format(UmsatzIst)}</td>
                             </tr>
                             <tr>
@@ -27,7 +27,7 @@ const VerkaufIst = ({ UmsatzIst, MarktIst, AusschreibungIst, formatter }) => {
                             </tr>
                             <tr>
                                 <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk. </td>
+                                <td>{Math.round(parseInt(MarktIst))} Stk. </td>
                                 <td>{formatter.format(UmsatzIst)}</td>
                             </tr>
                         </tbody>
