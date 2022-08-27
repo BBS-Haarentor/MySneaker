@@ -28,8 +28,8 @@ const Beschaffung = ({ Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, Ausschr
                               
                                 {scenario.tender_offer_count === 0 ? 
                                 <>
-                                    <td><input className="border-2 border-gray-300 w-[80%] rounded-lg text-gray-300 dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setAussetschreibungSoll(e.target.value)} value={AusschreibungSoll} disabled></input> Stk.</td>
-                                    <td><input className="border-2 border-gray-300 w-[90%] rounded-lg text-gray-300 dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setAussetschreibungSollPreis(e.target.value)} value={AusschreibungSollPreis} disabled></input> €</td>
+                                    <td><input className="border-2 border-[#1f273] w-[80%] rounded-lg dark:bg-[#252e3c]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setAussetschreibungSoll(e.target.value) : setAussetschreibungSoll(0)} value={AusschreibungSoll} disabled></input> Stk.</td>
+                                    <td><input className="border-2 border-[#1f273] w-[90%] rounded-lg dark:bg-[#252e3c]" min="0" max="300" type="number" onChange={(e) => e.target.value <= 300 ? e.target.value >= 0 ? setAussetschreibungSollPreis(e.target.value) : setAussetschreibungSollPreis(0) : setAussetschreibungSollPreis(300)} value={AusschreibungSollPreis} disabled></input> €</td>
                                 </>
                                 :
                                 <>
