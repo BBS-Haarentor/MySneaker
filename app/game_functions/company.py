@@ -2,7 +2,7 @@ from app.game_functions.utils import Machine, MachineType, Transaction, create_t
 from app.models.cycle import Cycle
 from app.models.scenario import Scenario
 from app.models.stock import Stock
-from app.schemas.stock import StockCreate, StockInternal
+from app.schemas.stock import StockCreate, StockPersistent
 
 
 class Company():
@@ -30,7 +30,7 @@ class Company():
         self.machine_types = self.__generate_machine_types()
         self.machines = self.__create_machines(stock=stock, cycle=cycle)
         
-        internal_stock: StockInternal = StockInternal.parse_obj(stock)
+        internal_stock: StockPersistent = StockPersistent.parse_obj(stock)
         internal_stock.current_cycle_index += 1
         self.result_stock: StockCreate = StockCreate.parse_obj(internal_stock)
         self.result_stock.income_from_sales = 0.0

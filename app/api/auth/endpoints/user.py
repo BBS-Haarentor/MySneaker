@@ -26,9 +26,10 @@ from app.services.user_service import UserService
 
 router = APIRouter()
 
+
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_user_root():
-    return { "HAHA": "du banane, userroot hier" }
+    return {"HAHA": "du banane, userroot hier"}
 
 
 @router.post("/create/student", status_code=status.HTTP_201_CREATED)
@@ -37,42 +38,48 @@ async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depe
     user_post.unhashed_pw = ""
     # check game signup enabled
     game: Game = await get_game_by_id(id=user_post.game_id, session=session)
-    if not game.signup_enabled or not game.is_active: 
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Game is not active or signup is disabled")
+    if not game.signup_enabled or not game.is_active:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Game is not active or signup is disabled")
     new_user_id = await create_user(user_post=user_post, session=session)
     user_group_entry: BaseGroup | None = await add_user_to_basegroup(user_id=new_user_id, session=session)
     # create init stock for student
-    stock_data = Stock(game_id=user_post.game_id, company_id=new_user_id, current_cycle_index=game.current_cycle_index)
+    stock_data = Stock(game_id=user_post.game_id, company_id=new_user_id,
+                       current_cycle_index=game.current_cycle_index)
     new_stock: Stock = await new_stock_entry(entry_data=stock_data, session=session)
     return new_user_id
 
 
 @router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
 @admin_auth_required
-async def post_teacheruser(user_post: UserPostElevated, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int: 
+async def post_teacheruser(user_post: UserPostElevated, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int:
     if user_post.name == "":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Empty name not allowed")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Empty name not allowed")
     user_post.hashed_pw = hash_pw(user_post.unhashed_pw)
     new_user_id = await create_user(user_post=user_post, session=session)
     result: User | None = await add_user_to_teachergroup(user_id=new_user_id, session=session)
     toggle_result: bool = await toggle_user_active(user_id=new_user_id, session=session)
     if not toggle_result:
         await session.rollback()
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Something went wrong with activating the user")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail="Something went wrong with activating the user")
     return new_user_id
 
 
 @router.post("/create/admin", status_code=status.HTTP_201_CREATED)
-async def post_adminuser(new_user: UserPostElevated, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> int: 
+async def post_adminuser(new_user: UserPostElevated, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> int:
     if new_user.name == "":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Empty name not allowed")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Empty name not allowed")
     new_user.hashed_pw = hash_pw(new_user.unhashed_pw)
     new_user_id = await create_user(user_post=new_user, session=session)
     result: User | None = await add_user_to_admingroup(session=session, user_id=new_user_id)
     toggle_result: bool = await toggle_user_active(user_id=new_user_id, session=session)
     if not toggle_result:
         await session.rollback()
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Something went wrong with activating the user")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail="Something went wrong with activating the user")
     return new_user_id
 
 
@@ -111,16 +118,18 @@ async def toggle_user_active_by_id(user_id: int, current_user: User = Depends(ge
 async def delete_user(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     user_status = await get_user_status(user_id=user_id, session=session)
     if user_status:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="It is not allowed to delete active Users. Please deactivate the User before deleting.")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="It is not allowed to delete active Users. Please deactivate the User before deleting.")
     games: list[Game] = await get_all_games_by_owner(user_id=user_id, session=session)
     logging.warning(f"{len(games)=}")
-    if len(games) > 0: 
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"It is not allowed to delete Users that own games. Delete or move ownership of the games with the ids: {[g.id for g in games]}")
+    if len(games) > 0:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail=f"It is not allowed to delete Users that own games. Delete or move ownership of the games with the ids: {[g.id for g in games]}")
     result: bool | None = await remove_user(id=user_id, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     if result == True:
-        return { "success" }
+        return {"success"}
     elif result == False:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -128,8 +137,9 @@ async def delete_user(user_id: int, current_user: User = Depends(get_current_act
 @router.delete("/delete_student/{user_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def delete_student(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    
-    return 
+
+    return
+
 
 @router.delete("/delete_teacher/{user_id}", status_code=status.HTTP_200_OK)
 @admin_auth_required
@@ -147,7 +157,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=SETTINGS.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(
+        minutes=SETTINGS.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.name}, expires_delta=access_token_expires
     )
@@ -159,12 +170,14 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 async def modify(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     # verify old pw
     if not update_data.old_pw:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Old password not supplied")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Old password not supplied")
     if not pwd_context.verify(update_data.old_pw, current_user.hashed_pw):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Old password does not match")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Old password does not match")
     update_data.id = current_user.id
     user: User = await update_pw(update_data=update_data, session=session)
-    
+
     return user
 
 
@@ -172,17 +185,20 @@ async def modify(update_data: UserPwChange, current_user: User = Depends(get_cur
 @teacher_auth_required
 async def modify_by_teacher(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     if not update_data.id:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No user_id supplied")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="No user_id supplied")
     user: User | None = await update_pw(update_data=update_data, session=session)
     if isinstance(user, NoneType):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No User found by the supplied id")
-    
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="No User found by the supplied id")
+
     return user
 
 
 @router.get("/me", status_code=status.HTTP_200_OK, response_model=UserResponse)
 async def me(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> User:
     return current_user
+
 
 @router.get("/my_auth", status_code=status.HTTP_200_OK)
 async def my_auth(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> str:
@@ -196,11 +212,14 @@ async def my_auth(current_user: User = Depends(get_current_active_user), session
     return auth_str
 
 # get teacher list for admin
+
+
 @router.get("/teacher_list", status_code=status.HTTP_200_OK, response_model=list[UserResponse])
 @admin_auth_required
 async def get_all_teachers(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User]:
     teacher_list: list[User] = await get_teacher_list(session=session)
     return teacher_list
+
 
 @router.get("/user_status/{user_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
@@ -210,16 +229,18 @@ async def get_user_status_by_id(user_id: int, current_user: User = Depends(get_c
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
         return result
-    
+
+
 @router.post("/init_a", status_code=status.HTTP_201_CREATED)
 async def init_a(api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> int:
     new_admin_id = await init_admin(session=session)
     toggle_result = await toggle_user_active(user_id=new_admin_id, session=session)
     return new_admin_id
 
+
 @router.post("/init_t", status_code=status.HTTP_201_CREATED)
 async def init_t(api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> list[int]:
     result = await init_teachers(session=session)
     for _ in result:
-        toggle_result = await toggle_user_active(user_id=_ , session=session)
+        toggle_result = await toggle_user_active(user_id=_, session=session)
     return result

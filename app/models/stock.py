@@ -29,5 +29,5 @@ class Stock(StockBase, table=True):
     machine_2_space: int = Field(default=0)
     machine_3_space: int = Field(default=0)
     insolvent: bool = Field(default=False)
-    
-    
+    tender_sales: int | None = Field(default=None)
+    tender_price: float | None = Field(default=None)

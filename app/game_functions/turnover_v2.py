@@ -7,7 +7,7 @@ from app.game_functions.utils import Transaction, create_transaction
 from app.models.cycle import Cycle
 from app.models.stock import Stock
 from app.models.scenario import Scenario
-from app.schemas.stock import StockCreate, StockInternal
+from app.schemas.stock import StockCreate, StockPersistent
 
 
 class Turnover():
@@ -63,7 +63,7 @@ class Turnover():
             NoneType: Mutates self.companies & self.dead_companies
         """
         for dc in self.dead_companies:
-            dc.result_stock = StockInternal(dc.stock)
+            dc.result_stock = StockPersistent(dc.stock)
             self.companies.append(dc)
         return None
     
