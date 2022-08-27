@@ -22,7 +22,7 @@ const Beschaffung = ({ formatter, MarktSollPreis, MarktSoll, SneakerKosten, Farb
                             </tr>
                             <tr>
                                 <td>Werkstoffkosten</td>
-                                <td>{formatter.format((SneakerKosten+FarbenKosten) /Gesamtproduktion)}</td>
+                                <td>{formatter.format(isNaN(((SneakerKosten+FarbenKosten) / Gesamtproduktion)) || isFinite(((SneakerKosten+FarbenKosten) / Gesamtproduktion)) ? 0 : (SneakerKosten+FarbenKosten) / Gesamtproduktion )}</td>
                                 <td>{formatter.format((SneakerKosten+FarbenKosten))}</td>
                             </tr>
                             <tr>

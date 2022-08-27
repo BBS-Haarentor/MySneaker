@@ -225,7 +225,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setMarktSollPreis(data.current_cycle.sales_bid)
         setMarktIst(data.current_stock.real_sales)
         setAussetschreibungSoll(data.scenario.tender_offer_count)
-        setAusschreibungIst(0)
+        setAusschreibungIst(data.current_stock.tender_sales)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
         setMitarbeiter(data.current_stock.employees_count)
@@ -345,7 +345,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Die Abgabe war Erfolgreich',
+                title: 'Die Abgabe war erfolgreich',
                 showConfirmButton: false,
                 timer: 1500
             })

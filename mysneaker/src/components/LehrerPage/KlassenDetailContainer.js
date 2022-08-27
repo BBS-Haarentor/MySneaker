@@ -362,7 +362,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Die Änderungen wurden Erfolgreich Übermittelt',
+                    title: 'Die Änderungen wurden erfolgreich Übermittelt',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -506,7 +506,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
             if (result.isConfirmed) {
                 swalWithBootstrapButtons.fire(
                     'Erfolgreich',
-                    'Du hast den kauf Erfolgreich Abgeschlossen!',
+                    'Du hast den kauf erfolgreich Abgeschlossen!',
                     'success'
                 ).then(() => {
                     doMagicToBuyMachine(name, price, id)

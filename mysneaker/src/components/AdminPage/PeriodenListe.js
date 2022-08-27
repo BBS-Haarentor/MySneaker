@@ -60,7 +60,15 @@ const PeriodenListe = () => {
         fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/scenario/get_all_scenarios", requestOptions).then((element) => {
             if (element.status === 200) {
                 element.json().then((element1) => {
-                    setScenarios(element1)
+                    setScenarios(element1.sort((a, b) => {
+                        if (a["char"] < b["char"]) {
+                            return -1;
+                        }
+                        if (a["char"] > b["char"]) {
+                            return 1;
+                        }
+                        return 0;
+                    }));
                 })
             }
         })

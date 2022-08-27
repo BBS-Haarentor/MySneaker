@@ -11,8 +11,8 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         "storage_fee_sneaker": 4,
         "storage_fee_paint": 1,
         "storage_fee_finished_sneaker": 8,
-        "employee_count_modifier_temporary": 0,
-        "employee_count_modifier_permanent": 0,
+        "employee_count_modifier_temporary": 0, // Ist Krank etc.
+        "employee_count_modifier_permanent": 0, // Ist wieder zurück
         "factor_interest_rate": 0.04,
         "employee_salary": 400,
         "employee_signup_bonus": 100,
@@ -77,7 +77,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         scenario.paint_price = parseInt(colorBezugspreis)
         scenario.tender_offer_count = parseInt(sneaker_ask_auction)
         scenario.employee_signup_bonus = parseInt(employee_signup_bonus)
-        scenario.employee_cost_modfier = parseInt(employee_cost_modfier / 100)
+        scenario.employee_cost_modfier = parseFloat(employee_cost_modfier / 100)
         scenario.employee_salary = parseInt(employee_salary)
         scenario.description = description;
 

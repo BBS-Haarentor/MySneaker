@@ -40,7 +40,7 @@ const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, Entnahme
                         <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager))} Stk.</td>
                     </tr>
                     <tr>
-                        <td>Geplanteproduktion möglich</td>
+                        <td>Geplante Produktion möglich</td>
                         <td>{EntnahmeAusDemLager > MaximaleEntnahmeAusLager / 1 ? "Nein" : "Ja"}</td>
                     </tr>
                 </tbody>
