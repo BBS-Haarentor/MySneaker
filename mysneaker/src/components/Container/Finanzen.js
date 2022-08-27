@@ -58,7 +58,7 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             <tr>
                                 <td>Lagerkosten Fertige Erz.</td>
                                 <td>{formatter.format((stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
-                                <td>{formatter.format((stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)}</td>
+                                <td>{formatter.format(Gesamtproduktion !== 0 ? (stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 : 0)}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Sneaker</td>
@@ -107,13 +107,13 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Zinsen (Darlehen)</td>
-                                <td>{((stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * scenario.factor_interest_rate).toFixed(2) + "€"}</td>
-                                <td>{((stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * scenario.factor_interest_rate).toFixed(2) + "€"}</td>
+                                <td>{formatter.format((stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * scenario.factor_interest_rate)}</td>
+                                <td>{formatter.format((stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * scenario.factor_interest_rate)}</td>
                             </tr>
                             <tr>
                                 <td>Rückzahlung Darlehen</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setRueckzahlungDarlehen(e.target.value) : setRueckzahlungDarlehen(0)} value={RueckzahlungDarlehen}></input>}</td>
-                                <td>{<input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setRueckzahlungDarlehen(e.target.value) : setRueckzahlungDarlehen(0)} value={RueckzahlungDarlehen}></input>}</td>
+                                <td>{<input className="border-2 border-[#4fd1c5] w-[90%] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setRueckzahlungDarlehen(e.target.value) : setRueckzahlungDarlehen(0)} value={RueckzahlungDarlehen}></input>} €</td>
+                                <td>{<input className="border-2 border-[#4fd1c5] w-[90%] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setRueckzahlungDarlehen(e.target.value) : setRueckzahlungDarlehen(0)} value={RueckzahlungDarlehen}></input>} €</td>
                             </tr>
                             <tr>
                                 <td>Umsatzerlöse</td>

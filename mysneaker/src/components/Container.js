@@ -119,6 +119,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [AusschreibungSoll, setAussetschreibungSoll] = useState(data.current_cycle.tender_offer_count)
     const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(data.current_cycle.tender_offer_price)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
+    const [AusschreibungIstPrice, setAusschreibungIstPrice] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
     const [Mitarbeiter, setMitarbeiter] = useState(8)
@@ -226,6 +227,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setMarktIst(data.current_stock.real_sales)
         setAussetschreibungSoll(data.scenario.tender_offer_count)
         setAusschreibungIst(data.current_stock.tender_sales)
+        setAusschreibungIstPrice(data.current_stock.tender_sales)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
         setMitarbeiter(data.current_stock.employees_count)
@@ -847,7 +849,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 Neueinstellungen={Neueinstellungen} PersonalnebenkostenInP={PersonalnebenkostenInP} RueckzahlungDarlehen={RueckzahlungDarlehen} SaldoIst={SaldoIst}
                 SaldoSoll={SaldoSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} SneakerKosten={SneakerKosten} UmsatzSoll={UmsatzSoll} Werbung={Werbung} formatter={formatter}
                 newMaschienPrize={newMaschienPrize} scenario={data.scenario} setAufnahmeDarlehen={setAufnahmeDarlehen} setRueckzahlungDarlehen={setRueckzahlungDarlehen}
-                stock={data.current_stock} UmsatzIst={UmsatzIst} />
+                stock={data.current_stock} UmsatzIst={UmsatzIst} AusschreibungIstPrice={AusschreibungIstPrice} />
                 <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={onSubmit}>Abgeben/Speichern</button>
             </div>
         </>
