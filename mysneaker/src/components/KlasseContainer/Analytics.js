@@ -91,7 +91,7 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
                             <>
                                 <tr>
                                     <td>{value.name}</td>
-                                    <td>{value.real_sales} Stk.</td>
+                                    <td>{value.real_sales === null ? 0 : value.real_sales} Stk.</td>
                                     <td>{formatter.format(value.sales_bid)}</td>
                                     <td>{formatter.format(value.income_from_sales)}</td>
                                     <td>{value.turnover_ready ? <>
