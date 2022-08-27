@@ -2,8 +2,6 @@ import React from 'react'
 
 const VerkaufIst = ({ UmsatzIst, MarktIst, AusschreibungIst, AusschreibungIstPrice, formatter }) => {
 
-    console.log(MarktIst)
-
     return (
         <div className="dark:bg-[#1f2733] dark:text-white p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
                     <table>
