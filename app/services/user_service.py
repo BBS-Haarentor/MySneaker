@@ -2,17 +2,21 @@ from datetime import datetime
 import logging
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
+from app.exception.general import ValidationError
 from app.models.game import Game
-from app.api.auth.util import pwd_context
+from app.api.auth.util import hash_pw, pwd_context
 from app.models.groups import AdminGroup, BaseGroup, TeacherGroup
 
 from app.models.user import User
 from app.repositories.game_repository import GameRepository
 from app.repositories.group_repository import GroupRepository
 from app.repositories.scenario_repository import ScenarioRepository
+from app.repositories.stock_repository import StockRepository
 from app.repositories.user_repository import UserNotFoundError, UserRepository
+from app.schemas.stock import StockCreate
 from app.schemas.user import UserBase, UserPost, UserPostElevated, UserPostStudent, UserResponse
-
+from app.validation.user import validate_student_signup
+from sqlalchemy.exc import IntegrityError
 
 class UserService():
 
@@ -22,7 +26,7 @@ class UserService():
     basegroup_repo: GroupRepository
     teacher_repo: GroupRepository
     admin_repo: GroupRepository
-    
+    stock_repo: StockRepository
     
     def __init__(self, session: AsyncSession):
         self.user_repo = UserRepository(session=session)
@@ -30,23 +34,46 @@ class UserService():
         self.basegroup_repo = GroupRepository(session=session, group_identifier=BaseGroup())
         self.teacher_repo = GroupRepository(session=session, group_identifier=TeacherGroup())
         self.admin_repo = GroupRepository(session=session, group_identifier=AdminGroup())
-
+        self.stock_repo = StockRepository(session=session)
 
     async def create_student(self, create_data: UserPostStudent) -> int: 
-        user: User = await self.user_repo.create(create_data=create_data)
+        # student validation
+        validate_student_signup(user_data=create_data)
+        create_data.hashed_pw = hash_pw(create_data.unhashed_pw)
+        create_data.unhashed_pw = ""
+        game: Game = await self.game_repo.read(id=create_data.game_id)
+        if not game.is_active:
+            raise ValidationError(entity_name="User", 
+                                  detail= "attempted student-User creation on inactive game", 
+                                  user_message="Dieses Spiel ist nicht aktiv. Registrieren ist zu diesem Zeitpunkt nicht möglich. Bitte den Lehrer das Spiel freizuschalten.")
+        try:
+            user: User = await self.user_repo.create(create_data=create_data)
+        except IntegrityError:
+            raise ValidationError(entity_name="User", 
+                                  detail="attempted student-User creation on already taken username", 
+                                  user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
         await self.basegroup_repo.create(create_data=BaseGroup(user_id=user.id))
+
+        stock_data = StockCreate(game_id=create_data.game_id, company_id=user.id, current_cycle_index=game.current_cycle_index)
+        stock = await self.stock_repo.create(create_data=stock_data)
+    
         return user.id
     
     
     async def create_teacher(self, create_data: UserPostElevated) -> int:
-        user: User = await self.user_repo.create(create_data=create_data)
-        await self.basegroup_repo.create(create_data=TeacherGroup(user_id=user.id))
-        logging.warning("lol")
+        try:
+            user: User = await self.user_repo.create(create_data=create_data)
+        except IntegrityError:
+            raise ValidationError(entity_name="User", 
+                                              detail="attempted teacher-User creation on already taken username", 
+                                              user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
+        await self.teacher_repo.create(create_data=TeacherGroup(user_id=user.id))
         return user.id
     
     
     
     async def create_admin(self, create_data: UserPostElevated) -> int:
+        # user validation
         user: User = await self.user_repo.create(create_data=create_data)
         await self.basegroup_repo.create(create_data=AdminGroup(user_id=user.id))
         return user.id
@@ -55,14 +82,6 @@ class UserService():
     async def read_players_by_game_id(self, game_id: int) -> list[User]:
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
         return users
-    
-    
-    async def get_user_by_id(self, id: int) -> User:
-        return await self.user_repo.read(id=id)
-    
-    
-    async def get_user_by_name(self, name: str) -> User:
-        return await self.user_repo.get_user_by_name(name=name)
     
     
     async def update_last_login(self, user: User) -> None:
@@ -96,4 +115,11 @@ class UserService():
     
     async def get_teacher_list(self) -> list[User]:
         return await self.user_repo.get_all_teachers()
+    
+    async def toggle_active(self, user_id: int) -> bool:
+        user: User = await self.user_repo.read(id=user_id)
+        user.is_active = not user.is_active
+        updated: User = await self.user_repo.update(user)
+        return updated.is_active
+    
     

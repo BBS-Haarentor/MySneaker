@@ -48,7 +48,6 @@ class Turnover():
     
     
     def __sort_out_dead(self) -> None:
-        
         for c in self.companies:
             if c.stock.insolvent:
                 self.dead_companies.append(c)
@@ -60,10 +59,10 @@ class Turnover():
         """Called after all operations on alive companies
 
         Returns:
-            NoneType: Mutates self.companies & self.dead_companies
+            NoneType: Mutates self.companies 
         """
         for dc in self.dead_companies:
-            dc.result_stock = StockPersistent(dc.stock)
+            dc.result_stock = StockCreate.parse_obj(StockPersistent.parse_obj(dc.stock))
             self.companies.append(dc)
         return None
     

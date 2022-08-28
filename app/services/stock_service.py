@@ -46,3 +46,4 @@ class StockService():
     async def get_stock_by_user_id_and_index(self, user_id: int, index: int) -> Stock:
         id: int = await self.stock_repo.get_stock_id_by_user_and_index(user_id=user_id, index=index)
         return await self.stock_repo.read(id=id)
+    

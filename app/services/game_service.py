@@ -160,9 +160,13 @@ class GameService():
             raise IndexError("Index can not be higher than current index and not lower than 0.")
         try:
             await self.cycle_repo.delete_cycles_after_including_index(game_id=game_id, new_index=new_index)
+        except NotFoundError:
+            pass
+        try:
             await self.stock_repo.delete_stocks_after_including_index(game_id=game_id, new_index=(new_index + 1))
         except NotFoundError:
             pass
         game.current_cycle_index = new_index
         updated_game: Game = await self.game_repo.update(update_data=game)
         return updated_game.current_cycle_index
+    
