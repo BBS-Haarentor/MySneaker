@@ -12,7 +12,8 @@ from app.db.init_db import init_async_db
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 
-from app.exception.general import NotFoundError, ServiceError, ValidationError
+from app.exception.general import BaseError, NotFoundError, ServiceError, ValidationError
+from app.schemas.base import ErrorResponse
 
 
 settings = Settings()
@@ -45,10 +46,15 @@ async def error_handling(request: Request, call_next):
         content=ex.__str__()
         if isinstance(ex, IndexError) or isinstance(ex, NotFoundError):
             code = status.HTTP_404_NOT_FOUND 
-        if isinstance(ex, ServiceError) or isinstance(ex, ValidationError):
+        if isinstance(ex, ServiceError):
+            code = status.HTTP_409_CONFLICT
+        if isinstance(ex, ValidationError):
             code = status.HTTP_403_FORBIDDEN
+        if isinstance(ex, BaseError):
+            res = ErrorResponse(detail=ex.detail, user_message=ex.user_message)
+            content = res.dict()
         if isinstance(ex, NotImplementedError):
-            content = "Diese Funktion ist bald verfügbar."
+            content = "This function will be available soon."
         logging.warning(traceback.format_exc())
         return JSONResponse(status_code=code, content=content)
 

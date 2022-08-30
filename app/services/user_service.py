@@ -2,7 +2,7 @@ from datetime import datetime
 import logging
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.exception.general import ValidationError
+from app.exception.general import ServiceError, ValidationError
 from app.models.game import Game
 from app.api.auth.util import hash_pw, pwd_context
 from app.models.groups import AdminGroup, BaseGroup, TeacherGroup
@@ -43,15 +43,13 @@ class UserService():
         create_data.unhashed_pw = ""
         game: Game = await self.game_repo.read(id=create_data.game_id)
         if not game.is_active:
-            raise ValidationError(entity_name="User", 
-                                  detail= "attempted student-User creation on inactive game", 
-                                  user_message="Dieses Spiel ist nicht aktiv. Registrieren ist zu diesem Zeitpunkt nicht möglich. Bitte den Lehrer das Spiel freizuschalten.")
+            raise UserServiceError(detail= "attempted student-User creation on inactive game",
+                                   user_message="Dieses Spiel ist nicht aktiv. Registrieren ist zu diesem Zeitpunkt nicht möglich. Bitte den Lehrer das Spiel freizuschalten.")
         try:
             user: User = await self.user_repo.create(create_data=create_data)
         except IntegrityError:
-            raise ValidationError(entity_name="User", 
-                                  detail="attempted student-User creation on already taken username", 
-                                  user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
+            raise UserServiceError(detail="attempted student-User creation on already taken username",
+                                      user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
         await self.basegroup_repo.create(create_data=BaseGroup(user_id=user.id))
 
         stock_data = StockCreate(game_id=create_data.game_id, company_id=user.id, current_cycle_index=game.current_cycle_index)
@@ -64,9 +62,8 @@ class UserService():
         try:
             user: User = await self.user_repo.create(create_data=create_data)
         except IntegrityError:
-            raise ValidationError(entity_name="User", 
-                                              detail="attempted teacher-User creation on already taken username", 
-                                              user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
+            raise UserServiceError(detail=f"attempted teacher-User creation on already taken username {create_data.name}",
+                                   user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
         await self.teacher_repo.create(create_data=TeacherGroup(user_id=user.id))
         return user.id
     
@@ -91,18 +88,32 @@ class UserService():
         return None
     
     
+    async def remove_teacher(self, user_id: int) -> None:
+        # check games
+        #try:
+        game_ids: list[int] = await self.game_repo.get_game_ids_by_owner(owner_id=user_id)
+        if len(game_ids) > 0:
+            raise UserServiceError(detail=f"Attempted delete on teacher that is owning games with ids: {[e for e in game_ids]}", 
+                                   user_message=f"Löschung von Lehrer-Nutzern mit Spielen in deren Besitz ist nicht erlaubt. Transferiere die Spiele mit den IDs: {[e for e in game_ids]} auf einen anderen Nutzer.")
+        await self.remove_user(id=user_id)
+        #except Exception as ex:
+        #    logging.warning(f"{ex.__str__()}")
+        return None
+    
+    
     async def remove_user(self, id: int) -> None:
         user: User = await self.user_repo.read(id=id)
         if user.is_active:
-            raise NotImplementedError
-        self.user_repo.delete(id=id)
+            raise UserServiceError(detail=f"Attempted delete on active user with {id=}", 
+                                   user_message=f"Löschung aktiver Nutzer ist nicht erlaubt. Deaktiviere den Nutzer zuvor.") # Validation Error
+        await self.user_repo.delete(id=id)
         return None
     
     
     async def authenticate_user(self, name: str, password: str) -> User:
         user: User = await self.user_repo.get_user_by_name(name=name)
         if not pwd_context.verify(password, user.hashed_pw):
-            raise NotImplementedError
+            raise NotImplementedError # Validation Error
         else:
             await self.update_last_login(user=user)
             return user
@@ -123,3 +134,9 @@ class UserService():
         return updated.is_active
     
     
+class UserServiceError(ServiceError):
+    
+    entity_name: str = "User"
+    
+    def __init__(self, detail: str | None, user_message: str | None) -> None:
+        super().__init__(self.entity_name, detail, user_message)

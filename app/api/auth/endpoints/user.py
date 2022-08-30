@@ -135,7 +135,7 @@ async def toggle_user_active_by_id(user_id: int,
     else:
         return result
 
-
+# dep
 @router.delete("/delete/{user_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def delete_user(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
@@ -157,21 +157,22 @@ async def delete_user(user_id: int, current_user: User = Depends(get_current_act
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@router.delete("/delete_student/{user_id}", status_code=status.HTTP_200_OK)
+@router.delete("/delete_student/{user_id}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
 async def delete_student(user_id: int, 
                          current_user: User = Depends(get_current_active_user), 
                          session: AsyncSession = Depends(get_async_session)):
+    user_service: UserService = UserService(session=session)
+    return await user_service.remove_user(id=user_id)
 
-    return
 
-
-@router.delete("/delete_teacher/{user_id}", status_code=status.HTTP_200_OK)
+@router.delete("/delete_teacher/{user_id}", status_code=status.HTTP_202_ACCEPTED)
 @admin_auth_required
 async def delete_teacher(user_id: int, 
                          current_user: User = Depends(get_current_active_user), 
                          session: AsyncSession = Depends(get_async_session)):
-    return
+    user_service: UserService = UserService(session=session)
+    return await user_service.remove_teacher(user_id=user_id)
 
 
 @router.post("/login")
@@ -211,9 +212,6 @@ async def modify(update_data: UserPwChange, current_user: User = Depends(get_cur
 @router.put("/teacher/modify/", status_code=status.HTTP_202_ACCEPTED, response_model=UserResponse)
 @teacher_auth_required
 async def modify_by_teacher(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    if not update_data.id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="No user_id supplied")
     user: User | None = await update_pw(update_data=update_data, session=session)
     if isinstance(user, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,

@@ -177,8 +177,6 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
 
 class CycleValidationError(ValidationError):
 
-    entity_name: str = "Cycle"
-    calling_service: str = "CycleService"
 
     def __init__(self, detail: str | None, user_message: str | None) -> None:
         super().__init__(self.entity_name, detail, user_message)
