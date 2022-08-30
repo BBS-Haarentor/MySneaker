@@ -120,7 +120,7 @@ async def cycle_validation( cycle:Cycle, stock:Stock, scenario:Scenario) -> bool
 
     if cycle.take_credit<cycle.payback_credit:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail=f"Dein augenommener Credit Beträgt: {cycle.take_credit} und du möchtest {cycle.payback_credit} ab Bezahlen.")
-    if cycle.payback_credit>50_000: #wie Hohen Credit darf amnn maximal aufnehmen
+    if cycle.payback_credit>50_000:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Dein unternahmen Darf nicht mehr als 50.000.00€ Credit aufnehemn.")
     if cycle.payback_credit<0:
         raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST, detail="Du kanst nicht mehr mehr zurückzahlen also du aufgenommen hast.")
