@@ -108,7 +108,7 @@ const PeriodenListe = () => {
                             return (
                                 <>
                                     <tr>
-                                        <td>{scenario.char}</td>
+                                        <td>{new TextEncoder().encode(scenario.char)-64}</td>
                                         <td>{scenario.description}</td>
                                         <td>
                                             <button className='p-2' onClick={() => editScenario(scenario.char)}>

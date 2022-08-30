@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from "react";
+import { TagsInput } from "./../Utils/InputTags/index";
 import Cookies from 'js-cookie';
 
 const LehrerPage = () => {
@@ -8,6 +9,7 @@ const LehrerPage = () => {
   const [createGameName, setCreateGameName] = useState("")
   const [companiesVerify, setCompaniesVerify] = useState([])
   const [createGameScenarioOrder, setCreateGameScenarioOrder] = useState("")
+  const [selected, setSelected] = useState([]);
 
   const getGames = () => {
     var myHeaders = new Headers();
@@ -72,15 +74,20 @@ const LehrerPage = () => {
 
 
   const onCreateGame = () => {
-    if (createGameName && createGameScenarioOrder) {
+    if (createGameName && selected.length > 0) {
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
 
+
+      const selectedMapChars = selected.map(value => {
+        return String.fromCharCode(Number(value)+64)
+      });
+
       var raw = JSON.stringify({
         "grade_name": createGameName,
         "is_active": true,
-        "scenario_order": createGameScenarioOrder,
+        "scenario_order": selectedMapChars.join(""),
         "signup_enabled": false
       });
 
@@ -169,8 +176,13 @@ const LehrerPage = () => {
                   <input type='text' className="w-[100%] dark:text-white p-2 dark:bg-[#1f2733] dark:border-[#282d3c] border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameName(e.target.value)} placeholder="Spiel 1" required />
                 </div>
                 <div className='my-6'>
-                  <label>Scenario Ordnung</label>
-                  <input type='text' className="w-[100%] dark:text-white dark:bg-[#1f2733] dark:border-[#282d3c] p-2 border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameScenarioOrder(e.target.value)} placeholder="ABCDEFG" required />
+                  <TagsInput
+                      value={selected}
+                      onChange={setSelected}
+                      name="fruits"
+                      classNamw="dark:text-white dark:bg-[#1f2733] dark:border-[#282d3c]"
+                      placeHolder="Scenario"
+                  />
                 </div>
                 <div className='my-6'>
                   <button onClick={onCreateGame} className="px-4 py-2 text-sm bg-green-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 focus:outline-none focus:ring-0 font-bold text-white hover:bg-green-500 focus:bg-green-300 focus:text-indigo">Spiel erstellen</button>
