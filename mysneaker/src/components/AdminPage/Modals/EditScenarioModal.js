@@ -45,6 +45,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
     const [employee_signup_bonus, setEmployee_signup_bonus] = useState(scenario.employee_signup_bonus);
     const [employee_cost_modfier, setEmployee_cost_modfier] = useState(scenario.employee_cost_modfier * 100);
     const [employee_salary, setEmployee_salary] = useState(scenario.employee_salary);
+    const [employee_count_modifier_permanent, setEmployee_count_modifier_permanent] = useState(scenario.employee_count_modifier_permanent);
 
     useEffect(() => {
         const requestOptions = {
@@ -64,6 +65,8 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                     setEmployee_signup_bonus(element1.employee_signup_bonus)
                     setEmployee_cost_modfier(element1.employee_cost_modfier * 100)
                     setEmployee_salary(element1.employee_salary)
+                    setEmployee_count_modifier_permanent(element1.employee_count_modifier_permanent)
+                    
                 })
             }
         })
@@ -80,6 +83,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         scenario.employee_cost_modfier = parseFloat(employee_cost_modfier / 100)
         scenario.employee_salary = parseInt(employee_salary)
         scenario.description = description;
+        scenario.employee_count_modifier_permanent = parseInt(employee_count_modifier_permanent)
 
         var raw = JSON.stringify(scenario);
 
@@ -145,6 +149,14 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                                 className="block text-sm font-medium mt-2 text-gray-700">Neueinstellungen</label>
                                             <input type="number" name="reference-price" value={employee_signup_bonus}
                                                 onChange={(e) => setEmployee_signup_bonus(e.target.value)}
+                                                id="reference-price"
+                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
+                                        </div>
+                                        <div className="col-span-6 sm:col-span-3">
+                                            <label
+                                                className="block text-sm font-medium mt-2 text-gray-700">Kündigungen</label>
+                                            <input type="number" name="reference-price" value={employee_count_modifier_permanent}
+                                                onChange={(e) => setEmployee_count_modifier_permanent(e.target.value)}
                                                 id="reference-price"
                                                 className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                         </div>

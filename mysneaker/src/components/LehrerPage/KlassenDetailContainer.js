@@ -560,7 +560,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                     Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-                {data.stock.machine_1_space !== 0 ? <div className={ZugeteilteMitarbeiter === Math.ceil(GeplanteProduktion / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"}>
+                {data.stock.machine_1_space !== 0 ? <div className={parseInt(ZugeteilteMitarbeiter) ===  parseInt(Math.ceil(GeplanteProduktion / 20)) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -625,7 +625,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter === Math.ceil(GeplanteProduktion / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter) === parseInt(Math.ceil(GeplanteProduktion / 20)) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -648,7 +648,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                     <img alt="add maschine" src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div>}
 
-                {data.stock.machine_2_space !== 0 ? <div className={ZugeteilteMitarbeiter2 === Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
+                {data.stock.machine_2_space !== 0 ? <div className={parseInt(ZugeteilteMitarbeiter2) === Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -713,7 +713,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter2 === Math.ceil(GeplanteProduktion2 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter2) === Math.ceil(GeplanteProduktion2 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -743,7 +743,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                     <img alt={"Kaufen nicht mögliche"} src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.stock.machine_3_space !== 0 ? <div className={ZugeteilteMitarbeiter3 === Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"} >
+                {data.stock.machine_3_space !== 0 ? <div className={parseInt(ZugeteilteMitarbeiter3) === Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"} >
                     <table>
                         <tbody>
                             <tr>
@@ -808,7 +808,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter3 === Math.ceil(GeplanteProduktion3 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter3) === Math.ceil(GeplanteProduktion3 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
