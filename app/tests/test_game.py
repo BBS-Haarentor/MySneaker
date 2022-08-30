@@ -1,5 +1,3 @@
-
-
 import logging
 import unittest
 from app.game_functions.turnover_v2 import Turnover
@@ -133,7 +131,6 @@ class TestTurnover(unittest.TestCase):
 
 
     def test_game_init(self):
-        
         turnover = Turnover(input_cycles=self.cycle_list, input_stocks=self.stock_list, scenario=self.scenario)
         for c in turnover.companies:
             print(f"{c.stock=} - {c.cycle=} - {c.result_stock=}")
