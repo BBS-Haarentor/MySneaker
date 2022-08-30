@@ -58,7 +58,8 @@ class ValidationError(BaseError):
 
     
     def __init__(self, entity_name: str | None, detail: str | None, user_message: str | None) -> None:
-        self.calling_service = inspect.stack()[2][0].f_locals["self"].__class__.__name__
+        stack = inspect.stack()
+        self.calling_service = stack[3][0].f_locals["self"].__class__.__name__  
         detail = f"{self.calling_service} threw a {self.__class__.__name__} with detail: {detail}"
         super().__init__(entity_name, detail, user_message)
 
