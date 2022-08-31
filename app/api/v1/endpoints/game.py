@@ -21,7 +21,7 @@ from app.models.scenario import Scenario
 from app.models.stock import Stock
 from app.models.user import User
 from app.models.game import Game
-from app.schemas.game import GameCreate, GamePatch, GameResponse, PlayerInfo, PlayerInfoStudent
+from app.schemas.game import GameCreate, GamePatch, GamePost, GameResponse, PlayerInfo, PlayerInfoStudent
 from app.schemas.user import UserResponse, UserResponseWithGradeName
 from app.services import user_service
 from app.services.cycle_service import CycleService
@@ -34,7 +34,7 @@ router = APIRouter()
 
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 @teacher_auth_required
-async def post_new_game(game_init_data: GameCreate,
+async def post_new_game(game_init_data: GamePost,
                         current_user: User = Depends(get_current_active_user),
                         session: AsyncSession = Depends(get_async_session)) -> int:
     if isinstance(game_init_data.owner_id, NoneType):

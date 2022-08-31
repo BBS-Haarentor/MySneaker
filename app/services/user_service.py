@@ -14,8 +14,8 @@ from app.repositories.scenario_repository import ScenarioRepository
 from app.repositories.stock_repository import StockRepository
 from app.repositories.user_repository import UserNotFoundError, UserRepository
 from app.schemas.stock import StockCreate
-from app.schemas.user import UserBase, UserPost, UserPostElevated, UserPostStudent, UserResponse
-from app.validation.user import validate_student_signup
+from app.schemas.user import UserBase, UserPost, UserPostElevated, UserPostStudent, UserPwChange, UserResponse
+from app.validation.user import validate_pw, validate_student_signup
 from sqlalchemy.exc import IntegrityError
 
 class UserService():
@@ -127,11 +127,21 @@ class UserService():
     async def get_teacher_list(self) -> list[User]:
         return await self.user_repo.get_all_teachers()
     
+    
     async def toggle_active(self, user_id: int) -> bool:
         user: User = await self.user_repo.read(id=user_id)
         user.is_active = not user.is_active
         updated: User = await self.user_repo.update(user)
         return updated.is_active
+    
+    
+    async def change_pw(self, pw_data: UserPwChange) -> None:
+        user: User = await self.user_repo.read(id=pw_data.id)
+        
+        validate_pw(pw_data=pw_data)
+        
+        
+        return None
     
     
 class UserServiceError(ServiceError):

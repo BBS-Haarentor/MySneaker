@@ -16,7 +16,7 @@ from app.repositories.game_repository import GameRepository
 from app.repositories.scenario_repository import ScenarioRepository
 from app.repositories.stock_repository import StockRepository
 from app.repositories.user_repository import UserRepository
-from app.schemas.game import GameCreate, GamePatch, PlayerInfo
+from app.schemas.game import GameCreate, GamePatch, GamePost, PlayerInfo
 from app.schemas.scenario import ScenarioPost
 from app.schemas.stock import StockCreate
 
@@ -63,7 +63,7 @@ class GameService():
         
         
         
-    async def create_game(self, create_data: GameCreate) -> int:
+    async def create_game(self, create_data: GamePost) -> int:
         return await self.game_repo.create(create_data=create_data)
     
     

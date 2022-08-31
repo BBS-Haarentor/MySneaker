@@ -59,6 +59,9 @@ async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depe
 @router.post("/create/teacher", status_code=status.HTTP_201_CREATED)
 @admin_auth_required
 async def post_teacheruser(user_post: UserPostElevated, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> int:
+    user_service = UserService(session=session)
+    return await user_service.create_teacher(create_data=user_post)
+    
     if user_post.name == "":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail="Empty name not allowed")
@@ -73,7 +76,7 @@ async def post_teacheruser(user_post: UserPostElevated, current_user: User = Dep
     return new_user_id
 
 
-@router.post("/create/admin", status_code=status.HTTP_201_CREATED)
+#@router.post("/create/admin", status_code=status.HTTP_201_CREATED)
 async def post_adminuser(new_user: UserPostElevated, api_key: APIKey = Depends(get_api_key), session: AsyncSession = Depends(get_async_session)) -> int:
     if new_user.name == "":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
