@@ -1,8 +1,8 @@
-"""stock_tender_data_add
+"""2_scenario_employee_toggle
 
-Revision ID: e7f2629bc772
-Revises: 
-Create Date: 2022-08-27 09:43:49.279242
+Revision ID: 14fcbc928ce6
+Revises: 9ab3b6744458
+Create Date: 2022-08-31 10:05:04.068383
 
 """
 from alembic import op
@@ -11,8 +11,8 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision = 'e7f2629bc772'
-down_revision = None
+revision = '14fcbc928ce6'
+down_revision = '9ab3b6744458'
 branch_labels = None
 depends_on = None
 
@@ -21,8 +21,6 @@ def upgrade():
     op.add_column('scenario',column=sa.Column('employee_change_allowed', sa.BOOLEAN(), default=True))
     op.execute("UPDATE scenario SET employee_change_allowed = true")
     
-    # stock creation_date repair
-    op.alter_column('stock', 'creation_date', type_=sa.FLOAT, existing_type=sa)
 
 def downgrade():
     op.drop_column('scenario', column_name='employee_change_allowed')

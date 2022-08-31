@@ -46,16 +46,16 @@ class UserService():
             raise UserServiceError(detail= "attempted student-User creation on inactive game",
                                    user_message="Dieses Spiel ist nicht aktiv. Registrieren ist zu diesem Zeitpunkt nicht möglich. Bitte den Lehrer das Spiel freizuschalten.")
         try:
-            user: User = await self.user_repo.create(create_data=create_data)
+            user_id: int = await self.user_repo.create(create_data=create_data)
         except IntegrityError:
             raise UserServiceError(detail="attempted student-User creation on already taken username",
-                                      user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
-        await self.basegroup_repo.create(create_data=BaseGroup(user_id=user.id))
+                                   user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
+        await self.basegroup_repo.create(create_data=BaseGroup(user_id=user_id))
 
-        stock_data = StockCreate(game_id=create_data.game_id, company_id=user.id, current_cycle_index=game.current_cycle_index)
+        stock_data = StockCreate(game_id=create_data.game_id, company_id=user_id, current_cycle_index=game.current_cycle_index)
         stock = await self.stock_repo.create(create_data=stock_data)
     
-        return user.id
+        return user_id
     
     
     async def create_teacher(self, create_data: UserPostElevated) -> int:
