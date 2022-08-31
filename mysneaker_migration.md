@@ -20,3 +20,7 @@ docker-compose exec api alembic revision --autogenerate -m "init"
 
 # revision_1 (stock_tender_data_add)
 docker-compose exec api alembic revision --autogenerate -m "stock_tender_data_add"
+
+# revision_2 (scenario_employee_change_allowed)
+
+docker-compose exec api alembic revision --autogenerate -m "scenario_employee_change_allowed"

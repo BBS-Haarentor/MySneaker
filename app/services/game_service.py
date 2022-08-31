@@ -135,8 +135,9 @@ class GameService():
         
         if index > 0 and not isinstance(infos[0].real_sales, NoneType):
             total_sold: int = sum(x.real_sales for x in infos)
-            for i in infos:
-                i.market_share = round(i.real_sales / total_sold, 2)
+            if total_sold > 0:
+                for i in infos:
+                    i.market_share = round(i.real_sales / total_sold, 2)
         return infos
         
         

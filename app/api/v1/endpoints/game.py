@@ -21,7 +21,7 @@ from app.models.scenario import Scenario
 from app.models.stock import Stock
 from app.models.user import User
 from app.models.game import Game
-from app.schemas.game import GameCreate, GamePatch, GameResponse, PlayerInfo
+from app.schemas.game import GameCreate, GamePatch, GameResponse, PlayerInfo, PlayerInfoStudent
 from app.schemas.user import UserResponse, UserResponseWithGradeName
 from app.services import user_service
 from app.services.cycle_service import CycleService
@@ -332,6 +332,17 @@ async def get_game_info_by_game_and_index(game_id: int,
                                           session: AsyncSession = Depends(get_async_session)) -> list[PlayerInfo]:
     game_service: GameService = GameService(session=session)
     return await game_service.get_game_info(game_id=game_id, index=index)
+
+
+
+@router.get("/info_student/{index}", status_code=200, response_model=list[PlayerInfoStudent])
+@base_auth_required
+async def get_game_info_student(index: int,
+                                current_user: User = Depends(get_current_active_user),
+                                session: AsyncSession = Depends(get_async_session)) -> list[PlayerInfo]:
+    game_service: GameService = GameService(session=session)
+    return await game_service.get_game_info(game_id=current_user.game_id, index=index)
+
 
 
 @router.put("/init_db", status_code=status.HTTP_202_ACCEPTED)
