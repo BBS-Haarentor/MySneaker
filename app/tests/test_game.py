@@ -9,30 +9,30 @@ from app.models.stock import Stock
 
 class TestTurnover(unittest.TestCase):
     def setUp(self):
-        scenarion_dict = {
-            "id": 0,
-            "char": "X",
-            "sneaker_price": 60,
-            "paint_price": 10,
-            "storage_fee_sneaker": 4.00,
-            "storage_fee_paint": 1.00,
-            "storage_fee_finished_sneaker": 8.00,
-            "employee_count_modifier_temporary": 0,
-            "employee_count_modifier_permanent": 0,
-            "factor_interest_rate": 0.04,
-            "employee_salary": 400,
-            "employee_signup_bonus": 100,
-            "employee_production_capacity": 10,
-            "employee_cost_modfier": 0.00,
-            "machine_purchase_allowed": False,
-            "machine_purchase_cost": 1000.00,
-            "sneaker_ask": 400,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00
-        }
-        user_1_cycle = {
+        # scenarion_dict = {
+        #     "id": 0,
+        #     "char": "X",
+        #     "sneaker_price": 60,
+        #     "paint_price": 10,
+        #     "storage_fee_sneaker": 4.00,
+        #     "storage_fee_paint": 1.00,
+        #     "storage_fee_finished_sneaker": 8.00,
+        #     "employee_count_modifier_temporary": 0,
+        #     "employee_count_modifier_permanent": 0,
+        #     "factor_interest_rate": 0.04,
+        #     "employee_salary": 400,
+        #     "employee_signup_bonus": 100,
+        #     "employee_production_capacity": 10,
+        #     "employee_cost_modfier": 0.00,
+        #     "machine_purchase_allowed": False,
+        #     "machine_purchase_cost": 1000.00,
+        #     "sneaker_ask": 400,
+        #     "factor_ad_take": 0.1,
+        #     "machine_production_capacity": 200,
+        #     "machine_maintainance_cost": 4000.00,
+        #     "production_cost_per_sneaker": 60.00
+        # }
+        True_Validation = {
             "game_id": 1,
             "current_cycle_index": 0,
             "company_id": 2,
@@ -58,7 +58,7 @@ class TestTurnover(unittest.TestCase):
             "buy_new_machine_3": False
         }
 
-        user_2_cycle = {
+        False_Validation = {
             "game_id": 1,
             "current_cycle_index": 0,
             "company_id": 2,
@@ -84,26 +84,26 @@ class TestTurnover(unittest.TestCase):
             "buy_new_machine_3": False
         }
 
-        default_stock = {
-            "id": 0,
-            "game_id": 0,
-            "company_id": 0,
-            "creation_date": 12345.0,
-            "current_cycle_index": 0,
-            "sneaker_count": 0,
-            "paint_count": 0,
-            "finished_sneaker_count": 0,
-            "employees_count": 8,
-            "research_budget": 0,
-            "account_balance": 0,
-            "credit_taken": 0,
-            "machine_1_bought": True,
-            "machine_2_bought": False,
-            "machine_3_bought": False,
-            "real_sales": 0,
-            "income_from_sales": 0,
-            "research_production_modifier": 0
-        }
+        # default_stock = {
+        #     "id": 0,
+        #     "game_id": 0,
+        #     "company_id": 0,
+        #     "creation_date": 12345.0,
+        #     "current_cycle_index": 0,
+        #     "sneaker_count": 0,
+        #     "paint_count": 0,
+        #     "finished_sneaker_count": 0,
+        #     "employees_count": 8,
+        #     "research_budget": 0,
+        #     "account_balance": 0,
+        #     "credit_taken": 0,
+        #     "machine_1_bought": True,
+        #     "machine_2_bought": False,
+        #     "machine_3_bought": False,
+        #     "real_sales": 0,
+        #     "income_from_sales": 0,
+        #     "research_production_modifier": 0
+        # }
 
         self.scenario: Scenario = Scenario.parse_obj(scenarion_dict)
         self.stock_list: list[Stock] = []
