@@ -225,7 +225,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setMarktSoll(data.current_cycle.sales_planned)
         setMarktSollPreis(data.current_cycle.sales_bid)
         setMarktIst(data.current_stock.real_sales)
-        setAussetschreibungSoll(data.scenario.tender_offer_count)
+        //setAussetschreibungSoll(data.scenario.tender_offer_count)
         setAusschreibungIst(data.current_stock.tender_sales)
         setAusschreibungIstPrice(data.current_stock.tender_sales)
         setGesamtSoll(0)
@@ -516,8 +516,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         currency: 'EUR',
         minimumFractionDigits: 2
     })
-    var allZugeteilteMitarbeiter = ZugeteilteMitarbeiter + ZugeteilteMitarbeiter2 + ZugeteilteMitarbeiter3
-    var allGeplanteProduktion = GeplanteProduktion + GeplanteProduktion2 + GeplanteProduktion3
+    var allZugeteilteMitarbeiter = parseInt(ZugeteilteMitarbeiter) + parseInt(ZugeteilteMitarbeiter2) + parseInt(ZugeteilteMitarbeiter3)
     return (
         <>
 
@@ -539,7 +538,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-                {data.current_stock.machine_1_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter)  == Math.ceil(GeplanteProduktion / 20)  && MaximalproduzierbareAnzahl >= allGeplanteProduktion /1 ? "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.current_stock.machine_1_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter)  == Math.ceil(GeplanteProduktion / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion  && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -568,7 +567,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(FertigungskostenProStückFE)}</td>
+                                <td>{formatter.format(60 * data.current_stock.research_production_modifier)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -586,7 +585,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{MaximalproduzierbareAnzahl >= Gesamtproduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -604,7 +603,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{parseInt(ZugeteilteMitarbeiter) == parseInt(Math.ceil(GeplanteProduktion / 20)) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter) == parseInt(Math.ceil(GeplanteProduktion / 20)) && Mitarbeiter >= allZugeteilteMitarbeiter? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -627,7 +626,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
                 </div>}
 
-                {data.current_stock.machine_2_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter2) == Math.ceil(GeplanteProduktion2 / 20)  && MaximalproduzierbareAnzahl >= allGeplanteProduktion /1 ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.current_stock.machine_2_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter2) == Math.ceil(GeplanteProduktion2 / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -650,13 +649,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück</td>
-                                <td>{machine_2_fertigungskostenpp}</td>
+                                <td>{formatter.format(machine_2_fertigungskostenpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(FertigungskostenProStückFE)}</td>
+                                <td>{formatter.format(machine_2_fertigungskostenpp * data.current_stock.research_production_modifier)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -674,7 +673,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{MaximalproduzierbareAnzahl >= Gesamtproduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -692,7 +691,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{parseInt(ZugeteilteMitarbeiter2) == Math.ceil(GeplanteProduktion2 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter2) == Math.ceil(GeplanteProduktion2 / 20) && Mitarbeiter >= allZugeteilteMitarbeiter ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -722,7 +721,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.current_stock.machine_3_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter3) == Math.ceil(GeplanteProduktion3 / 20)  && MaximalproduzierbareAnzahl >= allGeplanteProduktion /1 ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.current_stock.machine_3_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter3) == Math.ceil(GeplanteProduktion3 / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -745,13 +744,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück</td>
-                                <td>{machine_3_fertigungskostenpp}</td>
+                                <td>{formatter.format(machine_3_fertigungskostenpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(FertigungskostenProStückFE)}</td>
+                                <td>{formatter.format(machine_3_fertigungskostenpp * data.current_stock.research_production_modifier)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -769,7 +768,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{MaximalproduzierbareAnzahl >= Gesamtproduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -787,7 +786,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{parseInt(ZugeteilteMitarbeiter3) == Math.ceil(GeplanteProduktion3 / 20) ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter3) == Math.ceil(GeplanteProduktion3 / 20) && Mitarbeiter >= allZugeteilteMitarbeiter ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -841,7 +840,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                 <VerkaufIst AusschreibungIstPrice={AusschreibungIstPrice}  AusschreibungIst={AusschreibungIst} MarktIst={MarktIst} UmsatzIst={UmsatzIst} formatter={formatter} />
 
-                <Statistik AllMaschienenKosten={AllMaschienenKosten} FarbenKosten={FarbenKosten} FertigungskostenProStückFE={FertigungskostenProStückFE} Gesamtproduktion={GeplanteProduktion}
+                <Statistik AllMaschienenKosten={AllMaschienenKosten} FarbenKosten={FarbenKosten} FertigungskostenProStückFE={FertigungskostenProStückFE} Gesamtproduktion={Gesamtproduktion}
                 MarktSoll={MarktSoll} MarktSollPreis={MarktSollPreis} Mitarbeiter={Mitarbeiter} PersonalnebenkostenInP={PersonalnebenkostenInP} SneakerKosten={SneakerKosten} formatter={formatter} />
 
                 <Finanzen AllMaschienenKosten={AllMaschienenKosten} AufnahmeDarlehen={AufnahmeDarlehen} AusschreibungIst={AusschreibungIst} AusschreibungSoll={AusschreibungSoll}

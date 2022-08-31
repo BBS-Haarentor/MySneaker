@@ -121,7 +121,7 @@ const SideNavBar = ({OnClick, state}) => {
                                                     let json = await element1.json()
                                                     document.getElementById("teacher").innerHTML = json.teacher_name
                                                     document.getElementById("grade_name").innerHTML = json.grade_name
-                                                    document.getElementById("scenario").innerHTML = json.scenario_order[json.current_cycle_index]
+                                                    document.getElementById("scenario").innerHTML = new TextEncoder().encode(json.scenario_order[json.current_cycle_index])-64
                                                     fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/scenario/get_by_char/' + json.scenario_order[json.current_cycle_index], requestOptions).then(async (element2) => {
                                                         if(element2.status === 200) {
                                                             element2.json().then((element3) => {

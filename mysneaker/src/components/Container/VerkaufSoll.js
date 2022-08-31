@@ -33,7 +33,7 @@ const Beschaffung = ({ Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, Ausschr
                                 </>
                                 :
                                 <>
-                                    <td><select id="countries" class="border-2 border-[#4fd1c5] w-[80%] rounded-lg dark:bg-[#1f2733]" onChange={(e) =>setAussetschreibungSoll(e.target.value)}>
+                                    <td><select id="tender_offer_count" class="border-2 border-[#4fd1c5] w-[80%] rounded-lg dark:bg-[#1f2733]" onChange={(e) =>setAussetschreibungSoll(e.target.value)}>
                                             <option value="0" >0</option>
                                             <option value={scenario.tender_offer_count} selected>{scenario.tender_offer_count}</option>
                                         </select>Stk.</td>
