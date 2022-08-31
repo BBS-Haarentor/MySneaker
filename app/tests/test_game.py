@@ -54,6 +54,7 @@ class TestTurnover(unittest.TestCase):
             "take_credit": 1000.00,
             "payback_credit": 0.00,
             "new_employees": 2,
+            "let_go_employees": 0,
             "buy_new_machine_2": False,
             "buy_new_machine_3": False
         }
@@ -80,6 +81,7 @@ class TestTurnover(unittest.TestCase):
             "take_credit": -10.00,
             "payback_credit": 1000.00,
             "new_employees": -2,
+            "let_go_employees": -1,
             "buy_new_machine_2": False,
             "buy_new_machine_3": False
         }
