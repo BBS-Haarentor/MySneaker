@@ -22,7 +22,7 @@ make sure that the DB is not initialized via the startup hook in app/entrypoint.
 restore with:
 ``` 
 
-cat <dump_file> | docker exec -i mysneaker_db_1 psql -U mysneaker -d foo
+cat mysneaker_backup_27-08-2022_17_30_22.sql | docker exec -i mysneaker_db_1 psql -U mysneaker -d foo
 
 ``` 
 

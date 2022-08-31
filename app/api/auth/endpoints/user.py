@@ -23,6 +23,8 @@ from fastapi.security.api_key import APIKey
 from fastapi.security import OAuth2PasswordRequestForm
 from app.api.auth.util import pwd_context, hash_pw, base_auth_required, get_current_active_user, admin_auth_required, teacher_auth_required, create_access_token
 from app.services.user_service import UserService
+from app.validation.user import validate_student_signup
+
 
 router = APIRouter()
 
@@ -34,6 +36,10 @@ async def get_user_root():
 
 @router.post("/create/student", status_code=status.HTTP_201_CREATED)
 async def post_baseuser(user_post: UserPostStudent, session: AsyncSession = Depends(get_async_session)) -> int:
+    user_service = UserService(session=session)
+    return await user_service.create_student(create_data=user_post)
+    #await user_service.validate(user_data=user_post)
+
     user_post.hashed_pw = hash_pw(user_post.unhashed_pw)
     user_post.unhashed_pw = ""
     # check game signup enabled
@@ -85,17 +91,28 @@ async def post_adminuser(new_user: UserPostElevated, api_key: APIKey = Depends(g
 
 @router.get("/get_by_id/{id}", status_code=status.HTTP_200_OK, response_model=UserResponse)
 @teacher_auth_required
-async def get_user_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+async def get_user_by_id(id: int, 
+                         current_user: User = Depends(get_current_active_user), 
+                         session: AsyncSession = Depends(get_async_session)):
+    user_service = UserService(session=session)
+    return await user_service.user_repo.read(id=id)
+    
     result = await get_user_by_id_or_name(id=id, name=None, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
         return result
+    
 
 
 @router.get("/get_by_name/{username}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
-async def get_user_by_name(username: str, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+async def get_user_by_name(username: str, 
+                           current_user: User = Depends(get_current_active_user), 
+                           session: AsyncSession = Depends(get_async_session)):
+    user_service = UserService(session=session)
+    return await user_service.user_repo.get_user_by_name(name=username)    
+    
     result = await get_user_by_id_or_name(id=None, name=username, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -105,14 +122,20 @@ async def get_user_by_name(username: str, current_user: User = Depends(get_curre
 
 @router.put("/toggle_active/{user_id}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
-async def toggle_user_active_by_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+async def toggle_user_active_by_id(user_id: int, 
+                                   current_user: User = Depends(get_current_active_user), 
+                                   session: AsyncSession = Depends(get_async_session)) -> bool:
+    user_service = UserService(session=session)
+    # auth check if target teacher and current admin
+    return await user_service.toggle_active(user_id=user_id)
+    
     result = await toggle_user_active(user_id=user_id, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
         return result
 
-
+# dep
 @router.delete("/delete/{user_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def delete_user(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
@@ -134,17 +157,22 @@ async def delete_user(user_id: int, current_user: User = Depends(get_current_act
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@router.delete("/delete_student/{user_id}", status_code=status.HTTP_200_OK)
+@router.delete("/delete_student/{user_id}", status_code=status.HTTP_202_ACCEPTED)
 @teacher_auth_required
-async def delete_student(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
+async def delete_student(user_id: int, 
+                         current_user: User = Depends(get_current_active_user), 
+                         session: AsyncSession = Depends(get_async_session)):
+    user_service: UserService = UserService(session=session)
+    return await user_service.remove_user(id=user_id)
 
-    return
 
-
-@router.delete("/delete_teacher/{user_id}", status_code=status.HTTP_200_OK)
+@router.delete("/delete_teacher/{user_id}", status_code=status.HTTP_202_ACCEPTED)
 @admin_auth_required
-async def delete_teacher(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    return
+async def delete_teacher(user_id: int, 
+                         current_user: User = Depends(get_current_active_user), 
+                         session: AsyncSession = Depends(get_async_session)):
+    user_service: UserService = UserService(session=session)
+    return await user_service.remove_teacher(user_id=user_id)
 
 
 @router.post("/login")
@@ -184,9 +212,6 @@ async def modify(update_data: UserPwChange, current_user: User = Depends(get_cur
 @router.put("/teacher/modify/", status_code=status.HTTP_202_ACCEPTED, response_model=UserResponse)
 @teacher_auth_required
 async def modify_by_teacher(update_data: UserPwChange, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
-    if not update_data.id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="No user_id supplied")
     user: User | None = await update_pw(update_data=update_data, session=session)
     if isinstance(user, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -211,12 +236,14 @@ async def my_auth(current_user: User = Depends(get_current_active_user), session
         auth_str = "admin"
     return auth_str
 
-# get teacher list for admin
-
 
 @router.get("/teacher_list", status_code=status.HTTP_200_OK, response_model=list[UserResponse])
 @admin_auth_required
-async def get_all_teachers(current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> list[User]:
+async def get_all_teachers(current_user: User = Depends(get_current_active_user), 
+                           session: AsyncSession = Depends(get_async_session)) -> list[User]:
+    user_service: UserService = UserService(session=session)
+    return await user_service.user_repo.get_all_teachers()
+
     teacher_list: list[User] = await get_teacher_list(session=session)
     return teacher_list
 
@@ -224,6 +251,10 @@ async def get_all_teachers(current_user: User = Depends(get_current_active_user)
 @router.get("/user_status/{user_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def get_user_status_by_id(user_id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)) -> bool:
+    user_service: UserService = UserService(session=session)
+    user: User = await user_service.user_repo.read(id=user_id)
+    return user.is_active
+
     result = await get_user_status(user_id=user_id, session=session)
     if isinstance(result, NoneType):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)

@@ -31,7 +31,7 @@ class ScenarioService():
         search_char = game.scenario_order[game.current_cycle_index]
         return await self.scenario_repo.read_by_char(char=search_char)
 
-
+    # dep?
     async def get_scenario_by_index(self, game_id: int, index: int) -> Scenario | None:
         game: Game = await self.game_repo.read(id=game_id)
         if not game.is_active:

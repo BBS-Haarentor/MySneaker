@@ -11,7 +11,6 @@ class Stock(StockBase, table=True):
     last_edit: float | None = Field(default=datetime.now().timestamp())
     game_id: int | None = Field(sa_column=Column(Integer, ForeignKey("game.id", onupdate="CASCADE", ondelete="CASCADE")))
     company_id: int | None = Field(sa_column=Column(Integer, ForeignKey("user.id", onupdate="CASCADE", ondelete="CASCADE")))
-    creation_date: datetime | None = Field(datetime.now()) 
     current_cycle_index: int = Field(default=0)
 
     sneaker_count: int = Field(default=0)#

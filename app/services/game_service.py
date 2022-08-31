@@ -59,13 +59,12 @@ class GameService():
     
             
     async def get_game_by_id(self, game_id: int) -> Game:
-        game: Game = await self.game_repo.read(id=game_id)
-        return game
+        return await self.game_repo.read(id=game_id)
+        
         
         
     async def create_game(self, create_data: GameCreate) -> int:
-        game_id: int = await self.game_repo.create(create_data=create_data)
-        return game_id
+        return await self.game_repo.create(create_data=create_data)
     
     
     async def patch_game(self, patch_data: GamePatch) -> Game:
@@ -96,7 +95,8 @@ class GameService():
     async def delete_game(self, game_id: int) -> None:
         game: Game = await self.game_repo.read(id=game_id)
         if game.is_active:
-            raise ServiceError(entity_id=game_id, entity_name="Game" ,calling_service=self.__class__.__name__, detail="Game is active. Please deactivate before deleting.")
+            raise GameServiceError(detail=f"Attempted delete on active game with {game_id=}", 
+                                   user_message="Dieses Spiel ist aktiv. Deaktiviere das Spiel vor dem Löschversuch.")
         else:
             await self.game_repo.delete(id=game_id)
         return None
@@ -135,9 +135,11 @@ class GameService():
         
         if index > 0 and not isinstance(infos[0].real_sales, NoneType):
             total_sold: int = sum(x.real_sales for x in infos)
-            for i in infos:
-                i.market_share = round(i.real_sales / total_sold, 2)
+            if total_sold > 0:
+                for i in infos:
+                    i.market_share = round(i.real_sales / total_sold, 2)
         return infos
+        
         
         
     async def turnover(self, game_id: int):# -> int:
@@ -157,12 +159,24 @@ class GameService():
     async def set_back_cycle_index(self, game_id: int, new_index: int) -> int:
         game: Game = await self.game_repo.read(id=game_id)
         if new_index > game.current_cycle_index or new_index < 0:
-            raise IndexError("Index can not be higher than current index and not lower than 0.")
+            raise GameServiceError(detail=f"attempted setback on game with id: {game_id} to out-of-bounds index.",
+                                   user_message=f"Der neue Index liegt außerhalb des zulässigen Bereichs: 0 <= index <= Gesamt-Anzahl-Perioden")
         try:
             await self.cycle_repo.delete_cycles_after_including_index(game_id=game_id, new_index=new_index)
+        except NotFoundError:
+            pass
+        try:
             await self.stock_repo.delete_stocks_after_including_index(game_id=game_id, new_index=(new_index + 1))
         except NotFoundError:
             pass
         game.current_cycle_index = new_index
         updated_game: Game = await self.game_repo.update(update_data=game)
         return updated_game.current_cycle_index
+    
+    
+class GameServiceError(ServiceError):
+    
+    entity_name: str = "Game"
+    
+    def __init__(self, detail: str | None, user_message: str | None) -> None:
+        super().__init__(self.entity_name, detail, user_message)

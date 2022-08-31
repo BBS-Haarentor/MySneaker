@@ -42,6 +42,7 @@ class CRUDRepository():
         update_data_dict = update_data.dict(exclude_unset=True)
         for key, value in update_data_dict.items():
             setattr(entity, key, value)
+        setattr(entity, 'last_edit', datetime.now().timestamp())
         self.session.add(entity)
         await self.session.commit()
         await self.session.refresh(entity)

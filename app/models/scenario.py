@@ -41,3 +41,4 @@ class Scenario(ScenarioBase, table=True):
     production_cost_per_sneaker1: float = Field(default=60.00)
     production_cost_per_sneaker2: float = Field(default=50.00)
     production_cost_per_sneaker3: float = Field(default=40.00)
+    employee_change_allowed: bool = Field(default=True)

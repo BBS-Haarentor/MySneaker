@@ -32,8 +32,6 @@ class UserRepository(CRUDRepository):
     async def get_all_teachers(self) -> list[User]:
         result = await self.session.exec(select(User).join(TeacherGroup).where(User.id == TeacherGroup.user_id))
         teachers: list[User] = result.all()
-        if len(teachers <= 0):
-            raise UserNotFoundError(entity_id=None, detail="")
         return teachers
     
     
