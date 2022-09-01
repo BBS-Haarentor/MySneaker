@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
 import Beschaffung from '../Container/Beschaffung'
@@ -12,7 +12,7 @@ import VerkaufIst from '../Container/VerkaufIst'
 import Statistik from '../Container/Statistik'
 import Finanzen from '../Container/Finanzen';
 
-const KlassenDetailContainer = ({ userId, cycle_index }) => {
+const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
 
 
 
@@ -118,10 +118,11 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(data.cycle.include_from_stock)
     const [MarktSoll, setMarktSoll] = useState(data.cycle.sales_planned)
     const [MarktSollPreis, setMarktSollPreis] = useState(data.cycle.sales_bid)
-    const [MarktIst, setMarktIst] = useState(data.cycle.real_sales)
+    const [MarktIst, setMarktIst] = useState(data.stock.real_sales)
     const [AusschreibungSoll, setAussetschreibungSoll] = useState(data.cycle.tender_offer_count)
     const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(data.cycle.tender_offer_price)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
+    const [AusschreibungIstPrice, setAusschreibungIstPrice] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
     const [Mitarbeiter, setMitarbeiter] = useState(8)
@@ -159,45 +160,45 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     var machine_3_costpp = 0
     var machine_3_fertigungskostenpp = 0
 
-    if (data.stock.machine_1_space == 1) {
+    if (data.stock.machine_1_space === 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
-    } else if (data.stock.machine_1_space == 2) {
+    } else if (data.stock.machine_1_space === 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
-    } else if (data.stock.machine_1_space == 3) {
+    } else if (data.stock.machine_1_space === 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
     }
-    if (data.stock.machine_2_space == 1) {
+    if (data.stock.machine_2_space === 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
         machine_2_name = "Sneakerbox 200"
         machine_2_kapazität = data.scenario.machine_production_capacity1
         machine_2_costpp = data.scenario.machine_maintainance_cost1
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    } else if (data.stock.machine_2_space == 2) {
+    } else if (data.stock.machine_2_space === 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
         machine_2_name = "Sneakerdream 500"
         machine_2_kapazität = data.scenario.machine_production_capacity2
         machine_2_costpp = data.scenario.machine_maintainance_cost2
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    } else if (data.stock.machine_2_space == 3) {
+    } else if (data.stock.machine_2_space === 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
         machine_2_name = "Sneakergigant 1000"
         machine_2_kapazität = data.scenario.machine_production_capacity3
         machine_2_costpp = data.scenario.machine_maintainance_cost3
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
     }
-    if (data.stock.machine_3_space == 1) {
+    if (data.stock.machine_3_space === 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
         machine_3_name = "Sneakerbox 200"
         machine_3_kapazität = data.scenario.machine_production_capacity1
         machine_3_costpp = data.scenario.machine_maintainance_cost1
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    } else if (data.stock.machine_3_space == 2) {
+    } else if (data.stock.machine_3_space === 2) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
         machine_3_name = "Sneakerdream 500"
         machine_3_kapazität = data.scenario.machine_production_capacity2
         machine_3_costpp = data.scenario.machine_maintainance_cost2
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    } else if (data.stock.machine_3_space == 3) {
+    } else if (data.stock.machine_3_space === 3) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
         machine_3_name = "Sneakergigant 1000"
         machine_3_kapazität = data.scenario.machine_production_capacity3
@@ -226,9 +227,10 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
         setEntnahmeAusDemLager(data.cycle.include_from_stock)
         setMarktSoll(data.cycle.sales_planned)
         setMarktSollPreis(data.cycle.sales_bid)
-        setMarktIst(data.cycle.real_sales)
+        setMarktIst(data.stock.real_sales)
         setAussetschreibungSoll(data.cycle.tender_offer_count)
-        setAusschreibungIst(0)
+        setAusschreibungIst(data.stock.tender_sales)
+        setAusschreibungIstPrice(data.stock.tender_sales)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
         setMitarbeiter(data.stock.employees_count)
@@ -346,7 +348,8 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             "machine_1_space": 1,
             "machine_2_space": machine_2_space,
             "machine_3_space": machine_3_space,
-            "company_id": userId
+            "company_id": userId,
+            "game_id": parseInt(game_id)
         });
 
         var requestOptions = {
@@ -361,7 +364,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Die Änderungen wurden Erfolgreich Übermittelt',
+                    title: 'Die Änderungen wurden erfolgreich Übermittelt',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -436,9 +439,8 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
     }, [])*/
 
 
-    var SaldoSoll = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) + parseFloat(ForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
-    var SaldoIst = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) + parseFloat(ForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
-
+    var SaldoSoll = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2)) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    var SaldoIst = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(data.stock.real_sales)) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2)) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung)  + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
 
     var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
     var HöheKontokorrentkreditIst = SaldoIst < 0 ? SaldoIst : 0
@@ -505,7 +507,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
             if (result.isConfirmed) {
                 swalWithBootstrapButtons.fire(
                     'Erfolgreich',
-                    'Du hast den kauf Erfolgreich Abgeschlossen!',
+                    'Du hast den kauf erfolgreich Abgeschlossen!',
                     'success'
                 ).then(() => {
                     doMagicToBuyMachine(name, price, id)
@@ -558,7 +560,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-                {data.stock.machine_1_space != 0 ? <div className={ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"}>
+                {data.stock.machine_1_space !== 0 ? <div className={parseInt(ZugeteilteMitarbeiter) ===  parseInt(Math.ceil(GeplanteProduktion / 20)) && MaximalproduzierbareAnzahl >= GeplanteProduktion / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -623,7 +625,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter == Math.ceil(GeplanteProduktion / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter) === parseInt(Math.ceil(GeplanteProduktion / 20)) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -643,10 +645,10 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                         </tbody>
                     </table>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white  snap-start" >
-                    <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
+                    <img alt="add maschine" src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div>}
 
-                {data.stock.machine_2_space != 0 ? <div className={ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
+                {data.stock.machine_2_space !== 0 ? <div className={parseInt(ZugeteilteMitarbeiter2) === Math.ceil(GeplanteProduktion2 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion2 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}>
                     <table>
                         <tbody>
                             <tr>
@@ -711,7 +713,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter2 == Math.ceil(GeplanteProduktion2 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter2) === Math.ceil(GeplanteProduktion2 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -730,18 +732,18 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
 
                         </tbody>
                     </table>
-                </div> : buy_new_machine != 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
+                </div> : buy_new_machine !== 0 ? <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                    <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                    <img alt={"Neue Maschine Bestellt"} src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div> : data.scenario.machine_purchase_allowed ? <div className="p-4 In dieser Periode ist der Kauf einer Maschine nicht möglich shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
+                    <img alt={"Neue Maschine Kaufen"} src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
                 </div> : <div className="p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                     <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer Maschine nicht möglich</h1>
-                    <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
+                    <img alt={"Kaufen nicht mögliche"} src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.stock.machine_3_space != 0 ? <div className={ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"} >
+                {data.stock.machine_3_space !== 0 ? <div className={parseInt(ZugeteilteMitarbeiter3) === Math.ceil(GeplanteProduktion3 / 20) && MaximalproduzierbareAnzahl >= GeplanteProduktion3 / 1 ? "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start " : "p-4  shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start border-red-300 border-2"} >
                     <table>
                         <tbody>
                             <tr>
@@ -806,7 +808,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{ZugeteilteMitarbeiter3 == Math.ceil(GeplanteProduktion3 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(ZugeteilteMitarbeiter3) === Math.ceil(GeplanteProduktion3 / 20) ? "Ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -826,25 +828,25 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                         </tbody>
                     </table>
                 </div>
-                    : data.stock.machine_2_space == 0 ?
+                    : data.stock.machine_2_space === 0 ?
                         <></>
                         :
-                        buy_new_machine != 0 ?
+                        buy_new_machine !== 0 ?
                             <div className="p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                                 <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                                <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                                <img alt={"Maschine Bestellt"} src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                             </div>
-                            : data.stock.machine_2_space == 0 ?
+                            : data.stock.machine_2_space === 0 ?
                                 <></>
                                 : data.scenario.machine_purchase_allowed ?
                                     <div className="p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start" >
                                         <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                                        <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
+                                        <img alt={"Neue Maschine Kaufen"} src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
                                     </div>
                                     :
                                     <div className="p-4 shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white snap-start" >
                                         <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
-                                        <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
+                                        <img alt={"Kaufen nicht möglich"} src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                                     </div>
                 }
 
@@ -858,7 +860,7 @@ const KlassenDetailContainer = ({ userId, cycle_index }) => {
                     formatter={formatter} AusschreibungSollPreis={AusschreibungSollPreis} MarktSollPreis={MarktSollPreis} setAussetschreibungSoll={setAussetschreibungSoll}
                     setAussetschreibungSollPreis={setAussetschreibungSollPreis} setMarktSoll={setMarktSoll} scenario={data.scenario} setMarktSollPreis={setMarktSollPreis} />
 
-                <VerkaufIst AusschreibungIst={AusschreibungIst} MarktIst={MarktIst} UmsatzIst={UmsatzIst} formatter={formatter} />
+                <VerkaufIst AusschreibungIstPrice={AusschreibungIstPrice} AusschreibungIst={AusschreibungIst} MarktIst={MarktIst} UmsatzIst={UmsatzIst} formatter={formatter} />
 
                 <Statistik AllMaschienenKosten={AllMaschienenKosten} FarbenKosten={FarbenKosten} FertigungskostenProStückFE={FertigungskostenProStückFE} Gesamtproduktion={GeplanteProduktion}
                     MarktSoll={MarktSoll} MarktSollPreis={MarktSollPreis} Mitarbeiter={Mitarbeiter} PersonalnebenkostenInP={PersonalnebenkostenInP} SneakerKosten={SneakerKosten} formatter={formatter} />

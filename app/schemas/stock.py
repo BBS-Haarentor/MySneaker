@@ -20,14 +20,14 @@ class StockBase(BaseSchema):
     machine_2_space: int | None
     machine_3_space: int | None
     insolvent: bool | None
-
-    
+    tender_sales: int | None
+    tender_price: float | None   
 
 class StockCreate(StockBase): 
     pass
     
     
-class StockInternal(SQLModel):
+class StockPersistent(SQLModel):
     game_id: int 
     company_id: int
     current_cycle_index: int 

@@ -15,7 +15,7 @@ class StockRepository(CRUDRepository):
     async def get_stock_ids_by_user(self, user_id: int) -> list[int]:
         result = await self.session.exec(select(Stock.id).where(Stock.company_id == user_id).order_by(Stock.creation_date.desc()))
         ids: list[int] = result.all()
-        if len(ids <= 0):
+        if len(ids) <= 0:
             raise StockNotFoundError(entity_id=user_id, detail="")
         return ids
     

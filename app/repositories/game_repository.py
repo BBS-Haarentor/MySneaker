@@ -1,9 +1,10 @@
+import json
 from types import NoneType
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.models.game import Game
 from app.repositories.crud_repository import CRUDRepository , NotFoundError
-
+from app.schemas.scenario import ScenarioPost
 
 class GameRepository(CRUDRepository):
     
@@ -17,6 +18,15 @@ class GameRepository(CRUDRepository):
         return result.all()
     
     
+    async def init_db(self) -> None:
+        new_scenarios = []
+        with open('./app/db/seeds/scenario_seed_data.json') as file:
+            json_data = json.load(file)
+        for _ in json_data["data"]:
+            self.session.add(ScenarioPost.parse_obj(_))
+        await self.session.commit()
+        
+        return None
     
     
     

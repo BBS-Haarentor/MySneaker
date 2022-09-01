@@ -202,7 +202,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
         #Entwickelung
         StuffeEntwickelung = _VorherigeEntwicklungsStufe
-        logging.warning(f"{StuffeEntwickelung=}")  
+        logging.warning(f"{StuffeEntwickelung=}")
 
         _Buget_Kumuliert = stock_list[i].research_budget + cycle_list[i].research_invest  
         logging.warning(f"{_Buget_Kumuliert=}")  
@@ -221,7 +221,7 @@ async def mock_turnover(scenario: Scenario, stock_list: list[Stock], cycle_list:
 
 
         _Kontostand -= cycle_list[i].research_invest
-        logging.warning(f"{_Kontostand=}")  
+        logging.warning(f"{_Kontostand=}")
 
         stock_output[i].research_budget = _Buget_Kumuliert
         stock_output[i].research_production_modifier = StuffeEntwickelung

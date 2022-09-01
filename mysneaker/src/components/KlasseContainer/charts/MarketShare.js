@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import {Pie} from 'react-chartjs-2'
 import {ArcElement} from "chart.js";
 import Chart1 from "chart.js/auto";

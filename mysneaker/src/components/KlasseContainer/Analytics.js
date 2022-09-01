@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import Swal from 'sweetalert2'
-import {Line} from 'react-chartjs-2';
 import MarketShare from './charts/MarketShare'
 
 const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
@@ -92,7 +91,7 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
                             <>
                                 <tr>
                                     <td>{value.name}</td>
-                                    <td>{value.real_sales} Stk.</td>
+                                    <td>{value.real_sales === null ? 0 : value.real_sales} Stk.</td>
                                     <td>{formatter.format(value.sales_bid)}</td>
                                     <td>{formatter.format(value.income_from_sales)}</td>
                                     <td>{value.turnover_ready ? <>

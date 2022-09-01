@@ -1,6 +1,6 @@
 import React from 'react'
 
-const VerkaufIst = ({ UmsatzIst, MarktIst, AusschreibungIst, formatter }) => {
+const VerkaufIst = ({ UmsatzIst, MarktIst, AusschreibungIst, AusschreibungIstPrice, formatter }) => {
 
     return (
         <div className="dark:bg-[#1f2733] dark:text-white p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
@@ -17,17 +17,17 @@ const VerkaufIst = ({ UmsatzIst, MarktIst, AusschreibungIst, formatter }) => {
                             </tr>
                             <tr>
                                 <td>Markt</td>
-                                <td>{MarktIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
+                                <td>{AusschreibungIst === null ? 0 : MarktIst-AusschreibungIst} Stk.</td>
+                                <td>{formatter.format(isNaN(AusschreibungIstPrice) ? 0 : UmsatzIst-AusschreibungIstPrice)}</td>
                             </tr>
                             <tr>
                                 <td>Ausschreibung</td>
-                                <td>{AusschreibungIst} Stk.</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
+                                <td>{AusschreibungIst === null ? 0 : AusschreibungIst} Stk.</td>
+                                <td>{formatter.format(isNaN(AusschreibungIstPrice) ? 0 : AusschreibungIstPrice)}</td>
                             </tr>
                             <tr>
                                 <td>Gesamt</td>
-                                <td>{Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))} Stk. </td>
+                                <td>{MarktIst === null ? 0 : Math.round(parseInt(MarktIst))} Stk. </td>
                                 <td>{formatter.format(UmsatzIst)}</td>
                             </tr>
                         </tbody>

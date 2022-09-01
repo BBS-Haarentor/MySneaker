@@ -22,32 +22,32 @@ const Beschaffung = ({ formatter, MarktSollPreis, MarktSoll, SneakerKosten, Farb
                             </tr>
                             <tr>
                                 <td>Werkstoffkosten</td>
-                                <td>{formatter.format((SneakerKosten+FarbenKosten) /Gesamtproduktion)}</td>
+                                <td>{formatter.format(Gesamtproduktion === 0 ? 0 : (SneakerKosten+FarbenKosten) / Gesamtproduktion )}</td>
                                 <td>{formatter.format((SneakerKosten+FarbenKosten))}</td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten</td>
-                                <td>{formatter.format(FertigungskostenProStückFE)}</td>
+                                <td>{formatter.format(Gesamtproduktion === 0 ? 0 : FertigungskostenProStückFE)}</td>
                                 <td>{formatter.format(FertigungskostenProStückFE * Gesamtproduktion)}</td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten</td>
-                                <td>{formatter.format(AllMaschienenKosten / Gesamtproduktion)} Stk. </td>
+                                <td>{formatter.format(Gesamtproduktion !== 0 ? AllMaschienenKosten / Gesamtproduktion : 0)}</td>
                                 <td>{formatter.format(AllMaschienenKosten)}</td>
                             </tr>
                             <tr>
                                 <td>Personalkosten</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP))/Gesamtproduktion)} Stk. </td>
+                                <td>{formatter.format(Gesamtproduktion !== 0 ? Mitarbeiter * (500 * (PersonalnebenkostenInP))/Gesamtproduktion : 0)}</td>
                                 <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
                             </tr>
                             <tr>
                                 <td>Gesamtkosten</td>
-                                <td>{formatter.format(((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE)} Stk. </td>
+                                <td>{formatter.format(Gesamtproduktion !== 0 ? ((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE : 0)}</td>
                                 <td>{formatter.format((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion)}</td>
                             </tr>
                             <tr>
                                 <td>Gewinn</td>
-                                <td>{formatter.format( MarktSollPreis - (((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE))} Stk. </td>
+                                <td>{formatter.format(Gesamtproduktion !== 0 ? MarktSollPreis - (((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE) : 0)}</td>
                                 <td>{formatter.format((MarktSoll*MarktSollPreis) - ((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion))}</td>
                             </tr>
                         </tbody>

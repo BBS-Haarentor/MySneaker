@@ -69,14 +69,14 @@ const DashBoardPage = () => {
             }
 
         }
-    })
+    }, [])
 
 
     return (
         <div className="h-screen w-screen flex">
             <SideNavBar OnClick={OnClick} state={state}/>
 
-            {state == "Login" ?
+            {state === "Login" ?
                 <LoginPage/> :
                 (isAdmin ? <AdminPage state={state} OnClick={OnClick}/> : isLehe ? <LehrerPage/> :
                     <Container MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef}

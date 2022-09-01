@@ -42,6 +42,7 @@ class CRUDRepository():
         update_data_dict = update_data.dict(exclude_unset=True)
         for key, value in update_data_dict.items():
             setattr(entity, key, value)
+        setattr(entity, 'last_edit', datetime.now().timestamp())
         self.session.add(entity)
         await self.session.commit()
         await self.session.refresh(entity)
@@ -53,7 +54,7 @@ class CRUDRepository():
         entity = result.one_or_none()
         if isinstance(entity, NoneType):
             raise NotFoundError(entity_id=id, entity_name=self.type_identifier.__class__.__name__ ,detail="Called from CRUD-Repository")
-        self.session.delete(entity)
+        await self.session.delete(entity)
         await self.session.commit()
         await self.session.flush()
         return None

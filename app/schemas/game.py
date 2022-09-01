@@ -16,6 +16,13 @@ class GameBase(BaseSchema):
 class GameCreate(GameBase):
     pass
 
+class GamePost(GameBase):
+    grade_name: str
+    owner_id: int 
+    current_cycle_index: int  | None
+    is_active: bool | None
+    scenario_order: str 
+    signup_enabled: bool | None
 
 class GamePatch(GameBase):
     id: int
@@ -37,14 +44,23 @@ class GameResponse(GameBase):
 
 
 class PlayerInfo(SQLModel):
-    company_id: int
-    name: str | None
+    company_id: int #
+    name: str | None #
     index: int | None
     account_balance: float | None  
     credit_taken: float | None  
-    income_from_sales: float | None  
-    sales_bid: float | None  
-    real_sales: int | None  
+    income_from_sales: float | None 
+    sales_bid: float | None 
+    real_sales: int | None 
     insolvent: bool | None  
     turnover_ready: bool | None   
-    market_share: float | None    
+    market_share: float | None 
+    
+    
+class PlayerInfoStudent(SQLModel):
+    company_id: int #
+    name: str | None #
+    index: int | None
+    sales_bid: float | None  # 
+    real_sales: int | None   #
+    market_share: float | None    #

@@ -8,11 +8,11 @@ from app.schemas.user import UserBase
 class User(UserBase, table=True):
     __tablename__ = 'user'
     __table_args__ = (UniqueConstraint("name"),)
-    id: int | None = Field(default=None, primary_key=True)
+    id: int | None = Field(primary_key=True, index=True)
     creation_date: float | None = Field(default=datetime.now().timestamp())
     last_edit: float | None = Field(default=datetime.now().timestamp())
     last_login: float | None = Field(default=datetime.now().timestamp()) 
-    name: str = Field(default=None, index=True)
+    name: str = Field(index=True)
     email: str | None = Field(default=None)
     hashed_pw: str
     is_active: bool | None = Field(default=False)
