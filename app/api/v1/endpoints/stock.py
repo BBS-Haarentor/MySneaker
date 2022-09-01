@@ -8,6 +8,7 @@ from app.db.session import get_async_session
 
 from app.models.stock import Stock
 from app.models.user import User
+from app.repositories.stock_repository import StockRepository
 from app.schemas.stock import StockCreate
 from app.services.user_service import UserService
 
@@ -21,3 +22,9 @@ async def create_stock_entry(stock_data: StockCreate, current_user: User = Depen
     new_stock: Stock = await new_stock_entry(entry_data=stock_data, session=session)
     
     return new_stock
+
+
+@router.get("/get_by_id/{id}", status_code=200)
+async def get_stock_by_id(id: int, session: AsyncSession = Depends(get_async_session)):
+    repo = StockRepository(session=session)
+    return await repo.read(id=id)
