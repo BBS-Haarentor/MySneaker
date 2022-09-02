@@ -18,7 +18,7 @@ class GameCreate(GameBase):
 
 class GamePost(GameBase):
     grade_name: str
-    owner_id: int 
+    owner_id: int | None
     current_cycle_index: int  | None
     is_active: bool | None
     scenario_order: str 
