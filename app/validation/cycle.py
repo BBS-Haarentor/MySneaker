@@ -151,10 +151,6 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
         raise CycleValidationError(
             user_message="Es kann nicht weniger als 0€ in Werbung investiert werden.")
 
-    if cycle.ad_invest < stock.account_balance+(50_000-cycle.take_credit):
-        raise CycleValidationError(
-            user_message="Du kannst nicht mehr geld ausgeben als du hast und maximal höhe and Kredit hergeben.")
-
     if cycle.take_credit < cycle.payback_credit:
         raise CycleValidationError(
             user_message=f"Dein augenommener Credit Beträgt: {cycle.take_credit} und du möchtest {cycle.payback_credit} ab Bezahlen.")
