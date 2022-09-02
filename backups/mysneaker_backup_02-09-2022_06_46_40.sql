@@ -792,7 +792,7 @@ SELECT pg_catalog.setval('public.admingroup_id_seq', 1, true);
 -- Name: basegroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mysneaker
 --
 
-SELECT pg_catalog.setval('public.basegroup_id_seq', 1, false);
+SELECT pg_catalog.setval('public.basegroup_id_seq', 46, false);
 
 
 --
@@ -806,7 +806,7 @@ SELECT pg_catalog.setval('public.cycle_id_seq', 4, true);
 -- Name: game_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mysneaker
 --
 
-SELECT pg_catalog.setval('public.game_id_seq', 1, false);
+SELECT pg_catalog.setval('public.game_id_seq', 24, false);
 
 
 --
@@ -827,14 +827,14 @@ SELECT pg_catalog.setval('public.stock_id_seq', 21, true);
 -- Name: teachergroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mysneaker
 --
 
-SELECT pg_catalog.setval('public.teachergroup_id_seq', 1, false);
+SELECT pg_catalog.setval('public.teachergroup_id_seq', 10, false);
 
 
 --
 -- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mysneaker
 --
 
-SELECT pg_catalog.setval('public.user_id_seq', 1, true);
+SELECT pg_catalog.setval('public.user_id_seq', 46, true);
 
 
 --
