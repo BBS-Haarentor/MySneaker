@@ -25,7 +25,7 @@ const LoginPage = () => {
                         <div className="bg-red-100 border border-red-600 text-red-700 px-4 mx-11 py-3 rounded relative"
                              role="alert">
                             <strong className="font-bold">Login Fehlgeschlagen!</strong>
-                            <span className="block sm:inline"> {error.message}</span>
+                            <span className="block sm:inline"> {error.user_message}</span>
                         </div>
                     </>
                 )
