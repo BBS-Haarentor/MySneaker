@@ -676,7 +676,7 @@ COPY public.game (id, creation_date, last_edit, grade_name, owner_id, current_cy
 8	1661151631.7087	1661151631.708714	TEST	8	0	t	ABCD	f
 13	1661164140.646569	1661164140.646579	G11durchstarter2	11	0	t	ABCDEFGHIJ	t
 12	1661154442.203457	1661154442.203466	G11a	13	0	t	ABCDEFGHIJ	t
-15	1661529329.892145	1661529329.892155	FA2A-B	3	2	t	ABCDEFG	t
+15	1661529329.892145	1661529329.892155	FA2A-B	3	0	t	ABCDEFG	t
 \.
 
 
@@ -722,8 +722,6 @@ COPY public.stock (game_id, company_id, id, creation_date, last_edit, current_cy
 21	45	17	1662042873.124032	1662042873.124039	0	0	0	0	8	0	50000	0	0	0	1	1	0	0	f	0	0
 21	40	18	1662042873.124032	1662042873.124039	0	0	0	0	8	0	50000	0	0	0	1	1	0	0	f	0	0
 15	32	19	1662042873.124032	1662042873.124039	0	0	0	0	8	0	50000	0	0	0	1	1	0	0	f	0	0
-15	32	20	1662098626.255987	1662098626.256005	1	0	0	0	8	0	58160	0	100	30000	1	1	0	0	f	0	0
-15	32	21	1662098626.255987	1662098626.256005	2	0	0	0	28	0	65744	0	160	48000	1	1	0	0	f	0	0
 \.
 
 
@@ -792,7 +790,7 @@ SELECT pg_catalog.setval('public.admingroup_id_seq', 1, true);
 -- Name: basegroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mysneaker
 --
 
-SELECT pg_catalog.setval('public.basegroup_id_seq', 1, false);
+SELECT pg_catalog.setval('public.basegroup_id_seq', 46, false);
 
 
 --
@@ -806,7 +804,7 @@ SELECT pg_catalog.setval('public.cycle_id_seq', 4, true);
 -- Name: game_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mysneaker
 --
 
-SELECT pg_catalog.setval('public.game_id_seq', 1, false);
+SELECT pg_catalog.setval('public.game_id_seq', 24, false);
 
 
 --
@@ -827,14 +825,14 @@ SELECT pg_catalog.setval('public.stock_id_seq', 21, true);
 -- Name: teachergroup_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mysneaker
 --
 
-SELECT pg_catalog.setval('public.teachergroup_id_seq', 1, false);
+SELECT pg_catalog.setval('public.teachergroup_id_seq', 10, false);
 
 
 --
 -- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mysneaker
 --
 
-SELECT pg_catalog.setval('public.user_id_seq', 1, true);
+SELECT pg_catalog.setval('public.user_id_seq', 46, true);
 
 
 --
