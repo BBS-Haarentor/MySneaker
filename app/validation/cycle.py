@@ -174,6 +174,8 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
 #fix detail 
 class CycleValidationError(ValidationError):
 
+    entity_name: str = "Cycle"
+    
 
     def __init__(self, user_message: str | None) -> None:
         logging.warning(f"\n\n\n\n{user_message=}\n\n\n\n")
