@@ -57,7 +57,7 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Lagerkosten Fertige Erz.</td>
-                                <td>{formatter.format((stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
+                                <td>{formatter.format(isNaN((stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8) ? 0 : (stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
                                 <td>{formatter.format(Gesamtproduktion !== 0 ? (stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 : 0)}</td>
                             </tr>
                             <tr>
@@ -117,12 +117,12 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Umsatzerlöse</td>
-                                <td>{formatter.format(UmsatzSoll)}</td>
+                                <td>{formatter.format(isNaN(UmsatzSoll) ? 0 : UmsatzSoll)}</td>
                                 <td>{formatter.format(UmsatzIst)}</td>
                             </tr>
                             <tr>
                                 <td>Saldo</td>
-                                <td>{formatter.format(SaldoSoll)}</td>
+                                <td>{formatter.format(isNaN(SaldoSoll) ? 0 : SaldoSoll)}</td>
                                 <td>{formatter.format(SaldoIst)}</td>
                             </tr>
                             <tr>
@@ -137,7 +137,7 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Kontostand</td>
-                                <td>{formatter.format(SaldoSoll + (HöheKontokorrentkreditSoll * 0.12))}</td>
+                                <td>{formatter.format(isNaN(SaldoSoll) ? (HöheKontokorrentkreditSoll * 0.12) : SaldoSoll + (HöheKontokorrentkreditSoll * 0.12))}</td>
                                 <td>{formatter.format(SaldoIst + (HöheKontokorrentkreditIst * 0.12)) }</td>
                             </tr>
 

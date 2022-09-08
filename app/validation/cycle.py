@@ -151,13 +151,9 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
         raise CycleValidationError(
             user_message="Es kann nicht weniger als 0€ in Werbung investiert werden.")
 
-    if cycle.ad_invest < stock.account_balance+(50_000-cycle.take_credit):
-        raise CycleValidationError(
-            user_message="Du kannst nicht mehr geld ausgeben als du hast und maximal höhe and Kredit hergeben.")
-
     if cycle.take_credit < cycle.payback_credit:
         raise CycleValidationError(
-            user_message=f"Dein augenommener Credit Beträgt: {cycle.take_credit} und du möchtest {cycle.payback_credit} ab Bezahlen.")
+            user_message=f"Dein ausgenommener Credit Beträgt: {cycle.take_credit} und du möchtest {cycle.payback_credit} ab Bezahlen.")
     if cycle.payback_credit > 50_000:  # wie Hohen Credit darf amnn maximal aufnehmen
         raise CycleValidationError(
             user_message="Dein unternahmen Darf nicht mehr als 50.000.00€ Credit aufnehemn.")
@@ -167,9 +163,9 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
 
     if cycle.new_employees > stock.employees_count:
         raise CycleValidationError(
-            user_message=f"Es können nicht weniger als {stock.employees_count} Arbeiter enlassen werden werden.")
+            user_message=f"Es können nicht weniger als {stock.employees_count} Arbeiter entlassen werden werden.")
 
-    if scenario.machine_purchase_allowed == False:
+    if scenario.machine_purchase_allowed == False and cycle.buy_new_machine != 0:
         raise CycleValidationError(
             user_message="In dieser periode kann keine Maschiene gekauft werden.")
 
@@ -178,6 +174,8 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
 #fix detail 
 class CycleValidationError(ValidationError):
 
+    entity_name: str = "Cycle"
+    
 
     def __init__(self, user_message: str | None) -> None:
         logging.warning(f"\n\n\n\n{user_message=}\n\n\n\n")

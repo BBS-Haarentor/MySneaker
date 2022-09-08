@@ -38,9 +38,11 @@ class CycleService():
             game: Game = await self.game_repo.read(id=user.game_id)
             cycle_data.game_id = game.id
             cycle_data.current_cycle_index = game.current_cycle_index
-        stock: Stock = await self.stock_repo.get_stock_by_user_and_index(user_id=cycle_data.company_id, index=cycle_data.current_cycle_index)
+        else:
+            game: Game = await self.game_repo.read(id=cycle_data.game_id)
+        stock: Stock = await self.stock_repo.get_stock_by_user_and_index(user_id=cycle_data.company_id, index=game.current_cycle_index)
         scenario: Scenario = await self.scenario_repo.read_by_char(char=game.scenario_order[game.current_cycle_index])
-        #validate_cycle(cycle=cycle_data, stock=stock, scenario=scenario)
+        validate_cycle(cycle=cycle_data, stock=stock, scenario=scenario)
         new_cycle_id: int = await self.repo.create(create_data=cycle_data)
         return new_cycle_id
 
