@@ -168,6 +168,10 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
     if scenario.machine_purchase_allowed == False and cycle.buy_new_machine != 0:
         raise CycleValidationError(
             user_message="In dieser periode kann keine Maschiene gekauft werden.")
+            
+    if stock.employees_count < (cycle.planned_workers_1+cycle.planned_workers_2+cycle.planned_workers_3):
+        raise CycleValidationError(
+            user_message="Du hast nicht genug Mitarbeiter")
 
     return None
 
