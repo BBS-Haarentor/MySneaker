@@ -149,11 +149,11 @@ class GameService():
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
         cycles: list = [(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
         stocks: list = [(await self.stock_repo.get_stock_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
-        scenario: Scenario = self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
+        scenario: Scenario = await self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
         
         turnover: Turnover = Turnover(input_cycles=cycles, input_stocks=stocks, scenario=scenario)
-        new_stocks: list = turnover.turnover()
-        return new_stocks
+        return turnover.turnover()
+        
     
     
     async def set_back_cycle_index(self, game_id: int, new_index: int) -> int:

@@ -182,7 +182,7 @@ class Company():
             tx: Transaction = create_transaction(amount= - (_machine_maintainance_cost), 
                                                  company_id=self.company_id, 
                                                  detail={ "_machine_maintainance_cost": _machine_maintainance_cost,
-                                                         "_machine_type" : m.type})
+                                                         "_machine_type" : m.type.name})
             self.add_tx([tx]) 
         return None
 
@@ -220,7 +220,7 @@ class Company():
         
         self.result_stock.research_budget += actual_investment
         
-        for k, v in research_levels:
+        for k, v in research_levels.items():
             if self.result_stock.research_budget >= k:
                 self.result_stock.research_production_modifier = v
         tx: Transaction = create_transaction(amount= - (actual_investment), company_id=self.company_id, detail={ "actual_investment": actual_investment })
@@ -244,7 +244,7 @@ class Company():
         tx3: Transaction = create_transaction(amount= - (_storage_fee_paint), company_id=self.company_id, detail={ "_storage_fee_paint": _storage_fee_paint })
         tx4: Transaction = create_transaction(amount= - (_storage_fee_sneaker), company_id=self.company_id, detail={ "_storage_fee_sneaker": _storage_fee_sneaker })
         tx5: Transaction = create_transaction(amount= - (_storage_fee_finished_sneaker), company_id=self.company_id, detail={ "_storage_fee_finished_sneaker": _storage_fee_finished_sneaker })
-        self.add_tx(tx=[tx1, tx2, tx4, tx4, tx5])
+        self.add_tx([tx1, tx2, tx4, tx4, tx5])
         return None
 
     def produce_sneakers(self) -> None:
@@ -268,9 +268,9 @@ class Company():
     
     
     def process_transactions(self) -> None:
-        for tx in self.ledger:
-            
-            pass
+        #for tx in self.ledger:
+        #    
+        #    pass
         return None
     
     

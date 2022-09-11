@@ -48,6 +48,7 @@ class Turnover():
     
     
     def __sort_out_dead(self) -> None:
+        self.dead_companies = []
         for c in self.companies:
             if c.stock.insolvent:
                 self.dead_companies.append(c)
@@ -68,7 +69,7 @@ class Turnover():
     
     
     def turnover(self):# -> list[StockCreate]:
-    
+        
         # do single stuff
         for c in self.companies:
             c.pay_employees()
@@ -82,9 +83,9 @@ class Turnover():
             c.payback_credit()
             c.update_dead()
             
-        
+        logging.warning(f"\nGroup calc start\n\n")
         # do group stuff
-        self._sell_sneaker_tender()
+        #self._sell_sneaker_tender()
         self._sell_sneaker_ad()
         self._sell_sneaker()
         
@@ -92,9 +93,7 @@ class Turnover():
         for c in self.companies:
             c.do_inventory()
             c.process_transactions()
-        
         self.__process_dead()
-        
         return [ [x.result_stock, x.ledger] for x in self.companies ]
 
 
@@ -106,7 +105,8 @@ class Turnover():
     def _sell_sneaker_tender(self) -> None:
         key = lambda x: x.cycle.tender_offer_price
         batched_companies = self.__sort_and_group(companies=self.companies , key=key)
-        sorted_companies = sorted([x for x in batched_companies if x.cycle.tender_offer_price], key=lambda x: (x._for_sale >= self.scenario.tender_offer_count))
+        sorted_companies = sorted([x for x in batched_companies if x[0].cycle.tender_offer_price], key=lambda x: (x._for_sale >= self.scenario.tender_offer_count))
+        logging.warning(f"{sorted_companies=}")
         lowest_price_company = random.choice(sorted_companies[0])
         
         # sell tender
@@ -121,6 +121,9 @@ class Turnover():
     
     
     def __general_sales_in_batch(self, companies: list[Company], sales: int, price_key):
+        curframe = inspect.currentframe()
+        callframe = inspect.getouterframes(curframe)
+        issuer = callframe[1][3]
         _remaining_sales: int = sales
         companies.sort(key= lambda x: random)
         while _remaining_sales > 0:
@@ -128,13 +131,8 @@ class Turnover():
                 if _remaining_sales > 0:
                     c._for_sale -= 1
                     c.result_stock.real_sales += 1
-                    
-                    curframe = inspect.currentframe()
-                    callframe = inspect.getouterframes(curframe)
-                    issuer = callframe[1][3]
-                    
-                    tx: Transaction = create_transaction(amount= + (price_key(c)), company_id=self.company_id, detail={ "sale_price_sneaker": (price_key(c)),
-                                                                                                                       "sale_type": issuer})
+                    tx: Transaction = create_transaction(amount= + (price_key(c)), company_id=c.company_id, detail={ "sale_price_sneaker": (price_key(c)),
+                                                                                                                    "sale_type": issuer})
                     c.add_tx([tx])
                                         
                     c.result_stock.income_from_sales += price_key(c)
