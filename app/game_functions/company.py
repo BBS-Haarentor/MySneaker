@@ -34,7 +34,7 @@ class Company():
         internal_stock.current_cycle_index += 1
         self.result_stock: StockCreate = StockCreate.parse_obj(internal_stock)
         self.result_stock.income_from_sales = 0.0
-        self.result_stock.real_sales = 0.0
+        self.result_stock.real_sales = 0
         self._for_sale = 0
         self._new_shoes_shelf = 0
         self.ledger = []
@@ -228,8 +228,9 @@ class Company():
         return None
 
 
-    def do_inventory(self) -> None: 
-        
+
+    def stock_up(self) -> None:
+
         self.result_stock.sneaker_count += self.cycle.buy_sneaker
         _purchase_cost_sneaker: float = round(self.cycle.buy_sneaker * self.scenario.sneaker_price, 2)
         self.result_stock.paint_count += self.cycle.buy_paint
@@ -237,6 +238,14 @@ class Company():
         
         tx1: Transaction = create_transaction(amount= - (_purchase_cost_sneaker), company_id=self.company_id, detail={ "_cost_sneaker": _purchase_cost_sneaker })
         tx2: Transaction = create_transaction(amount= - (_purchase_cost_paint), company_id=self.company_id, detail={ "_cost_paint": _purchase_cost_paint })
+        self.add_tx([tx1, tx2])
+        return None
+
+
+    def do_inventory(self) -> None: 
+        self.result_stock.sneaker_count = self.stock.sneaker_count
+        self.result_stock.paint_count = self.stock.paint_count
+        self.result_stock.finished_sneaker_count = self.stock.finished_sneaker_count
         
         _storage_fee_paint: float = round(self.stock.paint_count * self.scenario.storage_fee_paint, 2)
         _storage_fee_sneaker: float = round(self.stock.sneaker_count * self.scenario.storage_fee_sneaker, 2)
@@ -244,7 +253,7 @@ class Company():
         tx3: Transaction = create_transaction(amount= - (_storage_fee_paint), company_id=self.company_id, detail={ "_storage_fee_paint": _storage_fee_paint })
         tx4: Transaction = create_transaction(amount= - (_storage_fee_sneaker), company_id=self.company_id, detail={ "_storage_fee_sneaker": _storage_fee_sneaker })
         tx5: Transaction = create_transaction(amount= - (_storage_fee_finished_sneaker), company_id=self.company_id, detail={ "_storage_fee_finished_sneaker": _storage_fee_finished_sneaker })
-        self.add_tx([tx1, tx2, tx4, tx4, tx5])
+        self.add_tx([tx3, tx4, tx5])
         return None
 
     def produce_sneakers(self) -> None:
@@ -257,7 +266,11 @@ class Company():
         self._new_shoes_shelf = _produced_sneakers
         self._for_sale = self._new_shoes_shelf + self.cycle.include_from_stock
         self.result_stock.finished_sneaker_count -= self.cycle.include_from_stock
-        tx: Transaction = create_transaction(amount= - (_production_cost), company_id=self.company_id, detail={ "_production_cost": _production_cost })
+        
+        self.result_stock.paint_count -= (2 * _produced_sneakers)
+        self.result_stock.sneaker_count -= _produced_sneakers
+        tx: Transaction = create_transaction(amount= - (_production_cost), company_id=self.company_id, detail={ "_production_cost": _production_cost,
+                                                                                                               "count": _produced_sneakers})
         self.add_tx([tx])
         return None
     
