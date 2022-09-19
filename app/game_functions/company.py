@@ -22,6 +22,10 @@ class Company():
     _for_sale: int
     _new_shoes_shelf: int
     
+    _store_sales: int = 0
+    _ad_sales: int = 0
+    _tender_sales: int = 0
+    
     def __init__(self, company_id: int,  cycle: Cycle, stock: Stock, scenario: Scenario) -> None:
         self.company_id = company_id
         self.cycle = cycle
