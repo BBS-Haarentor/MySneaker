@@ -49,7 +49,6 @@ class TestTurnover(unittest.TestCase):
             "include_from_stock": 0,
             "sales_planned": 100,
             "sales_bid": 400.00,
-            "tender_offer_count": 0,
             "tender_offer_price": 0.00,
             "research_invest": 1000.00,
             "ad_invest": 0.00,
@@ -57,8 +56,7 @@ class TestTurnover(unittest.TestCase):
             "payback_credit": 0.00,
             "new_employees": 2,
             "let_go_employees": 0,
-            "buy_new_machine_2": False,
-            "buy_new_machine_3": False
+            "buy_new_machine": 0
         }
 
         test_cycle_1 = {
@@ -68,24 +66,22 @@ class TestTurnover(unittest.TestCase):
             "buy_sneaker": 200,
             "buy_paint": 400,
             "planned_production_1": 300,
-            "planned_production_2": 10,
-            "planned_production_3": 10,
-            "planned_workers_1": 11,
-            "planned_workers_2": 1,
-            "planned_workers_3": 1,
+            "planned_production_2": 0,
+            "planned_production_3": 0,
+            "planned_workers_1": 8,
+            "planned_workers_2": 0,
+            "planned_workers_3": 0,
             "include_from_stock": 0,
             "sales_planned": 300,
             "sales_bid": 400.00,
-            "tender_offer_count": 0,
-            "tender_offer_price": 0.00,
+            "tender_offer_price": 20.00,
             "research_invest": 4000.00,
-            "ad_invest": -10.00,
-            "take_credit": -10.00,
+            "ad_invest": 10.00,
+            "take_credit": 100.00,
             "payback_credit": 1000.00,
-            "new_employees": -2,
-            "let_go_employees": -1,
-            "buy_new_machine_2": False,
-            "buy_new_machine_3": False
+            "new_employees": 2,
+            "let_go_employees": 0,
+            "buy_new_machine": 0
         }
 
         default_stock = {
@@ -101,7 +97,7 @@ class TestTurnover(unittest.TestCase):
             "research_budget": 0,
             "account_balance": 0,
             "credit_taken": 0,
-            "machine_1_bought": True,
+            "machine_1_bought": 1,
             "machine_2_bought": False,
             "machine_3_bought": False,
             "real_sales": 0,
@@ -147,6 +143,26 @@ class TestTurnover(unittest.TestCase):
             c._for_sale = c.cycle.sales_planned
         self.turnover._remaining_sales = sum(x._for_sale for x in self.turnover.companies)
         self.turnover.sell_sneaker()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(self.turnover._remaining_sales, 0)
+        
+        return None
+    
+    def test_whole_turnover(self) -> None:
+        turnover_result = self.turnover.turnover()
+        logging.warning(f"{turnover_result=}")
+        #company_dict = dict(zip(self.turnover.companies, [0 for x in self.turnover.companies]))
+        #logging.warning(f"{company_dict.items()=}")
+
+        return None
+    
+    def test_sell_sneaker_tender(self) -> None:
+        # setup sneakers ready for sale -> tested in test_company_init
+        for c in self.turnover.companies:
+            c._for_sale = c.cycle.sales_planned
+        self.turnover._remaining_sales = sum(x._for_sale for x in self.turnover.companies)
+        self.turnover.sell_sneaker_tender()
         for c in self.turnover.companies:
             logging.warning(f"{c.ledger}")
         self.assertEqual(self.turnover._remaining_sales, 0)

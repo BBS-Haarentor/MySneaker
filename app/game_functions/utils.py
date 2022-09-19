@@ -50,7 +50,7 @@ def create_transaction(amount: float, company_id: int, detail: dict | None = Non
     curframe = inspect.currentframe()
     callframe = inspect.getouterframes(curframe)
     issuer = callframe[1][3]
-    if amount < 0:
-        return Invoice(company_id=company_id, amount= (- amount), issuer=issuer, detail=detail)
+    if amount < 0.0:
+        return Invoice(company_id=company_id, amount=- amount, issuer=issuer, detail=detail)
     else:
         return Cheque(company_id=company_id, amount=amount, issuer=issuer, detail=detail)
