@@ -1,7 +1,7 @@
 import inspect
 from itertools import groupby
 import logging
-from random import random
+from random import choice, random
 from app.game_functions.company import Company
 from app.game_functions.utils import Transaction, create_transaction
 from app.models.cycle import Cycle
@@ -85,7 +85,7 @@ class Turnover():
             
         logging.warning(f"\nGroup calc start\n\n")
         # do group stuff
-        #self._sell_sneaker_tender()
+        self.sell_sneaker_tender()
         self.sell_sneaker_ad()
         self.sell_sneaker()
         
@@ -105,17 +105,18 @@ class Turnover():
     def sell_sneaker_tender(self) -> None:
         key = lambda x: x.cycle.tender_offer_price
         batched_companies = self.__sort_and_group(companies=self.companies , key=key)
-        sorted_companies = sorted([x for x in batched_companies if x[0].cycle.tender_offer_price], key=lambda x: (x._for_sale >= self.scenario.tender_offer_count))
+        sorted_companies = sorted([x for x in batched_companies if x[0].cycle.tender_offer_price], key=lambda x: (x[0]._for_sale >= self.scenario.tender_offer_count))
         logging.warning(f"{sorted_companies=}")
-        lowest_price_company = random.choice(sorted_companies[0])
+        lowest_price_company = choice(sorted_companies[0])
         
         # sell tender
         lowest_price_company._for_sale -= self.scenario.tender_offer_count
         _income_tender = round(self.scenario.tender_offer_count * lowest_price_company.cycle.tender_offer_price, 2)
         lowest_price_company.result_stock.income_from_sales += _income_tender
         lowest_price_company.result_stock.real_sales += self.scenario.tender_offer_count
-        
-        tx: Transaction = create_transaction(amount= + (_income_tender), company_id=self.company_id, detail={ "_income_tender": _income_tender })
+        logging.warning(f"{_income_tender=} - {lowest_price_company.cycle.tender_offer_price=}- {self.scenario.tender_offer_count=}")
+
+        tx: Transaction = create_transaction(amount= _income_tender, company_id=lowest_price_company.company_id, detail={ "_income_tender": _income_tender })
         lowest_price_company.add_tx([tx])
         return None
     
