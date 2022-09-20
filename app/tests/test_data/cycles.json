@@ -271,7 +271,7 @@
             "planned_workers_2": 0,
             "t,ake_credit": 0  
           },
-          "Test_unternehmen51" : {
+          "Test_unternehmen1" : {
             "current_cycle_index": 0,
             "planned_workers_3": 0,
             "payback_credit": 0,
@@ -288,7 +288,7 @@
             "company_id": 10,
             "planned_production_2": 0,
             "tender_offer_price": 0,
-            "id": 1,
+            "id": 2,
             "planned_production_3": 0,
             "research_invest": 2500,
             "creation_date": 0,
@@ -298,7 +298,7 @@
             "planned_workers_2": 0,
             "t,ake_credit": 1000 
           },
-          "Test_unternehmen52" : {
+          "Test_unternehmen2" : {
             "current_cycle_index": 0,
             "planned_workers_3": 0,
             "payback_credit": 1000,
@@ -315,7 +315,7 @@
             "company_id": 11,
             "planned_production_2": 0,
             "tender_offer_price": 0,
-            "id": 1,
+            "id": 2,
             "planned_production_3": 0,
             "research_invest": 5000,
             "creation_date": 0,
@@ -342,7 +342,7 @@
             "company_id": 12,
             "planned_production_2": 0,
             "tender_offer_price": 0,
-            "id": 1,
+            "id": 2,
             "planned_production_3": 0,
             "research_invest": 12000,
             "creation_date": 0,
@@ -369,7 +369,7 @@
             "company_id": 13,
             "planned_production_2": 0,
             "tender_offer_price": 0,
-            "id": 1,
+            "id": 2,
             "planned_production_3": 0,
             "research_invest": 7500,
             "creation_date": 0,
@@ -396,7 +396,7 @@
             "company_id": 14,
             "planned_production_2": 0,
             "tender_offer_price": 0,
-            "id": 1,
+            "id": 2,
             "planned_production_3": 0,
             "research_invest": 0,
             "creation_date": 0,
