@@ -36,7 +36,7 @@ class StockRepository(CRUDRepository):
         return stock
     
     async def delete_stocks_after_including_index(self, game_id: int, new_index: int) -> None:
-        result = await self.session.exec(select(Stock).where(Stock.game_id == game_id).where(Stock.current_cycle_index <= new_index))
+        result = await self.session.exec(select(Stock).where(Stock.game_id == game_id).where(Stock.current_cycle_index >= new_index))
         stocks: list[Stock] = result.all()
         if len(stocks) == 0:
             raise StockNotFoundError(entity_id=None, detail="No Stocks found to delete. Called from StockRepository")
