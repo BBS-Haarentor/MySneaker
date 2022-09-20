@@ -44,6 +44,11 @@ class Company():
         self.ledger = []
         return None
     
+    #def __repr__(self) -> str:
+        pass
+    
+    
+    
     def __generate_machine_types(self) -> dict:
         types_dict = {}
         types_dict[1] = {"name": "SneakerBox200",
@@ -113,7 +118,7 @@ class Company():
 
     def pay_interest(self) -> None:
         _credit_interest_fee: float = round(self.stock.credit_taken * self.scenario.factor_interest_rate, 2)
-        tx: Transaction = create_transaction(amount= + (_credit_interest_fee),
+        tx: Transaction = create_transaction(amount= - (_credit_interest_fee),
                              company_id=self.company_id, 
                              detail={ "_credit_interest_fee": _credit_interest_fee})
         self.add_tx([tx]) 

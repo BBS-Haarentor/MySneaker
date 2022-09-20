@@ -163,6 +163,9 @@ class TestTurnover(unittest.TestCase):
         self.turnover.companies[0].cycle.tender_offer_price = 10.00
         self.turnover.companies[1].cycle.tender_offer_price = 5.00
         self.turnover.scenario.tender_offer_count = 100
+        # setup sneakers ready for sale -> tested in test_company_init
+        self.turnover.companies[0]._for_sale = self.scenario.tender_offer_count
+        self.turnover.sell_sneaker_tender()
         for c in self.turnover.companies:
             c._for_sale = 100
 

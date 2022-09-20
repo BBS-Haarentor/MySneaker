@@ -140,9 +140,8 @@ class Turnover():
             tx: Transaction = create_transaction(amount=  price_key(c) * count, company_id=c.company_id, detail={ "sale_price_sneaker": (price_key(c)),
                                                                                                                     "sale_type": issuer})
             c.add_tx([tx])
-            c.result_stock.income_from_sales += price_key(c)
+            c.result_stock.income_from_sales += price_key(c) * count
 
-            #c.result_stock.finished_sneaker_count = c._for_sale
         return _remaining_sales
     
     
