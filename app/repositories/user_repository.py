@@ -24,7 +24,7 @@ class UserRepository(CRUDRepository):
     async def get_users_by_game(self, game_id: int) -> list[User]:
         result = await self.session.exec(select(User).where(User.game_id == game_id))
         users: list[User] = result.all()
-        if len(users) <= 0:
+        if len(users) == 0:
             raise GameNotFoundError(entity_id=game_id, detail="")
         return users
 
