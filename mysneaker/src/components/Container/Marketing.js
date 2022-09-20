@@ -12,7 +12,7 @@ const Marketing = ({ MarketingRef, setWerbung, Werbung, setForschungUndEntwickel
                     </tr>
                     <tr>
                         <td>Werbung</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setWerbung(e.target.value) : setWerbung(0)} value={Werbung}></input> €</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0  ? setWerbung(e.target.value) : setWerbung(0)} value={Werbung}></input> €</td>
                     </tr>
                     <tr>
                         <th></th>

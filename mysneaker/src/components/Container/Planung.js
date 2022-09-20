@@ -1,18 +1,28 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, EntnahmeAusDemLager, MaximaleEntnahmeAusLager, stock }) => {
 
-
+    const [TempEntnahmeAusDemLager, setTempEntnahmeAusDemLager] = useState(EntnahmeAusDemLager);
+    
     function setEntnahmeAusDemLagerFunction(change) {
-        if (MaximaleEntnahmeAusLager >= change) {
-            if (change < 0) {
-                setEntnahmeAusDemLager(0)
+        if(change === ""){
+            console.log("ich bin nichts")
+            setTempEntnahmeAusDemLager("")
+            setEntnahmeAusDemLager(0)
+        }else{
+            if (MaximaleEntnahmeAusLager >= change) {
+                if (change < 0) {
+                    setTempEntnahmeAusDemLager("0")
+                    setEntnahmeAusDemLager(0)
+                } else {
+                    setTempEntnahmeAusDemLager(change)
+                    setEntnahmeAusDemLager(change)
+                }
             } else {
-                setEntnahmeAusDemLager(change)
+                setEntnahmeAusDemLager(MaximaleEntnahmeAusLager)
             }
-        } else {
-            setEntnahmeAusDemLager(MaximaleEntnahmeAusLager)
         }
+        
     }
 
     return (
@@ -33,7 +43,7 @@ const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, Entnahme
                     </tr>
                     <tr>
                         <td>Entnahme aus dem Lager</td>
-                        <td><input className="border-2 w-[100%] border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" max={MaximaleEntnahmeAusLager} type="number" onChange={(e) => e.target.value >= 0 ? setEntnahmeAusDemLagerFunction(e.target.value) : setEntnahmeAusDemLagerFunction(0)} value={EntnahmeAusDemLager}></input></td>
+                        <td><input className="border-2 w-[100%] border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="" max={MaximaleEntnahmeAusLager} type="number" onChange={(e) => setEntnahmeAusDemLagerFunction(e.target.value)} value={TempEntnahmeAusDemLager}></input></td>
                     </tr>
                     <tr>
                         <td>Gesamtproduktion</td>

@@ -352,12 +352,15 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 timer: 1500
             })
         } else {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: 'Es ist ein Fehler aufgetreten',
-                showConfirmButton: false,
-                timer: 1500
+            res.json().then(value => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Es ist ein Fehler aufgetreten',
+                    text: value.user_message,
+                    showConfirmButton: false,
+                    timer: 3000
+                })
             })
         }
         const data = await res.json()
@@ -413,10 +416,17 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         }
         fetchData()
     }, [])*/
+    let TempWerbung = 0
+    let TempForschungUndEntwickelung = 0
+    if (Werbung !== ""){
+        TempWerbung = Werbung
+    }
+    if (ForschungUndEntwickelung !== ""){
+        TempForschungUndEntwickelung = ForschungUndEntwickelung
+    }
 
-
-    var SaldoSoll = data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung) + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
-    var SaldoIst = data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(data.current_stock.real_sales)) * 8)) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung)  + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    var SaldoSoll = data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(TempWerbung) +  parseFloat(TempForschungUndEntwickelung) + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    var SaldoIst = data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(data.current_stock.real_sales)) * 8)) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(TempWerbung) +  parseFloat(TempForschungUndEntwickelung)  + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
 
    
     var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
