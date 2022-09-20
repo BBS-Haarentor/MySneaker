@@ -352,12 +352,15 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 timer: 1500
             })
         } else {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: 'Es ist ein Fehler aufgetreten',
-                showConfirmButton: false,
-                timer: 1500
+            res.json().then(value => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Es ist ein Fehler aufgetreten',
+                    text: value.user_message,
+                    showConfirmButton: false,
+                    timer: 3000
+                })
             })
         }
         const data = await res.json()
