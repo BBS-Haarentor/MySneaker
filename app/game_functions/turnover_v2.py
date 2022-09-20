@@ -126,19 +126,22 @@ class Turnover():
         issuer = callframe[1][3]
         _remaining_sales: int = sales
         companies.sort(key= lambda x: random())
+        company_dict = dict(zip(companies, [0 for x in companies]))
         while _remaining_sales > 0:
-            for c in companies:
+            for c,count in company_dict.items():
                 if _remaining_sales > 0:
                     c._for_sale -= 1
                     c.result_stock.real_sales += 1
-                    tx: Transaction = create_transaction(amount= + (price_key(c)), company_id=c.company_id, detail={ "sale_price_sneaker": (price_key(c)),
-                                                                                                                    "sale_type": issuer})
-                    c.add_tx([tx])
-                                        
-                    c.result_stock.income_from_sales += price_key(c)
+                    company_dict[c] += 1      
                     _remaining_sales -= 1
-        for c in companies:
-            c.result_stock.finished_sneaker_count = c._for_sale
+        for c,count in company_dict.items():
+            logging.warning(f"{count=}")
+            tx: Transaction = create_transaction(amount=  price_key(c) * count, company_id=c.company_id, detail={ "sale_price_sneaker": (price_key(c)),
+                                                                                                                    "sale_type": issuer})
+            c.add_tx([tx])
+            c.result_stock.income_from_sales += price_key(c)
+
+            #c.result_stock.finished_sneaker_count = c._for_sale
         return _remaining_sales
     
     

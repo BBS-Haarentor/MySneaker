@@ -159,15 +159,20 @@ class TestTurnover(unittest.TestCase):
     
     def test_sell_sneaker_tender(self) -> None:
         # setup sneakers ready for sale -> tested in test_company_init
+        
+        self.turnover.companies[0].cycle.tender_offer_price = 10.00
+        self.turnover.companies[1].cycle.tender_offer_price = 5.00
+        self.turnover.scenario.tender_offer_count = 100
         for c in self.turnover.companies:
-            c._for_sale = c.cycle.sales_planned
-        self.turnover._remaining_sales = sum(x._for_sale for x in self.turnover.companies)
+            c._for_sale = 100
+
         self.turnover.sell_sneaker_tender()
-        for c in self.turnover.companies:
-            logging.warning(f"{c.ledger}")
-        self.assertEqual(self.turnover._remaining_sales, 0)
+        self.assertEqual(self.turnover.companies[0].result_stock.tender_sales, 0)
+
         
         return None
+    
+    
 
 if __name__ == "__main__":
     unittest.main()
