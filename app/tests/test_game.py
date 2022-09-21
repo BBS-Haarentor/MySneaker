@@ -1,4 +1,5 @@
 import logging
+from types import NoneType
 import unittest
 from app.game_functions.turnover_v2 import Turnover
 from app.models.cycle import Cycle
@@ -150,30 +151,43 @@ class TestTurnover(unittest.TestCase):
         
         return None
     
-    #def test_whole_turnover(self) -> None:
-        turnover_result = self.turnover.turnover()
-        logging.warning(f"{turnover_result=}")
-        #company_dict = dict(zip(self.turnover.companies, [0 for x in self.turnover.companies]))
-        #logging.warning(f"{company_dict.items()=}")
-
-        return None
     
     def test_sell_sneaker_tender(self) -> None:
-
-        self.turnover.companies[0].cycle.tender_offer_price = 10.00
-        self.turnover.companies[1].cycle.tender_offer_price = 5.00
+        lowest_price: float = 2.00
+        self.turnover.companies[0].cycle.tender_offer_price = lowest_price
+        self.turnover.companies[1].cycle.tender_offer_price = 50.00
         self.turnover.scenario.tender_offer_count = 100
-        # setup sneakers ready for sale -> tested in test_company_init
-        self.turnover.companies[0]._for_sale = self.scenario.tender_offer_count
-        self.turnover.sell_sneaker_tender()
         for c in self.turnover.companies:
-            c._for_sale = 100
-
+            c._for_sale = self.scenario.tender_offer_count
+        
         self.turnover.sell_sneaker_tender()
-        self.assertEqual(self.turnover.companies[0].result_stock.tender_sales, 0)
+        
+        self.assertEqual(self.turnover.companies[0].result_stock.tender_sales, 100)
+        self.assertEqual(self.turnover.companies[0].ledger[0].amount, lowest_price * self.turnover.scenario.tender_offer_count)
         return None
     
-    
+    def test_sell_sneaker_tender_sortout(self) -> None:
+        """Tests sell_sneaker_tender() on edge case where the lowest price company 
+        does not have enough sneakers for sale.
+        
+        Expected: Higher price company gets tender sales
+
+        
+        """
+        lowest_price: float = 2.00
+        self.turnover.companies[0].cycle.tender_offer_price = lowest_price
+        self.turnover.companies[1].cycle.tender_offer_price = 5.00
+        
+        self.turnover.scenario.tender_offer_count = 100
+        self.turnover.companies[0]._for_sale = 90
+        self.turnover.companies[1]._for_sale = self.scenario.tender_offer_count
+        
+        self.turnover.sell_sneaker_tender()
+        
+        self.assertIsInstance(self.turnover.companies[0].result_stock.tender_sales, NoneType)
+        self.assertEqual(self.turnover.companies[1].result_stock.tender_sales, self.scenario.tender_offer_count)
+        self.assertEqual(self.turnover.companies[1].result_stock.tender_price, self.turnover.companies[1].cycle.tender_offer_price)
+        return None
 
 if __name__ == "__main__":
     unittest.main()

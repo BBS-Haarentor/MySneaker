@@ -87,7 +87,8 @@ class Company():
             machine: Machine = Machine(owner_id=self.company_id, slot=1, 
                                        type=MachineType.parse_obj(self.machine_types[stock.machine_1_space]),
                                        planned_production=cycle.planned_production_1, 
-                                       planned_workers=cycle.planned_workers_1
+                                       planned_workers=cycle.planned_workers_1,
+                                       research_modifier=stock.research_production_modifier
                                        )
             machines.append(machine)
             
@@ -97,7 +98,8 @@ class Company():
             machine: Machine = Machine(owner_id=self.company_id, slot=2, 
                                        type=MachineType.parse_obj(self.machine_types[stock.machine_2_space]),
                                        planned_production=cycle.planned_production_2, 
-                                       planned_workers=cycle.planned_workers_2
+                                       planned_workers=cycle.planned_workers_2,
+                                       research_modifier=stock.research_production_modifier
                                        )
             machines.append(machine)
             
@@ -107,13 +109,16 @@ class Company():
             machine: Machine = Machine(owner_id=self.company_id, slot=3, 
                                        type=MachineType.parse_obj(self.machine_types[stock.machine_3_space]),
                                        planned_production=cycle.planned_production_3, 
-                                       planned_workers=cycle.planned_workers_3
+                                       planned_workers=cycle.planned_workers_3,
+                                       research_modifier=stock.research_production_modifier
                                        )
             machines.append(machine)
         
         return machines 
 
-
+    def __create_machine(int) -> Machine:
+        
+        return 
 
 
     def pay_interest(self) -> None:
@@ -126,25 +131,27 @@ class Company():
 
     def take_credit(self) -> None:
         _take_credit: float = self.cycle.take_credit
-        self._update_credit(update= + (_take_credit))
+        #self._update_credit(update= + (_take_credit))
         tx: Transaction = create_transaction(amount= + (_take_credit),
                              company_id=self.company_id, 
                              detail={ "_take_credit": _take_credit})
         self.add_tx([tx]) 
+        self.result_stock.credit_taken += _take_credit
         return None
 
 
     def payback_credit(self) -> None:
         _payback: float = self.cycle.payback_credit
-        self._update_credit(update= - (_payback))
-        tx: Transaction = create_transaction(amount= + (_payback),
+        #self._update_credit(update= - _payback)
+        tx: Transaction = create_transaction(amount= - (_payback),
                              company_id=self.company_id, 
                              detail={ "_payback": _payback})
         self.add_tx([tx]) 
+        self.result_stock.credit_taken -= _payback
         return None
 
 
-    def _update_credit(self, update: float) -> None:
+    #def _update_credit(self, update: float) -> None:
         result = self.result_stock.credit_taken + update
         self.result_stock.credit_taken = round(result, 2)
         return None
@@ -152,7 +159,8 @@ class Company():
 
     def _check_account_balance(self) -> None:
         if self.result_stock.account_balance < 0:
-            self._update_credit(update=self.result_stock.account_balance)
+            self.result_stock.credit_taken += abs(self.result_stock.account_balance)
+            #self._update_credit(update=self.result_stock.account_balance)
             self.result_stock.account_balance = 0.0
         return None
     
@@ -186,6 +194,7 @@ class Company():
 
 
     def pay_machine_maintenance(self) -> None:
+        #_machine_maintainance_cost: float = 0.0
         for m in self.machines:
             _machine_maintainance_cost = m.type.maintainance_cost
             tx: Transaction = create_transaction(amount= - (_machine_maintainance_cost), 
@@ -252,9 +261,9 @@ class Company():
 
 
     def do_inventory(self) -> None: 
-        self.result_stock.sneaker_count = self.stock.sneaker_count
-        self.result_stock.paint_count = self.stock.paint_count
-        self.result_stock.finished_sneaker_count = self.stock.finished_sneaker_count
+        #self.result_stock.sneaker_count = self.stock.sneaker_count
+        #self.result_stock.paint_count = self.stock.paint_count
+        #self.result_stock.finished_sneaker_count = self.stock.finished_sneaker_count
         
         _storage_fee_paint: float = round(self.stock.paint_count * self.scenario.storage_fee_paint, 2)
         _storage_fee_sneaker: float = round(self.stock.sneaker_count * self.scenario.storage_fee_sneaker, 2)
@@ -281,6 +290,10 @@ class Company():
         tx: Transaction = create_transaction(amount= - _production_cost, company_id=self.company_id, detail={ "_production_cost": _production_cost,
                                                                                                                "count": _produced_sneakers})
         self.add_tx([tx])
+        return None
+    
+    def tidy_shelves(self) -> None:
+        self.result_stock.finished_sneaker_count += self._for_sale
         return None
     
     def add_tx(self, txs: list[Transaction]) -> None:
