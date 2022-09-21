@@ -4,6 +4,7 @@ from unittest import result
 from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
+from app.api.v1.endpoints import scenario
 from app.exception.general import NotFoundError, ServiceError
 from app.game_functions.turnover_v2 import Turnover
 from app.models.cycle import Cycle
@@ -15,11 +16,10 @@ from app.models.user import User
 from app.repositories.cycle_repository import CycleNotFoundError, CycleRepository
 from app.repositories.game_repository import GameRepository
 from app.repositories.scenario_repository import ScenarioRepository
-from app.repositories.stock_repository import StockRepository
+from app.repositories.stock_repository import StockNotFoundError, StockRepository
 from app.repositories.user_repository import UserRepository
-from app.schemas.game import GameCreate, GamePatch, GamePost, PlayerInfo
-from app.schemas.scenario import ScenarioPost
-from app.schemas.stock import StockCreate
+from app.schemas.game import GamePatch, GamePost, PlayerInfo, Summary
+
 
 
 class GameService():
@@ -187,6 +187,22 @@ class GameService():
         updated_game: Game = await self.game_repo.update(update_data=game)
         return updated_game.current_cycle_index
     
+    async def summarize(self, game_id: int, index: int, user_id: int) -> Summary:
+        game: Game = await self.game_repo.read(id=game_id)
+        try:
+            cycle: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(user_id=user_id, index=index)
+        except CycleNotFoundError:
+            cycle = None
+            pass
+        try: 
+            stock: Stock = await self.stock_repo.get_stock_by_user_and_index(user_id=user_id, index=index)
+        except StockNotFoundError:
+            stock = None
+            pass
+        scenario: Scenario = await self.scenario_repo.read_by_char(game.scenario_order[index])
+        return Summary(cycle=cycle, stock=stock, scenario=scenario)
+    
+
     
 class GameServiceError(ServiceError):
     
