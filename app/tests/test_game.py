@@ -257,7 +257,21 @@ class TestTurnover(unittest.TestCase):
     
     
     def test_sell_sneaker_all(self) -> None:
-        raise NotImplementedError
+        for c in self.turnover.companies:
+            c._for_sale = 100
+        self.turnover.companies[0].cycle.ad_invest = 100.00
+        self.turnover.companies[1].cycle.ad_invest = 70.00
+        
+        self.turnover._remaining_sales_ad = 40
+        self.turnover._remaining_sales = 160
+        self.turnover.sell_sneaker_ad()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(sum(c.result_stock.real_sales for c in self.turnover.companies), 200)
+        self.assertEqual(self.turnover._remaining_sales_ad, 0)
+        self.assertEqual(self.turnover._remaining_sales, 0)
+
+        return None
     
     
     
