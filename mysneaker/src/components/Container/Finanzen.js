@@ -42,8 +42,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Darlehensstand (Ende Periode)</td>
-                                <td>{formatter.format(stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                                <td>{formatter.format(stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
+                                <td>{formatter.format(stock.credit_taken + parseInt(AufnahmeDarlehen) - parseInt(RueckzahlungDarlehen))}</td>
+                                <td>{formatter.format(stock.credit_taken + parseInt(AufnahmeDarlehen) - parseInt(RueckzahlungDarlehen))}</td>
                             </tr>
                             <tr>
                                 <td>Einkauf Sneaker</td>
