@@ -284,7 +284,9 @@ class Company():
             _total_produced_sneakers += m.produce_sneaker()
             _total_production_cost += m.calculate_prod_cost()
                 
-        self._for_sale = _total_produced_sneakers + self.cycle.include_from_stock
+        #self._for_sale = _total_produced_sneakers + self.cycle.include_from_stock
+        self._for_sale = self.cycle.sales_planned
+
         self.result_stock.finished_sneaker_count -= self.cycle.include_from_stock
         
         self.result_stock.paint_count -= (2 * _total_produced_sneakers)

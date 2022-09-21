@@ -90,6 +90,7 @@ class TestCompany(unittest.TestCase):
     
     def test_produce_sneaker_all_machines(self) -> None:
         # load custom cycle
+        # load custom stock
         raise NotImplementedError
     
     def test_pay_interest(self) -> None:

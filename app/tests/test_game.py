@@ -189,24 +189,71 @@ class TestTurnover(unittest.TestCase):
         for c in self.turnover.companies:
             logging.warning(f"{c.ledger}")
         self.assertEqual(self.turnover._remaining_sales, 100)
+        for c in self.turnover.companies:
+            self.assertEqual(c.result_stock.real_sales, 0)
         return None
     
     
     def test_sell_sneaker_ad_simple(self) -> None:
+        for c in self.turnover.companies:
+            c._for_sale = 30
+        self.turnover.companies[0].cycle.ad_invest = 100.00
+        self.turnover.companies[1].cycle.ad_invest = 70.00
+        self.turnover._remaining_sales_ad = 40
+        self.turnover.sell_sneaker_ad()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(sum(c.result_stock.real_sales for c in self.turnover.companies), 40)
+        self.assertEqual(self.turnover._remaining_sales_ad, 0)
         
-        raise NotImplementedError
+        
+        return None
     
-    def test_sell_sneaker_ad_oversupply(self) -> None:
         
-        raise NotImplementedError
+    def test_sell_sneaker_ad_oversupply(self) -> None:
+        for c in self.turnover.companies:
+            c._for_sale = 100
+        self.turnover.companies[0].cycle.ad_invest = 100.00
+        self.turnover.companies[1].cycle.ad_invest = 70.00
+        self.turnover._remaining_sales_ad = 40
+        self.turnover.sell_sneaker_ad()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(sum(c.result_stock.real_sales for c in self.turnover.companies), 40)
+        self.assertEqual(self.turnover._remaining_sales_ad, 0)
+        
+        
+        return None
 
     def test_sell_sneaker_ad_undersupply(self) -> None:
+        for c in self.turnover.companies:
+            c._for_sale = 10
+        self.turnover.companies[0].cycle.ad_invest = 100.00
+        self.turnover.companies[1].cycle.ad_invest = 70.00
+        self.turnover._remaining_sales_ad = 40
+        self.turnover.sell_sneaker_ad()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(sum(c.result_stock.real_sales for c in self.turnover.companies), 20)
+        self.assertEqual(self.turnover._remaining_sales_ad, 20)
         
-        raise NotImplementedError
+        
+        return None
     
     def test_sell_sneaker_ad_no_offers(self) -> None:
+        for c in self.turnover.companies:
+            c._for_sale = 0
+        self.turnover.companies[0].cycle.ad_invest = 100.00
+        self.turnover.companies[1].cycle.ad_invest = 70.00
+        self.turnover._remaining_sales_ad = 40
+        self.turnover.sell_sneaker_ad()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(sum(c.result_stock.real_sales for c in self.turnover.companies), 0)
+        self.assertEqual(self.turnover._remaining_sales_ad, 40)
         
-        raise NotImplementedError
+        
+        return None
     
     
     def test_sell_sneaker_all(self) -> None:
