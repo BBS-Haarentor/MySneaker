@@ -148,7 +148,11 @@ class GameService():
         _current_index: int = game.current_cycle_index
         
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
-        cycles: list = [(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        try:
+            cycles: list = [(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        except CycleNotFoundError:
+            raise GameServiceError(detail=f"attempted turnoverv2 execution while not all users have given in their cycles",
+                                   user_message="Es haben nicht alle Unternehmen abgegeben. Umschlagsrechnung nicht möglich")
         stocks: list = [(await self.stock_repo.get_stock_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
         if len(stocks) != len(cycles):
             raise GameServiceError(detail=f"attempted turnoverv2 execution while not all users have given in their cycles",
