@@ -42,8 +42,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Darlehensstand (Ende Periode)</td>
-                                <td>{formatter.format(stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
-                                <td>{formatter.format(stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)}</td>
+                                <td>{formatter.format(stock.credit_taken + parseInt(AufnahmeDarlehen) - parseInt(RueckzahlungDarlehen))}</td>
+                                <td>{formatter.format(stock.credit_taken + parseInt(AufnahmeDarlehen) - parseInt(RueckzahlungDarlehen))}</td>
                             </tr>
                             <tr>
                                 <td>Einkauf Sneaker</td>
@@ -107,8 +107,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Zinsen (Darlehen)</td>
-                                <td>{formatter.format((stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * scenario.factor_interest_rate)}</td>
-                                <td>{formatter.format((stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * scenario.factor_interest_rate)}</td>
+                                <td>{formatter.format((stock.credit_taken + parseInt(AufnahmeDarlehen) - parseInt(RueckzahlungDarlehen)) * scenario.factor_interest_rate)}</td>
+                                <td>{formatter.format((stock.credit_taken + parseInt(AufnahmeDarlehen) - parseInt(RueckzahlungDarlehen)) * scenario.factor_interest_rate)}</td>
                             </tr>
                             <tr>
                                 <td>Rückzahlung Darlehen</td>
@@ -117,13 +117,13 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Umsatzerlöse</td>
-                                <td>{formatter.format(isNaN(UmsatzSoll) ? 0 : UmsatzSoll)}</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
+                                <td>{formatter.format(isNaN(UmsatzSoll) ? 0 : parseInt(UmsatzSoll))}</td>
+                                <td>{formatter.format(parseInt(UmsatzIst))}</td>
                             </tr>
                             <tr>
                                 <td>Saldo</td>
-                                <td>{formatter.format(isNaN(SaldoSoll) ? 0 : SaldoSoll)}</td>
-                                <td>{formatter.format(SaldoIst)}</td>
+                                <td>{formatter.format(isNaN(SaldoSoll) ? 0 : parseInt(SaldoSoll))}</td>
+                                <td>{formatter.format(parseInt(SaldoIst))}</td>
                             </tr>
                             <tr>
                                 <td>Höhe Kontokorrentkredit</td>
@@ -137,8 +137,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, setAufnahmeDarlehen
                             </tr>
                             <tr>
                                 <td>Kontostand</td>
-                                <td>{formatter.format(isNaN(SaldoSoll) ? (HöheKontokorrentkreditSoll * 0.12) : SaldoSoll + (HöheKontokorrentkreditSoll * 0.12))}</td>
-                                <td>{formatter.format(SaldoIst + (HöheKontokorrentkreditIst * 0.12)) }</td>
+                                <td>{formatter.format(isNaN(SaldoSoll) ? (parseInt(HöheKontokorrentkreditSoll) * 0.12) : parseInt(SaldoSoll) + (parseInt(HöheKontokorrentkreditSoll) * 0.12))}</td>
+                                <td>{formatter.format(parseInt(SaldoIst) + (parseInt(HöheKontokorrentkreditIst) * 0.12)) }</td>
                             </tr>
 
                         </tbody>
