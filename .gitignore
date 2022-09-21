@@ -13,7 +13,7 @@ temp.md
 /node_modules
 /.pnp
 .pnp.js
-
+t.txt
 # testing
 /coverage
 

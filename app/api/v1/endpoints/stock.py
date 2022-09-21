@@ -25,6 +25,6 @@ async def create_stock_entry(stock_data: StockCreate, current_user: User = Depen
 
 
 @router.get("/get_by_id/{id}", status_code=200)
-async def get_stock_by_id(id: int, session: AsyncSession = Depends(get_async_session)):
+async def get_stock_by_id(id: int, current_user: User = Depends(get_current_active_user), session: AsyncSession = Depends(get_async_session)):
     repo = StockRepository(session=session)
     return await repo.read(id=id)

@@ -4,7 +4,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.repositories.crud_repository import CRUDRepository, NotFoundError
 from app.models.user import User
 from app.repositories.game_repository import GameNotFoundError
-from app.models.groups import TeacherGroup
+from app.models.groups import BaseGroup, TeacherGroup
 
 class UserRepository(CRUDRepository):
 
@@ -24,7 +24,7 @@ class UserRepository(CRUDRepository):
     async def get_users_by_game(self, game_id: int) -> list[User]:
         result = await self.session.exec(select(User).where(User.game_id == game_id))
         users: list[User] = result.all()
-        if len(users) <= 0:
+        if len(users) == 0:
             raise GameNotFoundError(entity_id=game_id, detail="")
         return users
 
@@ -37,7 +37,7 @@ class UserRepository(CRUDRepository):
     
     async def read_players_by_game_id(self, game_id: int):
         result = await self.session.exec(select(User).where(User.game_id == game_id))
-        return 
+        return result.all()
     
     
 class UserNotFoundError(NotFoundError):

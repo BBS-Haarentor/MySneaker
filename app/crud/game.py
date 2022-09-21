@@ -146,7 +146,7 @@ async def turnover_next_cycle(game_id: int, session: AsyncSession) -> int:
     
     # zip the two lists for sorting by feature only given in one list
     zipped = zip(filtered_id_sorted_cycles, id_sorted_stocks)
-    sorted_zipped = sorted(zipped, key= lambda x: x[0].sales_bid, reverse=True)
+    sorted_zipped = sorted(zipped, key= lambda x: x[0].sales_bid, reverse=False)
     
     tuples = zip(*sorted_zipped)
     

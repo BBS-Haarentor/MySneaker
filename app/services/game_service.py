@@ -1,8 +1,10 @@
 import logging
 from types import NoneType
+from unittest import result
 from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
+from app.api.v1.endpoints import scenario
 from app.exception.general import NotFoundError, ServiceError
 from app.game_functions.turnover_v2 import Turnover
 from app.models.cycle import Cycle
@@ -14,11 +16,10 @@ from app.models.user import User
 from app.repositories.cycle_repository import CycleNotFoundError, CycleRepository
 from app.repositories.game_repository import GameRepository
 from app.repositories.scenario_repository import ScenarioRepository
-from app.repositories.stock_repository import StockRepository
+from app.repositories.stock_repository import StockNotFoundError, StockRepository
 from app.repositories.user_repository import UserRepository
-from app.schemas.game import GameCreate, GamePatch, GamePost, PlayerInfo
-from app.schemas.scenario import ScenarioPost
-from app.schemas.stock import StockCreate
+from app.schemas.game import GamePatch, GamePost, PlayerInfo, Summary
+
 
 
 class GameService():
@@ -142,18 +143,31 @@ class GameService():
         
         
         
-    async def turnover(self, game_id: int):# -> int:
+    async def turnover(self, game_id: int) -> int:
         game: Game = await self.game_repo.read(id=game_id)
         _current_index: int = game.current_cycle_index
         
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
-        cycles: list = [(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        try:
+            cycles: list = [(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        except CycleNotFoundError:
+            raise GameServiceError(detail=f"attempted turnoverv2 execution while not all users have given in their cycles",
+                                   user_message="Es haben nicht alle Unternehmen abgegeben. Umschlagsrechnung nicht möglich")
         stocks: list = [(await self.stock_repo.get_stock_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
-        scenario: Scenario = self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
+        if len(stocks) != len(cycles):
+            raise GameServiceError(detail=f"attempted turnoverv2 execution while not all users have given in their cycles",
+                                   user_message="Es haben nicht alle Unternehmen abgegeben. Umschlagsrechnung nicht möglich")
+        scenario: Scenario = await self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
         
         turnover: Turnover = Turnover(input_cycles=cycles, input_stocks=stocks, scenario=scenario)
-        new_stocks: list = turnover.turnover()
-        return new_stocks
+        result_stocks: list[Stock] = turnover.turnover()
+        # add new stocks
+        for s in result_stocks:
+            i: int = await self.stock_repo.create(create_data=s)
+        # update game index
+        game.current_cycle_index += 1
+        game: Game = await self.game_repo.update(update_data=game)
+        return game.current_cycle_index
     
     
     async def set_back_cycle_index(self, game_id: int, new_index: int) -> int:
@@ -173,6 +187,22 @@ class GameService():
         updated_game: Game = await self.game_repo.update(update_data=game)
         return updated_game.current_cycle_index
     
+    async def summarize(self, game_id: int, index: int, user_id: int) -> Summary:
+        game: Game = await self.game_repo.read(id=game_id)
+        try:
+            cycle: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(user_id=user_id, index=index)
+        except CycleNotFoundError:
+            cycle = None
+            pass
+        try: 
+            stock: Stock = await self.stock_repo.get_stock_by_user_and_index(user_id=user_id, index=index)
+        except StockNotFoundError:
+            stock = None
+            pass
+        scenario: Scenario = await self.scenario_repo.read_by_char(game.scenario_order[index])
+        return Summary(cycle=cycle, stock=stock, scenario=scenario)
+    
+
     
 class GameServiceError(ServiceError):
     

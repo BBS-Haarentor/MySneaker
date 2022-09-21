@@ -21,9 +21,10 @@ from app.models.scenario import Scenario
 from app.models.stock import Stock
 from app.models.user import User
 from app.models.game import Game
-from app.schemas.game import GameCreate, GamePatch, GamePost, GameResponse, PlayerInfo, PlayerInfoStudent
+from app.schemas.game import GameCreate, GamePatch, GamePost, GameResponse, PlayerInfo, PlayerInfoStudent, Summary
 from app.schemas.user import UserResponse, UserResponseWithGradeName
 from app.services import user_service
+from app.services import game_service
 from app.services.cycle_service import CycleService
 from app.services.game_service import GameService
 from app.services.user_service import UserService
@@ -88,6 +89,10 @@ async def get_my_game(current_user: User = Depends(get_current_active_user),
 @base_auth_required
 async def get_my_summary(current_user: User = Depends(get_current_active_user),
                          session: AsyncSession = Depends(get_async_session)):
+    game_service: GameService = GameService(session=session)
+    game: Game = await game_service.game_repo.read(id=current_user.game_id)
+    return await game_service.summarize(game_id=current_user.game_id, index=game.current_cycle_index, user_id=current_user.id)
+    
     current_cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
     game: Game = await get_game_by_id(current_user.game_id, session=session)
     current_stock: Stock = await get_stock_entry_by_user_id_and_cycle_id(user_id=current_user.id, index=game.current_cycle_index, session=session)
@@ -95,10 +100,15 @@ async def get_my_summary(current_user: User = Depends(get_current_active_user),
     return {"current_stock": current_stock, "scenario": current_scenario, "current_cycle": current_cycle}
 
 
-@router.get("/student/my_last_summary", status_code=status.HTTP_200_OK)
+#@router.get("/student/my_last_summary", status_code=status.HTTP_200_OK)
 @base_auth_required
 async def get_my_summary(current_user: User = Depends(get_current_active_user),
                          session: AsyncSession = Depends(get_async_session)):
+    game_service: GameService = GameService(session=session)
+    game: Game = await game_service.game_repo.read(id=current_user.game_id)
+    return await game_service.summarize(game_id=current_user.game_id, index=game.current_cycle_index, user_id=current_user.id)
+    
+    
     game: Game = await get_game_by_id(current_user.game_id, session=session)
     if game.current_cycle_index == 0:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
@@ -115,6 +125,12 @@ async def get_my_summary(current_user: User = Depends(get_current_active_user),
 async def get_my_summary_by_index(index: int,
                                   current_user: User = Depends(get_current_active_user),
                                   session: AsyncSession = Depends(get_async_session)):
+    
+    game_service: GameService = GameService(session=session)
+    return await game_service.summarize(game_id=current_user.game_id, index=index, user_id=current_user.id)
+    
+
+
     cycle: Cycle = await get_current_cycle_by_user_id(user_id=current_user.id, session=session)
     game: Game = await get_game_by_id(current_user.game_id, session=session)
     stock: Stock = await get_stock_entry_by_user_id_and_cycle_id(user_id=current_user.id, index=index, session=session)
@@ -125,10 +141,15 @@ async def get_my_summary_by_index(index: int,
 
 @router.get("/teacher/summary/user/{user_id}/index/{index}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
-async def get_my_summary(user_id: int,
+async def get_summary_by_user_and_index(user_id: int,
                          index: int,
                          current_user: User = Depends(get_current_active_user),
                          session: AsyncSession = Depends(get_async_session)):
+    user_service: UserService = UserService(session=session)
+    game_service: GameService = GameService(session=session)
+    user: User = await user_service.user_repo.read(id=user_id)
+    return await game_service.summarize(game_id=user.game_id, index=index, user_id=user_id)
+
     user: User = await get_user_by_id(id=user_id, session=session)
     cycle: Cycle = await get_cycle_by_user_id_and_index(user_id=user.id, index=index, session=session)
     game: Game = await get_game_by_id(id=user.game_id, session=session)
@@ -155,7 +176,7 @@ async def get_all_games_by_user_id(user_id: int,
     return await game_service.get_games_by_owner_id(owner_id=user_id)
 
 
-@router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK)
+#@router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def turnover(game_id: int,
                    current_user: User = Depends(get_current_active_user),
@@ -354,7 +375,7 @@ async def init_database(api_key: APIKey = Depends(get_api_key),
     return "NOPE - coming soon :)"
 
 
-@router.put("/turnover_test/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/turnover/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 async def turnover_test(game_id: int, 
                         session: AsyncSession = Depends(get_async_session)):
     game_service: GameService = GameService(session=session)

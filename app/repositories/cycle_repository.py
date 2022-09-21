@@ -27,7 +27,7 @@ class CycleRepository(CRUDRepository):
         return ids
     
     async def delete_cycles_after_including_index(self, game_id: int , new_index: int) -> None:
-        result = await self.session.exec(select(Cycle).where(Cycle.game_id == game_id).where(Cycle.current_cycle_index <= new_index))
+        result = await self.session.exec(select(Cycle).where(Cycle.game_id == game_id).where(Cycle.current_cycle_index >= new_index))
         cycles: list[Cycle] = result.all()
         if len(cycles) == 0:
             raise CycleNotFoundError(entity_id=None, detail="Called from CycleRepository")

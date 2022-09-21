@@ -23,12 +23,12 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Verfügbare Kapazität (MA)</td>
-                        <td>{Mitarbeiter - ZugeteilteMitarbeiter} MA</td>
+                        <td>{Mitarbeiter - (parseInt(ZugeteilteMitarbeiter)  + parseInt(ZugeteilteMitarbeiter2)  + parseInt(ZugeteilteMitarbeiter3) )} MA</td>
 
                     </tr>
                     <tr>
                         <td>benötigte MA </td>
-                        <td>{ZugeteilteMitarbeiter} MA</td>
+                        <td>{(parseInt(ZugeteilteMitarbeiter)  + parseInt(ZugeteilteMitarbeiter2)  + parseInt(ZugeteilteMitarbeiter3) )} MA</td>
 
                     </tr>
                     <tr>

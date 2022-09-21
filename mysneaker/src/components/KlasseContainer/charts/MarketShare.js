@@ -1,19 +1,37 @@
 import {Pie} from 'react-chartjs-2'
 import {ArcElement} from "chart.js";
 import Chart1 from "chart.js/auto";
+import react, {useEffect, useState} from 'react'
 
 Chart1.register(ArcElement);
 
 
 const MarketShare = ({companys}) => {
 
-    const companyNames = []
-    const companyData = []
+    const [companyNames, setCompanyNames] = useState([""])
+    const [companyData, setCompanyData] = useState([0])
+    const [sneakerVerkauft, setSneakerVerkauft] = useState()
 
-    companys.map(value => {
-        companyNames.push(value.name)
-        companyData.push(value.market_share)
-    })
+    useEffect(() => {
+        let sneakerVerkauft = 0;
+        companys.map(value => {
+            sneakerVerkauft += value.real_sales
+        })
+
+        let companyName = []
+        let companyDatas = []
+
+        setCompanyNames([])
+        setCompanyData([])
+
+        companys.map(value => {
+            companyName.push(value.name)
+            companyDatas.push((value.real_sales / sneakerVerkauft) * 100)
+        })
+
+        setCompanyData(companyDatas)
+        setCompanyNames(companyName)
+    }, [companys])
 
     return (
         <>
