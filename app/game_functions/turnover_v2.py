@@ -108,7 +108,8 @@ class Turnover():
     def sell_sneaker_tender(self) -> None:
         key = lambda x: x.cycle.tender_offer_price 
         batched_companies = self.__sort_and_group(companies=self.companies , key=key)
-        sorted_companies = [x for x in batched_companies if x[0]._for_sale >= self.scenario.tender_offer_count]
+        sorted_companies2 = [x for x in batched_companies if x[0]._for_sale >= self.scenario.tender_offer_count]
+        sorted_companies = [x for x in sorted_companies2 if x[0].cycle.tender_offer_price > 0.0]
         #sorted_companies = sorted([x for x in batched_companies if x[0].cycle.tender_offer_price], key=lambda x: (x[0]._for_sale >= self.scenario.tender_offer_count))
         #logging.warning(f"{sorted_companies=}")
         if len(sorted_companies) <= 0:

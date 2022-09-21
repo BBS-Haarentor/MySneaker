@@ -264,6 +264,7 @@ class TestTurnover(unittest.TestCase):
         
         self.turnover._remaining_sales_ad = 40
         self.turnover._remaining_sales = 160
+        self.turnover.sell_sneaker()
         self.turnover.sell_sneaker_ad()
         for c in self.turnover.companies:
             logging.warning(f"{c.ledger}")
@@ -312,13 +313,37 @@ class TestTurnover(unittest.TestCase):
         self.assertEqual(self.turnover.companies[1].result_stock.tender_price, self.turnover.companies[1].cycle.tender_offer_price)
         return None
     
+    
     def test_sell_sneaker_tender_no_offers(self) -> None:
+        self.turnover.companies[0].cycle.tender_offer_price = 0.0
+        self.turnover.companies[1].cycle.tender_offer_price = 0.0
         
-        raise NotImplementedError
+        self.turnover.scenario.tender_offer_count = 100
+        self.turnover.companies[0]._for_sale = 150
+        self.turnover.companies[1]._for_sale = 150
+        
+        self.turnover.sell_sneaker_tender()
+        
+        self.assertIsInstance(self.turnover.companies[0].result_stock.tender_sales, NoneType)
+        self.assertIsInstance(self.turnover.companies[1].result_stock.tender_sales, NoneType)
+        
+        return None
+    
     
     def test_sell_sneaker_tender_no_fitting_offers(self) -> None:
+        self.turnover.companies[0].cycle.tender_offer_price = 20.0
+        self.turnover.companies[1].cycle.tender_offer_price = 10.0
         
-        raise NotImplementedError
+        self.turnover.scenario.tender_offer_count = 100
+        self.turnover.companies[0]._for_sale = 90
+        self.turnover.companies[1]._for_sale = 50
+        
+        self.turnover.sell_sneaker_tender()
+        
+        self.assertIsInstance(self.turnover.companies[0].result_stock.tender_sales, NoneType)
+        self.assertIsInstance(self.turnover.companies[1].result_stock.tender_sales, NoneType)
+        
+        return None
     
 
 if __name__ == "__main__":

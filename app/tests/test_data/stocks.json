@@ -25,6 +25,31 @@
               "sneaker_count": 0,
               "tender_price": 0
             
-        }
+        },
+        "valid_produce_max_0": {
+            "paint_count": 0,
+            "income_from_sales": 0,
+            "company_id": 42,
+            "finished_sneaker_count": 0,
+            "research_production_modifier": 0.7,
+            "game_id": 5,
+            "employees_count": 32,
+            "machine_1_space": 1,
+            "id": 5,
+            "research_budget": 12500.0,
+            "machine_2_space": 2,
+            "creation_date": 1663151251.089532,
+            "account_balance": 500000,
+            "machine_3_space": 3,
+            "last_edit": 1663151251.089544,
+            "credit_taken": 0,
+            "insolvent": false,
+            "current_cycle_index": 5,
+            "real_sales": 0,
+            "tender_sales": 0,
+            "sneaker_count": 0,
+            "tender_price": 0
+          
+      }
     }
 }
