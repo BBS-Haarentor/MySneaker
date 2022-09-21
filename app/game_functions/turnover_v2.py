@@ -2,14 +2,12 @@ import inspect
 from itertools import groupby
 import logging
 from random import choice, random
-from app.exception.general import GameError
 from app.game_functions.company import Company
 from app.game_functions.utils import Transaction, create_transaction
 from app.models.cycle import Cycle
 from app.models.stock import Stock
 from app.models.scenario import Scenario
 from app.schemas.stock import StockCreate, StockPersistent
-from app.services.game_service import GameServiceError
 
 
 class Turnover():
@@ -83,8 +81,7 @@ class Turnover():
             c.update_employee_count()
             c.update_research()
             c.take_credit()
-            c.payback_credit()
-            c.update_dead()
+            c.payback_credit()    
             
         logging.warning(f"\nGroup calc start\n\n")
         # do group stuff
@@ -96,6 +93,7 @@ class Turnover():
         for c in self.companies:
             c.process_transactions()
             c.tidy_shelves()
+            c.update_dead()
         
         self.__process_dead()
         
@@ -134,6 +132,8 @@ class Turnover():
     
     
     def __general_sales_in_batch(self, companies: list[Company], sales: int, price_key):
+        if sales <= 0:
+            return sales
         curframe = inspect.currentframe()
         callframe = inspect.getouterframes(curframe)
         issuer = callframe[1][3]

@@ -12,10 +12,7 @@ from app.models.stock import Stock
 
 class TestCompany(unittest.TestCase):
     
-    company: Company
-
-    
-    
+    company: Company    
     
     def setUp(self) -> None:
         # load default data
@@ -30,8 +27,6 @@ class TestCompany(unittest.TestCase):
             scenario = Scenario.parse_obj(scenarios["data"][0])
 
         self.company = Company(company_id=cycle.company_id, cycle=cycle, stock=stock, scenario=scenario)
-        #logging.warning(f"\n{self.company=}")
-
         return None
     
     
@@ -40,6 +35,7 @@ class TestCompany(unittest.TestCase):
         self.company.stock.employees_count = employee_test_count
         self.company.pay_employees()
         salary_total: float = round(self.company.scenario.employee_salary * employee_test_count, 2)
+        self.assertIsInstance(self.company.ledger[0], Invoice)
         self.assertEqual(self.company.ledger[0].amount, salary_total)
         return None
     
@@ -58,6 +54,8 @@ class TestCompany(unittest.TestCase):
         
         self.assertEqual(self.company._for_sale, 200)
         self.assertEqual(self.company.result_stock.finished_sneaker_count, 20)
+        
+        self.assertIsInstance(self.company.ledger[0], Invoice)
         self.assertEqual(self.company.ledger[0].amount, round(self.company.scenario.production_cost_per_sneaker1 * 100, 2))
         
         self.assertEqual(self.company.result_stock.paint_count, 100)
@@ -81,6 +79,8 @@ class TestCompany(unittest.TestCase):
         
         self.assertEqual(self.company._for_sale, 200)
         self.assertEqual(self.company.result_stock.finished_sneaker_count, 20)
+        
+        self.assertIsInstance(self.company.ledger[0], Invoice)
         self.assertEqual(self.company.ledger[0].amount, round(self.company.scenario.production_cost_per_sneaker1 * 100 * 0.7, 2))
         
         self.assertEqual(self.company.result_stock.paint_count, 100)
@@ -89,10 +89,8 @@ class TestCompany(unittest.TestCase):
         return None
     
     def test_produce_sneaker_all_machines(self) -> None:
-        
-        
-        
-        return None
+        # load custom cycle
+        raise NotImplementedError
     
     def test_pay_interest(self) -> None:
         self.company.stock.credit_taken = 5000
@@ -248,5 +246,14 @@ class TestCompany(unittest.TestCase):
         
         self.assertEqual(self.company.result_stock.account_balance, 48_500.00)
         
+        return None
+    
+    
+    def test_tidy_shelves(self) -> None:
+        self.company._for_sale = 100
+        self.company.result_stock.finished_sneaker_count = 5
+        self.company.tidy_shelves()
+        
+        self.assertEqual(self.company.result_stock.finished_sneaker_count, 105)
         return None
     
