@@ -27,10 +27,10 @@ class Machine(SQLModel):
     research_modifier: float
     
     def produce_sneaker(self) -> int:
-        _produced_sneakers = self.planned_workers * self.type.employee_production_capacity 
-        if _produced_sneakers > self.type.production_capacity:
-            _produced_sneakers = self.type.production_capacity
-        return _produced_sneakers
+        #_produced_sneakers = self.planned_workers * self.type.employee_production_capacity 
+        #if _produced_sneakers > self.type.production_capacity:
+        #    _produced_sneakers = self.type.production_capacity
+        return self.planned_production
     
     def calculate_prod_cost(self) -> float:
         _production_cost = round( self.planned_production * self.type.production_cost_per_sneaker * self.research_modifier, 2)

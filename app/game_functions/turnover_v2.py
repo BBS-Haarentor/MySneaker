@@ -93,8 +93,11 @@ class Turnover():
         
         for c in self.companies:
             c.process_transactions()
+            c.tidy_shelves()
+        
         self.__process_dead()
-        return [ [x.result_stock, x.ledger] for x in self.companies ]
+        
+        return [ x.result_stock for x in self.companies ]
 
 
     def __sort_and_group(self, companies: list[Company], key) -> list[list[Company]]:

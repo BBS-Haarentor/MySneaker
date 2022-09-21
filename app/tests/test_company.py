@@ -45,26 +45,54 @@ class TestCompany(unittest.TestCase):
     
        
     def test_produce_sneakers(self) -> None:
-        self.company.stock.finished_sneaker_count = 120
+        self.company.result_stock.finished_sneaker_count = 120
+        self.company.result_stock.paint_count = 300
+        self.company.result_stock.sneaker_count = 150
+        
         self.company.cycle.include_from_stock = 100
         logging.warning(f"{len(self.company.machines)}")
         self.company.machines[0].planned_production = 100
         self.company.machines[0].planned_workers = 8
+                
+        self.company.produce_sneakers()
         
+        self.assertEqual(self.company._for_sale, 200)
+        self.assertEqual(self.company.result_stock.finished_sneaker_count, 20)
+        self.assertEqual(self.company.ledger[0].amount, round(self.company.scenario.production_cost_per_sneaker1 * 100, 2))
+        
+        self.assertEqual(self.company.result_stock.paint_count, 100)
+        self.assertEqual(self.company.result_stock.sneaker_count, 50)
+        
+        
+        return None
+    
+    def test_produce_sneaker_high_research(self) -> None:
+        self.company.result_stock.finished_sneaker_count = 120
+        self.company.result_stock.paint_count = 300
+        self.company.result_stock.sneaker_count = 150
+        
+        self.company.cycle.include_from_stock = 100
+        logging.warning(f"{len(self.company.machines)}")
+        self.company.machines[0].planned_production = 100
+        self.company.machines[0].planned_workers = 8
+        self.company.machines[0].research_modifier = 0.7
         
         self.company.produce_sneakers()
         
         self.assertEqual(self.company._for_sale, 200)
         self.assertEqual(self.company.result_stock.finished_sneaker_count, 20)
+        self.assertEqual(self.company.ledger[0].amount, round(self.company.scenario.production_cost_per_sneaker1 * 100 * 0.7, 2))
+        
+        self.assertEqual(self.company.result_stock.paint_count, 100)
+        self.assertEqual(self.company.result_stock.sneaker_count, 50)
         
         return None
     
-    def test_produce_sneaker_high_research(self) -> None:
+    def test_produce_sneaker_all_machines(self) -> None:
+        
         
         
         return None
-    
-    
     
     def test_pay_interest(self) -> None:
         self.company.stock.credit_taken = 5000

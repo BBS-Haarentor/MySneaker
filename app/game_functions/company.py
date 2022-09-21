@@ -20,7 +20,6 @@ class Company():
     
     scenario: Scenario
     _for_sale: int
-    _new_shoes_shelf: int
     
     _store_sales: int = 0
     _ad_sales: int = 0
@@ -275,20 +274,25 @@ class Company():
         return None
 
     def produce_sneakers(self) -> None:
-        _produced_sneakers: int = 0
-        _production_cost: float = 0.0
+        _total_produced_sneakers: int = 0
+        _total_production_cost: float = 0.0
+        #for m in self.machines:
+        #    _produced_sneakers += m.planned_workers * m.type.employee_production_capacity
+        #    _production_cost += round( m.planned_production * m.type.production_cost_per_sneaker * self.stock.research_production_modifier, 2)
+        
         for m in self.machines:
-            _produced_sneakers += m.planned_workers * m.type.employee_production_capacity
-            _production_cost += round( m.planned_production * m.type.production_cost_per_sneaker * self.stock.research_production_modifier, 2)
-            pass
-        self._new_shoes_shelf = _produced_sneakers
-        self._for_sale = self._new_shoes_shelf + self.cycle.include_from_stock
+            _total_produced_sneakers += m.produce_sneaker()
+            _total_production_cost += m.calculate_prod_cost()
+                
+        self._for_sale = _total_produced_sneakers + self.cycle.include_from_stock
         self.result_stock.finished_sneaker_count -= self.cycle.include_from_stock
         
-        self.result_stock.paint_count -= (2 * _produced_sneakers)
-        self.result_stock.sneaker_count -= _produced_sneakers
-        tx: Transaction = create_transaction(amount= - _production_cost, company_id=self.company_id, detail={ "_production_cost": _production_cost,
-                                                                                                               "count": _produced_sneakers})
+        self.result_stock.paint_count -= (2 * _total_produced_sneakers)
+        self.result_stock.sneaker_count -= _total_produced_sneakers
+        tx: Transaction = create_transaction(amount= - _total_production_cost, 
+                                             company_id=self.company_id, 
+                                             detail={ "_production_cost": _total_production_cost, 
+                                                     "count": _total_produced_sneakers})
         self.add_tx([tx])
         return None
     

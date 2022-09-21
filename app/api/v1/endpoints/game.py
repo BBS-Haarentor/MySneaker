@@ -354,7 +354,7 @@ async def init_database(api_key: APIKey = Depends(get_api_key),
     return "NOPE - coming soon :)"
 
 
-@router.put("/turnover_test/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/turnoverv2/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 async def turnover_test(game_id: int, 
                         session: AsyncSession = Depends(get_async_session)):
     game_service: GameService = GameService(session=session)
