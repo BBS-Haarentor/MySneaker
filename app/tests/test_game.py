@@ -139,7 +139,10 @@ class TestTurnover(unittest.TestCase):
             #print(f"{c.stock=} - {c.cycle=} - {c.result_stock=}")
             logging.warning(f"{c.stock=} - {c.cycle=} - {c.result_stock=}")
 
-    def test_sell_sneaker(self) -> None:
+
+
+
+    def test_sell_sneaker_simple(self) -> None:
         # setup sneakers ready for sale -> tested in test_company_init
         for c in self.turnover.companies:
             c._for_sale = c.cycle.sales_planned
@@ -150,6 +153,65 @@ class TestTurnover(unittest.TestCase):
         self.assertEqual(self.turnover._remaining_sales, 0)
         
         return None
+    
+    def test_sell_sneaker_oversupply(self) -> None:
+        """Tests normal sneaker sale with more sneakers for sale than asks are given by the scenario
+
+        Raises:
+            NotImplementedError: _description_
+        """
+        for c in self.turnover.companies:
+            c._for_sale = c.cycle.sales_planned 
+        self.turnover._remaining_sales = sum(x._for_sale for x in self.turnover.companies) - 10
+        self.turnover.sell_sneaker()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(self.turnover._remaining_sales, 0)
+        
+        return None
+
+    def test_sell_sneaker_undersupply(self) -> None:
+        for c in self.turnover.companies:
+            c._for_sale = c.cycle.sales_planned 
+        self.turnover._remaining_sales = sum(x._for_sale for x in self.turnover.companies) + 10
+        self.turnover.sell_sneaker()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(self.turnover._remaining_sales, 10)
+        
+        return None
+    
+    def test_sell_sneaker_no_offers(self) -> None:
+        for c in self.turnover.companies:
+            c._for_sale = 0
+        self.turnover._remaining_sales = 100
+        self.turnover.sell_sneaker()
+        for c in self.turnover.companies:
+            logging.warning(f"{c.ledger}")
+        self.assertEqual(self.turnover._remaining_sales, 100)
+        return None
+    
+    
+    def test_sell_sneaker_ad_simple(self) -> None:
+        
+        raise NotImplementedError
+    
+    def test_sell_sneaker_ad_oversupply(self) -> None:
+        
+        raise NotImplementedError
+
+    def test_sell_sneaker_ad_undersupply(self) -> None:
+        
+        raise NotImplementedError
+    
+    def test_sell_sneaker_ad_no_offers(self) -> None:
+        
+        raise NotImplementedError
+    
+    
+    def test_sell_sneaker_all(self) -> None:
+        raise NotImplementedError
+    
     
     
     def test_sell_sneaker_tender(self) -> None:
@@ -188,6 +250,15 @@ class TestTurnover(unittest.TestCase):
         self.assertEqual(self.turnover.companies[1].result_stock.tender_sales, self.scenario.tender_offer_count)
         self.assertEqual(self.turnover.companies[1].result_stock.tender_price, self.turnover.companies[1].cycle.tender_offer_price)
         return None
+    
+    def test_sell_sneaker_tender_no_offers(self) -> None:
+        
+        raise NotImplementedError
+    
+    def test_sell_sneaker_tender_no_fitting_offers(self) -> None:
+        
+        raise NotImplementedError
+    
 
 if __name__ == "__main__":
     unittest.main()
