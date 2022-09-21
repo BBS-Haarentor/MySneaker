@@ -144,7 +144,7 @@ class Turnover():
                     c.result_stock.real_sales += 1
                     company_dict[c] += 1      
                     _remaining_sales -= 1
-            if sum(x._for_sale for x in companies):
+            if sum(x._for_sale for x in companies) <= 0:
                 break
         for c,count in company_dict.items():
             logging.warning(f"{count=}")
