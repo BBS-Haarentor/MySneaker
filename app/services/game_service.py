@@ -1,5 +1,6 @@
 import logging
 from types import NoneType
+from unittest import result
 from fastapi import HTTPException
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -142,18 +143,27 @@ class GameService():
         
         
         
-    async def turnover(self, game_id: int):# -> int:
+    async def turnover(self, game_id: int) -> int:
         game: Game = await self.game_repo.read(id=game_id)
         _current_index: int = game.current_cycle_index
         
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
         cycles: list = [(await self.cycle_repo.read_cycle_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
         stocks: list = [(await self.stock_repo.get_stock_by_user_and_index(user_id=u.id, index=_current_index)) for u in users]
+        if len(stocks) != len(cycles):
+            raise GameServiceError(detail=f"attempted turnoverv2 execution while not all users have given in their cycles",
+                                   user_message="Es haben nicht alle Unternehmen abgegeben. Umschlagsrechnung nicht möglich")
         scenario: Scenario = await self.scenario_repo.read_by_char(char=game.scenario_order[_current_index])
         
         turnover: Turnover = Turnover(input_cycles=cycles, input_stocks=stocks, scenario=scenario)
-        return turnover.turnover()
-        
+        result_stocks: list[Stock] = turnover.turnover()
+        # add new stocks
+        for s in result_stocks:
+            i: int = await self.stock_repo.create(create_data=s)
+        # update game index
+        game.current_cycle_index += 1
+        game: Game = await self.game_repo.update(update_data=game)
+        return game.current_cycle_index
     
     
     async def set_back_cycle_index(self, game_id: int, new_index: int) -> int:

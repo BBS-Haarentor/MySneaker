@@ -155,7 +155,7 @@ async def get_all_games_by_user_id(user_id: int,
     return await game_service.get_games_by_owner_id(owner_id=user_id)
 
 
-@router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK)
+#@router.put("/turnover/{game_id}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def turnover(game_id: int,
                    current_user: User = Depends(get_current_active_user),
@@ -354,7 +354,7 @@ async def init_database(api_key: APIKey = Depends(get_api_key),
     return "NOPE - coming soon :)"
 
 
-@router.put("/turnover_test/{game_id}", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/turnover/{game_id}", status_code=status.HTTP_202_ACCEPTED)
 async def turnover_test(game_id: int, 
                         session: AsyncSession = Depends(get_async_session)):
     game_service: GameService = GameService(session=session)

@@ -1,6 +1,30 @@
 {
     "model": "models.Stock",
-    "data": [
-        
-    ]
+    "data": {
+        "default": {
+              "paint_count": 0,
+              "income_from_sales": 0,
+              "company_id": 42,
+              "finished_sneaker_count": 0,
+              "research_production_modifier": 1,
+              "game_id": 5,
+              "employees_count": 8,
+              "machine_1_space": 1,
+              "id": 3,
+              "research_budget": 0,
+              "machine_2_space": 0,
+              "creation_date": 1663151251.089532,
+              "account_balance": 50000,
+              "machine_3_space": 0,
+              "last_edit": 1663151251.089544,
+              "credit_taken": 0,
+              "insolvent": false,
+              "current_cycle_index": 0,
+              "real_sales": 0,
+              "tender_sales": 0,
+              "sneaker_count": 0,
+              "tender_price": 0
+            
+        }
+    }
 }

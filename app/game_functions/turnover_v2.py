@@ -63,7 +63,6 @@ class Turnover():
             NoneType: Mutates self.companies 
         """
         for dc in self.dead_companies:
-            dc.result_stock = StockCreate.parse_obj(StockPersistent.parse_obj(dc.stock))
             self.companies.append(dc)
         return None
     
@@ -72,6 +71,8 @@ class Turnover():
         
         # do single stuff
         for c in self.companies:
+            c.stock_up()
+            c.do_inventory()
             c.pay_employees()
             c.produce_sneakers()
             c.pay_interest()
@@ -91,22 +92,26 @@ class Turnover():
         
         
         for c in self.companies:
-            c.do_inventory()
             c.process_transactions()
+            c.tidy_shelves()
+        
         self.__process_dead()
-        return [ [x.result_stock, x.ledger] for x in self.companies ]
+        
+        return [ x.result_stock for x in self.companies ]
 
 
-    def __sort_and_group(self, companies: list[Company], key):
+    def __sort_and_group(self, companies: list[Company], key) -> list[list[Company]]:
         return [list(v) for k, v in groupby(sorted(companies, key=key), key=key)]
 
     
     
     def sell_sneaker_tender(self) -> None:
-        key = lambda x: x.cycle.tender_offer_price
+        key = lambda x: x.cycle.tender_offer_price 
         batched_companies = self.__sort_and_group(companies=self.companies , key=key)
-        sorted_companies = sorted([x for x in batched_companies if x[0].cycle.tender_offer_price], key=lambda x: (x[0]._for_sale >= self.scenario.tender_offer_count))
-        logging.warning(f"{sorted_companies=}")
+        sorted_companies = [x for x in batched_companies if x[0]._for_sale >= self.scenario.tender_offer_count]
+        #sorted_companies = sorted([x for x in batched_companies if x[0].cycle.tender_offer_price], key=lambda x: (x[0]._for_sale >= self.scenario.tender_offer_count))
+        #logging.warning(f"{sorted_companies=}")
+
         lowest_price_company = choice(sorted_companies[0])
         
         # sell tender
@@ -118,6 +123,10 @@ class Turnover():
 
         tx: Transaction = create_transaction(amount= _income_tender, company_id=lowest_price_company.company_id, detail={ "_income_tender": _income_tender })
         lowest_price_company.add_tx([tx])
+        
+        lowest_price_company.result_stock.tender_sales = self.scenario.tender_offer_count
+        lowest_price_company.result_stock.tender_price = lowest_price_company.cycle.tender_offer_price
+        
         return None
     
     
@@ -140,9 +149,8 @@ class Turnover():
             tx: Transaction = create_transaction(amount=  price_key(c) * count, company_id=c.company_id, detail={ "sale_price_sneaker": (price_key(c)),
                                                                                                                     "sale_type": issuer})
             c.add_tx([tx])
-            c.result_stock.income_from_sales += price_key(c)
+            c.result_stock.income_from_sales += price_key(c) * count
 
-            #c.result_stock.finished_sneaker_count = c._for_sale
         return _remaining_sales
     
     

@@ -125,7 +125,7 @@ note: ommit _.py_ on the filename when referencing classes this way
 ``` 
 python.exe -m unittest app.tests.<testfilename>.<TestClass>
 python.exe -m unittest app.tests.test_game.TestTurnover
-
+python.exe -m unittest app.tests.test_company.TestCompany
 ```
 
 (Unix)(bash)
