@@ -41,7 +41,7 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     <tr>
                         <td>Lager Periodenende (PLAN)</td>
                         <td>{(data.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion + " Stk."}</td>
-                        <td>{(data.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2 + " Stk."}</td>
+                        <td>{(data.paint_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2 + " Stk."}</td>
                         <td>{data.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) + " Stk."}</td>
                     </tr>
                     <tr>
@@ -53,7 +53,7 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     <tr>
                         <td>Lagerkosten (PLAN)</td>
                         <td>{formatter.format(((data.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4)}</td>
-                        <td>{formatter.format(((data.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
+                        <td>{formatter.format(((data.paint_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
                         <td>{formatter.format((data.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
                     </tr>
                     <tr>
