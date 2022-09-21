@@ -116,7 +116,7 @@ const KlassenDetailPage = () => {
 
         fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/turnover/' + id, requestOptions)
             .then(async (element) => {
-                if (element.status === 200) {
+                if (element.status === 202) {
                     setInfoModal(<>
                         <div className={"block"}>
                             <div
@@ -177,7 +177,7 @@ const KlassenDetailPage = () => {
                                         </svg>
                                     </div>
                                     <span className="font-bold block text-xl mb-3">Fehler!</span>
-                                    <span className="block text-xl mb-3">{json.detail}</span>
+                                    <span className="block text-xl mb-3">{json.user_message}</span>
                                     <div className="text-right space-x-5 mt-5">
                                         <button onClick={() => setInfoModal(<></>)}
                                                 className="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Schließen
