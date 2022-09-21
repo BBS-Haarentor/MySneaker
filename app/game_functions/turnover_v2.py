@@ -2,12 +2,14 @@ import inspect
 from itertools import groupby
 import logging
 from random import choice, random
+from app.exception.general import GameError
 from app.game_functions.company import Company
 from app.game_functions.utils import Transaction, create_transaction
 from app.models.cycle import Cycle
 from app.models.stock import Stock
 from app.models.scenario import Scenario
 from app.schemas.stock import StockCreate, StockPersistent
+from app.services.game_service import GameServiceError
 
 
 class Turnover():
@@ -111,7 +113,8 @@ class Turnover():
         sorted_companies = [x for x in batched_companies if x[0]._for_sale >= self.scenario.tender_offer_count]
         #sorted_companies = sorted([x for x in batched_companies if x[0].cycle.tender_offer_price], key=lambda x: (x[0]._for_sale >= self.scenario.tender_offer_count))
         #logging.warning(f"{sorted_companies=}")
-
+        if len(sorted_companies) <= 0:
+            return None
         lowest_price_company = choice(sorted_companies[0])
         
         # sell tender
@@ -166,7 +169,7 @@ class Turnover():
             _remaining_sales: int = self.__general_sales_in_batch(companies=b, sales=_remaining_sales, price_key=sales_key)
         self._remaining_sales_ad = _remaining_sales
         
-        return _remaining_sales
+        return None
 
 
     def sell_sneaker(self):
@@ -179,4 +182,4 @@ class Turnover():
             _remaining_sales: int = self.__general_sales_in_batch(companies=b, sales=_remaining_sales, price_key=sales_key)
         self._remaining_sales = _remaining_sales
         
-        return _remaining_sales
+        return None
