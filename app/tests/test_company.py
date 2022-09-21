@@ -45,7 +45,7 @@ class TestCompany(unittest.TestCase):
         self.company.result_stock.paint_count = 300
         self.company.result_stock.sneaker_count = 150
         
-        self.company.cycle.include_from_stock = 100
+        #self.company.cycle.include_from_stock = 100
         self.company.cycle.sales_planned = 200
         
         logging.warning(f"{len(self.company.machines)}")
@@ -71,7 +71,7 @@ class TestCompany(unittest.TestCase):
         self.company.result_stock.paint_count = 300
         self.company.result_stock.sneaker_count = 150
         
-        self.company.cycle.include_from_stock = 100
+        #self.company.cycle.include_from_stock = 100
         self.company.cycle.sales_planned = 200
 
         logging.warning(f"{len(self.company.machines)}")
