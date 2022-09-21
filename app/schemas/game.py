@@ -70,6 +70,6 @@ class PlayerInfoStudent(SQLModel):
 
 
 class Summary(SQLModel):
-    cycle: Cycle
-    stock: Stock
-    scenario: Scenario    
+    cycle: Cycle | None
+    stock: Stock | None
+    scenario: Scenario | None   
