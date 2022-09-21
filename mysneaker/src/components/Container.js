@@ -16,10 +16,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
     const [data, setData] = useState(
         {
-            "current_stock": {
+            "stock": {
                 "company_id":5,
                 "id":1,
-                "current_cycle_index":0,
+                "cycle_index":0,
                 "paint_count":0,
                 "employees_count":8,
                 "account_balance":5000.0,
@@ -70,7 +70,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 "machine_production_capacity2":500,
                 "production_cost_per_sneaker2":50.0
             },
-            "current_cycle": {
+            "cycle": {
                 "id": 1,
                 "buy_paint": 320,
                 "sales_planned": 160,
@@ -88,7 +88,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 "planned_workers_1": 8,
                 "research_invest": 2500,
                 "entry_date": "2022-06-05T20:27:11.340557",
-                "current_cycle_index": 0,
+                "cycle_index": 0,
                 "planned_workers_2": 0,
                 "ad_invest": 0,
                 "company_id": 2,
@@ -100,37 +100,37 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             }
         }
     )
-    const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState(data.current_cycle.buy_sneaker)
-    const [FarbenEinkaufMenge, setFarbenEinkaufMenge] = useState(data.current_cycle.buy_paint)
+    const [SneakerEinkaufMenge, setSneakerEinkaufMenge] = useState(data.cycle.buy_sneaker)
+    const [FarbenEinkaufMenge, setFarbenEinkaufMenge] = useState(data.cycle.buy_paint)
     const SneakerKosten = data.scenario.sneaker_price * SneakerEinkaufMenge
     const FarbenKosten = data.scenario.paint_price * FarbenEinkaufMenge
-    const [GeplanteProduktion, setGeplanteProduktion] = useState(data.current_cycle.planned_production_1)
-    const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(data.current_cycle.planned_workers_1)
-    const [GeplanteProduktion2, setGeplanteProduktion2] = useState(data.current_cycle.planned_production_2)
-    const [ZugeteilteMitarbeiter2, setZugeteilteMitarbeiter2] = useState(data.current_cycle.planned_workers_2)
-    const [GeplanteProduktion3, setGeplanteProduktion3] = useState(data.current_cycle.planned_production_3)
-    const [ZugeteilteMitarbeiter3, setZugeteilteMitarbeiter3] = useState(data.current_cycle.planned_workers_3)
-    const [Werbung, setWerbung] = useState(data.current_cycle.ad_invest)
-    const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(data.current_cycle.research_invest)
-    const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(data.current_cycle.include_from_stock)
-    const [MarktSoll, setMarktSoll] = useState(data.current_cycle.sales_planned)
-    const [MarktSollPreis, setMarktSollPreis] = useState(data.current_cycle.sales_bid)
-    const [MarktIst, setMarktIst] = useState(data.current_cycle.real_sales)
-    const [AusschreibungSoll, setAussetschreibungSoll] = useState(data.current_cycle.tender_offer_count)
-    const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(data.current_cycle.tender_offer_price)
+    const [GeplanteProduktion, setGeplanteProduktion] = useState(data.cycle.planned_production_1)
+    const [ZugeteilteMitarbeiter, setZugeteilteMitarbeiter] = useState(data.cycle.planned_workers_1)
+    const [GeplanteProduktion2, setGeplanteProduktion2] = useState(data.cycle.planned_production_2)
+    const [ZugeteilteMitarbeiter2, setZugeteilteMitarbeiter2] = useState(data.cycle.planned_workers_2)
+    const [GeplanteProduktion3, setGeplanteProduktion3] = useState(data.cycle.planned_production_3)
+    const [ZugeteilteMitarbeiter3, setZugeteilteMitarbeiter3] = useState(data.cycle.planned_workers_3)
+    const [Werbung, setWerbung] = useState(data.cycle.ad_invest)
+    const [ForschungUndEntwickelung, setForschungUndEntwickelung] = useState(data.cycle.research_invest)
+    const [EntnahmeAusDemLager, setEntnahmeAusDemLager] = useState(data.cycle.include_from_stock)
+    const [MarktSoll, setMarktSoll] = useState(data.cycle.sales_planned)
+    const [MarktSollPreis, setMarktSollPreis] = useState(data.cycle.sales_bid)
+    const [MarktIst, setMarktIst] = useState(data.cycle.real_sales)
+    const [AusschreibungSoll, setAussetschreibungSoll] = useState(data.cycle.tender_offer_count)
+    const [AusschreibungSollPreis, setAussetschreibungSollPreis] = useState(data.cycle.tender_offer_price)
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [AusschreibungIstPrice, setAusschreibungIstPrice] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
     const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
     const [Mitarbeiter, setMitarbeiter] = useState(8)
-    const [Neueinstellungen, setNeueinstellungen] = useState(data.current_cycle.new_employees)
-    const [Kündigungen, setKündigungen] = useState(data.current_cycle.let_go_employeess)
+    const [Neueinstellungen, setNeueinstellungen] = useState(data.cycle.new_employees)
+    const [Kündigungen, setKündigungen] = useState(data.cycle.let_go_employeess)
     const [Personalnebenkosten, setPersonalnebenkosten] = useState(20)
     const [AufnahmeDarlehen, setAufnahmeDarlehen] = useState(0)
     const [RueckzahlungDarlehen, setRueckzahlungDarlehen] = useState(0)
-    const [buy_new_machine, setBuy_new_machine] = useState(data.current_cycle.buy_new_machine)
-    const [machine_2_space, set_machine_2_space] = useState(data.current_stock.machine_2_space)
-    const [machine_3_space, set_machine_3_space] = useState(data.current_stock.machine_3_space)
+    const [buy_new_machine, setBuy_new_machine] = useState(data.cycle.buy_new_machine)
+    const [machine_2_space, set_machine_2_space] = useState(data.stock.machine_2_space)
+    const [machine_3_space, set_machine_3_space] = useState(data.stock.machine_3_space)
     const [newMaschienPrize, setNewMaschienPrize] = useState(0)
 
     var Gesamtproduktion = parseInt(GeplanteProduktion) + parseInt(GeplanteProduktion2) + parseInt(GeplanteProduktion3)
@@ -142,7 +142,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
     var GesamtkostenProduktion = Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion;
-    var UmsatzIst = data.current_stock.income_from_sales;
+    var UmsatzIst = data.stock.income_from_sales;
     var UmsatzSoll = MarktSoll * MarktSollPreis + AusschreibungSoll * AusschreibungSollPreis;
     
  
@@ -157,45 +157,45 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     var machine_3_costpp = 0
     var machine_3_fertigungskostenpp = 0
 
-    if (data.current_stock.machine_1_space == 1) {
+    if (data.stock.machine_1_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
-    }else if(data.current_stock.machine_1_space == 2){
+    }else if(data.stock.machine_1_space == 2){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
-    }else if(data.current_stock.machine_1_space == 3){
+    }else if(data.stock.machine_1_space == 3){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
     }
-    if (data.current_stock.machine_2_space == 1) {
+    if (data.stock.machine_2_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
         machine_2_name = "Sneakerbox 200"
         machine_2_kapazität = data.scenario.machine_production_capacity1
         machine_2_costpp = data.scenario.machine_maintainance_cost1
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    }else if(data.current_stock.machine_2_space == 2){
+    }else if(data.stock.machine_2_space == 2){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
         machine_2_name = "Sneakerdream 500"
         machine_2_kapazität = data.scenario.machine_production_capacity2
         machine_2_costpp = data.scenario.machine_maintainance_cost2
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    }else if(data.current_stock.machine_2_space == 3){
+    }else if(data.stock.machine_2_space == 3){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
         machine_2_name = "Sneakergigant 1000"
         machine_2_kapazität = data.scenario.machine_production_capacity3
         machine_2_costpp = data.scenario.machine_maintainance_cost3
         machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
     }
-    if (data.current_stock.machine_3_space == 1) {
+    if (data.stock.machine_3_space == 1) {
         AllMaschienenKosten += data.scenario.machine_maintainance_cost1
         machine_3_name = "Sneakerbox 200"
         machine_3_kapazität = data.scenario.machine_production_capacity1
         machine_3_costpp = data.scenario.machine_maintainance_cost1
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    }else if(data.current_stock.machine_3_space == 2){
+    }else if(data.stock.machine_3_space == 2){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost2
         machine_3_name = "Sneakerdream 500"
         machine_3_kapazität = data.scenario.machine_production_capacity2
         machine_3_costpp = data.scenario.machine_maintainance_cost2
         machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    }else if(data.current_stock.machine_3_space == 3){
+    }else if(data.stock.machine_3_space == 3){
         AllMaschienenKosten += data.scenario.machine_maintainance_cost3
         machine_3_name = "Sneakergigant 1000"
         machine_3_kapazität = data.scenario.machine_production_capacity3
@@ -211,35 +211,35 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [modalConfirm, setModalConfirm] = useState()
 
     const initData = (data) => {
-        setSneakerEinkaufMenge(data.current_cycle.buy_sneaker)
-        setFarbenEinkaufMenge(data.current_cycle.buy_paint)
-        setGeplanteProduktion(data.current_cycle.planned_production_1)
-        setZugeteilteMitarbeiter(data.current_cycle.planned_workers_1)
-        setGeplanteProduktion2(data.current_cycle.planned_production_2)
-        setZugeteilteMitarbeiter2(data.current_cycle.planned_workers_2)
-        setGeplanteProduktion3(data.current_cycle.planned_production_3)
-        setZugeteilteMitarbeiter3(data.current_cycle.planned_workers_3)
-        setWerbung(data.current_cycle.ad_invest)
-        setForschungUndEntwickelung(data.current_cycle.research_invest)
-        setEntnahmeAusDemLager(data.current_cycle.include_from_stock)
-        setMarktSoll(data.current_cycle.sales_planned)
-        setMarktSollPreis(data.current_cycle.sales_bid)
-        setMarktIst(data.current_stock.real_sales)
+        setSneakerEinkaufMenge(data.cycle.buy_sneaker)
+        setFarbenEinkaufMenge(data.cycle.buy_paint)
+        setGeplanteProduktion(data.cycle.planned_production_1)
+        setZugeteilteMitarbeiter(data.cycle.planned_workers_1)
+        setGeplanteProduktion2(data.cycle.planned_production_2)
+        setZugeteilteMitarbeiter2(data.cycle.planned_workers_2)
+        setGeplanteProduktion3(data.cycle.planned_production_3)
+        setZugeteilteMitarbeiter3(data.cycle.planned_workers_3)
+        setWerbung(data.cycle.ad_invest)
+        setForschungUndEntwickelung(data.cycle.research_invest)
+        setEntnahmeAusDemLager(data.cycle.include_from_stock)
+        setMarktSoll(data.cycle.sales_planned)
+        setMarktSollPreis(data.cycle.sales_bid)
+        setMarktIst(data.stock.real_sales)
         //setAussetschreibungSoll(data.scenario.tender_offer_count)
-        setAusschreibungIst(data.current_stock.tender_sales)
-        setAusschreibungIstPrice(data.current_stock.tender_sales)
+        setAusschreibungIst(data.stock.tender_sales)
+        setAusschreibungIstPrice(data.stock.tender_sales)
         setGesamtSoll(0)
         setMaximaleEntnahmeAusLager(0)
-        setMitarbeiter(data.current_stock.employees_count)
-        setNeueinstellungen(data.current_cycle.new_employees)
-        setKündigungen(data.current_cycle.let_go_employees)
+        setMitarbeiter(data.stock.employees_count)
+        setNeueinstellungen(data.cycle.new_employees)
+        setKündigungen(data.cycle.let_go_employees)
         setPersonalnebenkosten(20)
         setAufnahmeDarlehen(0)
         setRueckzahlungDarlehen(0)
-        setBuy_new_machine(data.current_cycle.buy_new_machine)
-        set_machine_2_space(data.current_stock.machine_2_space)
-        set_machine_3_space(data.current_stock.machine_3_space)
-        setAussetschreibungSollPreis(data.current_cycle.tender_offer_price)
+        setBuy_new_machine(data.cycle.buy_new_machine)
+        set_machine_2_space(data.stock.machine_2_space)
+        set_machine_3_space(data.stock.machine_3_space)
+        setAussetschreibungSollPreis(data.cycle.tender_offer_price)
     }
 
     useEffect(async () => {
@@ -260,8 +260,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 if (body.replaceAll("\"", "") === "base") {
                     const getData = async () => {
                         const dataFromServer = await fetchData(requestOptions)
-                        if (dataFromServer.current_cycle === null) {
-                            dataFromServer.current_cycle = {
+                        if (dataFromServer.cycle === null) {
+                            dataFromServer.cycle = {
                                 "buy_paint": 0,
                                 "sales_planned": 0,
                                 "new_employees": 0,
@@ -275,7 +275,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                                 "tender_offer_price": 0,
                                 "planned_workers_1": 0,
                                 "research_invest": 0,
-                                "current_cycle_index": 0,
+                                "cycle_index": 0,
                                 "planned_workers_2": 0,
                                 "ad_invest": 0,
                                 "planned_workers_3": 0,
@@ -415,8 +415,8 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     }, [])*/
 
 
-    var SaldoSoll = data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung) + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
-    var SaldoIst = data.current_stock.account_balance - (FarbenKosten + SneakerKosten + (((data.current_stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(data.current_stock.real_sales)) * 8)) + (((data.current_stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.current_stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung)  + ((data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.current_stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    var SaldoSoll = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    var SaldoIst = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(data.stock.real_sales)) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(Werbung) +  parseFloat(ForschungUndEntwickelung)  + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
 
    
     var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
@@ -528,7 +528,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 setFarbenEinkaufMenge={setFarbenEinkaufMenge} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} 
                 formatter={formatter} FarbenKosten={FarbenKosten} SneakerKosten={SneakerKosten} />
 
-                <Lager data={data.current_stock} Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} formatter={formatter}
+                <Lager data={data.stock} Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} formatter={formatter}
                 AusschreibungSoll={AusschreibungSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} FarbenEinkaufMenge={FarbenEinkaufMenge} MarktIst={MarktIst} 
                 AusschreibungIst={AusschreibungIst} />
                 
@@ -538,7 +538,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 Personalnebenkosten={Personalnebenkosten} data={data} />
 
 
-                {data.current_stock.machine_1_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter)  == Math.ceil(GeplanteProduktion / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion  && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.stock.machine_1_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter)  == Math.ceil(GeplanteProduktion / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion  && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -567,7 +567,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(60 * data.current_stock.research_production_modifier)}</td>
+                                <td>{formatter.format(60 * data.stock.research_production_modifier)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -626,7 +626,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
                 </div>}
 
-                {data.current_stock.machine_2_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter2) == Math.ceil(GeplanteProduktion2 / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.stock.machine_2_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter2) == Math.ceil(GeplanteProduktion2 / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -655,7 +655,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(machine_2_fertigungskostenpp * data.current_stock.research_production_modifier)}</td>
+                                <td>{formatter.format(machine_2_fertigungskostenpp * data.stock.research_production_modifier)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -721,7 +721,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.current_stock.machine_3_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter3) == Math.ceil(GeplanteProduktion3 / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.stock.machine_3_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter3) == Math.ceil(GeplanteProduktion3 / 20)  && MaximalproduzierbareAnzahl >= Gesamtproduktion && Mitarbeiter >= allZugeteilteMitarbeiter ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -750,7 +750,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(machine_3_fertigungskostenpp * data.current_stock.research_production_modifier)}</td>
+                                <td>{formatter.format(machine_3_fertigungskostenpp * data.stock.research_production_modifier)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -806,7 +806,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div> 
-                :data.current_stock.machine_2_space == 0 ? 
+                :data.stock.machine_2_space == 0 ? 
                 <></>
                 :
                  buy_new_machine != 0? 
@@ -814,7 +814,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
                         <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
                 </div> 
-                : data.current_stock.machine_2_space == 0 ? 
+                : data.stock.machine_2_space == 0 ? 
                 <></> 
                 : data.scenario.machine_purchase_allowed ?  
                 <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
@@ -832,7 +832,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 ForschungUndEntwickelung={ForschungUndEntwickelung} />
 
                 <Planung AbsatzRef={AbsatzRef} Gesamtproduktion={Gesamtproduktion} setEntnahmeAusDemLager={setEntnahmeAusDemLager} EntnahmeAusDemLager={EntnahmeAusDemLager}
-                MaximaleEntnahmeAusLager={MaximaleEntnahmeAusLager} stock={data.current_stock} />
+                MaximaleEntnahmeAusLager={MaximaleEntnahmeAusLager} stock={data.stock} />
 
                 <VerkaufSoll Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} AusschreibungSoll={AusschreibungSoll} 
                 formatter={formatter} AusschreibungSollPreis={AusschreibungSollPreis} MarktSollPreis={MarktSollPreis} setAussetschreibungSoll={setAussetschreibungSoll}
@@ -850,7 +850,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 Neueinstellungen={Neueinstellungen} PersonalnebenkostenInP={PersonalnebenkostenInP} RueckzahlungDarlehen={RueckzahlungDarlehen} SaldoIst={SaldoIst}
                 SaldoSoll={SaldoSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} SneakerKosten={SneakerKosten} UmsatzSoll={UmsatzSoll} Werbung={Werbung} formatter={formatter}
                 newMaschienPrize={newMaschienPrize} scenario={data.scenario} setAufnahmeDarlehen={setAufnahmeDarlehen} setRueckzahlungDarlehen={setRueckzahlungDarlehen}
-                stock={data.current_stock} UmsatzIst={UmsatzIst}/>
+                stock={data.stock} UmsatzIst={UmsatzIst}/>
                 <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={onSubmit}>Abgeben/Speichern</button>
             </div>
         </>
