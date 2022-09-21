@@ -139,11 +139,13 @@ class Turnover():
         company_dict = dict(zip(companies, [0 for x in companies]))
         while _remaining_sales > 0:
             for c,count in company_dict.items():
-                if _remaining_sales > 0:
+                if _remaining_sales > 0 and c._for_sale > 0:
                     c._for_sale -= 1
                     c.result_stock.real_sales += 1
                     company_dict[c] += 1      
                     _remaining_sales -= 1
+            if sum(x._for_sale for x in companies):
+                break
         for c,count in company_dict.items():
             logging.warning(f"{count=}")
             tx: Transaction = create_transaction(amount=  price_key(c) * count, company_id=c.company_id, detail={ "sale_price_sneaker": (price_key(c)),
