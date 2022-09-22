@@ -602,13 +602,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion / 20)} Stk.</td>
+                                <td>{Math.ceil(GeplanteProduktion / 20)} MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input> MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -690,13 +690,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion2 / 20)} Stk.</td>
+                                <td>{Math.ceil(GeplanteProduktion2 / 20)} MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter2(e.target.value)} value={ZugeteilteMitarbeiter2}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter2(e.target.value)} value={ZugeteilteMitarbeiter2}></input> MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -785,13 +785,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion3 / 20)} Stk.</td>
+                                <td>{Math.ceil(GeplanteProduktion3 / 20)} MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>

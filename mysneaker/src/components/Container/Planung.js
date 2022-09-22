@@ -1,9 +1,13 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, EntnahmeAusDemLager, MaximaleEntnahmeAusLager, stock }) => {
 
     const [TempEntnahmeAusDemLager, setTempEntnahmeAusDemLager] = useState(EntnahmeAusDemLager);
-    
+
+    useEffect(() => {
+        setTempEntnahmeAusDemLager(EntnahmeAusDemLager)
+    })
+
     function setEntnahmeAusDemLagerFunction(change) {
         if(change === ""){
             console.log("ich bin nichts")
