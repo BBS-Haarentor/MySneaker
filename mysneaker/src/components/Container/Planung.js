@@ -6,7 +6,7 @@ const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, Entnahme
 
     useEffect(() => {
         setTempEntnahmeAusDemLager(EntnahmeAusDemLager)
-    }, [])
+    })
 
     function setEntnahmeAusDemLagerFunction(change) {
         if(change === ""){
