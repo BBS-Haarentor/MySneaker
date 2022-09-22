@@ -121,7 +121,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [AusschreibungIstPrice, setAusschreibungIstPrice] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
-    const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
+    const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(data.stock.finished_sneaker_count)
     const [Mitarbeiter, setMitarbeiter] = useState(8)
     const [Neueinstellungen, setNeueinstellungen] = useState(data.cycle.new_employees)
     const [Kündigungen, setKündigungen] = useState(data.cycle.let_go_employeess)
@@ -230,7 +230,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setAusschreibungIst(data.stock.tender_sales)
         setAusschreibungIstPrice(data.stock.tender_sales)
         setGesamtSoll(0)
-        setMaximaleEntnahmeAusLager(0)
         setMitarbeiter(data.stock.employees_count)
         setNeueinstellungen(data.cycle.new_employees)
         setKündigungen(data.cycle.let_go_employees)
@@ -241,6 +240,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         set_machine_2_space(data.stock.machine_2_space)
         set_machine_3_space(data.stock.machine_3_space)
         setAussetschreibungSollPreis(data.cycle.tender_offer_price)
+        setMaximaleEntnahmeAusLager(data.stock.finished_sneaker_count)
     }
 
     useEffect(async () => {
