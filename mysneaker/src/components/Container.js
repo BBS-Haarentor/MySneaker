@@ -136,11 +136,12 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     var Gesamtproduktion = parseInt(GeplanteProduktion) + parseInt(GeplanteProduktion2) + parseInt(GeplanteProduktion3)
 
     var PersonalnebenkostenInP = Personalnebenkosten / 100 + 1
-    var ProduktionFarben = parseInt(FarbenEinkaufMenge / 2)
+    var ProduktionFarben = parseInt((data.stock.paint_count + FarbenEinkaufMenge) / 2)
     var Produktionskapazität = 200;
     var FertigungskostenProStückFE = 60
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
+    var MaximalproduzierbareAnzahl = (data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) > ProduktionFarben ? ProduktionFarben : (data.stock.sneaker_count + parseInt(SneakerEinkaufMenge))
     var GesamtkostenProduktion = Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion;
     var UmsatzIst = data.stock.income_from_sales;
     var UmsatzSoll = MarktSoll * MarktSollPreis + AusschreibungSoll * AusschreibungSollPreis;
