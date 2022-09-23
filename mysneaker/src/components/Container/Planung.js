@@ -1,24 +1,29 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, EntnahmeAusDemLager, MaximaleEntnahmeAusLager, stock }) => {
 
     const [TempEntnahmeAusDemLager, setTempEntnahmeAusDemLager] = useState(EntnahmeAusDemLager);
-    
+
+    useEffect(() => {
+        setTempEntnahmeAusDemLager(EntnahmeAusDemLager)
+    })
+
     function setEntnahmeAusDemLagerFunction(change) {
         if(change === ""){
             console.log("ich bin nichts")
             setTempEntnahmeAusDemLager("")
             setEntnahmeAusDemLager(0)
         }else{
-            if (MaximaleEntnahmeAusLager >= change) {
-                if (change < 0) {
-                    setTempEntnahmeAusDemLager("0")
+            if (stock.finished_sneaker_count >= change) {
+                if (change <= 0) {
+                    setTempEntnahmeAusDemLager(0)
                     setEntnahmeAusDemLager(0)
                 } else {
                     setTempEntnahmeAusDemLager(change)
                     setEntnahmeAusDemLager(change)
                 }
             } else {
+                setTempEntnahmeAusDemLager(MaximaleEntnahmeAusLager)
                 setEntnahmeAusDemLager(MaximaleEntnahmeAusLager)
             }
         }
@@ -39,7 +44,7 @@ const Planung = ({ AbsatzRef, Gesamtproduktion, setEntnahmeAusDemLager, Entnahme
                     </tr>
                     <tr>
                         <td>Maximal Entnahme aus Lager</td>
-                        <td>{stock.finished_sneaker_count} Stk.</td>
+                        <td>{MaximaleEntnahmeAusLager} Stk.</td>
                     </tr>
                     <tr>
                         <td>Entnahme aus dem Lager</td>

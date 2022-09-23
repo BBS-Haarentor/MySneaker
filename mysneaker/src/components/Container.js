@@ -121,7 +121,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const [AusschreibungIst, setAusschreibungIst] = useState(0)
     const [AusschreibungIstPrice, setAusschreibungIstPrice] = useState(0)
     const [GesamtSoll, setGesamtSoll] = useState(0)
-    const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(0)
+    const [MaximaleEntnahmeAusLager, setMaximaleEntnahmeAusLager] = useState(data.stock.finished_sneaker_count)
     const [Mitarbeiter, setMitarbeiter] = useState(8)
     const [Neueinstellungen, setNeueinstellungen] = useState(data.cycle.new_employees)
     const [Kündigungen, setKündigungen] = useState(data.cycle.let_go_employeess)
@@ -136,11 +136,12 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     var Gesamtproduktion = parseInt(GeplanteProduktion) + parseInt(GeplanteProduktion2) + parseInt(GeplanteProduktion3)
 
     var PersonalnebenkostenInP = Personalnebenkosten / 100 + 1
-    var ProduktionFarben = parseInt(FarbenEinkaufMenge / 2)
+    var ProduktionFarben = parseInt((data.stock.paint_count + FarbenEinkaufMenge) / 2)
     var Produktionskapazität = 200;
     var FertigungskostenProStückFE = 60
     var Maschinenkosten = 4000;
     var MaximalproduzierbareAnzahl = SneakerEinkaufMenge > ProduktionFarben ? ProduktionFarben : SneakerEinkaufMenge
+    var MaximalproduzierbareAnzahl = (data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) > ProduktionFarben ? ProduktionFarben : (data.stock.sneaker_count + parseInt(SneakerEinkaufMenge))
     var GesamtkostenProduktion = Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion;
     var UmsatzIst = data.stock.income_from_sales;
     var UmsatzSoll = MarktSoll * MarktSollPreis + AusschreibungSoll * AusschreibungSollPreis;
@@ -229,7 +230,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         setAusschreibungIst(data.stock.tender_sales)
         setAusschreibungIstPrice(data.stock.tender_sales)
         setGesamtSoll(0)
-        setMaximaleEntnahmeAusLager(0)
         setMitarbeiter(data.stock.employees_count)
         setNeueinstellungen(data.cycle.new_employees)
         setKündigungen(data.cycle.let_go_employees)
@@ -240,6 +240,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         set_machine_2_space(data.stock.machine_2_space)
         set_machine_3_space(data.stock.machine_3_space)
         setAussetschreibungSollPreis(data.cycle.tender_offer_price)
+        setMaximaleEntnahmeAusLager(data.stock.finished_sneaker_count)
     }
 
     useEffect(async () => {
@@ -601,13 +602,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion / 20)} Stk.</td>
+                                <td>{Math.ceil(GeplanteProduktion / 20)} MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter(e.target.value)} value={ZugeteilteMitarbeiter}></input> MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -689,13 +690,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion2 / 20)} Stk.</td>
+                                <td>{Math.ceil(GeplanteProduktion2 / 20)} MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter2(e.target.value)} value={ZugeteilteMitarbeiter2}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter2(e.target.value)} value={ZugeteilteMitarbeiter2}></input> MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -784,13 +785,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion3 / 20)} Stk.</td>
+                                <td>{Math.ceil(GeplanteProduktion3 / 20)} MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> MA</td>
                                 <td></td>
                                 <td></td>
                             </tr>

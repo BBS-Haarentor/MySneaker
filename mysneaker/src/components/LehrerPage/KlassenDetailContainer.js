@@ -232,7 +232,7 @@ const KlassenDetailContainer = ({ userId, cycle_index, game_id }) => {
         setAusschreibungIst(data.stock.tender_sales)
         setAusschreibungIstPrice(data.stock.tender_sales)
         setGesamtSoll(0)
-        setMaximaleEntnahmeAusLager(0)
+        setMaximaleEntnahmeAusLager(data.stock.finished_sneaker_count)
         setMitarbeiter(data.stock.employees_count)
         setNeueinstellungen(data.cycle.new_employees)
         setKündigungen(data.cycle.let_go_employees)
