@@ -1,3 +1,4 @@
+import json
 import logging
 from types import NoneType
 import unittest
@@ -13,8 +14,8 @@ class TestTurnover(unittest.TestCase):
     
     def setUp(self) -> None:
         scenarion_dict = {
-            "id": 0,
-            "char": "X",
+            "char": "A",
+            "description": "",
             "sneaker_price": 60,
             "paint_price": 10,
             "storage_fee_sneaker": 4.00,
@@ -25,16 +26,12 @@ class TestTurnover(unittest.TestCase):
             "factor_interest_rate": 0.04,
             "employee_salary": 400,
             "employee_signup_bonus": 100,
-            "employee_production_capacity": 10,
-            "employee_cost_modfier": 0.00,
-            "machine_purchase_allowed": False,
-            "machine_purchase_cost": 1000.00,
+            "employee_production_capacity": 20,
+            "employee_cost_modfier": 0.20,        
+            "machine_purchase_allowed": True,
             "sneaker_ask": 400,
-            "factor_ad_take": 0.1,
-            "machine_production_capacity": 200,
-            "machine_maintainance_cost": 4000.00,
-            "production_cost_per_sneaker": 60.00,
-            "tender_offer_count": 50
+            "tender_offer_count":0,
+            "factor_ad_take": 0.1
         }
         test_cycle_0 = {
             "game_id": 1,
@@ -144,6 +141,7 @@ class TestTurnover(unittest.TestCase):
 
     def test_sell_sneaker_simple(self) -> None:
         # setup sneakers ready for sale -> tested in test_company_init
+        self.turnover._remaining_sales_ad = 0
         for c in self.turnover.companies:
             c._for_sale = c.cycle.sales_planned
         self.turnover._remaining_sales = sum(x._for_sale for x in self.turnover.companies)
@@ -160,6 +158,8 @@ class TestTurnover(unittest.TestCase):
         Raises:
             NotImplementedError: _description_
         """
+        self.turnover._remaining_sales_ad = 0
+
         for c in self.turnover.companies:
             c._for_sale = c.cycle.sales_planned 
         self.turnover._remaining_sales = sum(x._for_sale for x in self.turnover.companies) - 10
@@ -171,9 +171,11 @@ class TestTurnover(unittest.TestCase):
         return None
 
     def test_sell_sneaker_undersupply(self) -> None:
+        self.turnover._remaining_sales_ad = 0
         for c in self.turnover.companies:
-            c._for_sale = c.cycle.sales_planned 
-        self.turnover._remaining_sales = sum(x._for_sale for x in self.turnover.companies) + 10
+            c._for_sale = c.cycle.sales_planned
+        total_sales_planned =  sum(x._for_sale for x in self.turnover.companies) + 10
+        self.turnover._remaining_sales = total_sales_planned
         self.turnover.sell_sneaker()
         for c in self.turnover.companies:
             logging.warning(f"{c.ledger}")
@@ -182,6 +184,7 @@ class TestTurnover(unittest.TestCase):
         return None
     
     def test_sell_sneaker_no_offers(self) -> None:
+        self.turnover._remaining_sales_ad = 0
         for c in self.turnover.companies:
             c._for_sale = 0
         self.turnover._remaining_sales = 100
@@ -191,6 +194,82 @@ class TestTurnover(unittest.TestCase):
         self.assertEqual(self.turnover._remaining_sales, 100)
         for c in self.turnover.companies:
             self.assertEqual(c.result_stock.real_sales, 0)
+        return None
+    
+    #def setUp_test_sell_sneaker_case_1(self) -> Turnover:
+        
+        return
+    
+    def test_sort_and_group(self) -> None:
+        
+        
+        return None
+    
+    
+    def test_sell_sneaker_case_1(self) -> None:
+        cycles = []
+        stocks = []
+        with open('./app/tests/test_data/cycles.json') as file:
+            cycle_data = json.load(file)
+            cycles.append(Cycle.parse_obj(cycle_data["data"]["sneacuz"]))
+            cycles.append(Cycle.parse_obj(cycle_data["data"]["hideandsneaker"]))
+            cycles.append(Cycle.parse_obj(cycle_data["data"]["sneakers4u"]))
+            cycles.append(Cycle.parse_obj(cycle_data["data"]["schuhrensoehne"]))
+            cycles.append(Cycle.parse_obj(cycle_data["data"]["evosneaker"]))
+        with open('./app/tests/test_data/stocks.json') as file:
+            stock_data = json.load(file)
+            for c in cycles:
+                s: Stock = Stock.parse_obj(stock_data["data"]["default"])
+                s.company_id = c.company_id
+                stocks.append(s)
+        custom_scenario: Scenario = Scenario.parse_obj({
+            "sneaker_price": 60,
+            "employee_salary": 400,
+            "machine_purchase_cost1": 12000,
+            "machine_maintainance_cost1": 4000,
+            "paint_price": 10,
+            "employee_signup_bonus": 100,
+            "machine_purchase_cost2": 25000,
+            "machine_maintainance_cost2": 6000,
+            "storage_fee_sneaker": 4,
+            "employee_production_capacity": 10,
+            "machine_purchase_cost3": 45000,
+            "machine_maintainance_cost3": 8000,
+            "creation_date": 1662012320.610944,
+            "storage_fee_paint": 1,
+            "employee_cost_modfier": 0.2,
+            "machine_production_capacity1": 200,
+            "production_cost_per_sneaker1": 60,
+            "id": 1,
+            "storage_fee_finished_sneaker": 8,
+            "sneaker_ask": 580,
+            "production_cost_per_sneaker2": 50,
+            "production_cost_per_sneaker3": 40,
+            "last_edit": 1662717181.36192,
+            "employee_count_modifier_temporary": 0,
+            "factor_ad_take": 0.1,
+            "machine_production_capacity2": 500,
+            "employee_change_allowed": True,
+            "char": "A",
+            "employee_count_modifier_permanent": 0,
+            "tender_offer_count": 0,
+            "machine_production_capacity3": 1000,
+            "description": "Einstieg: Senkung Personalnebenkosten / wachsender Markt / keine Maschinen",
+            "factor_interest_rate": 0.04,
+            "machine_purchase_allowed": False,
+            "machine_employee_max": 10
+        })
+        turnover = Turnover(input_cycles=cycles, input_stocks=stocks, scenario=custom_scenario)
+        
+        turnover.turnover()
+        
+        self.assertEqual(sum(c.result_stock.real_sales for c in turnover.companies), custom_scenario.sneaker_ask)
+        #self.assertEqual()
+        
+        logging.warning(f"{[(c.result_stock.real_sales, c.company_id) for c in turnover.companies]}")
+        
+        
+        
         return None
     
     
@@ -257,6 +336,7 @@ class TestTurnover(unittest.TestCase):
     
     
     def test_sell_sneaker_all(self) -> None:
+        self.turnover._remaining_sales_ad = 0
         for c in self.turnover.companies:
             c._for_sale = 100
         self.turnover.companies[0].cycle.ad_invest = 100.00
@@ -264,8 +344,8 @@ class TestTurnover(unittest.TestCase):
         
         self.turnover._remaining_sales_ad = 40
         self.turnover._remaining_sales = 160
-        self.turnover.sell_sneaker()
         self.turnover.sell_sneaker_ad()
+        self.turnover.sell_sneaker()
         for c in self.turnover.companies:
             logging.warning(f"{c.ledger}")
         self.assertEqual(sum(c.result_stock.real_sales for c in self.turnover.companies), 200)
