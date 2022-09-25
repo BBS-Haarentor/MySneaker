@@ -606,7 +606,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
                 </div>}
 
-                {data.stock.machine_3_space != 0 ? <div className={parseInt(ZugeteilteMitarbeiter3) == Math.ceil(GeplanteProduktion3 / 20)  && tempData.max_production >= Gesamtproduktion && Mitarbeiter >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.stock.machine_3_space != 0 ? <div className={cycle.planned_workers_3 == Math.ceil(cycle.planned_production_3/ 20)  && tempData.max_production >= Gesamtproduktion && Mitarbeiter >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -647,43 +647,43 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setGeplanteProduktion3(e.target.value)} value={GeplanteProduktion3}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" name='planned_production_3' type="number" onChange={handleChange} value={cycle.planned_production_3}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{tempData.max_production >= Gesamtproduktion / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{tempData.max_production >= tempData.overall_production / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(GeplanteProduktion3 / 20)} Stk.</td>
+                                <td>{Math.ceil(cycle.planned_production_3 / 20)} Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => setZugeteilteMitarbeiter3(e.target.value)} value={ZugeteilteMitarbeiter3}></input> Stk.</td>
+                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" name='planned_workers_3' type="number" onChange={handleChange} value={cycle.planned_workers_3}></input> Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{parseInt(ZugeteilteMitarbeiter3) == Math.ceil(GeplanteProduktion3 / 20) && Mitarbeiter >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(cycle.planned_workers_3) == Math.ceil(cycle.planned_production_3 / 20) && Mitarbeiter >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Auslastung</td>
-                                <td>{Math.round((GeplanteProduktion3 / 1) / Produktionskapazität * 100)} %</td>
+                                <td>{Math.round((cycle.planned_production_3 / 1) / machine_3_kapazität * 100)} %</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Gesamtkosten Produktion</td>
-                                <td>{formatter.format(Maschinenkosten + FertigungskostenProStückFE * GeplanteProduktion3)}</td>
+                                <td>{formatter.format(machine_3_costpp + machine_3_fertigungskostenpp * cycle.planned_production_3)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -713,11 +713,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 </div>
                 }
 
-                <Marketing MarketingRef={MarketingRef} setWerbung={setWerbung} Werbung={Werbung} setForschungUndEntwickelung={setForschungUndEntwickelung} 
-                ForschungUndEntwickelung={ForschungUndEntwickelung} />
+                <Marketing MarketingRef={MarketingRef} cycle={cycle} handleChange={handleChange} />
 
-                <Planung AbsatzRef={AbsatzRef} Gesamtproduktion={Gesamtproduktion} setEntnahmeAusDemLager={setEntnahmeAusDemLager} EntnahmeAusDemLager={EntnahmeAusDemLager}
-                MaximaleEntnahmeAusLager={MaximaleEntnahmeAusLager} stock={data.stock} />
+                <Planung AbsatzRef={AbsatzRef} stock={data.stock} /> //TODO NOCH machen
+
 
                 <VerkaufSoll Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} AusschreibungSoll={AusschreibungSoll} 
                 formatter={formatter} AusschreibungSollPreis={AusschreibungSollPreis} MarktSollPreis={MarktSollPreis} setAussetschreibungSoll={setAussetschreibungSoll}
