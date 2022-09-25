@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Beschaffung = ({ scenario,formatter,cycle,tempData,handleChange}) => {
+const Beschaffung = ({ scenario,formatter,cycle,tempData,handleChange,LagerBeschaffungRef}) => {
 
     return (
         <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white flex justify-center snap-start " ref={LagerBeschaffungRef}>

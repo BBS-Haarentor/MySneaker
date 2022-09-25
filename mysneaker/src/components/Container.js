@@ -192,31 +192,32 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
         myHeaders.append('Access-Control-Allow-Origin', '*')
 
-        var raw = JSON.stringify({
-            "buy_sneaker": parseInt(SneakerEinkaufMenge),
-            "buy_paint": parseInt(FarbenEinkaufMenge),
-            "planned_production_1": parseFloat(GeplanteProduktion),
-            "planned_production_2":  parseFloat(GeplanteProduktion2),
-            "planned_production_3":  parseFloat(GeplanteProduktion3),
-            "planned_workers_1":  parseFloat(ZugeteilteMitarbeiter),
-            "planned_workers_2":  parseFloat(ZugeteilteMitarbeiter2),
-            "planned_workers_3":  parseInt(ZugeteilteMitarbeiter3),
-            "include_from_stock": EntnahmeAusDemLager,
-            "sales_planned":  parseFloat(MarktSoll),
-            "sales_bid":  parseFloat(MarktSollPreis),
-            "tender_offer_count":  parseFloat(AusschreibungSoll),
-            "tender_offer_price":  parseFloat(AusschreibungSollPreis),
-            "research_invest":  parseFloat(ForschungUndEntwickelung),
-            "ad_invest":  parseFloat(Werbung),
-            "take_credit": parseFloat( AufnahmeDarlehen),
-            "payback_credit":  parseFloat(RueckzahlungDarlehen),
-            "new_employees":parseInt(Neueinstellungen),
-            "let_go_employees":parseInt(Kündigungen),
-            "buy_new_machine": buy_new_machine, 
-            "machine_1_space":1,
-            "machine_2_space":machine_2_space,
-            "machine_3_space":machine_3_space,
-        });
+        // var raw = JSON.stringify({
+        //     "buy_sneaker": parseInt(SneakerEinkaufMenge),
+        //     "buy_paint": parseInt(FarbenEinkaufMenge),
+        //     "planned_production_1": parseFloat(GeplanteProduktion),
+        //     "planned_production_2":  parseFloat(GeplanteProduktion2),
+        //     "planned_production_3":  parseFloat(GeplanteProduktion3),
+        //     "planned_workers_1":  parseFloat(ZugeteilteMitarbeiter),
+        //     "planned_workers_2":  parseFloat(ZugeteilteMitarbeiter2),
+        //     "planned_workers_3":  parseInt(ZugeteilteMitarbeiter3),
+        //     "include_from_stock": EntnahmeAusDemLager,
+        //     "sales_planned":  parseFloat(MarktSoll),
+        //     "sales_bid":  parseFloat(MarktSollPreis),
+        //     "tender_offer_count":  parseFloat(AusschreibungSoll),
+        //     "tender_offer_price":  parseFloat(AusschreibungSollPreis),
+        //     "research_invest":  parseFloat(ForschungUndEntwickelung),
+        //     "ad_invest":  parseFloat(Werbung),
+        //     "take_credit": parseFloat( AufnahmeDarlehen),
+        //     "payback_credit":  parseFloat(RueckzahlungDarlehen),
+        //     "new_employees":parseInt(Neueinstellungen),
+        //     "let_go_employees":parseInt(Kündigungen),
+        //     "buy_new_machine": buy_new_machine, 
+        //     "machine_1_space":1,
+        //     "machine_2_space":machine_2_space,
+        //     "machine_3_space":machine_3_space,
+        // });
+        var raw =  JSON.stringify({})
 
         var requestOptions = {
             method: 'POST',
@@ -298,21 +299,21 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
         }
         fetchData()
     }, [])*/
-    let TempWerbung = 0
-    let TempForschungUndEntwickelung = 0
-    if (Werbung !== ""){
-        TempWerbung = Werbung
-    }
-    if (ForschungUndEntwickelung !== ""){
-        TempForschungUndEntwickelung = ForschungUndEntwickelung
-    }
+    // let TempWerbung = 0
+    // let TempForschungUndEntwickelung = 0
+    // if (Werbung !== ""){
+    //     TempWerbung = Werbung
+    // }
+    // if (ForschungUndEntwickelung !== ""){
+    //     TempForschungUndEntwickelung = ForschungUndEntwickelung
+    // }
 
-    var SaldoSoll = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(TempWerbung) +  parseFloat(TempForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
-    var SaldoIst = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(data.stock.real_sales)) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(TempWerbung) +  parseFloat(TempForschungUndEntwickelung)  + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    //var SaldoSoll = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(TempWerbung) +  parseFloat(TempForschungUndEntwickelung) + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzSoll + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
+    //var SaldoIst = data.stock.account_balance - (FarbenKosten + SneakerKosten + (((data.stock.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(data.stock.real_sales)) * 8)) + (((data.stock.sneaker_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1) + (((data.stock.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4) + AllMaschienenKosten + (FertigungskostenProStückFE * GeplanteProduktion2) + (FertigungskostenProStückFE * GeplanteProduktion) + (FertigungskostenProStückFE * GeplanteProduktion3) + parseFloat(newMaschienPrize) + (Neueinstellungen * 100) + (Mitarbeiter * (500 * (PersonalnebenkostenInP))) + parseFloat(TempWerbung) +  parseFloat(TempForschungUndEntwickelung)  + ((data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen) * data.scenario.factor_interest_rate)) + UmsatzIst + (data.stock.credit_taken + AufnahmeDarlehen - RueckzahlungDarlehen)
 
    
-    var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
-    var HöheKontokorrentkreditIst = SaldoIst < 0 ? SaldoIst : 0
+    //var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
+    //var HöheKontokorrentkreditIst = SaldoIst < 0 ? SaldoIst : 0
 
     const BuymaschineModal = () => {
         setModalBuyMaschine(<>
@@ -416,7 +417,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             {modalConfirm}
             <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
 
-                <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle} handleChange={handleChange}/>
+                <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle} handleChange={handleChange} LagerBeschaffungRef={LagerBeschaffungRef}/>
 
                 <Lager data={data.stock} cycle={cycle} formatter={formatter} tempData={tempData} handleChange={handleChange}/>
                 
@@ -718,23 +719,17 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 <Planung AbsatzRef={AbsatzRef} stock={data.stock} /> //TODO NOCH machen
 
 
-                <VerkaufSoll Gesamtproduktion={Gesamtproduktion} EntnahmeAusDemLager={EntnahmeAusDemLager} MarktSoll={MarktSoll} AusschreibungSoll={AusschreibungSoll} 
-                formatter={formatter} AusschreibungSollPreis={AusschreibungSollPreis} MarktSollPreis={MarktSollPreis} setAussetschreibungSoll={setAussetschreibungSoll}
-                setAussetschreibungSollPreis={setAussetschreibungSollPreis} setMarktSoll={setMarktSoll} scenario={data.scenario} setMarktSollPreis={setMarktSollPreis} />
+                <VerkaufSoll
+                formatter={formatter} 
+                scenario={data.scenario}/>
 
-                <VerkaufIst AusschreibungIstPrice={AusschreibungIstPrice}  AusschreibungIst={AusschreibungIst} MarktIst={MarktIst} UmsatzIst={UmsatzIst} formatter={formatter} />
+                <VerkaufIst  formatter={formatter} />
 
-                <Statistik AllMaschienenKosten={AllMaschienenKosten} FarbenKosten={FarbenKosten} FertigungskostenProStückFE={FertigungskostenProStückFE} Gesamtproduktion={Gesamtproduktion}
-                MarktSoll={MarktSoll} MarktSollPreis={MarktSollPreis} Mitarbeiter={Mitarbeiter} PersonalnebenkostenInP={PersonalnebenkostenInP} SneakerKosten={SneakerKosten} formatter={formatter} />
+                <Statistik formatter={formatter} />
 
-                <Finanzen AllMaschienenKosten={AllMaschienenKosten} AufnahmeDarlehen={AufnahmeDarlehen} AusschreibungIst={AusschreibungIst} AusschreibungSoll={AusschreibungSoll}
-                FarbenEinkaufMenge={FarbenEinkaufMenge} FarbenKosten={FarbenKosten} FinanzenRef={FinanzenRef} ForschungUndEntwickelung={ForschungUndEntwickelung} 
-                GesamtkostenProduktion={GesamtkostenProduktion} Gesamtproduktion={Gesamtproduktion} HöheKontokorrentkreditIst={HöheKontokorrentkreditIst} 
-                HöheKontokorrentkreditSoll={HöheKontokorrentkreditSoll} MarktIst={MarktIst} MarktSoll={MarktSoll} Maschinenkosten={Maschinenkosten} Mitarbeiter={Mitarbeiter}
-                Neueinstellungen={Neueinstellungen} PersonalnebenkostenInP={PersonalnebenkostenInP} RueckzahlungDarlehen={RueckzahlungDarlehen} SaldoIst={SaldoIst}
-                SaldoSoll={SaldoSoll} SneakerEinkaufMenge={SneakerEinkaufMenge} SneakerKosten={SneakerKosten} UmsatzSoll={UmsatzSoll} Werbung={Werbung} formatter={formatter}
-                newMaschienPrize={newMaschienPrize} scenario={data.scenario} setAufnahmeDarlehen={setAufnahmeDarlehen} setRueckzahlungDarlehen={setRueckzahlungDarlehen}
-                stock={data.stock} UmsatzIst={UmsatzIst}/>
+                <Finanzen  FinanzenRef={FinanzenRef} formatter={formatter}
+                newMaschienPrize={newMaschienPrize} scenario={data.scenario}
+                stock={data.stock} />
                 <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={onSubmit}>Abgeben/Speichern</button>
             </div>
         </>
