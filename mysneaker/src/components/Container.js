@@ -210,7 +210,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             raw = JSON.stringify(cycle)
         }
 
-        console.log(raw)
         var requestOptions = {
             method: 'POST',
             body: raw,
@@ -238,11 +237,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 })
             })
         }
-        const data = await res.json()
-
-
-
-        return data
     }
 
     const onBuyM2 = async () => {
