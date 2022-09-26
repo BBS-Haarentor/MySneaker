@@ -42,7 +42,7 @@ const MarketShare = ({companys}) => {
                         labels: companyNames,
                         datasets: [
                             {
-                                label: '# Marktanteil',
+                                label: '# Marktanteil von Verkaufen Produkten',
                                 data: companyData,
                                 backgroundColor: [
                                     'rgba(255, 99, 132, 0.2)',
@@ -83,8 +83,7 @@ const MarketShare = ({companys}) => {
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Marktanteile',
-
+                                text: 'Marktanteile von Verkaufen Sneakern',
                             }
                         }
                     }}

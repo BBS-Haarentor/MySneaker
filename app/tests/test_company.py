@@ -45,7 +45,9 @@ class TestCompany(unittest.TestCase):
         self.company.result_stock.paint_count = 300
         self.company.result_stock.sneaker_count = 150
         
-        self.company.cycle.include_from_stock = 100
+        #self.company.cycle.include_from_stock = 100
+        self.company.cycle.sales_planned = 200
+        
         logging.warning(f"{len(self.company.machines)}")
         self.company.machines[0].planned_production = 100
         self.company.machines[0].planned_workers = 8
@@ -69,7 +71,9 @@ class TestCompany(unittest.TestCase):
         self.company.result_stock.paint_count = 300
         self.company.result_stock.sneaker_count = 150
         
-        self.company.cycle.include_from_stock = 100
+        #self.company.cycle.include_from_stock = 100
+        self.company.cycle.sales_planned = 200
+
         logging.warning(f"{len(self.company.machines)}")
         self.company.machines[0].planned_production = 100
         self.company.machines[0].planned_workers = 8
@@ -89,8 +93,45 @@ class TestCompany(unittest.TestCase):
         return None
     
     def test_produce_sneaker_all_machines(self) -> None:
-        # load custom cycle
-        raise NotImplementedError
+        self.company.cycle.sales_planned = 1000
+        self.company.machines = []
+        self.company.result_stock.sneaker_count = 1720
+        self.company.result_stock.paint_count = 3410
+        self.company.machines.append(Machine(owner_id=self.company.company_id, slot=1, 
+                                       type=MachineType.parse_obj(self.company.machine_types[1]),
+                                       planned_production=200, 
+                                       planned_workers=0,
+                                       research_modifier=self.company.stock.research_production_modifier
+                                       ))
+        self.company.machines.append(Machine(owner_id=self.company.company_id, slot=2, 
+                                        type=MachineType.parse_obj(self.company.machine_types[2]),
+                                        planned_production=500, 
+                                        planned_workers=0,
+                                        research_modifier=self.company.stock.research_production_modifier
+                                        ))
+        self.company.machines.append(Machine(owner_id=self.company.company_id, slot=3, 
+                                        type=MachineType.parse_obj(self.company.machine_types[3]),
+                                        planned_production=1000, 
+                                        planned_workers=0,
+                                        research_modifier=self.company.stock.research_production_modifier
+                                        ))
+        
+        self.company.produce_sneakers()
+        
+        self.assertEqual(self.company._for_sale, 1000)
+        
+        self.assertIsInstance(self.company.ledger[0], Invoice)
+        self.assertEqual(self.company.ledger[0].amount, 
+                         round(self.company.scenario.production_cost_per_sneaker1 * 200 , 2) +
+                         round(self.company.scenario.production_cost_per_sneaker2 * 500 , 2) +
+                         round(self.company.scenario.production_cost_per_sneaker3 * 1000 , 2))
+
+        
+        self.assertEqual(self.company.result_stock.paint_count, 10)
+        self.assertEqual(self.company.result_stock.sneaker_count, 20)
+
+        
+        return None
     
     def test_pay_interest(self) -> None:
         self.company.stock.credit_taken = 5000

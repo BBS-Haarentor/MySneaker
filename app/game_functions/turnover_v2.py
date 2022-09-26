@@ -108,7 +108,8 @@ class Turnover():
     def sell_sneaker_tender(self) -> None:
         key = lambda x: x.cycle.tender_offer_price 
         batched_companies = self.__sort_and_group(companies=self.companies , key=key)
-        sorted_companies = [x for x in batched_companies if x[0]._for_sale >= self.scenario.tender_offer_count]
+        sorted_companies2 = [x for x in batched_companies if x[0]._for_sale >= self.scenario.tender_offer_count]
+        sorted_companies = [x for x in sorted_companies2 if x[0].cycle.tender_offer_price > 0.0]
         #sorted_companies = sorted([x for x in batched_companies if x[0].cycle.tender_offer_price], key=lambda x: (x[0]._for_sale >= self.scenario.tender_offer_count))
         #logging.warning(f"{sorted_companies=}")
         if len(sorted_companies) <= 0:
@@ -163,9 +164,10 @@ class Turnover():
         _remaining_sales: int = self._remaining_sales_ad
         sort_key = lambda x: - x.cycle.ad_invest
         batched_companies = self.__sort_and_group(companies=self.companies , key=sort_key)
-        # sell in batches
+        sorted_companies = [x for x in batched_companies if x[0].cycle.ad_invest > 0.0]
+
         sales_key = lambda c: c.cycle.sales_bid
-        for b in batched_companies:
+        for b in sorted_companies:
             _remaining_sales: int = self.__general_sales_in_batch(companies=b, sales=_remaining_sales, price_key=sales_key)
         self._remaining_sales_ad = _remaining_sales
         
@@ -173,7 +175,9 @@ class Turnover():
 
 
     def sell_sneaker(self):
+        
         _remaining_sales: int = self._remaining_sales
+        _remaining_sales += self._remaining_sales_ad
         sort_key = lambda x: x.cycle.sales_bid
         batched_companies = self.__sort_and_group(companies=self.companies , key=sort_key)
         # sell in batches

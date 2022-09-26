@@ -127,8 +127,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,
                             </tr>
                             <tr>
                                 <td>Saldo</td>
-                                <td>{formatter.format(isNaN(SaldoSoll) ? 0 : SaldoSoll)}</td>
-                                <td>{formatter.format(SaldoIst)}</td>
+                                <td>{formatter.format(isNaN(SaldoSoll) ? 0 : parseInt(SaldoSoll))}</td>
+                                <td>{formatter.format(parseInt(SaldoIst))}</td>
                             </tr>
                             <tr>
                                 <td>Höhe Kontokorrentkredit</td>
@@ -142,8 +142,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,
                             </tr>
                             <tr>
                                 <td>Kontostand</td>
-                                <td>{formatter.format(isNaN(SaldoSoll) ? (HöheKontokorrentkreditSoll * 0.12) : SaldoSoll + (HöheKontokorrentkreditSoll * 0.12))}</td>
-                                <td>{formatter.format(SaldoIst + (HöheKontokorrentkreditIst * 0.12)) }</td>
+                                <td>{formatter.format(isNaN(SaldoSoll) ? (parseInt(HöheKontokorrentkreditSoll) * 0.12) : parseInt(SaldoSoll) + (parseInt(HöheKontokorrentkreditSoll) * 0.12))}</td>
+                                <td>{formatter.format(parseInt(SaldoIst) + (parseInt(HöheKontokorrentkreditIst) * 0.12)) }</td>
                             </tr>
 
                         </tbody>

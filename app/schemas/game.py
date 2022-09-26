@@ -1,5 +1,8 @@
 from datetime import datetime
 from sqlmodel import SQLModel
+from app.models.cycle import Cycle
+from app.models.scenario import Scenario
+from app.models.stock import Stock
 
 from app.schemas.base import BaseSchema
 
@@ -64,3 +67,9 @@ class PlayerInfoStudent(SQLModel):
     sales_bid: float | None  # 
     real_sales: int | None   #
     market_share: float | None    #
+
+
+class Summary(SQLModel):
+    cycle: Cycle | None
+    stock: Stock | None
+    scenario: Scenario | None   
