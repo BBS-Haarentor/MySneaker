@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import KlassenDetailContainer from './KlassenDetailContainer';
+import Container from '../Container';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 import Analytics from '../KlasseContainer/Analytics';
@@ -284,7 +284,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                             className='px-4 right-0 m-4 py-2 text-sm bg-red-500 hover:bg-red-700 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold'
                             onClick={() => setSelect("main")}>Zurück
                         </button>
-                        <KlassenDetailContainer cycle_index={current_cycle_index} game_id={gameId} userId={companyId}/>
+                        <Container cycle_index={current_cycle_index} game_id={gameId} userId={companyId}/>
                     </>)
 
                 default:

@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,tempData ,newMaschienPrize, allMaschienenKosten }) => {
+const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,tempData ,newMaschienPrize, allMaschienenKosten ,machine_3_fertigungskostenpp , machine_2_fertigungskostenpp}) => {
 
-    console.log(cycle)
+    console.log(machine_2_fertigungskostenpp)
     var SaldoSoll = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(cycle.sales_planned + cycle.tender_offer_count)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2) * 1) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest +  cycle.research_invest + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + tempData.real_money + (stock.credit_taken + cycle.take_credit - cycle.payback_credit)
     var SaldoIst = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(stock.real_sales)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2) * 1) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest +  cycle.research_invest  + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + stock.income_from_sales + (stock.credit_taken + cycle.take_credit - cycle.payback_credit)
 
@@ -82,8 +82,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,
                             </tr>
                             <tr>
                                 <td>Produktionskosten</td>
-                                <td>{formatter.format(0)}</td>//TODO Produktionskosten berechnen
-                                <td>{formatter.format(0)}</td>
+                                <td>{formatter.format(allMaschienenKosten + cycle.planned_production_1 * scenario.production_cost_per_sneaker1 +  cycle.planned_production_2 * machine_2_fertigungskostenpp + cycle.planned_production_3 *  machine_3_fertigungskostenpp)}</td>
+                                <td>{formatter.format(allMaschienenKosten + cycle.planned_production_1 * scenario.production_cost_per_sneaker1 +  cycle.planned_production_2 * machine_2_fertigungskostenpp + cycle.planned_production_3 *  machine_3_fertigungskostenpp)}</td>
                             </tr>
                             <tr>
                                 <td>Maschinenkauf</td>
