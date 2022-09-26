@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Beschaffung = ({ formatter, MarktSollPreis, MarktSoll, SneakerKosten, FarbenKosten, Gesamtproduktion, FertigungskostenProStückFE, AllMaschienenKosten, Mitarbeiter, PersonalnebenkostenInP }) => {
+const Beschaffung = ({ formatter, cycle,tempData ,data,AllMaschienenKosten}) => {
 
     return (
         <div className=" p-4 shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
@@ -17,38 +17,38 @@ const Beschaffung = ({ formatter, MarktSollPreis, MarktSoll, SneakerKosten, Farb
                             </tr>
                             <tr>
                                 <td>Umsatz</td>
-                                <td>{formatter.format(MarktSollPreis)}</td>
-                                <td>{formatter.format((MarktSoll*MarktSollPreis))}</td>
+                                <td>{formatter.format(cycle.sales_bid)}</td>
+                                <td>{formatter.format((cycle.sales_planned*cycle.sales_bid))}</td>
                             </tr>
                             <tr>
                                 <td>Werkstoffkosten</td>
-                                <td>{formatter.format(Gesamtproduktion === 0 ? 0 : (SneakerKosten+FarbenKosten) / Gesamtproduktion )}</td>
-                                <td>{formatter.format((SneakerKosten+FarbenKosten))}</td>
+                                <td>{formatter.format(tempData.overall_production === 0 ? 0 : (tempData.sneaker_cost+tempData.paint_cost) / tempData.overall_production )}</td>
+                                <td>{formatter.format((tempData.sneaker_cost+tempData.paint_cost))}</td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten</td>
-                                <td>{formatter.format(Gesamtproduktion === 0 ? 0 : FertigungskostenProStückFE)}</td>
-                                <td>{formatter.format(FertigungskostenProStückFE * Gesamtproduktion)}</td>
+                                <td>{formatter.format(tempData.overall_production === 0 ? 0 : data.scenario.production_cost_per_sneaker1)}</td>
+                                <td>{formatter.format(data.scenario.production_cost_per_sneaker1 * tempData.overall_production)}</td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten</td>
-                                <td>{formatter.format(Gesamtproduktion !== 0 ? AllMaschienenKosten / Gesamtproduktion : 0)}</td>
+                                <td>{formatter.format(tempData.overall_production !== 0 ? AllMaschienenKosten / tempData.overall_production : 0)}</td>
                                 <td>{formatter.format(AllMaschienenKosten)}</td>
                             </tr>
                             <tr>
                                 <td>Personalkosten</td>
-                                <td>{formatter.format(Gesamtproduktion !== 0 ? Mitarbeiter * (500 * (PersonalnebenkostenInP))/Gesamtproduktion : 0)}</td>
-                                <td>{formatter.format(Mitarbeiter * (500 * (PersonalnebenkostenInP)))}</td>
+                                <td>{formatter.format(tempData.overall_production !== 0 ? cycle.employees_count * (500 * (data.scenario.employee_cost_modfier))/tempData.overall_production : 0)}</td>
+                                <td>{formatter.format(cycle.employees_count * (500 * (data.scenario.employee_cost_modfier)))}</td>
                             </tr>
                             <tr>
                                 <td>Gesamtkosten</td>
-                                <td>{formatter.format(Gesamtproduktion !== 0 ? ((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE : 0)}</td>
-                                <td>{formatter.format((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion)}</td>
+                                <td>{formatter.format(tempData.overall_production !== 0 ? ((cycle.employees_count * (500 * (data.scenario.employee_cost_modfier)) + (tempData.sneaker_cost+tempData.paint_cost) + AllMaschienenKosten) /tempData.overall_production) + data.scenario.production_cost_per_sneaker1 : 0)}</td>
+                                <td>{formatter.format((cycle.employees_count * (500 * (data.scenario.employee_cost_modfier)) + AllMaschienenKosten + (tempData.sneaker_cost+tempData.paint_cost)) + data.scenario.production_cost_per_sneaker1 * tempData.overall_production)}</td>
                             </tr>
                             <tr>
                                 <td>Gewinn</td>
-                                <td>{formatter.format(Gesamtproduktion !== 0 ? MarktSollPreis - (((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + (SneakerKosten+FarbenKosten) + AllMaschienenKosten) /Gesamtproduktion) + FertigungskostenProStückFE) : 0)}</td>
-                                <td>{formatter.format((MarktSoll*MarktSollPreis) - ((Mitarbeiter * (500 * (PersonalnebenkostenInP)) + AllMaschienenKosten + (SneakerKosten+FarbenKosten)) + FertigungskostenProStückFE * Gesamtproduktion))}</td>
+                                <td>{formatter.format(tempData.overall_production !== 0 ? cycle.sales_bid - (((cycle.employees_count * (500 * (data.scenario.employee_cost_modfier)) + (tempData.sneaker_cost+tempData.paint_cost) + AllMaschienenKosten) /tempData.overall_production) + data.scenario.production_cost_per_sneaker1) : 0)}</td>
+                                <td>{formatter.format((cycle.sales_planned*cycle.sales_bid) - ((cycle.employees_count * (500 * (data.scenario.employee_cost_modfier)) + AllMaschienenKosten + (tempData.sneaker_cost+tempData.paint_cost)) + data.scenario.production_cost_per_sneaker1 * tempData.overall_production))}</td>
                             </tr>
                         </tbody>
                     </table>

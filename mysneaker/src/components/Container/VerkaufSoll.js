@@ -1,23 +1,10 @@
 import React from 'react'
 
-const Beschaffung = ({
-                         Gesamtproduktion,
-                         EntnahmeAusDemLager,
-                         MarktSoll,
-                         AusschreibungSoll,
-                         setMarktSoll,
-                         setMarktSollPreis,
-                         formatter,
-                         MarktSollPreis,
-                         scenario,
-                         setAussetschreibungSoll,
-                         setAussetschreibungSollPreis,
-                         AusschreibungSollPreis
-                     }) => {
+const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
 
     return (
         <div
-            className={(Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? " p-4 border-2 border-red-300 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start" : "p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start") + " dark:bg-[#1f2733] dark:text-white"}>
+            className={(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) < (Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count)) / 1) ? " p-4 border-2 border-red-300 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start" : "p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start") + " dark:bg-[#1f2733] dark:text-white"}>
             <table>
                 <tbody>
                 <tr>
@@ -33,64 +20,63 @@ const Beschaffung = ({
                 <tr>
                     <td>Markt</td>
                     <td><input className="border-2 border-[#4fd1c5] w-[80%] rounded-lg dark:bg-[#1f2733]" min="0"
-                               type="number" onChange={(e) => {
-                        if (e.target.value !== "") {
-                            e.target.value >= 0 ? e.target.value >= (Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager))) ? setMarktSoll((Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager))))  : setMarktSoll(e.target.value) : setMarktSoll(0)
-                        } else {
-                            setMarktSoll(0)
-                        }
-                    }} max={""+(Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)))} value={MarktSoll}></input> Stk.
+                               type="number" name="sales_planned" onChange={handleChange} max={(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)))} value={cycle.sales_planned}></input> Stk.
                     </td>
                     <td><input className="border-2 border-[#4fd1c5] w-[90%] rounded-lg dark:bg-[#1f2733]" min="0"
                                max="300" type="number"
-                               onChange={(e) => e.target.value <= 300 ? e.target.value >= 0 ? setMarktSollPreis(e.target.value) : setMarktSollPreis(0) : setMarktSollPreis(300)}
-                               value={MarktSollPreis}></input> €
+                               onChange={handleChange}
+                               name="sales_bid"
+                               value={cycle.sales_bid}></input> €
                     </td>
-                    <td>{formatter.format(MarktSoll * MarktSollPreis)}</td>
+                    <td>{formatter.format(cycle.sales_planned * cycle.sales_bid)}</td>
                 </tr>
                 <tr>
 
                     <td>Ausschreibung</td>
 
-                    {scenario.tender_offer_count === 0 ?
+                    {data.scenario.tender_offer_count === 0 ?
                         <>
                             <td><input className="border-2 border-[#1f273] w-[80%] rounded-lg dark:bg-[#252e3c]" min="0"
                                        type="number"
-                                       onChange={(e) => e.target.value >= 0 ? setAussetschreibungSoll(e.target.value) : setAussetschreibungSoll(0)}
-                                       value={AusschreibungSoll} disabled></input> Stk.
+                                       onChange={handleChange}
+                                       name="tender_offer_count"
+                                       value={cycle.tender_offer_count} disabled></input> Stk.
                             </td>
                             <td><input className="border-2 border-[#1f273] w-[90%] rounded-lg dark:bg-[#252e3c]" min="0"
                                        max="300" type="number"
-                                       onChange={(e) => e.target.value <= 300 ? e.target.value >= 0 ? setAussetschreibungSollPreis(e.target.value) : setAussetschreibungSollPreis(0) : setAussetschreibungSollPreis(300)}
-                                       value={AusschreibungSollPreis} disabled></input> €
+                                       name="tender_offer_price"
+                                       onChange={handleChange}
+                                       value={cycle.tender_offer_price} disabled></input> €
                             </td>
                         </>
                         :
                         <>
-                            <td><select id="tender_offer_count"
+                            <td><select name="tender_offer_count"
                                         className="border-2 border-[#4fd1c5] w-[80%] rounded-lg dark:bg-[#1f2733]"
-                                        onChange={(e) => setAussetschreibungSoll(e.target.value)}>
-                                <option value="0" selected>0</option>
-                                <option value={scenario.tender_offer_count}
-                                        >{scenario.tender_offer_count}</option>
+                                        defaultValue="0"
+                                        onChange={handleChange}>
+                                <option value="0">0</option>
+                                <option value={data.scenario.tender_offer_count}
+                                        >{data.scenario.tender_offer_count}</option>
                             </select>Stk.
                             </td>
                             <td><input className="border-2 border-[#4fd1c5] w-[90%] rounded-lg dark:bg-[#1f2733]"
                                        min="0" max="300" type="number"
-                                       onChange={(e) => e.target.value <= 300 ? e.target.value >= 0 ? setAussetschreibungSollPreis(e.target.value) : setAussetschreibungSollPreis(0) : setAussetschreibungSollPreis(300)}
-                                       value={AusschreibungSollPreis}></input> €
+                                       onChange={handleChange}
+                                       name="tender_offer_price"
+                                       value={cycle.tender_offer_price}></input> €
                             </td>
                         </>
                     }
-                    <td>{formatter.format(AusschreibungSoll * AusschreibungSollPreis)}</td>
+                    <td>{formatter.format(cycle.tender_offer_count * cycle.tender_offer_price)}</td>
                 </tr>
                 <tr>
                     <td>Gesamt</td>
-                    <td>{Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))} Stk.</td>
+                    <td>{Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count))} Stk.</td>
                 </tr>
                 <tr>
                     <td>Gesamtverkauf möglich</td>
-                    <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) < (Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) / 1) ? "Nein" : "Ja"}</td>
+                    <td>{Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) < (Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count)) / 1) ? "Nein" : "Ja"}</td>
                 </tr>
                 </tbody>
             </table>

@@ -1,7 +1,15 @@
 import React from 'react'
 
-const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,tempData }) => {
+const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,tempData ,newMaschienPrize, allMaschienenKosten }) => {
 
+    console.log(cycle)
+    var SaldoSoll = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(cycle.sales_planned + cycle.tender_offer_count)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2) * 1) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest +  cycle.research_invest + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + tempData.real_money + (stock.credit_taken + cycle.take_credit - cycle.payback_credit)
+    var SaldoIst = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(stock.real_sales)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2) * 1) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest +  cycle.research_invest  + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + stock.income_from_sales + (stock.credit_taken + cycle.take_credit - cycle.payback_credit)
+
+   
+    var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
+    var HöheKontokorrentkreditIst = SaldoIst < 0 ? SaldoIst : 0
+    
     return (
         <div className=" p-4 shadow-lg xl:col-span-3 dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
                     <img src="/img/projections.svg" className='h-[500px] w-0 xl:w-[500px] m-auto p-10'></img>
@@ -54,28 +62,28 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,
                             </tr>
                             <tr>
                                 <td>Lagerkosten Fertige Erz.</td>
-                                <td>{formatter.format(isNaN((stock.finished_sneaker_count + parseInt(paint_cost.overall_production) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8) ? 0 : (stock.finished_sneaker_count + parseInt(paint_cost.overall_production) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
-                                <td>{formatter.format(paint_cost.overall_production !== 0 ? (stock.finished_sneaker_count + parseInt(paint_cost.overall_production) - Math.round(parseInt(MarktIst) + parseInt(AusschreibungIst))) * 8 : 0)}</td>
+                                <td>{formatter.format(isNaN((stock.finished_sneaker_count + parseInt(tempData.overall_production) - Math.round(cycle.sales_planned + cycle.tender_offer_count)) * 8) ? 0 : (stock.finished_sneaker_count + parseInt(tempData.overall_production) - Math.round(cycle.sales_planned + cycle.tender_offer_count)) * 8)}</td>
+                                <td>{formatter.format(tempData.overall_production !== 0 ? (stock.finished_sneaker_count + parseInt(tempData.overall_production) - Math.round(stock.real_sales + stock.tender_sales)) * 8 : 0)}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Sneaker</td>
-                                <td>{formatter.format((stock.sneaker_count + parseInt(cycle.buy_sneaker) - paint_cost.overall_production) * 4)}</td>
-                                <td>{formatter.format((stock.sneaker_count + parseInt(cycle.buy_sneaker) - paint_cost.overall_production) * 4)}</td>
+                                <td>{formatter.format((stock.sneaker_count + parseInt(cycle.buy_sneaker) - tempData.overall_production) * 4)}</td>
+                                <td>{formatter.format((stock.sneaker_count + parseInt(cycle.buy_sneaker) - tempData.overall_production) * 4)}</td>
                             </tr>
                             <tr>
                                 <td>Lagerkosten Farben</td>
-                                <td>{formatter.format(((stock.sneaker_count + parseInt(cycle.buy_paint)) - paint_cost.overall_production * 2) * 1)}</td>
-                                <td>{formatter.format(((stock.sneaker_count + parseInt(cycle.buy_paint)) - paint_cost.overall_production * 2) * 1)}</td>
+                                <td>{formatter.format(((stock.sneaker_count + parseInt(cycle.buy_paint)) - tempData.overall_production * 2) * 1)}</td>
+                                <td>{formatter.format(((stock.sneaker_count + parseInt(cycle.buy_paint)) - tempData.overall_production * 2) * 1)}</td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten</td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
-                                <td>{formatter.format(AllMaschienenKosten)}</td>
+                                <td>{formatter.format(allMaschienenKosten)}</td>
+                                <td>{formatter.format(allMaschienenKosten)}</td>
                             </tr>
                             <tr>
                                 <td>Produktionskosten</td>
-                                <td>{formatter.format(GesamtkostenProduktion - Maschinenkosten)}</td>
-                                <td>{formatter.format(GesamtkostenProduktion - Maschinenkosten)}</td>
+                                <td>{formatter.format(0)}</td>//TODO Produktionskosten berechnen
+                                <td>{formatter.format(0)}</td>
                             </tr>
                             <tr>
                                 <td>Maschinenkauf</td>
@@ -89,8 +97,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,
                             </tr>
                             <tr>
                                 <td>Löhne/Gehälter</td>
-                                <td>{formatter.format(cycle.employees_count * (500 * (PersonalnebenkostenInP)))}</td>
-                                <td>{formatter.format(cycle.employees_count * (500 * (PersonalnebenkostenInP)))}</td>
+                                <td>{formatter.format(cycle.employees_count * (500 * (tempData.employees_cost_in_p)))}</td>
+                                <td>{formatter.format(cycle.employees_count * (500 * (tempData.employees_cost_in_p)))}</td>
                             </tr>
                             <tr>
                                 <td>Werbekosten</td>
@@ -114,8 +122,8 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,
                             </tr>
                             <tr>
                                 <td>Umsatzerlöse</td>
-                                <td>{formatter.format(isNaN(UmsatzSoll) ? 0 : UmsatzSoll)}</td>
-                                <td>{formatter.format(UmsatzIst)}</td>
+                                <td>{formatter.format(isNaN(tempData.real_money) ? 0 : tempData.real_money)}</td>
+                                <td>{formatter.format(stock.income_from_sales)}</td>
                             </tr>
                             <tr>
                                 <td>Saldo</td>

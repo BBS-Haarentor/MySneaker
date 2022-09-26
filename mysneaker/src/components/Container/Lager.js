@@ -60,7 +60,7 @@ const Lager = ({ data, cycle,tempData, formatter, handleChange }) => {
                         <td>Verbrauch Produktion (IST)</td>
                         <td>{tempData.overall_production} Stk.</td>
                         <td>{tempData.overall_production * 2} Stk.</td>
-                        <td>{MarktSoll} Stk.</td>
+                        <td>{cycle.sales_planned} Stk.</td>
                     </tr>
                     <tr>
                         <td>Lager Periodenende (IST)</td>
