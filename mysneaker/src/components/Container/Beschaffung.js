@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Beschaffung = ({ scenario, LagerBeschaffungRef, setSneakerEinkaufMenge, setFarbenEinkaufMenge, formatter, SneakerKosten, SneakerEinkaufMenge, FarbenEinkaufMenge, FarbenKosten }) => {
+const Beschaffung = ({ scenario,formatter,cycle,tempData,handleChange,LagerBeschaffungRef}) => {
 
     return (
         <div className=" p-4 xl:col-span-3 shadow-lg rounded-3xl m-2 bg-white dark:bg-[#1f2733] dark:text-white flex justify-center snap-start " ref={LagerBeschaffungRef}>
@@ -18,17 +18,17 @@ const Beschaffung = ({ scenario, LagerBeschaffungRef, setSneakerEinkaufMenge, se
                     </tr>
                     <tr>
                         <td>Einkauf (Menge)</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setSneakerEinkaufMenge(e.target.value) : setSneakerEinkaufMenge(0)} value={SneakerEinkaufMenge}></input></td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setFarbenEinkaufMenge(e.target.value) : setFarbenEinkaufMenge(0)} value={FarbenEinkaufMenge}></input></td>
+                        <td><input className="border-2  border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" name="buy_sneaker" min="0" type="number" onChange={handleChange} value={cycle.buy_sneaker}></input></td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" name="buy_paint" min="0" type="number" onChange={handleChange} value={cycle.buy_paint}></input></td>
                     </tr>
                     <tr>
                         <td>Kosten pro Werkstoff</td>
-                        <td>{formatter.format(SneakerKosten)}</td>
-                        <td>{formatter.format(FarbenKosten)}</td>
+                        <td>{formatter.format(tempData.sneaker_cost)}</td>
+                        <td>{formatter.format(tempData.paint_cost)}</td>
                     </tr>
                     <tr>
                         <td>Gesamtkosten Werkstoffe</td>
-                        <td>{formatter.format(SneakerKosten + FarbenKosten)}</td>
+                        <td>{formatter.format(tempData.sneaker_cost + tempData.paint_cost)}</td>
                     </tr>
                 </tbody>
             </table>

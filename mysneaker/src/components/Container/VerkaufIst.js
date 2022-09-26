@@ -1,6 +1,6 @@
 import React from 'react'
 
-const VerkaufIst = ({ UmsatzIst, MarktIst, AusschreibungIst, AusschreibungIstPrice, formatter }) => {
+const VerkaufIst = ({ formatter , data }) => {
 
     return (
         <div className="dark:bg-[#1f2733] dark:text-white p-4 shadow-lg rounded-3xl m-2 xl:col-span-3 bg-white flex justify-center snap-start ">
@@ -17,18 +17,18 @@ const VerkaufIst = ({ UmsatzIst, MarktIst, AusschreibungIst, AusschreibungIstPri
                             </tr>
                             <tr>
                                 <td>Markt</td>
-                                <td>{AusschreibungIst === null ? 0 : MarktIst-AusschreibungIst} Stk.</td>
-                                <td>{formatter.format(isNaN(AusschreibungIstPrice) ? 0 : UmsatzIst-AusschreibungIstPrice)}</td>
+                                <td>{data.stock.real_sales} Stk.</td>
+                                <td>{formatter.format(data.stock.income_from_sales - (data.stock.tender_price*data.stock.tender_sales) )}</td>
                             </tr>
                             <tr>
                                 <td>Ausschreibung</td>
-                                <td>{AusschreibungIst === null ? 0 : AusschreibungIst} Stk.</td>
-                                <td>{formatter.format(isNaN(AusschreibungIstPrice) ? 0 : AusschreibungIstPrice)}</td>
+                                <td>{data.stock.tender_sales} Stk.</td>
+                                <td>{formatter.format(data.stock.tender_price*data.stock.tender_sales)}</td>
                             </tr>
                             <tr>
                                 <td>Gesamt</td>
-                                <td>{MarktIst === null ? 0 : Math.round(parseInt(MarktIst))} Stk. </td>
-                                <td>{formatter.format(UmsatzIst)}</td>
+                                <td>{data.stock.tender_sales + data.stock.real_sales} Stk. </td>
+                                <td>{formatter.format(data.stock.income_from_sales)}</td>
                             </tr>
                         </tbody>
                     </table>

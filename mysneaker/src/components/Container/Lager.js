@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatter, AusschreibungSoll, SneakerEinkaufMenge, FarbenEinkaufMenge, MarktIst, AusschreibungIst }) => {
+const Lager = ({ data, cycle,tempData, formatter, handleChange }) => {
 
 
     return (
@@ -22,27 +22,27 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     </tr>
                     <tr>
                         <td>Aktuelle Beschaffung</td>
-                        <td>{SneakerEinkaufMenge} Stk.</td>
-                        <td>{FarbenEinkaufMenge} Stk.</td>
-                        <td>{Gesamtproduktion} Stk.</td>
+                        <td>{cycle.buy_sneaker} Stk.</td>
+                        <td>{cycle.buy_paint} Stk.</td>
+                        <td>{tempData.overall_production} Stk.</td>
                     </tr>
                     <tr>
                         <td>Gesamte Verfügbarkeit</td>
-                        <td>{data.sneaker_count + parseInt(SneakerEinkaufMenge) + " Stk."}</td>
-                        <td>{data.paint_count + parseInt(FarbenEinkaufMenge) + " Stk."}</td>
-                        <td>{data.finished_sneaker_count + parseInt(Gesamtproduktion) + " Stk."}</td>
+                        <td>{data.sneaker_count + cycle.buy_sneaker + " Stk."}</td>
+                        <td>{data.paint_count + cycle.buy_paint + " Stk."}</td>
+                        <td>{data.finished_sneaker_count + tempData.overall_production + " Stk."}</td>
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (PLAN)</td>
-                        <td>{Gesamtproduktion} Stk.</td>
-                        <td>{Gesamtproduktion * 2} Stk.</td>
-                        <td>{Math.round(parseInt(Gesamtproduktion) + parseInt(EntnahmeAusDemLager)) + " Stk."}</td>
+                        <td>{tempData.overall_production} Stk.</td>
+                        <td>{tempData.overall_production * 2} Stk.</td>
+                        <td>{Math.round(tempData.overall_production + cycle.include_from_stock) + " Stk."}</td>
                     </tr>
                     <tr>
                         <td>Lager Periodenende (PLAN)</td>
-                        <td>{(data.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion + " Stk."}</td>
-                        <td>{(data.paint_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2 + " Stk."}</td>
-                        <td>{data.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll)) + " Stk."}</td>
+                        <td>{(data.sneaker_count + cycle.buy_sneaker) - tempData.overall_production + " Stk."}</td>
+                        <td>{(data.paint_count + cycle.buy_paint) - tempData.overall_production * 2 + " Stk."}</td>
+                        <td>{data.finished_sneaker_count +tempData.overall_production - Math.round(cycle.sales_planned + cycle.tender_offer_count) + " Stk."}</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten pro Stück</td>
@@ -52,27 +52,27 @@ const Lager = ({ data, Gesamtproduktion, EntnahmeAusDemLager, MarktSoll, formatt
                     </tr>
                     <tr>
                         <td>Lagerkosten (PLAN)</td>
-                        <td>{formatter.format(((data.sneaker_count + parseInt(SneakerEinkaufMenge)) - Gesamtproduktion) * 4)}</td>
-                        <td>{formatter.format(((data.paint_count + parseInt(FarbenEinkaufMenge)) - Gesamtproduktion * 2) * 1)}</td>
-                        <td>{formatter.format((data.finished_sneaker_count + parseInt(Gesamtproduktion) - Math.round(parseInt(MarktSoll) + parseInt(AusschreibungSoll))) * 8)}</td>
+                        <td>{formatter.format(((data.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4)}</td>
+                        <td>{formatter.format(((data.paint_count + cycle.buy_paint) - tempData.overall_production * 2) * 1)}</td>
+                        <td>{formatter.format((data.finished_sneaker_count + tempData.overall_production - Math.round((cycle.sales_planned + cycle.tender_offer_count)) * 8))}</td>
                     </tr>
                     <tr>
                         <td>Verbrauch Produktion (IST)</td>
-                        <td>{Gesamtproduktion} Stk.</td>
-                        <td>{Gesamtproduktion * 2} Stk.</td>
-                        <td>{MarktSoll} Stk.</td>
+                        <td>{tempData.overall_production} Stk.</td>
+                        <td>{tempData.overall_production * 2} Stk.</td>
+                        <td>{cycle.sales_planned} Stk.</td>
                     </tr>
                     <tr>
                         <td>Lager Periodenende (IST)</td>
-                        <td>{data.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion} Stk.</td>
-                        <td>{data.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2} Stk.</td>
-                        <td>{data.finished_sneaker_count + parseInt(Gesamtproduktion)} Stk.</td>
+                        <td>{data.sneaker_count + cycle.buy_sneaker - tempData.overall_production} Stk.</td>
+                        <td>{data.paint_count + cycle.buy_paint - tempData.overall_production * 2} Stk.</td>
+                        <td>{data.finished_sneaker_count + tempData.overall_production} Stk.</td>
                     </tr>
                     <tr>
                         <td>Lagerkosten (IST)</td>
-                        <td>{formatter.format((data.sneaker_count + parseInt(SneakerEinkaufMenge) - Gesamtproduktion) * 4)}</td>
-                        <td>{formatter.format((data.paint_count + parseInt(FarbenEinkaufMenge) - Gesamtproduktion * 2) * 1)}</td>
-                        <td>{formatter.format((data.finished_sneaker_count + parseInt(Gesamtproduktion)) * 8)}</td>
+                        <td>{formatter.format((data.sneaker_count +cycle.buy_sneaker - tempData.overall_production) * 4)}</td>
+                        <td>{formatter.format((data.paint_count + cycle.buy_paint - tempData.overall_production * 2) * 1)}</td>
+                        <td>{formatter.format((data.finished_sneaker_count + tempData.overall_production) * 8)}</td>
                     </tr>
 
                 </tbody>

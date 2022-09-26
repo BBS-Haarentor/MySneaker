@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinstellungen, Neueinstellungen, setKündigungen, Kündigungen, ZugeteilteMitarbeiter2, ZugeteilteMitarbeiter3, formatter, PersonalnebenkostenInP, setPersonalnebenkosten, Personalnebenkosten,employee_signup_bonus,data }) => {
+const Personal = ({ PersonalRef, formatter,data,cycle,tempData, handleChange }) => {
 
 
     return (
@@ -13,7 +13,7 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Mitarbeiter</td>
-                        <td>{Mitarbeiter}</td>
+                        <td>{cycle.employees_count}</td>
 
                     </tr>
                     <tr>
@@ -23,22 +23,22 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Verfügbare Kapazität (MA)</td>
-                        <td>{Mitarbeiter - (parseInt(ZugeteilteMitarbeiter)  + parseInt(ZugeteilteMitarbeiter2)  + parseInt(ZugeteilteMitarbeiter3) )} MA</td>
+                        <td>{cycle.employees_count - (parseInt(cycle.planned_workers_1)  + parseInt(cycle.planned_workers_2)  + parseInt(cycle.planned_workers_3) )} MA</td>
 
                     </tr>
                     <tr>
                         <td>benötigte MA </td>
-                        <td>{(parseInt(ZugeteilteMitarbeiter)  + parseInt(ZugeteilteMitarbeiter2)  + parseInt(ZugeteilteMitarbeiter3) )} MA</td>
+                        <td>{(parseInt(cycle.planned_workers_1)  + parseInt(cycle.planned_workers_2)  + parseInt(cycle.planned_workers_3) )} MA</td>
 
                     </tr>
                     <tr>
                         <td>Auslastung </td>
-                        <td>{Math.round((ZugeteilteMitarbeiter / 1) / Mitarbeiter * 100)} %</td>
+                        <td>{Math.round((cycle.planned_workers_1 / 1) / cycle.employees_count * 100)} %</td>
 
                     </tr>
                     <tr>
                         <td>Neueinstellungen</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setNeueinstellungen(e.target.value) : setNeueinstellungen(0)} value={Neueinstellungen}></input> MA</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" name='new_employees' type="number" onChange={handleChange} value={cycle.new_employees}></input> MA</td>
 
                     </tr>
                     <tr>
@@ -48,17 +48,17 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Kündigungen/Rente/ etc.</td>
-                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={(e) => e.target.value >= 0 ? setKündigungen(e.target.value) : setKündigungen(0)} value={Kündigungen}></input> MA</td>
+                        <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0" type="number" onChange={handleChange} value={cycle.let_go_employees}></input> MA</td>
 
                     </tr>
                     <tr>
                         <td>Zugeteilte Mitarbeiter</td>
-                        <td>{parseInt(ZugeteilteMitarbeiter) + parseInt(ZugeteilteMitarbeiter2) + parseInt(ZugeteilteMitarbeiter3)} MA</td>
+                        <td>{parseInt(cycle.planned_workers_1) + parseInt(cycle.planned_workers_2) + parseInt(cycle.planned_workers_3)} MA</td>
 
                     </tr>
                     <tr>
                         <td>Mitarbeiter nächste Periode</td>
-                        <td>{parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen} MA</td>
+                        <td>{parseInt(cycle.employees_count) + cycle.new_employees - cycle.let_go_employees} MA</td>
 
 
                     </tr>
@@ -74,12 +74,12 @@ const Personal = ({ PersonalRef, Mitarbeiter, ZugeteilteMitarbeiter, setNeueinst
                     </tr>
                     <tr>
                         <td>Personalkosten akt. Periode</td>
-                        <td>{formatter.format(Mitarbeiter * (data.scenario.employee_salary * (PersonalnebenkostenInP)))}</td>
+                        <td>{formatter.format(cycle.employees_count * (data.scenario.employee_salary * (tempData.employees_cost_in_p)))}</td>
 
                     </tr>
                     <tr>
                         <td>Personalkosten folg. Periode</td>
-                        <td>{formatter.format((parseInt(Mitarbeiter) + parseInt(Neueinstellungen) - Kündigungen) * (data.scenario.employee_salary * (PersonalnebenkostenInP)))}</td>
+                        <td>{formatter.format((parseInt(cycle.employees_count) + cycle.new_employees - cycle.let_go_employees) * (data.scenario.employee_salary * (tempData.employees_cost_in_p)))}</td>
 
                     </tr>
 
