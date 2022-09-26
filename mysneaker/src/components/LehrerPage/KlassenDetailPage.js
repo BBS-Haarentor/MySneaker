@@ -5,12 +5,13 @@ import QRCodeStyling from "qr-code-styling";
 import Cookies from 'js-cookie';
 import SideNavBar from '../SideNavBar'
 import KlasseContainer from './KlasseContainer';
+import {useNavigate} from 'react-router-dom';
 
 const KlassenDetailPage = () => {
     let {id} = useParams()
 
     const [companies, setCompanies] = useState([])
-
+    const navigate = useNavigate()
     const [register, setRegister] = useState(false)
     const [selectCompanie, setSelectCompanie] = useState(null)
     const [select, setSelect] = useState("main");
@@ -225,9 +226,9 @@ const KlassenDetailPage = () => {
     }
     const OnClick = (text) => {
         if (text === "LehrerPage") {
-            window.location.href = "/dashboard"
+            navigate("/dashboard")
         } else if (text === "Logout") {
-            window.location.href = "/logout"
+            navigate("/logout")
         }
 
     }

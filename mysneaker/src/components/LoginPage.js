@@ -3,11 +3,12 @@ import Cookies from "js-cookie";
 import {User} from './API/API'
 import {MissingArgumentsException} from "./API/Exceptions/MissingArgumentsException";
 import {WrongInputException} from "./API/Exceptions/WrongInputException";
+import {useNavigate} from 'react-router-dom';
 
-const LoginPage = () => {
+const LoginPage = ({updateSidebar}) => {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
-
+    const navigate = useNavigate()
     const [alert, setAlert] = useState('')
 
     const onSubmit = async (e) => {
@@ -16,7 +17,8 @@ const LoginPage = () => {
         setAlert("")
         new User().login(userName, password).then(access_token => {
             Cookies.set("session", [access_token])
-            window.location.href = "/dashboard"
+            updateSidebar();
+            navigate("/dashboard")
         }).catch(error => {
             console.log(error.message)
             if (error instanceof MissingArgumentsException || error instanceof WrongInputException) {

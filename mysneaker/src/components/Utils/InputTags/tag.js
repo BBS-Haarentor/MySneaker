@@ -8,29 +8,6 @@ interface TagProps {
     disabled?: boolean;
 }
 
-const tagStyles = css({
-    alignItems: "center",
-    background: "var(--rti-tag)",
-    borderRadius: "var(--rti-radius)",
-    display: "inline-flex",
-    justifyContent: "center",
-    padding: "var(--rti-tag-padding)",
-
-    button: {
-        background: "none",
-        border: 0,
-        borderRadius: "50%",
-        cursor: "pointer",
-        lineHeight: "inherit",
-        padding: "0 var(--rti-s)",
-        backgroundColor: "dark:bg-[#1f2733]",
-
-        "&:hover": {
-            color: "var(--rti-tag-remove)",
-        },
-    },
-});
-
 export default function Tag({ text, remove, disabled }: TagProps) {
     const handleOnRemove = e => {
         e.stopPropagation();

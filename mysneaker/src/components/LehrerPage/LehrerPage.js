@@ -2,9 +2,11 @@ import React from 'react'
 import { useState, useEffect } from "react";
 import { TagsInput } from "./../Utils/InputTags/index";
 import Cookies from 'js-cookie';
+import {useNavigate} from 'react-router-dom';
 
 const LehrerPage = () => {
   const [data, setData] = useState([])
+  const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
   const [createGameName, setCreateGameName] = useState("")
   const [companiesVerify, setCompaniesVerify] = useState([])
@@ -39,8 +41,11 @@ const LehrerPage = () => {
 
     getGames();
 
-    setInterval(() => {
+    const interval = setInterval(() => {
       getCompaniesVerify()
+      if(window.location.pathname !== "/dashboard") {
+        clearInterval(interval)
+      }
     }, 2000)
 
   }, [])
@@ -198,14 +203,14 @@ const LehrerPage = () => {
           <div className='shadow-lg dark:bg-[#1f2733] dark:text-white bg-white w-[90%] h-[90%] rounded-3xl overflow-y-auto my-auto mx-12'>
             {data.map((element, index) => {
               return (
-                <a key={index} href={'/ler/' + element.id}>
+                <div key={index} onClick={() => navigate('/ler/' + element.id)}>
                   <div className='flex border-[#4fd1c5] border-solid border-2 rounded-2xl w-[90%] h-30 m-[5%]'>
                     <div className='text-5xl self-center justify-center m-auto text-[#4fd1c5]'>
                       <p>{element.grade_name}</p>
                       <p className='text-3xl m-auto text-[#a3b1c2]'>Erstellt am: {("0" + new Date(element.creation_date*1000).getDate()).slice(-2) + '.' + ("0" + (new Date(element.creation_date*1000).getMonth() + 1)).slice(-2) + '.' + new Date(element.creation_date*1000).getFullYear()}</p>
                     </div>
                   </div>
-                </a>)
+                </div>)
             })}
           </div>
           <div className='flex flex-col justify-center self-center'>

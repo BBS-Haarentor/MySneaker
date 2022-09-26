@@ -1,9 +1,14 @@
 import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
 
-const tutorial = () => {
+const Logout = () => {
     Cookies.remove("session")
+    const navigate = useNavigate()
 
-    window.location.href = "/"
+    useEffect(() => {
+        navigate("/")
+    })
 
     return (
         <>
@@ -11,4 +16,4 @@ const tutorial = () => {
     )
 }
 
-export default tutorial
+export default Logout
