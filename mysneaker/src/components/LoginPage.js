@@ -5,7 +5,7 @@ import {MissingArgumentsException} from "./API/Exceptions/MissingArgumentsExcept
 import {WrongInputException} from "./API/Exceptions/WrongInputException";
 import {useNavigate} from 'react-router-dom';
 
-const LoginPage = ({updateSidebar}) => {
+const LoginPage = ({updateSidebar, setRefreshSidebar}) => {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
@@ -17,6 +17,7 @@ const LoginPage = ({updateSidebar}) => {
         setAlert("")
         new User().login(userName, password).then(access_token => {
             Cookies.set("session", [access_token])
+            setRefreshSidebar(true);
             updateSidebar();
             navigate("/dashboard")
         }).catch(error => {

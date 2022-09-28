@@ -15,6 +15,7 @@ const DashBoardPage = () => {
     const ProductionRef = useRef(null);
     const AbsatzRef = useRef(null);
     const navigate = useNavigate()
+    const [refreshSidebar, setRefreshSidebar] = useState(false)
 
     const [state, setState] = useState((Cookies.get("session") === undefined || Cookies.get("session") === "" ? "Login" : "Lager/Beschaffung"))
     const OnClick = (text) => {
@@ -83,10 +84,10 @@ const DashBoardPage = () => {
 
     return (
         <div className="h-screen w-screen flex">
-            <SideNavBar OnClick={OnClick} state={state}/>
+            <SideNavBar OnClick={OnClick} refreshSidebar={refreshSidebar} setRefreshSidebar={setRefreshSidebar} state={state}/>
 
             {state === "Login" ?
-                <LoginPage updateSidebar={updateSidebar}/> :
+                <LoginPage updateSidebar={updateSidebar} setRefreshSidebar={setRefreshSidebar}/> :
                 (userAuth.admin ? <AdminPage state={state} OnClick={OnClick}/> : userAuth.teacher ? <LehrerPage/> : userAuth.base ?
                     <Container MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef}
                                LagerBeschaffungRef={LagerBeschaffungRef} ProductionRef={ProductionRef}

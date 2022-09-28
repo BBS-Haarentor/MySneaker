@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 
 
-const SideNavBar = ({ OnClick, state }) => {
+const SideNavBar = ({ OnClick, state, refreshSidebar }) => {
     const [token, setToken] = useState();
     const [userAuth, setUserAuth] = useState({
         admin: false,
@@ -143,7 +143,7 @@ const SideNavBar = ({ OnClick, state }) => {
             (error) {
             }
         }
-    }
+    }, [refreshSidebar]
     )
 
     return <>
