@@ -7,6 +7,6 @@ assignees: ''
 
 ---
 
-## Kurze Beschreibung des Fehlers:
+**Kurze Beschreibung des Fehlers**
 
-## Ausführliche Beschreibung, unter welchen Umständen der Fehler auftritt, ggf. mit Bildern:
+**Ausführliche Beschreibung, unter welchen Umständen der Fehler auftritt, ggf. mit Bildern**
