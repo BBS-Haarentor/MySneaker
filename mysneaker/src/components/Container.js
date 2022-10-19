@@ -73,16 +73,16 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const machineNames = ["Sneakerbox 200","Sneakerdream 500","Sneakergigant 1000"]
     machines.forEach((machine,index)=>{
         for (let i = 1; i < 4; i++) {
-            if (data.stock["machine_" + (index + 1)  + "_space"] === i) {
+            if (data.stock["machine_" + (index+1)  + "_space"] === i) {
                 AllMaschienenKosten += data.scenario["machine_maintainance_cost" + i]
-                machines[index].name = machineNames[++i]
+                machines[index].name = machineNames[i-1]
                 machines[index].kapazität = data.scenario["machine_production_capacity"+i]
                 machines[index].costpp = data.scenario["machine_maintainance_cost" + i]
                 machines[index].fertigungskostenpp = data.scenario["production_cost_per_sneaker"+i]
             }
         }
     })
-    
+
     useEffect(() => {
         setTempData({
             "sneaker_cost": data.scenario.sneaker_price * cycle.buy_sneaker,
