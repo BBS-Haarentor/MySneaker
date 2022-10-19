@@ -78,7 +78,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 machines[index].name = machineNames[++i]
                 machines[index].kapazität = data.scenario["machine_production_capacity"+i]
                 machines[index].costpp = data.scenario["machine_maintainance_cost" + i]
-                machines[index].fertigungskostenpp = data.scenario["production_cost_per_sneaker1"+i]
+                machines[index].fertigungskostenpp = data.scenario["production_cost_per_sneaker"+i]
             }
         }
     })
