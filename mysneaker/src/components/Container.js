@@ -51,65 +51,38 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     const handleChange = (e) => {
         setCycle((prev) => ({ ...prev, [e.target.name]: parseInt(e.target.value) }))
     }
-
-
-    var AllMaschienenKosten = 0
-    var machine_2_name = ""
-    var machine_2_kapazität = 0
-    var machine_2_costpp = 0
-    var machine_2_fertigungskostenpp = 0
-    var machine_3_name = ""
-    var machine_3_kapazität = 0
-    var machine_3_costpp = 0
-    var machine_3_fertigungskostenpp = 0
-
-    if (data.stock.machine_1_space == 1) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost1
-    } else if (data.stock.machine_1_space == 2) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost2
-    } else if (data.stock.machine_1_space == 3) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost3
-    }
-    if (data.stock.machine_2_space == 1) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost1
-        machine_2_name = "Sneakerbox 200"
-        machine_2_kapazität = data.scenario.machine_production_capacity1
-        machine_2_costpp = data.scenario.machine_maintainance_cost1
-        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    } else if (data.stock.machine_2_space == 2) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost2
-        machine_2_name = "Sneakerdream 500"
-        machine_2_kapazität = data.scenario.machine_production_capacity2
-        machine_2_costpp = data.scenario.machine_maintainance_cost2
-        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    } else if (data.stock.machine_2_space == 3) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost3
-        machine_2_name = "Sneakergigant 1000"
-        machine_2_kapazität = data.scenario.machine_production_capacity3
-        machine_2_costpp = data.scenario.machine_maintainance_cost3
-        machine_2_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
-    }
-    if (data.stock.machine_3_space == 1) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost1
-        machine_3_name = "Sneakerbox 200"
-        machine_3_kapazität = data.scenario.machine_production_capacity1
-        machine_3_costpp = data.scenario.machine_maintainance_cost1
-        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker1
-    } else if (data.stock.machine_3_space == 2) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost2
-        machine_3_name = "Sneakerdream 500"
-        machine_3_kapazität = data.scenario.machine_production_capacity2
-        machine_3_costpp = data.scenario.machine_maintainance_cost2
-        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker2
-    } else if (data.stock.machine_3_space == 3) {
-        AllMaschienenKosten += data.scenario.machine_maintainance_cost3
-        machine_3_name = "Sneakergigant 1000"
-        machine_3_kapazität = data.scenario.machine_production_capacity3
-        machine_3_costpp = data.scenario.machine_maintainance_cost3
-        machine_3_fertigungskostenpp = data.scenario.production_cost_per_sneaker3
-    }
-
-
+    let AllMaschienenKosten = 0;
+    const machines = [{
+        name:"",
+        kapazität:0,
+        costpp:0,
+        fertigungskostenpp:0,
+    },
+    {
+        name:"",
+        kapazität:0,
+        costpp:0,
+        fertigungskostenpp:0,
+    },
+    {
+        name:"",
+        kapazität:0,
+        costpp:0,
+        fertigungskostenpp:0,
+    }]
+    const machineNames = ["Sneakerbox 200","Sneakerdream 500","Sneakergigant 1000"]
+    machines.forEach((machine,index)=>{
+        for (let i = 1; i < 4; i++) {
+            if (data.stock["machine_" + (index + 1)  + "_space"] === i) {
+                AllMaschienenKosten += data.scenario["machine_maintainance_cost" + i]
+                machines[index].name = machineNames[++i]
+                machines[index].kapazität = data.scenario["machine_production_capacity"+i]
+                machines[index].costpp = data.scenario["machine_maintainance_cost" + i]
+                machines[index].fertigungskostenpp = data.scenario["production_cost_per_sneaker1"+i]
+            }
+        }
+    })
+    
     useEffect(() => {
         setTempData({
             "sneaker_cost": data.scenario.sneaker_price * cycle.buy_sneaker,
@@ -119,7 +92,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             "overall_workers": cycle.planned_workers_1 + cycle.planned_workers_2 + cycle.planned_workers_3,
             "max_production": (data.stock.sneaker_count + cycle.buy_sneaker) > parseInt((data.stock.paint_count + cycle.buy_paint) / 2) ? parseInt((data.stock.paint_count + cycle.buy_paint) / 2) : (data.stock.sneaker_count + cycle.buy_sneaker),
             "real_money": cycle.sales_planned * cycle.sales_bid + cycle.tender_offer_count * cycle.tender_offer_price,
-            "overall_cost_production": (data.scenario.machine_maintainance_cost1 + data.scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (machine_2_costpp + machine_2_fertigungskostenpp * cycle.planned_production_2) + (machine_3_costpp + machine_3_fertigungskostenpp * cycle.planned_production_3)
+            "overall_cost_production": (data.scenario.machine_maintainance_cost1 + data.scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (machines[1].costpp + machines[1].fertigungskostenpp * cycle.planned_production_2) + (machines[2].costpp + machines[2].fertigungskostenpp * cycle.planned_production_3)
         })
     }, [data, cycle])
 
@@ -478,31 +451,31 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th className='text-[#4fd1c5]'>{machine_2_name}</th>
+                                <th className='text-[#4fd1c5]'>{machines[1].name}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             <tr>
                                 <td>Produktionskapazität</td>
-                                <td>{machine_2_kapazität} Stk.</td>
+                                <td>{machines[1].kapazität} Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten p. Per.</td>
-                                <td>{formatter.format(machine_2_costpp)}</td>
+                                <td>{formatter.format(machines[1].costpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück</td>
-                                <td>{formatter.format(machine_2_fertigungskostenpp)}</td>
+                                <td>{formatter.format(machines[1].fertigungskostenpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(machine_2_fertigungskostenpp * data.stock.research_production_modifier)}</td>
+                                <td>{formatter.format(machines[1].fertigungskostenpp * data.stock.research_production_modifier)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -544,13 +517,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Auslastung</td>
-                                <td>{Math.round((cycle.planned_production_2 / 1) / machine_2_kapazität * 100)} %</td>
+                                <td>{Math.round((cycle.planned_production_2 / 1) / machines[1].kapazität * 100)} %</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Gesamtkosten Produktion</td>
-                                <td>{formatter.format(machine_2_costpp + machine_2_fertigungskostenpp * cycle.planned_production_2)}</td>
+                                <td>{formatter.format(machines[1]._costpp + machines[1].fertigungskostenpp * cycle.planned_production_2)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -573,31 +546,31 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         <tbody>
                             <tr>
                                 <th></th>
-                                <th className='text-[#4fd1c5]'>{machine_3_name}</th>
+                                <th className='text-[#4fd1c5]'>{machines[2].name}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             <tr>
                                 <td>Produktionskapazität</td>
-                                <td>{machine_3_kapazität} Stk.</td>
+                                <td>{machines[2].kapazität} Stk.</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Maschinenkosten p. Per.</td>
-                                <td>{formatter.format(machine_3_costpp)}</td>
+                                <td>{formatter.format(machines[2].costpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück</td>
-                                <td>{formatter.format(machine_3_fertigungskostenpp)}</td>
+                                <td>{formatter.format(machines[2].fertigungskostenpp)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(machine_3_fertigungskostenpp * data.stock.research_production_modifier)}</td>
+                                <td>{formatter.format(machines[2].fertigungskostenpp * data.stock.research_production_modifier)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -639,13 +612,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Auslastung</td>
-                                <td>{Math.round((cycle.planned_production_3 / 1) / machine_3_kapazität * 100)} %</td>
+                                <td>{Math.round((cycle.planned_production_3 / 1) / machines[2].kapazität * 100)} %</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Gesamtkosten Produktion</td>
-                                <td>{formatter.format(machine_3_costpp + machine_3_fertigungskostenpp * cycle.planned_production_3)}</td>
+                                <td>{formatter.format(machines[2].costpp + machines[2].fertigungskostenpp * cycle.planned_production_3)}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -693,7 +666,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                 <Finanzen FinanzenRef={FinanzenRef} formatter={formatter}
                     newMaschienPrize={newMaschienPrize} scenario={data.scenario}
-                    stock={data.stock} allMaschienenKosten={AllMaschienenKosten} tempData={tempData} cycle={cycle} machine_2_fertigungskostenpp={machine_2_fertigungskostenpp} machine_3_fertigungskostenpp={machine_3_fertigungskostenpp} />
+                    stock={data.stock} allMaschienenKosten={AllMaschienenKosten} tempData={tempData} cycle={cycle} machine_2_fertigungskostenpp={machines[1].fertigungskostenpp} machine_3_fertigungskostenpp={machines[2].fertigungskostenpp} />
                 <button className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold" onClick={onSubmit}>Abgeben/Speichern</button>
             </div>
         </>
