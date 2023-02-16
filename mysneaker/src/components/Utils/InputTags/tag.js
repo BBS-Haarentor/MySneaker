@@ -1,6 +1,4 @@
 import React from "react";
-import { css } from "goober";
-import cc from "./classnames";
 
 interface TagProps {
     text: string;

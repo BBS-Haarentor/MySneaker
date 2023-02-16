@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
+import toast, {Toaster} from 'react-hot-toast';
 
 const TeacherList = () => {
 
@@ -57,7 +58,7 @@ const TeacherList = () => {
                 };
                 await fetch(process.env.REACT_APP_MY_API_URL + "/user/delete/" + id, requestOptions).then((element) => {
                     if (element.status === 202) {
-                        element.json().then((element1) => {
+                        element.json().then(() => {
                             Swal.fire(
                                 'Lehrer Gelöscht!',
                                 'Der Lehrer wurde erfolgreich Gelöscht!',
@@ -98,6 +99,29 @@ const TeacherList = () => {
             if(element.status === 202) {
                 updateTeacherList()
             }
+            element.json().then(value1 => {
+                if (element.status !== 202) {
+                    toast.error(value1.user_message,
+                        {
+                            style: {
+                                borderRadius: '10px',
+                                background: '#333',
+                                color: '#fff',
+                            },
+                        }
+                    );
+                } else {
+                    toast.success("Lehrer wurde erfolgreich Aktualisiert",
+                        {
+                            style: {
+                                borderRadius: '10px',
+                                background: '#333',
+                                color: '#fff',
+                            },
+                        }
+                    );
+                }
+            })
         });
 
     }
@@ -170,6 +194,7 @@ const TeacherList = () => {
 
     return (
         <>
+            <Toaster position={"bottom-center"}/>
             {modal}
             <div className='h-screen w-full overflow-hidden'>
                 <div

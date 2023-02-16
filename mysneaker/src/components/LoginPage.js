@@ -1,6 +1,6 @@
 import {useState} from "react";
 import Cookies from "js-cookie";
-import {User} from './API/API'
+import API, {User} from './API/API'
 import {MissingArgumentsException} from "./API/Exceptions/MissingArgumentsException";
 import {WrongInputException} from "./API/Exceptions/WrongInputException";
 import {useNavigate} from 'react-router-dom';
@@ -15,7 +15,7 @@ const LoginPage = ({updateSidebar, setRefreshSidebar}) => {
         e.preventDefault();
 
         setAlert("")
-        new User().login(userName, password).then(access_token => {
+        new API().user.login(userName, password).then(access_token => {
             Cookies.set("session", [access_token])
             setRefreshSidebar(true);
             updateSidebar();

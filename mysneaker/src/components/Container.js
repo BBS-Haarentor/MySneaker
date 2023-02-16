@@ -1,6 +1,6 @@
 import React from 'react'
 import Beschaffung from './Container/Beschaffung'
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
 import Lager from './Container/Lager';
@@ -12,6 +12,7 @@ import VerkaufIst from './Container/VerkaufIst'
 import Statistik from './Container/Statistik'
 import Finanzen from './Container/Finanzen';
 import DataTemplate from './data.json'
+import API from "./API/API";
 
 const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingRef, PersonalRef, AbsatzRef, userId, cycle_index, game_id }) => {
 
@@ -159,7 +160,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                     }
                     getData()
                 }
-                return
             })
     }, [])
 
@@ -171,11 +171,6 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
     }
 
     const onSubmit = async () => {
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-        myHeaders.append('Access-Control-Allow-Origin', '*')
-
         let raw="";
         if(isTeacher) {
             raw = JSON.stringify({...cycle, current_cycle_index: cycle_index, company_id: userId, game_id: game_id})
@@ -183,15 +178,9 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
             raw = JSON.stringify(cycle)
         }
 
-        var requestOptions = {
-            method: 'POST',
-            body: raw,
-            headers: myHeaders,
-        };
-
-        const res = await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/cycle/' + (isTeacher ? "teacher/new_entry" : "new_entry"), requestOptions)
-        if (res.status === 201) {
-            Swal.fire({
+        const newEntry = await new API(Cookies.get("session")).cycle.newEntry(raw, isTeacher);
+        if(typeof newEntry === "boolean") {
+            await Swal.fire({
                 position: 'top-end',
                 icon: 'success',
                 title: 'Die Abgabe war erfolgreich',
@@ -199,15 +188,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                 timer: 1500
             })
         } else {
-            res.json().then(value => {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'Es ist ein Fehler aufgetreten',
-                    text: value.user_message,
-                    showConfirmButton: false,
-                    timer: 3000
-                })
+            await Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Es ist ein Fehler aufgetreten',
+                text: newEntry.user_message,
+                showConfirmButton: false,
+                timer: 3000
             })
         }
     }
@@ -423,13 +410,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{cycle.planned_workers_1 == parseInt(Math.ceil(cycle.planned_production_1 / 20)) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{cycle.planned_workers_1 === parseInt(Math.ceil(cycle.planned_production_1 / 20)) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Auslastung</td>
-                                <td>{Math.round((cycle.planned_production_1 / 1) / data.scenario.machine_production_capacity1 * 100)} %</td>
+                                <td>{Math.round((cycle.planned_production_1) / data.scenario.machine_production_capacity1 * 100)} %</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -443,10 +430,10 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div> : <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
-                    <img src="/img/add_maschine..svg" className='h-96 w-64 xl:w-96 my-auto'></img> //TODO mach plus hin
+                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' alt=""></img>
                 </div>}
 
-                {data.stock.machine_2_space != 0 ? <div className={cycle.planned_workers_2 == Math.ceil(cycle.planned_production_2 / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.stock.machine_2_space !== 0 ? <div className={cycle.planned_workers_2 === Math.ceil(cycle.planned_production_2 / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -493,7 +480,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{tempData.max_production >= tempData.overall_production / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{tempData.max_production >= tempData.overall_production ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -511,13 +498,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{parseInt(cycle.planned_workers_2) == Math.ceil(cycle.planned_production_2 / 20) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(cycle.planned_workers_2) === Math.ceil(cycle.planned_production_2 / 20) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Auslastung</td>
-                                <td>{Math.round((cycle.planned_production_2 / 1) / machines[1].kapazität * 100)} %</td>
+                                <td>{Math.round((cycle.planned_production_2) / machines[1].kapazität * 100)} %</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -530,18 +517,18 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
                         </tbody>
                     </table>
-                </div> : cycle.buy_new_machine != 0 ? <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
+                </div> : cycle.buy_new_machine !== 0 ? <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                    <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                    <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto' alt={""}></img>
                 </div> : data.scenario.machine_purchase_allowed ? <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}></img>
+                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2} alt={""}></img>
                 </div> : <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                     <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer Maschine nicht möglich</h1>
-                    <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
+                    <img src="/img/access_denied.svg" className='h-96 w-96 m-auto' alt={""}></img>
                 </div>}
 
-                {data.stock.machine_3_space != 0 ? <div className={cycle.planned_workers_3 == Math.ceil(cycle.planned_production_3 / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"} ref={ProductionRef}>
+                {data.stock.machine_3_space !== 0 ? <div className={cycle.planned_workers_3 === Math.ceil(cycle.planned_production_3 / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"} ref={ProductionRef}>
                     <table>
                         <tbody>
                             <tr>
@@ -588,7 +575,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{tempData.max_production >= tempData.overall_production / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
+                                <td>{tempData.max_production >= tempData.overall_production ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -606,13 +593,13 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                             </tr>
                             <tr>
                                 <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{parseInt(cycle.planned_workers_3) == Math.ceil(cycle.planned_production_3 / 20) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
+                                <td>{parseInt(cycle.planned_workers_3) === Math.ceil(cycle.planned_production_3 / 20) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Auslastung</td>
-                                <td>{Math.round((cycle.planned_production_3 / 1) / machines[2].kapazität * 100)} %</td>
+                                <td>{Math.round((cycle.planned_production_3) / machines[2].kapazität * 100)} %</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -626,25 +613,25 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
                         </tbody>
                     </table>
                 </div>
-                    : data.stock.machine_2_space == 0 ?
+                    : data.stock.machine_2_space === 0 ?
                         <></>
                         :
-                        cycle.buy_new_machine != 0 ?
+                        cycle.buy_new_machine !== 0 ?
                             <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                                 <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle Verfügbare sein</h1>
-                                <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto'></img>
+                                <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto' alt={""}></img>
                             </div>
-                            : data.stock.machine_2_space == 0 ?
+                            : data.stock.machine_2_space === 0 ?
                                 <></>
                                 : data.scenario.machine_purchase_allowed ?
                                     <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                                         <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                                        <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3}></img>
+                                        <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM3} alt={""}></img>
                                     </div>
                                     :
                                     <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start" ref={ProductionRef}>
                                         <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer machine nicht möglich</h1>
-                                        <img src="/img/access_denied.svg" className='h-96 w-96 m-auto'></img>
+                                        <img src="/img/access_denied.svg" className='h-96 w-96 m-auto' alt={""}></img>
                                     </div>
                 }
 

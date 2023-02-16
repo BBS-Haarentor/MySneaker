@@ -1,7 +1,5 @@
-import { css, setup } from "goober";
+import { setup } from "goober";
 import React, { useEffect, useState } from "react";
-
-import cc from "./classnames";
 import Tag from "./tag";
 
 export interface TagsInputProps {
@@ -30,7 +28,6 @@ export const TagsInput = ({
                               onChange,
                               onBlur,
                               seprators,
-                              onExisting,
                               onRemoved,
                               disabled,
                               isEditOnRemove,

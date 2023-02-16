@@ -1,10 +1,10 @@
 import React from 'react';
 
 const NavBarButton = ({text , state, onClick}) => {
-    var style =""
-    var icon = ""
-    var iconstyle = ""
-    var textstyle = ""
+    let style;
+    let icon
+    let iconstyle
+    let textstyle
     if(text === state){
           icon = "/img/" + text + "-w.png"
           style = "dark:bg-[#1f2733] bg-white shadow-md dark:shadow-gray-800";
