@@ -67,10 +67,11 @@ const TeacherList = () => {
                         })
                     } else if (element.status === 403) {
                         element.json().then(data => {
-                            if (data.detail === "It is not allowed to delete active Users. Please deactivate the User before deleting.") {
-                                toggleTeacher(id)
-                                deleteTeacher(id)
-                            }
+                            Swal.fire(
+                                'Lehrer nicht Gelöscht!',
+                                data.detail,
+                                'error'
+                            )
                         })
                     } else if(element.status === 500) {
                         Swal.fire(

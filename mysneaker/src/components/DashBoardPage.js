@@ -49,6 +49,9 @@ const DashBoardPage = () => {
 
     useEffect(() => {
         updateSidebar();
+        if(userAuth.admin) {
+            setState("Lehrer Liste")
+        }
     }, [])
 
     const updateSidebar = () => {
