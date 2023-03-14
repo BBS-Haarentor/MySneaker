@@ -49,9 +49,6 @@ const DashBoardPage = () => {
 
     useEffect(() => {
         updateSidebar();
-        if(userAuth.admin) {
-            setState("Lehrer Liste")
-        }
     }, [])
 
     const updateSidebar = () => {
@@ -74,7 +71,9 @@ const DashBoardPage = () => {
                         let body = await element.text();
                         handleChange(body.replaceAll("\"", ""))
                         setState("")
-                        return
+                        if(body === "\"admin\"") {
+                            setState("Lehrer Liste")
+                        }
                     })
 
             } catch (error) {

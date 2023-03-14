@@ -102,7 +102,7 @@ const Container = ({ ProductionRef, LagerBeschaffungRef, FinanzenRef, MarketingR
 
     const [modalConfirm, setModalConfirm] = useState()
 
-    useEffect(async () => {
+    useEffect(() => {
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");

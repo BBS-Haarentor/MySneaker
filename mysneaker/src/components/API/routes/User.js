@@ -25,11 +25,16 @@ export default class User {
         if(userName === "" || password === ""){
             throw new MissingArgumentsException("Bitte gebe keine Leeren Felder ab")
         }
-        this.urlencoded.append("username", userName);
-        this.urlencoded.append("password", password);
-        this.myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-        this.requestOptions.method = "POST"
-        return fetch(process.env.REACT_APP_MY_API_URL + "/user/login", this.requestOptions).then(async res => {
+        const formdata = new FormData();
+        formdata.append("username", userName);
+        formdata.append("password", password);
+
+        const requestOptions = {
+            method: 'POST',
+            body: formdata,
+            redirect: 'follow'
+        };
+        return fetch(process.env.REACT_APP_MY_API_URL + "/user/login", requestOptions).then(async res => {
             if (res.status === 200) {
                 return await res.json().then(async data => {
                     return await data.access_token;
