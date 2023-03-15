@@ -6,23 +6,23 @@ import LehrerPage from './components/LehrerPage/LehrerPage';
 import KlassenDetailPage from './components/LehrerPage/KlassenDetailPage'
 import RegisterPage from './components/RegisterPage';
 import Logout from './components/Utils/Logout';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 
 
 function App() {
 
     useEffect(() => {
         if (localStorage.getItem('color-theme')) {
-          document.documentElement.classList.add(localStorage.getItem('color-theme'));
-          } else {
+            document.documentElement.classList.add(localStorage.getItem('color-theme'));
+        } else {
             if (window.matchMedia("(prefers-color-scheme:dark)").matches) {
-              document.documentElement.classList.add('dark');
-              localStorage.setItem('color-theme', 'dark');
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
             } else {
-              document.documentElement.classList.add('light');
-              localStorage.setItem('color-theme', 'light');
+                document.documentElement.classList.add('light');
+                localStorage.setItem('color-theme', 'light');
             }
-          }
+        }
     })
 
     return (
