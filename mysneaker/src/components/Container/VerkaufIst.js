@@ -32,7 +32,7 @@ const VerkaufIst = ({ formatter , data }) => {
                             </tr>
                         </tbody>
                     </table>
-                    <img src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4'></img>
+                    <img alt="verkauf Ist Image" src="/img/data_reports.svg" className='h-96 w-64 xl:w-96 m-4 max-[615px]:hidden'></img>
                 </div>
     )
 }

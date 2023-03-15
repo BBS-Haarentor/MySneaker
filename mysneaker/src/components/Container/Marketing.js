@@ -24,7 +24,7 @@ const Marketing = ({ MarketingRef, cycle, handleChange}) => {
                     </tr>
                 </tbody>
             </table>
-            <img src="/img/undraw_mobile_marketing.svg" className='h-96 w-64 xl:w-96 m-4'></img>
+            <img alt="marketing image" src="/img/undraw_mobile_marketing.svg" className='h-96 w-64 xl:w-96 m-4 max-[800px]:hidden'></img>
         </div>
     )
 }

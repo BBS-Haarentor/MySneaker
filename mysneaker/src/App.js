@@ -26,7 +26,7 @@ function App() {
     })
 
     return (
-        <div className="dark:bg-[#1a202c] bg-[#f7fafc]">
+        <div className="h-screen dark:bg-[#1a202c] bg-[#f7fafc]">
             <Router>
                 <Routes>
                     <Route path='/dashboard' element={<DashBoardPage/>}/>

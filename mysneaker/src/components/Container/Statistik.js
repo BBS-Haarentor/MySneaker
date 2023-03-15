@@ -52,7 +52,7 @@ const Beschaffung = ({ formatter, cycle,tempData ,data,AllMaschienenKosten}) => 
                             </tr>
                         </tbody>
                     </table>
-                    <img src="/img/undraw_finance.svg" className='h-96 w-64 xl:w-96 m-4'></img>
+                    <img alt="statistik image" src="/img/undraw_finance.svg" className='h-96 w-64 xl:w-96 m-4 max-[615px]:hidden'></img>
                 </div>
     )
 }
