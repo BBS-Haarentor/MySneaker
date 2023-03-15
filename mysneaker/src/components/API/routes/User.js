@@ -1,5 +1,6 @@
 import {MissingArgumentsException} from "../Exceptions/MissingArgumentsException";
 import {WrongInputException} from "../Exceptions/WrongInputException";
+import {UserException} from "../Exceptions/UserException";
 
 export default class User {
     constructor(myHeaders) {
@@ -41,6 +42,8 @@ export default class User {
                 })
             } else if (res.status === 422) {
                 throw new MissingArgumentsException("Bitte gebe keine Leeren Felder ab")
+            } else if(res.status === 409) {
+                throw new UserException("Bitte gebe keine Leeren Felder ab")
             } else {
                 throw new WrongInputException("Falsches Passwort oder Benutzername")
             }

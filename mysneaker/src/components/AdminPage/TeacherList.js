@@ -104,20 +104,18 @@ const TeacherList = () => {
                 if (element.status !== 202) {
                     toast.error(value1.user_message,
                         {
+                            className: "dark:bg-[#1a202c] bg-white dark:text-white",
                             style: {
                                 borderRadius: '10px',
-                                background: '#333',
-                                color: '#fff',
                             },
                         }
                     );
                 } else {
                     toast.success("Lehrer wurde erfolgreich Aktualisiert",
                         {
+                            className: "dark:bg-[#1a202c] bg-white dark:text-white",
                             style: {
                                 borderRadius: '10px',
-                                background: '#333',
-                                color: '#fff',
                             },
                         }
                     );
@@ -143,6 +141,14 @@ const TeacherList = () => {
             if (element.status === 201) {
                 setModal(<></>)
                 updateTeacherList()
+                toast.success("Lehrer wurde erfolgreich Erstellt",
+                    {
+                        className: "dark:bg-[#1a202c] bg-white dark:text-white",
+                        style: {
+                            borderRadius: '10px',
+                        },
+                    }
+                );
             } else if(element.status === 500) {
                 toast.error("Es gibt einen Fehler bei der Erstellung des Lehrers!",
                     {
@@ -161,6 +167,17 @@ const TeacherList = () => {
                         },
                     }
                 );
+            } else {
+                element.json().then(value => {
+                    toast.error(value.user_message,
+                        {
+                            className: "dark:bg-[#1a202c] bg-white dark:text-white",
+                            style: {
+                                borderRadius: '10px',
+                            },
+                        }
+                    );
+                })
             }
         })
     }

@@ -4,6 +4,7 @@ import API, {User} from './API/API'
 import {MissingArgumentsException} from "./API/Exceptions/MissingArgumentsException";
 import {WrongInputException} from "./API/Exceptions/WrongInputException";
 import {useNavigate} from 'react-router-dom';
+import {UserException} from "./API/Exceptions/UserException";
 
 const LoginPage = ({updateSidebar, setRefreshSidebar}) => {
     const [userName, setUserName] = useState('')
@@ -21,7 +22,8 @@ const LoginPage = ({updateSidebar, setRefreshSidebar}) => {
             updateSidebar();
             navigate("/dashboard")
         }).catch(error => {
-            if (error instanceof MissingArgumentsException || error instanceof WrongInputException) {
+            if (error instanceof MissingArgumentsException || error instanceof WrongInputException
+                || error instanceof UserException) {
                 setAlert(
                     <>
                         <div className="bg-red-100 border border-red-600 text-red-700 px-4 mx-11 py-3 rounded relative"
