@@ -59,6 +59,8 @@ class UserService():
     
     
     async def create_teacher(self, create_data: UserPostElevated) -> int:
+        create_data.hashed_pw = hash_pw(create_data.unhashed_pw)
+        create_data.unhashed_pw = ""
         try:
             user: User = await self.user_repo.create(create_data=create_data)
         except IntegrityError:

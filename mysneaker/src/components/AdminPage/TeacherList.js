@@ -143,6 +143,24 @@ const TeacherList = () => {
             if (element.status === 201) {
                 setModal(<></>)
                 updateTeacherList()
+            } else if(element.status === 500) {
+                toast.error("Es gibt einen Fehler bei der Erstellung des Lehrers!",
+                    {
+                        className: "dark:bg-[#1a202c] bg-white dark:text-white",
+                        style: {
+                            borderRadius: '10px',
+                        },
+                    }
+                );
+            } else if(element.status === 403) {
+                toast.error("Bitte geben Sie ein Name und ein Passwort an!",
+                    {
+                        className: "dark:bg-[#1a202c] bg-white dark:text-white",
+                        style: {
+                            borderRadius: '10px',
+                        },
+                    }
+                );
             }
         })
     }
