@@ -173,6 +173,7 @@ const SidebarContent = ({userAuth, state, OnClick, token, sidebarInformation}) =
             {userAuth.admin ? <>
                     <Spacer/>
                     <NavBarButton text="Lehrer Liste" state={state} onClick={OnClick}></NavBarButton>
+                    <NavBarButton text="Spiele Liste" state={state} onClick={OnClick}></NavBarButton>
                     <NavBarButton text="Perioden Liste" state={state} onClick={OnClick}></NavBarButton>
                     <Spacer/>
                     <NavBarButton text="Logout" state={state} onClick={OnClick}></NavBarButton>
