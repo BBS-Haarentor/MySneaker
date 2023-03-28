@@ -67,6 +67,8 @@ const SpieleListe = () => {
             input: 'text',
             inputLabel: 'Spiele Name',
             inputValue: oldGameName,
+            background: window.localStorage["color-theme"] === "dark" ? "#1a202c" : "white",
+            color: window.localStorage["color-theme"] === "dark" ? "white" : "black",
             showCancelButton: true,
             inputValidator: (value) => {
                 if (!value) {
@@ -94,6 +96,8 @@ const SpieleListe = () => {
             inputOptions: tempList,
             inputPlaceholder: 'Neuen Lehrer',
             showCancelButton: true,
+            background: window.localStorage["color-theme"] === "dark" ? "#1a202c" : "white",
+            color: window.localStorage["color-theme"] === "dark" ? "white" : "black",
         })
 
         if (teacher) {
@@ -136,7 +140,9 @@ const SpieleListe = () => {
             confirmButtonColor: '#7FFFD4',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Ja, Löschen',
-            cancelButtonText: "Nein"
+            cancelButtonText: "Nein",
+            background: window.localStorage["color-theme"] === "dark" ? "#1a202c" : "white",
+            color: window.localStorage["color-theme"] === "dark" ? "white" : "black",
         }).then((result) => {
             if (result.isConfirmed) {
                 if (isActive) {
