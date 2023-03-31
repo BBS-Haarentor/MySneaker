@@ -204,7 +204,7 @@ const SpieleListe = () => {
     return (
         <>
             <Toaster position={"bottom-center"}/>
-            <div className='h-screen w-screen flex  flex-wrap overflow-x-hidden'>
+            <div className='h-screen w-screen justify-center flex items-center  flex-wrap overflow-x-hidden'>
                 {games.map((element, index) => {
                     return (
                         <>
