@@ -83,7 +83,6 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
 
         fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/delete/' + gameId, requestOptions).then((element) => {
             if (element.status === 202) {
-                //TODO rederect
                 Swal.fire(
                     'Spiel Gelöscht!',
                     'Sie haben das Spiel Erfolgreich gelöscht',
@@ -97,7 +96,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                 element.json().then((element1) => {
                     Swal.fire(
                         'Fehler!',
-                        "element1",
+                        element1.user_message,
                         'error'
                     )
                 })

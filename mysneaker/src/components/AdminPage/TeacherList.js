@@ -25,6 +25,9 @@ const TeacherList = () => {
         fetch(process.env.REACT_APP_MY_API_URL + "/user/teacher_list", requestOptions1).then((element) => {
             if (element.status === 200) {
                 element.json().then((element1) => {
+                    element1.sort(function (a, b) {
+                        return a.name.localeCompare(b.name);
+                    })
                     setTeachers(element1)
                 })
             }
@@ -61,7 +64,7 @@ const TeacherList = () => {
                         element.json().then(() => {
                             Swal.fire(
                                 'Lehrer Gelöscht!',
-                                'Der Lehrer wurde erfolgreich Gelöscht!',
+                                'Der Lehrer wurde erfolgreich gelöscht!',
                                 'success'
                             )
                         })
@@ -111,7 +114,7 @@ const TeacherList = () => {
                         }
                     );
                 } else {
-                    toast.success("Lehrer wurde erfolgreich Aktualisiert",
+                    toast.success("Lehrer wurde erfolgreich aktualisiert",
                         {
                             className: "dark:bg-[#1a202c] bg-white dark:text-white",
                             style: {
