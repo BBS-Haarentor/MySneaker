@@ -85,7 +85,7 @@ const DashBoardPage = () => {
 
 
     return (
-        <div className="h-screen w-screen flex">
+        <div className="h-full w-full flex">
             <SideNavBar OnClick={OnClick} refreshSidebar={refreshSidebar} setRefreshSidebar={setRefreshSidebar} state={state}/>
 
             {state === "Login" ?

@@ -389,7 +389,7 @@ const Container = ({
             {modalBuyMaschine}
             {modalConfirm}
             <Toaster position={"bottom-center"}/>
-            <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar '>
+            <div className='w-full h-full overflow-x-hidde scrollbar'>
 
                 <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle}
                              handleChange={handleChange} LagerBeschaffungRef={LagerBeschaffungRef}/>
