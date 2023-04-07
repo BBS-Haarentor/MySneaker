@@ -219,12 +219,12 @@ const SpieleListe = () => {
                                         <p className='text-2xl m-auto text-[#a3b1c2]'>Erstellt
                                             am: {("0" + new Date(element.creation_date * 1000).getDate()).slice(-2) + '.' + ("0" + (new Date(element.creation_date * 1000).getMonth() + 1)).slice(-2) + '.' + new Date(element.creation_date * 1000).getFullYear()}</p>
                                     </div>
-                                    <div className="h-[2px] bg-white my-5 rounded"/>
+                                    <div className="h-[2px] dark:bg-white bg-[#D7D7D7] my-5 rounded-full"/>
                                     <div className='text-xl text-center m-auto text-[#4fd1c5]'>
                                         <p>Lehrer: {getTeacherName(element.owner_id)}</p>
                                         <p>Aktueller Cycle: {element.current_cycle_index}</p>
                                     </div>
-                                    <div className="h-[2px] bg-white my-5 rounded"/>
+                                    <div className="h-[2px] dark:bg-white bg-[#D7D7D7] my-5 rounded-full"/>
                                     <div className={"flex"}>
                                         <div className="w-[25%] mx-auto">
                                             {!element.is_active ?

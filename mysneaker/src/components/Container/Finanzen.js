@@ -10,7 +10,7 @@ const Finanzen = ({ FinanzenRef, formatter, stock, scenario, handleChange,cycle,
     var HöheKontokorrentkreditIst = SaldoIst < 0 ? SaldoIst : 0
     
     return (
-        <div className=" p-4 shadow-lg xl:col-span-3 dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
+        <div className="w-full p-4 shadow-lg xl:col-span-3 dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-center snap-start " ref={FinanzenRef}>
                     <img src="/img/projections.svg" className='h-[500px] w-0 xl:w-[500px] m-auto p-10'></img>
                     <table>
                         <tbody>

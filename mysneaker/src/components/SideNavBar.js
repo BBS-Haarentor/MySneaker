@@ -37,36 +37,6 @@ const SideNavBar = ({OnClick, state, refreshSidebar}) => {
                 themeToggleDarkIcon.classList.remove('hidden');
             }
 
-            var themeToggleBtn = document.getElementById('theme-toggle');
-
-            themeToggleBtn.addEventListener('click', function () {
-
-                // toggle icons inside button
-                themeToggleDarkIcon.classList.toggle('hidden');
-                themeToggleLightIcon.classList.toggle('hidden');
-
-                // if set via local storage previously
-                if (localStorage.getItem('color-theme')) {
-                    if (localStorage.getItem('color-theme') === 'light') {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    }
-
-                    // if NOT set via local storage previously
-                } else {
-                    if (document.documentElement.classList.contains('dark')) {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    } else {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    }
-                }
-
-            });
 
             if (Cookies.get("session")) {
                 setToken(Cookies.get("session"))
@@ -107,6 +77,41 @@ const SideNavBar = ({OnClick, state, refreshSidebar}) => {
         }, [refreshSidebar]
     )
 
+    const onClickToggleTheme = () => {
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // toggle icons inside button
+        themeToggleDarkIcon.classList.toggle('hidden');
+        themeToggleLightIcon.classList.toggle('hidden');
+
+        // if set via local storage previously
+        if (localStorage.getItem('color-theme')) {
+            if (localStorage.getItem('color-theme') === 'light') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            }
+
+            // if NOT set via local storage previously
+        } else {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
+        if (localStorage.getItem('color-theme') === "dark") {
+            setLogo("https://img.icons8.com/ios/50/ffffff/sneakers.png")
+        } else {
+            setLogo("https://img.icons8.com/ios/50/000000/sneakers.png")
+        }
+    }
+
     const [sidebarToggle, setSidebarToggle] = useState(false);
 
     const updateSidebarToggle = () => {
@@ -114,9 +119,9 @@ const SideNavBar = ({OnClick, state, refreshSidebar}) => {
     }
 
     return <>
-        <div className='absolute right-[10px] top-[10px]'>
+        <div className='absolute right-[10px] top-[10px] z-20'>
             <button
-                id="theme-toggle"
+                onClick={() => onClickToggleTheme()}
                 type="button"
                 className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
             >
@@ -148,7 +153,7 @@ const SideNavBar = ({OnClick, state, refreshSidebar}) => {
         </div>
         <SidebarToggle isToggleSidebar={sidebarToggle} toggleSidebar={updateSidebarToggle}/>
         <aside
-            className={"h-screen absolute min-w-[300px] min-[900px]:hidden dark:bg-[#171c24] bg-[#f7fafc] z-2 overflow-y-scroll overflow-x-hidden" + (sidebarToggle ? "" : " hidden")}>
+            className={"h-screen absolute min-w-[300px] min-[900px]:hidden dark:bg-[#171c24] bg-[#f7fafc] z-10 overflow-y-scroll overflow-x-hidden" + (sidebarToggle ? "" : " hidden")}>
             <div className='flex py-4 mx-auto justify-center'>
                 <img className='max-w-[20px] max-h-[20px]' alt='Logo' src={logo}/>
                 <h1 className='text-black dark:text-white ml-2 font-bold '>MySneaker</h1>
@@ -156,7 +161,7 @@ const SideNavBar = ({OnClick, state, refreshSidebar}) => {
             <SidebarContent OnClick={OnClick} state={state} token={token} userAuth={userAuth}
                             sidebarInformation={sidebarInformation}/>
         </aside>
-        <aside className='h-screen overflow-y-auto overflow-x-hidden min-w-[300px] max-[900px]:hidden'>
+        <aside className='h-full overflow-y-auto overflow-x-hidden min-w-[300px] max-[900px]:hidden'>
             <div className='flex py-4 mx-auto justify-center '>
                 <img className='max-w-[20px] max-h-[20px]' alt='Logo' src={logo}/>
                 <h1 className='text-black dark:text-white ml-2 font-bold '>MySneaker</h1>
@@ -205,7 +210,7 @@ const SidebarContent = ({userAuth, state, OnClick, token, sidebarInformation}) =
 const SidebarToggle = ({isToggleSidebar, toggleSidebar}) => {
     return (
         <>
-            <div className='absolute left-[10px] top-[10px] z-10 min-[900px]:hidden'>
+            <div className='absolute left-[10px] top-[10px] z-20 min-[900px]:hidden'>
                 <button
                     id="sidebarToggle"
                     onClick={() => toggleSidebar()}

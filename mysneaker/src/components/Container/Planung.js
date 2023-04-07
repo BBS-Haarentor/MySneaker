@@ -1,8 +1,6 @@
-import React, {useEffect, useState} from 'react'
-
 const Planung = ({ AbsatzRef, tempData, data, cycle, handleChange }) => {
     return (
-        <div className="p-4 shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-center snap-start" ref={AbsatzRef}>
+        <div className="p-4 shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-center max-[1899px]:w-full min-[1900px]:w-[35%]" ref={AbsatzRef}>
             <table>
                 <tbody>
                     <tr>
@@ -27,7 +25,7 @@ const Planung = ({ AbsatzRef, tempData, data, cycle, handleChange }) => {
                     </tr>
                     <tr>
                         <td>Geplante Produktion möglich</td>
-                        <td>{cycle.include_from_stock > data.stock.finished_sneaker_count / 1 ? "Nein" : "Ja"}</td>
+                        <td>{cycle.include_from_stock > data.stock.finished_sneaker_count ? "Nein" : "Ja"}</td>
                     </tr>
                 </tbody>
             </table>

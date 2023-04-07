@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DashBoardPage from './components/DashBoardPage';
 import MainPage from './components/MainPage';
 import Tutorial from './components/tutorial';
@@ -7,6 +7,7 @@ import KlassenDetailPage from './components/LehrerPage/KlassenDetailPage'
 import RegisterPage from './components/RegisterPage';
 import Logout from './components/Utils/Logout';
 import {useEffect} from 'react';
+import PageNotFound from "./components/PageNotFound";
 
 
 function App() {
@@ -29,13 +30,14 @@ function App() {
         <div className="h-screen dark:bg-[#1a202c] bg-[#f7fafc]">
             <Router>
                 <Routes>
+                    <Route exact path='/' element={<MainPage/>}/>
                     <Route path='/dashboard' element={<DashBoardPage/>}/>
-                    <Route path='/' element={<MainPage/>}/>
                     <Route path='/tutorial' element={<Tutorial/>}/>
                     <Route path='/ler' element={<LehrerPage/>}/>
                     <Route path='/ler/:id' element={<KlassenDetailPage/>}/>
                     <Route path='/register/:id' element={<RegisterPage/>}/>
                     <Route path='/logout' element={<Logout/>}/>
+                    <Route path='*' element={<PageNotFound/>} />
                 </Routes>
             </Router>
         </div>

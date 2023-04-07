@@ -3,7 +3,7 @@ import React from 'react'
 const Marketing = ({ MarketingRef, cycle, handleChange}) => {
 
     return (
-        <div className=" p-4  xl:col-span-3 shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-around snap-start " ref={MarketingRef}>
+        <div className=" p-4  xl:col-span-3 shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white flex justify-around w-full" ref={MarketingRef}>
             <table>
                 <tbody>
                     <tr>

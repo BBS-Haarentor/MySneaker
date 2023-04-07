@@ -26,7 +26,7 @@ const Beschaffung = ({scenario, formatter, cycle, tempData, handleChange, LagerB
                             <path
                                 d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
                         </svg>
-                        <input className="border-2 mx-5 text-center border-[#4fd1c5] dark:text-white pl-3 rounded-full w-16 dark:bg-[#1f2733]"
+                        <input className="border-2 mx-5 text-center border-[#4fd1c5] dark:text-white rounded-full w-16 dark:bg-[#1f2733]"
                                name="buy_sneaker" min="0" type="number" onChange={handleChange} value={cycle.buy_sneaker}/>
                         <svg xmlns="http://www.w3.org/2000/svg"
                              onClick={() => handleChange({
@@ -63,7 +63,7 @@ const Beschaffung = ({scenario, formatter, cycle, tempData, handleChange, LagerB
                             <path
                                 d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
                         </svg>
-                        <input className="border-2 mx-5 text-center border-[#4fd1c5] dark:text-white pl-3 rounded-full w-16 dark:bg-[#1f2733]"
+                        <input className="border-2 mx-5 text-center border-[#4fd1c5] dark:text-white rounded-full w-16 dark:bg-[#1f2733]"
                                name="buy_paint" min="0" type="number" onChange={handleChange} value={cycle.buy_paint}/>
                         <svg xmlns="http://www.w3.org/2000/svg"
                              onClick={() => handleChange({
@@ -81,7 +81,7 @@ const Beschaffung = ({scenario, formatter, cycle, tempData, handleChange, LagerB
                     <p className="dark:text-[#D7D7D7] text-2xl text-center my-5">{formatter.format(tempData.paint_cost)}</p>
                 </div>
             </div>
-            <p className="text-white text-center text-xl font-medium mb-5">{formatter.format(tempData.sneaker_cost + tempData.paint_cost)} gesamt Werkstoffkosten</p>
+            <p className="dark:text-white text-center text-xl font-medium mb-5">{formatter.format(tempData.sneaker_cost + tempData.paint_cost)} gesamt Werkstoffkosten</p>
         </div>
     )
 

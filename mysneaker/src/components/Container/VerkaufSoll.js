@@ -4,7 +4,7 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
 
     return (
         <div
-            className={(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) < (Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count)) / 1) ? " p-4 border-2 border-red-300 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start" : "p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center  snap-start") + " dark:bg-[#1f2733] dark:text-white"}>
+            className={(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) < (Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count))) ? " p-4 border-2 border-red-300 shadow-lg  xl:col-span-2 rounded-3xl m-2 bg-white flex justify-center  snap-start" : "p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center") + " dark:bg-[#1f2733] max-[1899px]:w-full min-[1900px]:w-[63%] dark:text-white"}>
             <table>
                 <tbody>
                 <tr>
@@ -76,7 +76,7 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
                 </tr>
                 <tr>
                     <td>Gesamtverkauf möglich</td>
-                    <td>{Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) < (Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count)) / 1) ? "Nein" : "Ja"}</td>
+                    <td>{Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) < (Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count))) ? "Nein" : "Ja"}</td>
                 </tr>
                 </tbody>
             </table>

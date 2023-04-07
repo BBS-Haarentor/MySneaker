@@ -389,7 +389,7 @@ const Container = ({
             {modalBuyMaschine}
             {modalConfirm}
             <Toaster position={"bottom-center"}/>
-            <div className='w-full h-full overflow-x-hidde scrollbar'>
+            <div className='w-full h-screen overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center'>
 
                 <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle}
                              handleChange={handleChange} LagerBeschaffungRef={LagerBeschaffungRef}/>
@@ -754,7 +754,7 @@ const Container = ({
                           machine_2_fertigungskostenpp={machines[1].fertigungskostenpp}
                           machine_3_fertigungskostenpp={machines[2].fertigungskostenpp}/>
                 <button
-                    className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold"
+                    className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 h-14 border-gray-200 text-white font-bold"
                     onClick={onSubmit}>Abgeben/Speichern
                 </button>
             </div>
