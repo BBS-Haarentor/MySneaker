@@ -68,13 +68,17 @@ const KlassenDetailPage = () => {
 
         qrCode.append(ref.current);
 
-        var requestOptions = {
+        updateCompany()
+
+        updateGame();
+
+    }, [url]);
+
+    const updateGame = () => {
+        const requestOptions = {
             method: 'GET',
             headers: myHeaders,
         };
-
-        updateCompany()
-
         fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_by_id/' + id, requestOptions).then(async (res) => {
             if (res.status === 200) {
                 let json = await res.json();
@@ -83,8 +87,7 @@ const KlassenDetailPage = () => {
         }).catch(error => {
 
         })
-
-    }, [url]);
+    }
 
     const updateCompany = async () => {
         var requestOptions = {
@@ -118,6 +121,7 @@ const KlassenDetailPage = () => {
         fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/turnover/' + id, requestOptions)
             .then(async (element) => {
                 if (element.status === 202) {
+                    updateGame()
                     setInfoModal(<>
                         <div className={"block"}>
                             <div
@@ -267,7 +271,7 @@ const KlassenDetailPage = () => {
 
                         <KlasseContainer updateCompany={updateCompany} select={select} setSelect={setSelect}
                                          companyId={selectCompanie !== null ? selectCompanie.id : null} gameId={id}
-                                         current_cycle_index={game.current_cycle_index}/>
+                                         current_cycle_index={game.current_cycle_index} updateGame={updateGame}/>
 
 
                     </div>

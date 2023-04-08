@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import Swal from 'sweetalert2'
 import MarketShare from './charts/MarketShare'
+import ExpendituresAdvertising from "./charts/ExpendituresAdvertising";
+import ResearchInvest from "./charts/ResearchInvest";
 
-const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
+const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateGame}) => {
 
     const [companyInfo, setCompanyInfo] = useState([])
+    const [companyData, setCompanyData] = useState([]);
 
     const formatter = new Intl.NumberFormat('de-de', {
         style: 'currency',
@@ -19,10 +22,22 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
         };
         fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/info/' + gameId + '/index/' + cycle_index, requestOptions).then((element) => {
             if (element.status === 200) {
-                element.json().then(element1 => {
+                return element.json().then(element1 => {
                     setCompanyInfo(element1)
+                    return element1
                 });
             }
+        }).then((element2) => {
+            element2.forEach(element => {
+                fetch('https://api.mysneaker.my-system.live/api/v1/game/teacher/summary/user/' + element.company_id + '/index/' + cycle_index, requestOptions)
+                    .then(value => {
+                        if (value.status === 200) {
+                            value.json().then(element1 => {
+                                setCompanyData([...companyData, element1])
+                            });
+                        }
+                    })
+            })
         })
     }, [])
 
@@ -49,12 +64,14 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
                             'Sie sind jetzt in der Periode',
                             'success'
                         )
+                        updateGame()
                     }
                 })
-
             }
         })
     }
+
+    let i = 0;
 
     return (
         <>
@@ -67,6 +84,8 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
                         <td>Verkauft</td>
                         <td>Preis</td>
                         <td>Umsatz</td>
+                        {current_cycle_index > cycle_index ? <><td>Forschung und Entwickelung</td>
+                        <td>Werbung</td></> : <></>}
                         <td>Status</td>
                     </tr>
                     <tr className='mb-12'>
@@ -85,8 +104,15 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
                         <td>
                             <hr/>
                         </td>
+                        {current_cycle_index > cycle_index ? <><td>
+                            <hr/>
+                        </td>
+                        <td>
+                            <hr/>
+                        </td></> : <></>}
                     </tr>
                     {companyInfo.map(value => {
+                        i++;
                         return (
                             <>
                                 <tr>
@@ -94,6 +120,8 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
                                     <td>{value.real_sales === null ? 0 : value.real_sales} Stk.</td>
                                     <td>{formatter.format(value.sales_bid)}</td>
                                     <td>{formatter.format(value.income_from_sales)}</td>
+                                    {current_cycle_index > cycle_index ? <td>{formatter.format(companyData.length !== 0 ? companyData[i-1].cycle.research_invest : 0)}</td> : <></>}
+                                    {current_cycle_index > cycle_index ? <td>{formatter.format(companyData.length !== 0 ? companyData[i-1].cycle.ad_invest : 0)}</td> : <></>}
                                     <td>{value.turnover_ready ? <>
                                         <svg className='fill-green-500 hover:fill-green-600 w-6 h-6 m-auto'
                                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -118,6 +146,12 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index}) => {
                 <>
                     <div className='grid grid-cols-1 xl:grid-cols-3 overflow-x-hidde scrollbar my-12 w-[90%] mx-auto'>
                         <MarketShare companys={companyInfo.filter(value => value.index === cycle_index)}/>
+                        <ExpendituresAdvertising current_cycle_index={cycle_index}
+                                                 companys={companyInfo.filter(value => value.index === cycle_index)}
+                                                 companyDataTest={companyData}/>
+                        <ResearchInvest current_cycle_index={cycle_index}
+                                         companys={companyInfo.filter(value => value.index === cycle_index)}
+                                         companyDataTest={companyData}/>
                     </div>
                     <button className='my-6 w-[100%]  bg-red-400 text-white rounded-3xl shadow-lg p-3'
                             onClick={() => setBackGame()}>Zu dieser Periode zurückspringen

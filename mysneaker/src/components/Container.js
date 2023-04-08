@@ -389,7 +389,7 @@ const Container = ({
             {modalBuyMaschine}
             {modalConfirm}
             <Toaster position={"bottom-center"}/>
-            <div className='w-full h-screen overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center'>
+            <div className={'w-full overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center' + (isTeacher ? ' h-full' : 'h-screen')}>
 
                 <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle}
                              handleChange={handleChange} LagerBeschaffungRef={LagerBeschaffungRef}/>

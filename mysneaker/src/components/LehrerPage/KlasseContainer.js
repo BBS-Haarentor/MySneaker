@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 import Analytics from '../KlasseContainer/Analytics';
 
-const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_cycle_index, gameId}) => {
+const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_cycle_index, gameId, updateGame}) => {
 
     const [modal, setModal] = useState();
     const [selectCycleIndex, setSelectCycleIndex] = useState();
@@ -20,6 +20,11 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
     myHeaders.append('Access-Control-Allow-Origin', '*')
 
     useEffect(() => {
+        updateGameData();
+    }, [])
+
+    const updateGameData = () => {
+        updateGame();
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
@@ -31,7 +36,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                 })
             }
         })
-    }, [])
+    }
 
     const deleteGame = () => {
         Swal.fire({
@@ -277,9 +282,9 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                     </>)
 
                 case "input":
-                    return (<>
+                    return (<div className="relative">
                         <button
-                            className='px-4 right-0 m-4 py-2 text-sm bg-red-500 hover:bg-red-700 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white font-bold'
+                            className='px-4 left-0 m-4 py-2 text-sm bg-red-500 z-10 hover:bg-red-700 rounded-xl border absolute transition-colors duration-150 ease-linear border-gray-200 text-white font-bold'
                             onClick={() => {
                                 setSelect("main");
                                 menues();
@@ -287,7 +292,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                             }>Zurück
                         </button>
                         <Container cycle_index={current_cycle_index} game_id={gameId} userId={companyId}/>
-                    </>)
+                    </div>)
 
                 default:
                     break;
@@ -342,7 +347,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                             onClick={() => setSelect("main")}>Zurück
                         </button>
                         <Analytics myHeaders={myHeaders} gameId={gameId} cycle_index={selectCycleIndex}
-                                   current_cycle_index={current_cycle_index}/>
+                                   current_cycle_index={current_cycle_index} updateGame={updateGameData}/>
                     </>)
 
                 default:
