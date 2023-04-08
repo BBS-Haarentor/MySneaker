@@ -10,7 +10,6 @@ const MarketShare = ({companys}) => {
 
     const [companyNames, setCompanyNames] = useState([""])
     const [companyData, setCompanyData] = useState([0])
-    const [sneakerVerkauft, setSneakerVerkauft] = useState()
 
     useEffect(() => {
         let sneakerVerkauft = 0;

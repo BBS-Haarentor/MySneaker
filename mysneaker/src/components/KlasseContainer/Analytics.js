@@ -3,17 +3,26 @@ import Swal from 'sweetalert2'
 import MarketShare from './charts/MarketShare'
 import ExpendituresAdvertising from "./charts/ExpendituresAdvertising";
 import ResearchInvest from "./charts/ResearchInvest";
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
 
 const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateGame}) => {
 
-    const [companyInfo, setCompanyInfo] = useState([])
+    const [companyInfo, setCompanyInfo] = useState([]);
     const [companyData, setCompanyData] = useState([]);
+
+    const navigate = useNavigate()
 
     const formatter = new Intl.NumberFormat('de-de', {
         style: 'currency',
         currency: 'EUR',
         minimumFractionDigits: 2
     })
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+    myHeaders.append('Access-Control-Allow-Origin', '*')
 
     useEffect(() => {
         var requestOptions = {
@@ -153,7 +162,10 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                                          companys={companyInfo.filter(value => value.index === cycle_index)}
                                          companyDataTest={companyData}/>
                     </div>
-                    <button className='my-6 w-[100%]  bg-red-400 text-white rounded-3xl shadow-lg p-3'
+                    <a className='my-6 px-[14%] mx-[2.5%] bg-blue-400 text-white rounded-3xl shadow-lg p-3'
+                       href={'/ler/analytic/' + gameId + '/' + cycle_index} target={"_blank"}>PDF Erzeugen
+                    </a>
+                    <button className='my-6 w-[45%] mx-[2.5%] bg-red-400 text-white rounded-3xl shadow-lg p-3'
                             onClick={() => setBackGame()}>Zu dieser Periode zurückspringen
                     </button>
                 </>

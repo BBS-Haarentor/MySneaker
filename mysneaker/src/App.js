@@ -8,6 +8,8 @@ import RegisterPage from './components/RegisterPage';
 import Logout from './components/Utils/Logout';
 import {useEffect} from 'react';
 import PageNotFound from "./components/PageNotFound";
+import { PDFViewer } from '@react-pdf/renderer';
+import AnalyticPDF from "./components/KlasseContainer/PDF/AnalyticPDF";
 
 
 function App() {
@@ -38,6 +40,7 @@ function App() {
                     <Route path='/register/:id' element={<RegisterPage/>}/>
                     <Route path='/logout' element={<Logout/>}/>
                     <Route path='*' element={<PageNotFound/>} />
+                    <Route path='/ler/analytic/:gameId/:current_cycle_index' element={ <AnalyticPDF />}/>
                 </Routes>
             </Router>
         </div>
