@@ -3,15 +3,11 @@ import Swal from 'sweetalert2'
 import MarketShare from './charts/MarketShare'
 import ExpendituresAdvertising from "./charts/ExpendituresAdvertising";
 import ResearchInvest from "./charts/ResearchInvest";
-import Cookies from "js-cookie";
-import {useNavigate} from "react-router-dom";
 
 const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateGame}) => {
 
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companyData, setCompanyData] = useState([]);
-
-    const navigate = useNavigate()
 
     const formatter = new Intl.NumberFormat('de-de', {
         style: 'currency',
@@ -19,13 +15,8 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
         minimumFractionDigits: 2
     })
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
-    myHeaders.append('Access-Control-Allow-Origin', '*')
-
     useEffect(() => {
-        var requestOptions = {
+        const requestOptions = {
             method: 'GET',
             headers: myHeaders,
         };
@@ -49,6 +40,18 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
             })
         })
     }, [])
+
+    useEffect(() => {
+        companyInfo.map((value) => {
+            companyData.forEach(value1 => {
+                if (value1.cycle !== null) {
+                    if (value.company_id === value1.cycle.company_id) {
+                        setTempCompanyData((prev) => ({...prev, [value.name]: value1}))
+                    }
+                }
+            })
+        })
+    }, [companyInfo, companyData])
 
     const setBackGame = () => {
         Swal.fire({
@@ -80,7 +83,7 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
         })
     }
 
-    let i = 0;
+    const [tempCompanyData, setTempCompanyData] = useState(companyInfo.map(value => value.name));
 
     return (
         <>
@@ -120,8 +123,11 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                             <hr/>
                         </td></> : <></>}
                     </tr>
-                    {companyInfo.map(value => {
-                        i++;
+                    {companyInfo.map((value) => {
+                        if(tempCompanyData === null) {
+                            return  <></>
+                        }
+
                         return (
                             <>
                                 <tr>
@@ -129,8 +135,8 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                                     <td>{value.real_sales === null ? 0 : value.real_sales} Stk.</td>
                                     <td>{formatter.format(value.sales_bid)}</td>
                                     <td>{formatter.format(value.income_from_sales)}</td>
-                                    {current_cycle_index > cycle_index ? <td>{formatter.format(companyData.length !== 0 ? companyData[i-1].cycle.research_invest : 0)}</td> : <></>}
-                                    {current_cycle_index > cycle_index ? <td>{formatter.format(companyData.length !== 0 ? companyData[i-1].cycle.ad_invest : 0)}</td> : <></>}
+                                    {current_cycle_index > cycle_index ? <td>{formatter.format(tempCompanyData[value.name] !== undefined ? tempCompanyData[value.name].cycle.research_invest : 0)}</td> : <></>}
+                                    {current_cycle_index > cycle_index ? <td>{formatter.format(tempCompanyData[value.name] !== undefined ? tempCompanyData[value.name].cycle.ad_invest : 0)}</td> : <></>}
                                     <td>{value.turnover_ready ? <>
                                         <svg className='fill-green-500 hover:fill-green-600 w-6 h-6 m-auto'
                                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -157,10 +163,9 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                         <MarketShare companys={companyInfo.filter(value => value.index === cycle_index)}/>
                         <ExpendituresAdvertising current_cycle_index={cycle_index}
                                                  companys={companyInfo.filter(value => value.index === cycle_index)}
-                                                 companyDataTest={companyData}/>
-                        <ResearchInvest current_cycle_index={cycle_index}
-                                         companys={companyInfo.filter(value => value.index === cycle_index)}
-                                         companyDataTest={companyData}/>
+                                                 companyDataTest={tempCompanyData}/>
+                        <ResearchInvest companys={companyInfo.filter(value => value.index === cycle_index)}
+                                         companyDataTest={tempCompanyData}/>
                     </div>
                     <a className='my-6 px-[14%] mx-[2.5%] bg-blue-400 text-white rounded-3xl shadow-lg p-3'
                        href={'/ler/analytic/' + gameId + '/' + cycle_index} target={"_blank"}>PDF Erzeugen

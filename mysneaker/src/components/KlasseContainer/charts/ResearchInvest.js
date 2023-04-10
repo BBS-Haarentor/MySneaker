@@ -1,21 +1,15 @@
 import {Pie} from 'react-chartjs-2'
 import {ArcElement} from "chart.js";
 import Chart1 from "chart.js/auto";
-import react, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 
 Chart1.register(ArcElement);
 
 
-const MarketShare = ({current_cycle_index, companys, companyDataTest}) => {
+const MarketShare = ({companys, companyDataTest}) => {
 
     const [companyNames, setCompanyNames] = useState([""])
     const [companyData, setCompanyData] = useState([0])
-
-    const formatter = new Intl.NumberFormat('de-de', {
-        style: 'currency',
-        currency: 'EUR',
-        minimumFractionDigits: 2
-    })
 
     useEffect(() => {
         let companyName = []
@@ -29,7 +23,11 @@ const MarketShare = ({current_cycle_index, companys, companyDataTest}) => {
         if(companyDataTest.length === 0) return;
         companys.map(value => {
             companyName.push(value.name)
-            companyDatas.push(companyDataTest[i].cycle.research_invest)
+            if(companyDataTest[value.name]  !== undefined && companyDataTest[value.name] .cycle !== null) {
+                companyDatas.push(companyDataTest[value.name] .cycle.research_invest)
+            } else {
+                companyDatas.push(0)
+            }
             setCompanyNames([...companyName])
             setCompanyData([...companyDatas])
             i++;

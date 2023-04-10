@@ -78,7 +78,7 @@ const RegisterPage = () => {
         <div className='h-screen w-screen dark:bg-[#1a202c] bg-[#f7fafc] flex'>
             <SideNavBar OnClick={OnClick} state={"Register"} />
             <div className="h-full w-full flex justify-center align-middle items-center">
-                <div className="w-10/12 max-w-xl mr-[300px]">
+                <div className="w-10/12 max-[900px]:mx-auto max-w-xl mr-[300px]">
                     <div>
                         <h1 className="text-[#4fd1c5] text-4xl font-bold px-10 py-1">Registrieren</h1>
                         <p className="text-[#a3b1c2] px-11 py-1 pb-10">Bitte gebe ein Benutzername und ein Passwort ein, um dich zu Registrieren</p>

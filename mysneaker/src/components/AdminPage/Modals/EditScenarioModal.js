@@ -94,7 +94,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         };
         fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/scenario/edit", requestOptions).then((element) => {
             if (element.status === 202) {
-                element.json().then((element1) => {
+                element.json().then(() => {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -138,9 +138,9 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                 <div className="px-4 py-5 sm:p-6">
                                     <label
                                         className="block text-sm font-medium text-lg text-gray-700">Beschreibung</label>
-                                    <input
+                                    <textarea
                                         className="w-[100%] text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md"
-                                        type="text" value={description} onChange={event => setDescription(event.target.value)}></input>
+                                        value={description} onChange={event => setDescription(event.target.value)}></textarea>
                                     <div
                                         className='h-[1px] my-3 bg-gradient-to-r from-transparent via-gray-400 to-transparent w-full m-1'></div>
                                     <div className="grid grid-cols-6 gap-6">
