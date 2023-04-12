@@ -45,7 +45,7 @@ export const MachineContainer = ({
                 <h2 className={"mt-7 mb-5 text-center text-xl font-bold"}>Gesamtkosten Produktion</h2>
                 <p className={"text-center font-semibold text-lg"}>{overallCost}</p>
                 <div className={"absolute w-full bottom-5 pr-4"}>
-                    <img src={"/img/img/sneakerbox200.svg"} className={"w-[50%] mx-auto"}/>
+                    <img src={"/img/img/sneakerbox200.svg"} className={"w-[100%] max-h-[100px] mx-auto"}/>
                 </div>
             </div>
         </>
