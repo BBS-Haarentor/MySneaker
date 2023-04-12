@@ -14,6 +14,7 @@ import Finanzen from './Container/Finanzen';
 import DataTemplate from './data.json'
 import API from "./API/API";
 import toast, {Toaster} from 'react-hot-toast';
+import {Maschine} from "./Container/Machine";
 
 
 const Container = ({
@@ -100,7 +101,7 @@ const Container = ({
         setTempData({
             "sneaker_cost": data.scenario.sneaker_price * cycle.buy_sneaker,
             "paint_cost": data.scenario.paint_price * cycle.buy_paint,
-            "overall_production": cycle.planned_production_1 + cycle.planned_production_2 + cycle.planned_production_3,
+            "overall_production": (isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) + (isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2) + (isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3),
             "employees_cost_in_p": data.scenario.employee_cost_modfier + 1,
             "overall_workers": cycle.planned_workers_1 + cycle.planned_workers_2 + cycle.planned_workers_3,
             "max_production": (data.stock.sneaker_count + cycle.buy_sneaker) > parseInt((data.stock.paint_count + cycle.buy_paint) / 2) ? parseInt((data.stock.paint_count + cycle.buy_paint) / 2) : (data.stock.sneaker_count + cycle.buy_sneaker),
@@ -163,7 +164,7 @@ const Container = ({
                             dataFromServer.cycle = defaultCycle
                         }
 
-                        if(dataFromServer.stock === null) {
+                        if (dataFromServer.stock === null) {
                             dataFromServer.stock = {
                                 "last_edit": 1678893090.019505,
                                 "credit_taken": 0,
@@ -389,7 +390,8 @@ const Container = ({
             {modalBuyMaschine}
             {modalConfirm}
             <Toaster position={"bottom-center"}/>
-            <div className={'w-full overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center' + (isTeacher ? ' h-full' : 'h-screen')}>
+            <div
+                className={'w-full overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center' + (isTeacher ? ' h-full' : 'h-screen')}>
 
                 <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle}
                              handleChange={handleChange} LagerBeschaffungRef={LagerBeschaffungRef}/>
@@ -401,334 +403,9 @@ const Container = ({
                           handleChange={handleChange} data={data}/>
 
 
-                {data.stock.machine_1_space != 0 ? <div
-                    className={cycle.planned_workers_1 == Math.ceil(cycle.planned_production_1 / 20) && tempData.max_production >= cycle.planned_production_1 && cycle.employees_count >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}
-                    ref={ProductionRef}>
-                    <table>
-                        <tbody>
-                        <tr>
-                            <th></th>
-                            <th className='text-[#4fd1c5]'>Sneakerbox 200</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td>Produktionskapazität</td>
-                            <td>{data.scenario.machine_production_capacity1} Stk.</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Maschinenkosten p. Per.</td>
-                            <td>{formatter.format(data.scenario.machine_maintainance_cost1)}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Fertigungskosten pro Stück</td>
-                            <td>60,00€</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Fertigungskosten pro Stück (F&E)</td>
-                            <td>{formatter.format(60 * data.stock.research_production_modifier)}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Rationalisierung</td>
-                            <td>100%</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Geplante Produktion</td>
-                            <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0"
-                                       name='planned_production_1' type="number" onChange={handleChange}
-                                       value={cycle.planned_production_1}></input> Stk.
-                            </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Produktionsprüfung (Werkstoffe)</td>
-                            <td>{tempData.max_production >= tempData.overall_production / 1 ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Benötigte Mitarbeiter</td>
-                            <td>{Math.ceil(cycle.planned_production_1 / 20)} Stk.</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Zugeteilte Mitarbeiter</td>
-                            <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0"
-                                       name='planned_workers_1' type="number" onChange={handleChange}
-                                       value={cycle.planned_workers_1}></input> Stk.
-                            </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Produktionsprüfung (Mitarbeiter)</td>
-                            <td>{cycle.planned_workers_1 === parseInt(Math.ceil(cycle.planned_production_1 / 20)) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Auslastung</td>
-                            <td>{Math.round((cycle.planned_production_1) / data.scenario.machine_production_capacity1 * 100)} %</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Gesamtkosten Produktion</td>
-                            <td>{formatter.format(data.scenario.machine_maintainance_cost1 + data.scenario.production_cost_per_sneaker1 * cycle.planned_production_1)}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div> : <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start"
-                              ref={ProductionRef}>
-                    <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' alt=""></img>
-                </div>}
-
-                {data.stock.machine_2_space !== 0 ? <div
-                    className={cycle.planned_workers_2 === Math.ceil(cycle.planned_production_2 / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4  shadow-lg dark:bg-[#1f2733] dark:text-white rounded-3xl m-2 bg-white  snap-start border-red-300 border-2"}
-                    ref={ProductionRef}>
-                    <table>
-                        <tbody>
-                        <tr>
-                            <th></th>
-                            <th className='text-[#4fd1c5]'>{machines[1].name}</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td>Produktionskapazität</td>
-                            <td>{machines[1].kapazität} Stk.</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Maschinenkosten p. Per.</td>
-                            <td>{formatter.format(machines[1].costpp)}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Fertigungskosten pro Stück</td>
-                            <td>{formatter.format(machines[1].fertigungskostenpp)}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Fertigungskosten pro Stück (F&E)</td>
-                            <td>{formatter.format(machines[1].fertigungskostenpp * data.stock.research_production_modifier)}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Rationalisierung</td>
-                            <td>100%</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Geplante Produktion</td>
-                            <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0"
-                                       name='planned_production_2' type="number" onChange={handleChange}
-                                       value={cycle.planned_production_2}></input> Stk.
-                            </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Produktionsprüfung (Werkstoffe)</td>
-                            <td>{tempData.max_production >= tempData.overall_production ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Benötigte Mitarbeiter</td>
-                            <td>{Math.ceil(cycle.planned_production_2 / 20)} Stk.</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Zugeteilte Mitarbeiter</td>
-                            <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0"
-                                       name='planned_workers_2' type="number" onChange={handleChange}
-                                       value={cycle.planned_workers_2}></input> Stk.
-                            </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Produktionsprüfung (Mitarbeiter)</td>
-                            <td>{parseInt(cycle.planned_workers_2) === Math.ceil(cycle.planned_production_2 / 20) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Auslastung</td>
-                            <td>{Math.round((cycle.planned_production_2) / machines[1].kapazität * 100)} %</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Gesamtkosten Produktion</td>
-                            <td>{formatter.format(machines[1]._costpp + machines[1].fertigungskostenpp * cycle.planned_production_2)}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div> : cycle.buy_new_machine !== 0 ?
-                    <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start"
-                         ref={ProductionRef}>
-                        <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle
-                            Verfügbare sein</h1>
-                        <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto' alt={""}></img>
-                    </div> : data.scenario.machine_purchase_allowed ?
-                        <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start"
-                             ref={ProductionRef}>
-                            <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                            <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuyM2}
-                                 alt={""}></img>
-                        </div> : <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start"
-                                      ref={ProductionRef}>
-                            <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf einer
-                                Maschine nicht möglich</h1>
-                            <img src="/img/access_denied.svg" className='h-96 w-96 m-auto' alt={""}></img>
-                        </div>}
-
-                {data.stock.machine_3_space !== 0 ? <div
-                        className={cycle.planned_workers_3 === Math.ceil(cycle.planned_production_3 / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers ? "p-4 dark:bg-[#1f2733] dark:text-white  shadow-lg rounded-3xl m-2 bg-white  snap-start " : "p-4 dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 bg-white snap-start border-red-300 border-2"}
-                        ref={ProductionRef}>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th></th>
-                                <th className='text-[#4fd1c5]'>{machines[2].name}</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <td>Produktionskapazität</td>
-                                <td>{machines[2].kapazität} Stk.</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Maschinenkosten p. Per.</td>
-                                <td>{formatter.format(machines[2].costpp)}</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Fertigungskosten pro Stück</td>
-                                <td>{formatter.format(machines[2].fertigungskostenpp)}</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Fertigungskosten pro Stück (F&E)</td>
-                                <td>{formatter.format(machines[2].fertigungskostenpp * data.stock.research_production_modifier)}</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Rationalisierung</td>
-                                <td>100%</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Geplante Produktion</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0"
-                                           name='planned_production_3' type="number" onChange={handleChange}
-                                           value={cycle.planned_production_3}></input> Stk.
-                                </td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Produktionsprüfung (Werkstoffe)</td>
-                                <td>{tempData.max_production >= tempData.overall_production ? "ja" : "Keine ausreichenden Werkstoffe"}</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Benötigte Mitarbeiter</td>
-                                <td>{Math.ceil(cycle.planned_production_3 / 20)} Stk.</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Zugeteilte Mitarbeiter</td>
-                                <td><input className="border-2 border-[#4fd1c5] rounded-lg dark:bg-[#1f2733]" min="0"
-                                           name='planned_workers_3' type="number" onChange={handleChange}
-                                           value={cycle.planned_workers_3}></input> Stk.
-                                </td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Produktionsprüfung (Mitarbeiter)</td>
-                                <td>{parseInt(cycle.planned_workers_3) === Math.ceil(cycle.planned_production_3 / 20) && cycle.employees_count >= tempData.overall_workers ? "ja" : "Keine passende Mitarbeiteranzahl"}</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Auslastung</td>
-                                <td>{Math.round((cycle.planned_production_3) / machines[2].kapazität * 100)} %</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Gesamtkosten Produktion</td>
-                                <td>{formatter.format(machines[2].costpp + machines[2].fertigungskostenpp * cycle.planned_production_3)}</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    : data.stock.machine_2_space === 0 ?
-                        <></>
-                        :
-                        cycle.buy_new_machine !== 0 ?
-                            <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start"
-                                 ref={ProductionRef}>
-                                <h1 className='text-[#4fd1c5]'>Neue Maschine wurde bestellt, sie wird im nächsten cycle
-                                    Verfügbare sein</h1>
-                                <img src="/img/speed_test.svg" className='h-96 w-64 xl:w-96 my-auto' alt={""}></img>
-                            </div>
-                            : data.stock.machine_2_space === 0 ?
-                                <></>
-                                : data.scenario.machine_purchase_allowed ?
-                                    <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start"
-                                         ref={ProductionRef}>
-                                        <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
-                                        <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto'
-                                             onClick={onBuyM3} alt={""}></img>
-                                    </div>
-                                    :
-                                    <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white  snap-start"
-                                         ref={ProductionRef}>
-                                        <h1 className='text-[#4fd1c5] pl-4 w-fit m-auto'>In dieser Periode ist der Kauf
-                                            einer machine nicht möglich</h1>
-                                        <img src="/img/access_denied.svg" className='h-96 w-96 m-auto' alt={""}></img>
-                                    </div>
-                }
+                <Maschine handleChange={handleChange} ProductionRef={ProductionRef} tempData={tempData}
+                          onBuyM2={onBuyM2} cycle={cycle} data={data} onBuyM3={onBuyM2} formatter={formatter}
+                          machines={machines}/>
 
                 <Marketing MarketingRef={MarketingRef} cycle={cycle} handleChange={handleChange}/>
 
