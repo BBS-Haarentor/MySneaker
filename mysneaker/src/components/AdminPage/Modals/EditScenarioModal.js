@@ -11,6 +11,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         "storage_fee_sneaker": 4,
         "storage_fee_paint": 1,
         "storage_fee_finished_sneaker": 8,
+        "employee_change_allowed": false,
         "employee_count_modifier_temporary": 0, // Ist Krank etc.
         "employee_count_modifier_permanent": 0, // Ist wieder zurück
         "factor_interest_rate": 0.04,
@@ -38,6 +39,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
     });
     const [sneaker_ask, setSneaker_Ask] = useState(0);
     const [machine_purchase_allowed, setMachine_purchase_allowed] = useState(scenario.machine_purchase_allowed);
+    const [employee_change_allowed, setEmployee_change_allowed] = useState(scenario.employee_change_allowed);
     const [sneakerBezugspreis, setSneakerBezugspreis] = useState(scenario.sneaker_price);
     const [colorBezugspreis, setColorBezugspreis] = useState(scenario.paint_price);
     const [sneaker_ask_auction, setSneaker_ask_auction] = useState(scenario.tender_offer_count);
@@ -66,6 +68,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                     setEmployee_cost_modfier(element1.employee_cost_modfier * 100)
                     setEmployee_salary(element1.employee_salary)
                     setEmployee_count_modifier_permanent(element1.employee_count_modifier_permanent)
+                    setEmployee_change_allowed(element1.employee_change_allowed)
                     
                 })
             }
@@ -84,6 +87,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         scenario.employee_salary = parseInt(employee_salary)
         scenario.description = description;
         scenario.employee_count_modifier_permanent = parseInt(employee_count_modifier_permanent)
+        scenario.employee_change_allowed = employee_change_allowed;
 
         var raw = JSON.stringify(scenario);
 
@@ -218,7 +222,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                         </div>
 
 
-                                        <div className="col-span-4 sm:col-span-4">
+                                        <div className="col-span-3 sm:col-span-3">
                                             <label htmlFor="buymachine"
                                                 className="block text-sm font-medium text-gray-700">Maschinen
                                                 Kaufen</label>
@@ -226,6 +230,15 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                                 onClick={(e) => setMachine_purchase_allowed(e.target.checked)}
                                                 name="buymachine" id="buymachine"
                                                 className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                                        </div>
+
+                                        <div className="col-span-3 sm:col-span-3">
+                                            <label htmlFor="buymachine"
+                                                   className="block text-sm font-medium text-gray-700">Personal Verwaltung</label>
+                                            <input type="checkbox" checked={employee_change_allowed}
+                                                   onClick={(e) => setEmployee_change_allowed(e.target.checked)}
+                                                   name="buymachine" id="buymachine"
+                                                   className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
                                     </div>

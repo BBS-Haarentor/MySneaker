@@ -4,7 +4,7 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
 
     return (
         <div
-            className={(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) < (Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count))) ? " p-4 border-2 border-red-300 shadow-lg  xl:col-span-2 rounded-3xl m-2 bg-white flex justify-center  snap-start" : "p-4 shadow-lg  xl:col-span-2  rounded-3xl m-2 bg-white flex justify-center") + " dark:bg-[#1f2733] max-[1899px]:w-full min-[1900px]:w-[63%] dark:text-white"}>
+            className={(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) < (Math.round(parseInt(cycle.sales_planned) + parseInt(cycle.tender_offer_count))) ? " p-4 border-2 border-red-300 shadow-lg rounded-3xl m-2 bg-white flex justify-center  snap-start" : "p-4 shadow-lg rounded-3xl m-2 bg-white flex justify-center") + " dark:bg-[#1f2733] max-[1899px]:w-full min-[1900px]:w-[63%] dark:text-white"}>
             <table>
                 <tbody>
                 <tr>
@@ -19,7 +19,7 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
                 </tr>
                 <tr>
                     <td>Markt</td>
-                    <td><input className="border-2 border-[#4fd1c5] w-[80%] rounded-lg dark:bg-[#1f2733]" min="0"
+                    <td><input className="border-2 border-[#4fd1c5] w-[150px] rounded-lg dark:bg-[#1f2733]" min="0"
                                type="number" name="sales_planned" onChange={handleChange} max={(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)))} value={cycle.sales_planned}></input> Stk.
                     </td>
                     <td><input className="border-2 border-[#4fd1c5] w-[90%] rounded-lg dark:bg-[#1f2733]" min="0"
@@ -36,13 +36,13 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
 
                     {data.scenario.tender_offer_count === 0 ?
                         <>
-                            <td><input className="border-2 border-[#1f273] w-[80%] rounded-lg dark:bg-[#252e3c]" min="0"
+                            <td><input className="border-2 border-[#1f273] w-[150px] rounded-lg dark:bg-[#252e3c]" min="0"
                                        type="number"
                                        onChange={handleChange}
                                        name="tender_offer_count"
                                        value={cycle.tender_offer_count} disabled></input> Stk.
                             </td>
-                            <td><input className="border-2 border-[#1f273] w-[90%] rounded-lg dark:bg-[#252e3c]" min="0"
+                            <td><input className="border-2 border-[#1f273] w-[160px] rounded-lg dark:bg-[#252e3c]" min="0"
                                        max="300" type="number"
                                        name="tender_offer_price"
                                        onChange={handleChange}
@@ -52,7 +52,7 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
                         :
                         <>
                             <td><select name="tender_offer_count"
-                                        className="border-2 border-[#4fd1c5] w-[80%] rounded-lg dark:bg-[#1f2733]"
+                                        className="border-2 border-[#4fd1c5] w-[150px] rounded-lg dark:bg-[#1f2733]"
                                         defaultValue="0"
                                         onChange={handleChange}>
                                 <option value="0">0</option>
@@ -60,7 +60,7 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
                                         >{data.scenario.tender_offer_count}</option>
                             </select>Stk.
                             </td>
-                            <td><input className="border-2 border-[#4fd1c5] w-[90%] rounded-lg dark:bg-[#1f2733]"
+                            <td><input className="border-2 border-[#4fd1c5] w-[160px] rounded-lg dark:bg-[#1f2733]"
                                        min="0" max="300" type="number"
                                        onChange={handleChange}
                                        name="tender_offer_price"
