@@ -8,7 +8,7 @@ import RegisterPage from './components/RegisterPage';
 import Logout from './components/Utils/Logout';
 import {useEffect} from 'react';
 import PageNotFound from "./components/PageNotFound";
-import { PDFViewer } from '@react-pdf/renderer';
+import Game2048 from './components/Utils/Game2048'
 import AnalyticPDF from "./components/KlasseContainer/PDF/AnalyticPDF";
 
 
@@ -29,7 +29,7 @@ function App() {
     })
 
     return (
-        <div className="h-screen dark:bg-[#1a202c] bg-[#f7fafc]">
+        <div className="h-screen dark:bg-[#1a202c] bg-[#f7fafc]" onKeyDown={event => console.log(event)}>
             <Router>
                 <Routes>
                     <Route exact path='/' element={<MainPage/>}/>
@@ -41,6 +41,7 @@ function App() {
                     <Route path='/logout' element={<Logout/>}/>
                     <Route path='*' element={<PageNotFound/>} />
                     <Route path='/ler/analytic/:gameId/:current_cycle_index' element={ <AnalyticPDF />}/>
+                    <Route path="/game" element={<Game2048 />} />
                 </Routes>
             </Router>
         </div>
