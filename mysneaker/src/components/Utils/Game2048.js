@@ -1,5 +1,6 @@
 import React from 'react'
 import './Game2048.css'
+import Cookies from "js-cookie";
 
 class Game2048 extends React.Component {
     constructor(props) {
@@ -72,6 +73,7 @@ class Game2048 extends React.Component {
 
                     if (this.checkForGameOver(upWithRandom)) {
                         this.setState({board: upWithRandom, gameOver: true, message: 'Game over!'});
+                        this.updateHighScore();
                     } else {
                         this.setState({board: upWithRandom, score: this.state.score += movedUp.score});
                     }
@@ -83,6 +85,7 @@ class Game2048 extends React.Component {
 
                     if (this.checkForGameOver(rightWithRandom)) {
                         this.setState({board: rightWithRandom, gameOver: true, message: 'Game over!'});
+                        this.updateHighScore();
                     } else {
                         this.setState({board: rightWithRandom, score: this.state.score += movedRight.score});
                     }
@@ -94,6 +97,7 @@ class Game2048 extends React.Component {
 
                     if (this.checkForGameOver(downWithRandom)) {
                         this.setState({board: downWithRandom, gameOver: true, message: 'Game over!'});
+                        this.updateHighScore();
                     } else {
                         this.setState({board: downWithRandom, score: this.state.score += movedDown.score});
                     }
@@ -105,6 +109,7 @@ class Game2048 extends React.Component {
 
                     if (this.checkForGameOver(leftWithRandom)) {
                         this.setState({board: leftWithRandom, gameOver: true, message: 'Game over!'});
+                        this.updateHighScore();
                     } else {
                         this.setState({board: leftWithRandom, score: this.state.score += movedLeft.score});
                     }
@@ -112,6 +117,15 @@ class Game2048 extends React.Component {
             }
         } else {
             this.setState({message: 'Game over. Please start a new game.'});
+        }
+    }
+
+    updateHighScore() {
+        if(Cookies.get("high-score") === undefined) {
+            Cookies.set("high-score", "0")
+        }
+        if(parseInt(Cookies.get("high-score")) < this.state.score) {
+            Cookies.set("high-score", this.state.score)
         }
     }
 
@@ -314,9 +328,11 @@ class Game2048 extends React.Component {
     }
 
     render() {
+        const defaultCookie = Cookies.get("high-score")
         return (
             <div className="transition-all game">
                 <div className="score text-white text-xl font-bold">Score: {this.state.score}</div>
+                <div className="score text-white text-xl font-bold">High Score: {defaultCookie === undefined ? "0" : defaultCookie}</div>
 
                 <table>
                     {this.state.board.map((row, i) => (<Row key={i} row={row} />))}
