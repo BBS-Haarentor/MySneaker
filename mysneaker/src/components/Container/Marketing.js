@@ -15,8 +15,9 @@ const Marketing = ({MarketingRef, cycle, handleChange}) => {
                         <h2 className="my-3 dark:text-white text-center text-xl">Werbung</h2>
                         <div className={"flex justify-center py-4"}>
                             <input min="0" onChange={handleChange} value={cycle.ad_invest}
-                                   className="w-32 bg-transparent dark:text-white text-center border-2 border-[#4fd1c5] rounded-full"
-                                   type={"number"}/>
+                                    name="ad_invest"
+                                    className="w-32 bg-transparent dark:text-white text-center border-2 border-[#4fd1c5] rounded-full"
+                                    type={"number"}/>
                             <p className={"ml-2 font-bold text-xl dark:text-white"}>€</p>
                         </div>
                     </div>
@@ -29,8 +30,9 @@ const Marketing = ({MarketingRef, cycle, handleChange}) => {
                             der Maschinen</h2>
                         <div className={"flex justify-center py-4"}>
                             <input min="0" onChange={handleChange} value={cycle.research_invest}
-                                   className="w-32 bg-transparent dark:text-white text-center border-2 border-[#4fd1c5] rounded-full"
-                                   type={"number"}/>
+                                    name="research_invest"
+                                    className="w-32 bg-transparent dark:text-white text-center border-2 border-[#4fd1c5] rounded-full"
+                                    type={"number"}/>
                             <p className={"ml-2 font-bold text-xl dark:text-white"}>€</p>
                         </div>
                     </div>
