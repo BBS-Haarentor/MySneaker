@@ -376,7 +376,18 @@ async def init_database(api_key: APIKey = Depends(get_api_key),
 
 
 @router.put("/turnover/{game_id}", status_code=status.HTTP_202_ACCEPTED)
-async def turnover_test(game_id: int, 
+@teacher_auth_required
+async def turnover(game_id: int, 
                         session: AsyncSession = Depends(get_async_session)):
     game_service: GameService = GameService(session=session)
     return await game_service.turnover(game_id=game_id)
+
+
+@router.get("/turnover_sim/{game_id}", status_code=status.HTTP_200_OK)
+@teacher_auth_required
+async def turnover_sim(game_id: int,
+                       session: AsyncSession = Depends(get_async_session),
+                       current_user: User = Depends(get_current_active_user)
+                       ) -> list:
+    game_service: GameService = GameService(session=session)
+    return await game_service.simulate_turnover(game_id=game_id)
