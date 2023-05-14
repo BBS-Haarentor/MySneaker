@@ -43,3 +43,6 @@ class Scenario(ScenarioBase, table=True):
     
     employee_change_allowed: bool | None = Field(default=True)
     machine_purchase_allowed: bool | None = Field(default=False)
+
+    research_allowed: bool | None = Field(default=True)
+    advertisement_allowed: bool | None = Field(default=True)
