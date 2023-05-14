@@ -1,5 +1,6 @@
 from datetime import datetime
 from sqlmodel import SQLModel
+from app.game_functions.utils import Transaction
 from app.models.cycle import Cycle
 from app.models.scenario import Scenario
 from app.models.stock import Stock
@@ -73,3 +74,14 @@ class Summary(SQLModel):
     cycle: Cycle | None
     stock: Stock | None
     scenario: Scenario | None   
+    
+    
+class TurnoverDetailsPlayer(SQLModel):
+    company_id: int
+    # company_name: str
+    index: int
+    game_id: int
+    
+    stock: Stock
+    ledger: list[Transaction]
+    

@@ -21,7 +21,7 @@ from app.models.scenario import Scenario
 from app.models.stock import Stock
 from app.models.user import User
 from app.models.game import Game
-from app.schemas.game import GameCreate, GamePatch, GamePost, GameResponse, PlayerInfo, PlayerInfoStudent, Summary
+from app.schemas.game import GameCreate, GamePatch, GamePost, GameResponse, PlayerInfo, PlayerInfoStudent, Summary, TurnoverDetailsPlayer
 from app.schemas.user import UserResponse, UserResponseWithGradeName
 from app.services import user_service
 from app.services import game_service
@@ -380,14 +380,15 @@ async def init_database(api_key: APIKey = Depends(get_api_key),
 async def turnover(game_id: int, 
                         session: AsyncSession = Depends(get_async_session)):
     game_service: GameService = GameService(session=session)
-    return await game_service.turnover(game_id=game_id)
+    return await game_service.execute_turnover(game_id=game_id)
 
 
-@router.get("/turnover_sim/{game_id}", status_code=status.HTTP_200_OK)
+@router.get("/turnover_sim/{game_id}/index/{index}", status_code=status.HTTP_200_OK)
 @teacher_auth_required
 async def turnover_sim(game_id: int,
+                       index: int,
                        session: AsyncSession = Depends(get_async_session),
                        current_user: User = Depends(get_current_active_user)
-                       ) -> list:
+                       ) -> list[TurnoverDetailsPlayer]:
     game_service: GameService = GameService(session=session)
-    return await game_service.simulate_turnover(game_id=game_id)
+    return await game_service.simulate_turnover(game_id=game_id, cycle_index=index)
