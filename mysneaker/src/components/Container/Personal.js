@@ -24,7 +24,7 @@ const Personal = ({PersonalRef, formatter, data, cycle, tempData, handleChange})
                     <div
                         className="dark:bg-[#1f2733] flex-shrink-0 w-72 min-h-60 rounded-xl max-[620px]:mr-5 drop-shadow-xl bg-white mb-5">
                         <img src="/img/img/personal.svg" alt="Paint" className="w-40 h-36 mx-auto my-5"/>
-                        <h1 className="text-[#4fd1c5] text-center text-2xl font-medium">Personal Verwaltung</h1>
+                        <h1 className="text-[#4fd1c5] text-center text-2xl font-medium">Personal</h1>
                         <p className="my-2 dark:text-white text-xl text-center">Neueinstellungen</p>
                         <p className="my-2 dark:text-white text-xl text-center">100,00 € pro Mitarbeiter</p>
                         <div className="flex items-center justify-center">
