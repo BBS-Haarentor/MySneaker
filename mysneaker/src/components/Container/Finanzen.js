@@ -26,16 +26,16 @@ const Finanzen = ({
         <>
             <div className="w-full">
                 <h1 className="my-5 text-3xl w-full text-center text-[#4fd1c5] font-bold">Finanzen</h1>
-                <div className="flex justify-center m-2 ">
+                <div className="flex justify-center m-2">
                     <div
                         className="dark:bg-[#1f2733] flex-shrink-0 xl:w-96 w-full min-h-60 rounded-xl max-[1250px]:mx-5 drop-shadow-xl bg-white mb-5">
                         <h2 className="text-[#4fd1c5] text-center text-xl pt-5 font-bold">Aktueller Kontostand</h2>
                         <p className="text-center pt-2 pb-5 dark:text-white text-lg font-bold">{formatter.format(stock.account_balance)}</p>
                     </div>
                 </div>
-                <div className="flex justify-center m-2 flex-row space-x-5 flex-wrap items-center">
+                <div className="flex justify-center flex-row flex-wrap w-full items-center overflow-x-hidden">
                     <div
-                        className="dark:bg-[#1f2733] flex-shrink-0 xl:w-[35em] w-full min-h-60 rounded-xl max-[1250px]:mx-5 drop-shadow-xl bg-white mb-5">
+                        className="dark:bg-[#1f2733] mx-2 xl:w-[35em] w-full min-h-60 rounded-xl drop-shadow-xl bg-white mb-5">
                         <svg viewBox="0 0 1358 1358" fill="none"
                              className="w-32 h-32 mx-auto my-5">
                             <path fillRule="evenodd" clipRule="evenodd"
@@ -74,7 +74,7 @@ const Finanzen = ({
                             (Darlehn)</p>
                     </div>
                     <div
-                        className="dark:bg-[#1f2733] flex-shrink-0 xl:w-[35em] w-full min-h-60 rounded-xl max-[1250px]:mx-5 drop-shadow-xl bg-white mb-5">
+                        className="dark:bg-[#1f2733] mx-2 xl:w-[35em] w-full min-h-60 rounded-xl drop-shadow-xl bg-white mb-5">
                         <h1 className="text-center text-[#4fd1c5] text-xl font-bold py-5">Finanzen Einkauf</h1>
                         <div className="rounded-full dark:bg-gray-50 bg-gray-500 h-1 w-[90%] mx-auto"/>
                         <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(tempData.sneaker_cost)} Einkauf Sneaker</p>
