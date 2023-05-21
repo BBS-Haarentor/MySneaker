@@ -15,6 +15,7 @@ import DataTemplate from './data.json'
 import API from "./API/API";
 import toast, {Toaster} from 'react-hot-toast';
 import {Maschine} from "./Container/Machine";
+import InformationContainer from "./Container/Information";
 
 
 const Container = ({
@@ -419,6 +420,8 @@ const Container = ({
                     cycle={cycle}
                     tempData={tempData}
                     handleChange={handleChange}/>
+
+                <InformationContainer formatter={formatter} data={data}/>
 
                 <VerkaufIst formatter={formatter} data={data}/>
 

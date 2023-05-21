@@ -41,7 +41,7 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
                         <h3 className="text-center dark:text-white pt-2 text-xl font-medium">{cycle.tender_offer_count}</h3>
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0</p>
-                            <input type="range" step={data.scenario.tender_offer_count} name='tender_offer_count' onChange={handleChange} value={cycle.tender_offer_count}
+                            <input type="range" step={data.scenario.tender_offer_count} disabled={data.scenario.tender_offer_count === 0} name='tender_offer_count' onChange={handleChange} value={cycle.tender_offer_count}
                                    max={data.scenario.tender_offer_count}
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">{data.scenario.tender_offer_count}</p>
@@ -50,7 +50,7 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
                         <h3 className="text-center dark:text-white pt-2 text-xl font-medium">{formatter.format(cycle.tender_offer_price)}</h3>
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0,00 €</p>
-                            <input type="range" name='tender_offer_price' onChange={handleChange} value={cycle.tender_offer_price}
+                            <input type="range" name='tender_offer_price' onChange={handleChange} disabled={data.scenario.tender_offer_count === 0} value={cycle.tender_offer_price}
                                    max={300}
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">300,00 €</p>
