@@ -423,8 +423,6 @@ const Container = ({
 
                 <InformationContainer formatter={formatter} data={data}/>
 
-                <VerkaufIst formatter={formatter} data={data}/>
-
                 <Statistik formatter={formatter} cycle={cycle} tempData={tempData} data={data}
                            AllMaschienenKosten={AllMaschienenKosten}/>
 
