@@ -421,10 +421,7 @@ const Container = ({
                     tempData={tempData}
                     handleChange={handleChange}/>
 
-                <InformationContainer formatter={formatter} data={data}/>
-
-                <Statistik formatter={formatter} cycle={cycle} tempData={tempData} data={data}
-                           AllMaschienenKosten={AllMaschienenKosten}/>
+                <InformationContainer formatter={formatter} data={data} cycle={cycle} tempData={tempData} AllMaschienenKosten={AllMaschienenKosten}/>
 
                 <Finanzen FinanzenRef={FinanzenRef} formatter={formatter}
                           newMaschienPrize={newMaschienPrize} scenario={data.scenario}
