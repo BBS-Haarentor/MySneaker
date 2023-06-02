@@ -15,6 +15,7 @@ import DataTemplate from './data.json'
 import API from "./API/API";
 import toast, {Toaster} from 'react-hot-toast';
 import {Maschine} from "./Container/Machine";
+import InformationContainer from "./Container/Information";
 
 
 const Container = ({
@@ -404,7 +405,7 @@ const Container = ({
 
 
                 <Maschine handleChange={handleChange} ProductionRef={ProductionRef} tempData={tempData}
-                          onBuyM2={onBuyM2} cycle={cycle} data={data} onBuyM3={onBuyM2} formatter={formatter}
+                          onBuyM2={onBuyM2} cycle={cycle} data={data} onBuyM3={onBuyM3} formatter={formatter}
                           machines={machines}/>
 
                 <Marketing MarketingRef={MarketingRef} cycle={cycle} handleChange={handleChange}/>
@@ -420,15 +421,12 @@ const Container = ({
                     tempData={tempData}
                     handleChange={handleChange}/>
 
-                <VerkaufIst formatter={formatter} data={data}/>
-
-                <Statistik formatter={formatter} cycle={cycle} tempData={tempData} data={data}
-                           AllMaschienenKosten={AllMaschienenKosten}/>
+                <InformationContainer formatter={formatter} data={data} cycle={cycle} tempData={tempData} AllMaschienenKosten={AllMaschienenKosten}/>
 
                 <Finanzen FinanzenRef={FinanzenRef} formatter={formatter}
                           newMaschienPrize={newMaschienPrize} scenario={data.scenario}
                           stock={data.stock} allMaschienenKosten={AllMaschienenKosten} tempData={tempData} cycle={cycle}
-                          machine_2_fertigungskostenpp={machines[1].fertigungskostenpp}
+                          machine_2_fertigungskostenpp={machines[1].fertigungskostenpp} handleChange={handleChange}
                           machine_3_fertigungskostenpp={machines[2].fertigungskostenpp}/>
                 <button
                     className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 h-14 border-gray-200 text-white font-bold"
