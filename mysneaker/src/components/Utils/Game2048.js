@@ -16,7 +16,7 @@ class Game2048 extends React.Component {
 
     // Create board with two random coordinate numbers
     initBoard() {
-        let board = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+        let board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
         // let board = [];
         // for (let i = 0; i < n; i++) {
         //   const row = [];
@@ -35,7 +35,9 @@ class Game2048 extends React.Component {
 
         for (let r = 0; r < board.length; r++) {
             for (let c = 0; c < board[r].length; c++) {
-                if (board[r][c] === 0) {blankCoordinates.push([r, c])}
+                if (board[r][c] === 0) {
+                    blankCoordinates.push([r, c])
+                }
             }
         }
 
@@ -44,7 +46,7 @@ class Game2048 extends React.Component {
 
     // Grab random start number
     randomStartingNumber() {
-        const startingNumbers = [2,4];
+        const startingNumbers = [2, 4];
         const randomNumber = startingNumbers[Math.floor(Math.random() * startingNumbers.length)];
         return randomNumber;
     }
@@ -121,10 +123,10 @@ class Game2048 extends React.Component {
     }
 
     updateHighScore() {
-        if(Cookies.get("high-score") === undefined) {
+        if (Cookies.get("high-score") === undefined) {
             Cookies.set("high-score", "0")
         }
-        if(parseInt(Cookies.get("high-score")) < this.state.score) {
+        if (parseInt(Cookies.get("high-score")) < this.state.score) {
             Cookies.set("high-score", this.state.score)
         }
     }
@@ -332,29 +334,59 @@ class Game2048 extends React.Component {
         return (
             <div className="transition-all game">
                 <div className="score text-white text-xl font-bold">Score: {this.state.score}</div>
-                <div className="score text-white text-xl font-bold">High Score: {defaultCookie === undefined ? "0" : defaultCookie}</div>
+                <div className="score text-white text-xl font-bold">High
+                    Score: {defaultCookie === undefined ? "0" : defaultCookie}</div>
 
-                <table>
-                    {this.state.board.map((row, i) => (<Row key={i} row={row} />))}
-                </table>
+                <div className="flex justify-center items-center">
+                    {navigator.userAgentData.mobile ?
+                        <div className="block">
+                            <div
+                                className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
+                                onClick={() => this.move('left')}>LINKS
+                            </div>
+                            <div
+                                className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
+                                onClick={() => this.move('up')}>OBEN
+                            </div>
+                        </div>
+                        : <></>}
+                    <table>
+                        {this.state.board.map((row, i) => (<Row key={i} row={row}/>))}
+                    </table>
+                    {navigator.userAgentData.mobile ?
+                        <div className="block">
+                            <div
+                                className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
+                                onClick={() => this.move('right')}>RECHTS
+                            </div>
+                            <div
+                                className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
+                                onClick={() => this.move('down')}>UNTEN
+                            </div>
+                        </div>
+                        : <></>}
+                </div>
 
                 <p className="text-white">{this.state.message}</p>
 
-                <div className="button py-4 my-5 w-32" onClick={() => {this.initBoard()}}>New Game</div>
+                <div className="button py-4 my-5 w-32" onClick={() => {
+                    this.initBoard()
+                }}>New Game
+                </div>
             </div>
         );
     }
 };
 
-const Row = ({ row }) => {
+const Row = ({row}) => {
     return (
         <tr>
-            {row.map((cell, i) => (<Cell key={i} cellValue={cell} />))}
+            {row.map((cell, i) => (<Cell key={i} cellValue={cell}/>))}
         </tr>
     );
 };
 
-const Cell = ({ cellValue }) => {
+const Cell = ({cellValue}) => {
     let color = 'cell';
     let value = (cellValue === 0) ? '' : cellValue;
     if (value) {
