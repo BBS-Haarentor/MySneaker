@@ -338,33 +338,29 @@ class Game2048 extends React.Component {
                     Score: {defaultCookie === undefined ? "0" : defaultCookie}</div>
 
                 <div className="flex justify-center items-center">
-                    {navigator.userAgentData.mobile ?
-                        <div className="block">
-                            <div
-                                className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
-                                onClick={() => this.move('left')}>LINKS
-                            </div>
-                            <div
-                                className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
-                                onClick={() => this.move('up')}>OBEN
-                            </div>
+                    <div className="">
+                        <div
+                            className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
+                            onClick={() => this.move('left')}>LINKS
                         </div>
-                        : <></>}
+                        <div
+                            className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
+                            onClick={() => this.move('up')}>OBEN
+                        </div>
+                    </div>
                     <table>
                         {this.state.board.map((row, i) => (<Row key={i} row={row}/>))}
                     </table>
-                    {navigator.userAgentData.mobile ?
-                        <div className="block">
-                            <div
-                                className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
-                                onClick={() => this.move('right')}>RECHTS
-                            </div>
-                            <div
-                                className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
-                                onClick={() => this.move('down')}>UNTEN
-                            </div>
+                    <div className="">
+                        <div
+                            className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
+                            onClick={() => this.move('right')}>RECHTS
                         </div>
-                        : <></>}
+                        <div
+                            className="w-20 dark:text-white rounded-2xl items-center m-2 flex justify-center h-20 bg-gray-400"
+                            onClick={() => this.move('down')}>UNTEN
+                        </div>
+                    </div>
                 </div>
 
                 <p className="text-white">{this.state.message}</p>
