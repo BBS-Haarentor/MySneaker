@@ -117,28 +117,28 @@ const Finanzen = ({
                         <h1 className="text-center text-[#4fd1c5] text-2xl font-bold py-5">Produktion</h1>
                         <div className="rounded-full dark:bg-gray-50 bg-gray-500 h-1 w-[90%] mx-auto"/>
                         <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(allMaschienenKosten)} Maschinenkosten</p>
-                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(allMaschienenKosten + cycle.planned_production_1 * scenario.production_cost_per_sneaker1 + cycle.planned_production_2 * machine_2_fertigungskostenpp + cycle.planned_production_3 * machine_3_fertigungskostenpp)} Produktionskosten</p>
+                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(allMaschienenKosten + (isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) * (isNaN(scenario.production_cost_per_sneaker1) ? 0 : scenario.production_cost_per_sneaker1) + cycle.planned_production_2 * machine_2_fertigungskostenpp + cycle.planned_production_3 * machine_3_fertigungskostenpp)} Produktionskosten</p>
                         <p className="text-xl dark:text-white text-center font-bold py-5">{formatter.format(newMaschienPrize)} Maschinenkauf</p>
                     </div>
                     <div
                         className="dark:bg-[#1f2733] mx-2 xl:w-[25em] w-full min-h-60 rounded-xl drop-shadow-xl bg-white mb-5">
                         <h1 className="text-center text-[#4fd1c5] text-2xl font-bold py-5">Einkauf</h1>
                         <div className="rounded-full dark:bg-gray-50 bg-gray-500 h-1 w-[90%] mx-auto"/>
-                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(tempData.sneaker_cost)} Einkauf
+                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost)} Einkauf
                             Sneaker</p>
-                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(tempData.paint_cost)} Einkauf
+                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost)} Einkauf
                             Farben</p>
-                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(tempData.paint_cost)} Lagerkosten
+                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost)} Lagerkosten
                             Fertige Erz.</p>
-                        <p className="text-xl dark:text-white text-center py-5 font-bold">{formatter.format((stock.sneaker_count + parseInt(cycle.buy_sneaker) - tempData.overall_production) * 4)} Lagerkosten
+                        <p className="text-xl dark:text-white text-center py-5 font-bold">{formatter.format((stock.sneaker_count + (isNaN(parseInt(cycle.buy_sneaker)) ? 0 : parseInt(cycle.buy_sneaker)) - tempData.overall_production) * 4)} Lagerkosten
                             Sneaker</p>
                     </div>
                     <div
                         className="dark:bg-[#1f2733] mx-2 xl:w-[25em] w-full min-h-60 rounded-xl drop-shadow-xl bg-white mb-5">
                         <h1 className="text-center text-[#4fd1c5] text-2xl font-bold py-5">Sonstige Kosten</h1>
                         <div className="rounded-full dark:bg-gray-50 bg-gray-500 h-1 w-[90%] mx-auto"/>
-                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(cycle.ad_invest)} Werbekosten</p>
-                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(cycle.research_invest)} Rationalisierung</p>
+                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(isNaN(cycle.ad_invest) ? 0 : cycle.ad_invest)} Werbekosten</p>
+                        <p className="text-xl dark:text-white text-center font-bold pt-5">{formatter.format(isNaN(cycle.research_invest) ? 0 : cycle.research_invest)} Rationalisierung</p>
                         <p className="text-xl dark:text-white text-center font-bold py-5">{formatter.format(newMaschienPrize)} Umsatze</p>
                     </div>
                 </div>
@@ -162,7 +162,7 @@ const Finanzen = ({
                             <tr>
                                 <td>Saldo</td>
                                 <td>{formatter.format(isNaN(SaldoSoll) ? 0 : parseInt(SaldoSoll))}</td>
-                                <td className="text-right">{formatter.format(parseInt(SaldoIst))}</td>
+                                <td className="text-right">{formatter.format(isNaN(parseInt(SaldoIst)) ? 0 : parseInt(SaldoIst))}</td>
                             </tr>
                             <tr>
                                 <td>Höhe Kontokorrentkredit</td>

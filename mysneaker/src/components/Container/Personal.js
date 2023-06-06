@@ -14,7 +14,7 @@ const Personal = ({PersonalRef, formatter, data, cycle, tempData, handleChange})
                         <p className="my-2 dark:text-white text-xl text-center">{cycle.employees_count} Mitarbeiter</p>
                         <p className="my-2 dark:text-white text-xl text-center">{(parseInt(cycle.planned_workers_1) + parseInt(cycle.planned_workers_2) + parseInt(cycle.planned_workers_3))} Zugeteilte
                             MA</p>
-                        <p className="my-2 dark:text-white text-xl text-center">{parseInt(cycle.employees_count) + cycle.new_employees - cycle.let_go_employees} MA
+                        <p className="my-2 dark:text-white text-xl text-center">{parseInt(cycle.employees_count) + (isNaN(cycle.new_employees) ? 0 : cycle.new_employees) - (isNaN(cycle.let_go_employees) ? 0 : cycle.let_go_employees)} MA
                             nächste Periode</p>
                         <p className="my-2 dark:text-white text-xl text-center">20 Sneaker Grundkapazität je MA</p>
                         <div className="w-[90%] h-[2px] rounded-full dark:bg-white bg-black m-auto my-2"></div>
@@ -90,7 +90,7 @@ const Personal = ({PersonalRef, formatter, data, cycle, tempData, handleChange})
                             </svg>
                             <input
                                 className={"border-2 mx-5 text-center dark:text-white rounded-full w-16 dark:bg-[#1f2733]" + (data.scenario.employee_change_allowed ? " border-[#4fd1c5]" : " border-[#1f273] dark:bg-[#252e3c]")}
-                                min="0" name='new_employees' type="number" onChange={handleChange}
+                                min="0" name='let_go_employees' type="number" onChange={handleChange}
                                 value={cycle.let_go_employees} disabled={!data.scenario.employee_change_allowed}/>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  onClick={() => {
@@ -122,7 +122,7 @@ const Personal = ({PersonalRef, formatter, data, cycle, tempData, handleChange})
                         <div className="w-[90%] h-[2px] rounded-full dark:bg-white bg-black m-auto my-2"></div>
                         <p className="my-3 dark:text-white text-xl text-center">{formatter.format(cycle.employees_count * (data.scenario.employee_salary * (tempData.employees_cost_in_p)))} akt.
                             Personalkosten</p>
-                        <p className="my-3 dark:text-white text-xl text-center">{formatter.format((parseInt(cycle.employees_count) + cycle.new_employees - cycle.let_go_employees) * (data.scenario.employee_salary * (tempData.employees_cost_in_p)))} folg.
+                        <p className="my-3 dark:text-white text-xl text-center">{formatter.format((parseInt(cycle.employees_count) + (isNaN(cycle.new_employees) ? 0 : cycle.new_employees) - (isNaN(cycle.let_go_employees) ? 0 : cycle.let_go_employees)) * (data.scenario.employee_salary * (tempData.employees_cost_in_p)))} folg.
                             Personalkosten</p>
                     </div>
                 </div>

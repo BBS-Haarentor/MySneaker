@@ -17,9 +17,9 @@ const Beschaffung = ({cycle, data, tempData, formatter, handleChange}) => {
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0</p>
                             <input type="range" name='sales_planned' onChange={handleChange} value={cycle.sales_planned}
-                                   max={(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock))-cycle.tender_offer_count)}
+                                   max={(Math.round((isNaN(parseInt(tempData.overall_production)) ? 0 : parseInt(tempData.overall_production)) + (isNaN(parseInt(cycle.include_from_stock)) ? 0 : parseInt(cycle.include_from_stock)))-(isNaN(cycle.tender_offer_count) ? 0 : cycle.tender_offer_count))}
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
-                            <p className="w-1/5 text-center dark:text-white font-medium text-lg">{(Math.round(parseInt(tempData.overall_production) + parseInt(cycle.include_from_stock)) - cycle.tender_offer_count)}</p>
+                            <p className="w-1/5 text-center dark:text-white font-medium text-lg">{(Math.round((isNaN(parseInt(tempData.overall_production)) ? 0 : parseInt(tempData.overall_production)) + (isNaN(parseInt(cycle.include_from_stock)) ? 0 : parseInt(cycle.include_from_stock))) - (isNaN(cycle.tender_offer_count) ? 0 : cycle.tender_offer_count))}</p>
                         </div>
                         <h2 className={"mt-3 mb-1 dark:text-white text-center text-xl font-bold"}>Geplante Stückzahl</h2>
                         <h3 className="text-center dark:text-white pt-2 text-xl font-medium">{formatter.format(cycle.sales_bid)}</h3>
