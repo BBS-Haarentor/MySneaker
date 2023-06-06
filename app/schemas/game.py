@@ -83,5 +83,5 @@ class TurnoverDetailsPlayer(SQLModel):
     game_id: int
     
     stock: Stock
-    ledger: list[Transaction]
+    ledger: list
     

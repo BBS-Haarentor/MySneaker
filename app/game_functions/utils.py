@@ -39,8 +39,8 @@ class Machine(SQLModel):
 
 
 
-@dataclass
-class Transaction():
+
+class Transaction(SQLModel):
     company_id: int
     amount: float
     issuer: str
