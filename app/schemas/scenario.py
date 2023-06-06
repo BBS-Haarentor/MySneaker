@@ -38,6 +38,9 @@ class ScenarioBase(BaseSchema):
     production_cost_per_sneaker2: float | None
     production_cost_per_sneaker3: float | None
     employee_change_allowed: bool | None
+    
+    research_allowed: bool | None
+    advertisement_allowed: bool | None
 
 
 class ScenarioPost(ScenarioBase):
@@ -77,3 +80,7 @@ class ScenarioStudentResponse(ScenarioBase):
     production_cost_per_sneaker2: float | None
     production_cost_per_sneaker3: float | None
     employee_change_allowed: bool | None
+    
+    research_allowed: bool | None
+    advertisement_allowed: bool | None
+
