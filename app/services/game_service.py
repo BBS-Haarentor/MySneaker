@@ -203,7 +203,7 @@ class GameService:
         game: Game = await self.game_repo.read(id=game_id)
         current_index: int = game.current_cycle_index
 
-        turnover: Turnover = self.prepare_turnover(
+        turnover: Turnover = await self.prepare_turnover(
             game=game, target_cycle=current_index
         )
 

@@ -68,6 +68,6 @@ api.add_middleware(
 )
 
 
-#@api.on_event("startup")
+@api.on_event("startup")
 async def setup_db():
     await init_async_db()
