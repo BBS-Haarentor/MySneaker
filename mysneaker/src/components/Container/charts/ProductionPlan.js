@@ -1,7 +1,6 @@
 import {Pie} from 'react-chartjs-2'
 import {ArcElement} from "chart.js";
 import Chart1 from "chart.js/auto";
-import {valueOrDefault} from "chart.js/helpers";
 import {useEffect} from "react";
 
 Chart1.register(ArcElement);

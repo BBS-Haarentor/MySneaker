@@ -5,6 +5,8 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
 
     const [scenario, setScenario] = useState({
         "char": "string",
+        "advertisement_allowed": false,
+        "research_allowed": false,
         "description": "string",
         "sneaker_price": 20,
         "paint_price": 10,
@@ -39,6 +41,8 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
     });
     const [sneaker_ask, setSneaker_Ask] = useState(0);
     const [machine_purchase_allowed, setMachine_purchase_allowed] = useState(scenario.machine_purchase_allowed);
+    const [advertisement_allowed, setAdvertisement_allowed] = useState(scenario.advertisement_allowed);
+    const [research_allowed, setResearch_allowed] = useState(scenario.research_allowed);
     const [employee_change_allowed, setEmployee_change_allowed] = useState(scenario.employee_change_allowed);
     const [sneakerBezugspreis, setSneakerBezugspreis] = useState(scenario.sneaker_price);
     const [colorBezugspreis, setColorBezugspreis] = useState(scenario.paint_price);
@@ -88,6 +92,9 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         scenario.description = description;
         scenario.employee_count_modifier_permanent = parseInt(employee_count_modifier_permanent)
         scenario.employee_change_allowed = employee_change_allowed;
+        scenario.advertisement_allowed = advertisement_allowed;
+        scenario.research_allowed = research_allowed;
+
 
         var raw = JSON.stringify(scenario);
 
@@ -237,6 +244,24 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                                    className="block text-sm font-medium text-gray-700">Personal Verwaltung</label>
                                             <input type="checkbox" checked={employee_change_allowed}
                                                    onClick={(e) => setEmployee_change_allowed(e.target.checked)}
+                                                   name="buymachine" id="buymachine"
+                                                   className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                                        </div>
+
+                                        <div className="col-span-3 sm:col-span-3">
+                                            <label htmlFor="buymachine"
+                                                   className="block text-sm font-medium text-gray-700">Forschung</label>
+                                            <input type="checkbox" checked={research_allowed}
+                                                   onClick={(e) => setResearch_allowed(e.target.checked)}
+                                                   name="buymachine" id="buymachine"
+                                                   className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
+                                        </div>
+
+                                        <div className="col-span-3 sm:col-span-3">
+                                            <label htmlFor="buymachine"
+                                                   className="block text-sm font-medium text-gray-700">Werbung</label>
+                                            <input type="checkbox" checked={advertisement_allowed}
+                                                   onClick={(e) => setAdvertisement_allowed(e.target.checked)}
                                                    name="buymachine" id="buymachine"
                                                    className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
                                         </div>
