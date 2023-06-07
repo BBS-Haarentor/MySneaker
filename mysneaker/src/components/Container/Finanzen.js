@@ -91,7 +91,26 @@ const Finanzen = ({
                         <h1 className="text-center text-[#4fd1c5] text-xl font-bold">Darlehen</h1>
                         <div className="rounded-full dark:bg-gray-50 bg-gray-500 h-1 w-[90%] mx-auto mt-5 mb-3"/>
                         <h2 className="text-center text-2xl dark:text-white font-bold">{formatter.format(stock.credit_taken)}</h2>
-                        <h3 className="text-center dark:text-white pt-5 text-xl font-medium">{formatter.format(cycle.take_credit)}</h3>
+                        <div className="w-full flex justify-center">
+                            <div>
+                                <input type={"number"} name='take_credit' onChange={(e) => {
+                                    if(e.target.value >= 50000) {
+                                        handleChange({
+                                            target: {
+                                                name: "take_credit",
+                                                value: 50000
+                                            }
+                                        })
+                                    } else {
+                                        handleChange(e)
+                                    }
+                                }
+                                } max={50000}
+                                       className="text-center dark:text-white mt-5 inline w-56 text-xl dark:bg-transparent font-medium"
+                                       value={isNaN(cycle.take_credit) ? "" : cycle.take_credit}/>
+                                <p className="inline font-medium text-xl dark:text-white">€</p>
+                            </div>
+                        </div>
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0,00 €</p>
                             <input type="range" name='take_credit' onChange={handleChange} value={cycle.take_credit}
@@ -99,7 +118,26 @@ const Finanzen = ({
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">50.000,00 €</p>
                         </div>
-                        <h3 className="text-center dark:text-white pt-5 text-xl font-medium">{formatter.format(cycle.payback_credit)}</h3>
+                        <div className="w-full flex justify-center">
+                            <div>
+                                <input type={"number"} name='payback_credit' onChange={(e) => {
+                                    if(e.target.value >= stock.credit_taken) {
+                                        handleChange({
+                                            target: {
+                                                name: "payback_credit",
+                                                value: stock.credit_taken
+                                            }
+                                        })
+                                    } else {
+                                        handleChange(e)
+                                    }
+                                }
+                                } max={stock.credit_taken}
+                                       className="text-center dark:text-white mt-5 inline w-56 text-xl dark:bg-transparent font-medium"
+                                       value={isNaN(cycle.payback_credit) ? "" : cycle.payback_credit}/>
+                                <p className="inline font-medium text-xl dark:text-white">€</p>
+                            </div>
+                        </div>
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0,00 €</p>
                             <input type="range" name='payback_credit' onChange={handleChange}
@@ -172,7 +210,7 @@ const Finanzen = ({
                             <tr>
                                 <td>Zinsen (Kontokorrentkredit)</td>
                                 <td>{formatter.format(HöheKontokorrentkreditSoll * 0.12)}</td>
-                                <td  className="text-right">{formatter.format(HöheKontokorrentkreditIst * 0.12)}</td>
+                                <td className="text-right">{formatter.format(HöheKontokorrentkreditIst * 0.12)}</td>
                             </tr>
                             </tbody>
                         </table>
