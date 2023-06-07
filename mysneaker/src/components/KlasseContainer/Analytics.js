@@ -96,8 +96,10 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                         <td>Verkauft</td>
                         <td>Preis</td>
                         <td>Umsatz</td>
-                        {current_cycle_index > cycle_index ? <><td>Forschung und Entwickelung</td>
-                        <td>Werbung</td></> : <></>}
+                        {current_cycle_index > cycle_index ? <>
+                            <td>Forschung und Entwickelung</td>
+                            <td>Werbung</td>
+                        </> : <></>}
                         <td>Status</td>
                     </tr>
                     <tr className='mb-12'>
@@ -116,16 +118,18 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                         <td>
                             <hr/>
                         </td>
-                        {current_cycle_index > cycle_index ? <><td>
-                            <hr/>
-                        </td>
-                        <td>
-                            <hr/>
-                        </td></> : <></>}
+                        {current_cycle_index > cycle_index ? <>
+                            <td>
+                                <hr/>
+                            </td>
+                            <td>
+                                <hr/>
+                            </td>
+                        </> : <></>}
                     </tr>
                     {companyInfo.map((value) => {
-                        if(tempCompanyData === null) {
-                            return  <></>
+                        if (tempCompanyData === null) {
+                            return <></>
                         }
 
                         return (
@@ -135,8 +139,10 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                                     <td>{value.real_sales === null ? 0 : value.real_sales} Stk.</td>
                                     <td>{formatter.format(value.sales_bid)}</td>
                                     <td>{formatter.format(value.income_from_sales)}</td>
-                                    {current_cycle_index > cycle_index ? <td>{formatter.format(tempCompanyData[value.name] !== undefined ? tempCompanyData[value.name].cycle.research_invest : 0)}</td> : <></>}
-                                    {current_cycle_index > cycle_index ? <td>{formatter.format(tempCompanyData[value.name] !== undefined ? tempCompanyData[value.name].cycle.ad_invest : 0)}</td> : <></>}
+                                    {current_cycle_index > cycle_index ?
+                                        <td>{formatter.format(tempCompanyData[value.name] !== undefined ? tempCompanyData[value.name].cycle.research_invest : 0)}</td> : <></>}
+                                    {current_cycle_index > cycle_index ?
+                                        <td>{formatter.format(tempCompanyData[value.name] !== undefined ? tempCompanyData[value.name].cycle.ad_invest : 0)}</td> : <></>}
                                     <td>{value.turnover_ready ? <>
                                         <svg className='fill-green-500 hover:fill-green-600 w-6 h-6 m-auto'
                                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -165,14 +171,20 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                                                  companys={companyInfo.filter(value => value.index === cycle_index)}
                                                  companyDataTest={tempCompanyData}/>
                         <ResearchInvest companys={companyInfo.filter(value => value.index === cycle_index)}
-                                         companyDataTest={tempCompanyData}/>
+                                        companyDataTest={tempCompanyData}/>
                     </div>
-                    <a className='my-6 px-[14%] mx-[2.5%] bg-blue-400 text-white rounded-3xl shadow-lg p-3'
-                       href={'/ler/analytic/' + gameId + '/' + cycle_index} target={"_blank"}>PDF Erzeugen
-                    </a>
-                    <button className='my-6 w-[45%] mx-[2.5%] bg-red-400 text-white rounded-3xl shadow-lg p-3'
-                            onClick={() => setBackGame()}>Zu dieser Periode zurückspringen
-                    </button>
+                    <div className="flex flex-row justify-center">
+                        <a className='my-6 w-1/4 mx-5 text-center bg-blue-400 font-bold text-white rounded-3xl shadow-lg p-3'
+                           href={'/ler/analytic/' + gameId + '/' + cycle_index} target={"_blank"}>PDF Erzeugen
+                        </a>
+                        <button
+                            className='my-6 mx-5 text-center w-1/4 bg-orange-400 font-bold text-white rounded-3xl shadow-lg p-3'>
+                            Rechnungen Überprüfen
+                        </button>
+                        <button className='my-6 w-1/4 mx-5 bg-red-400 text-white font-bold rounded-3xl shadow-lg p-3'
+                                onClick={() => setBackGame()}>Zu dieser Periode zurückspringen
+                        </button>
+                    </div>
                 </>
                 :
                 <></>
