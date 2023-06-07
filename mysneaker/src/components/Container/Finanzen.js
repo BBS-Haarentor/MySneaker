@@ -113,7 +113,7 @@ const Finanzen = ({
                         </div>
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0,00 €</p>
-                            <input type="range" name='take_credit' onChange={handleChange} value={cycle.take_credit}
+                            <input type="range" name='take_credit' onChange={handleChange} value={isNaN(cycle.take_credit) ? 0 : cycle.take_credit}
                                    max={50000}
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">50.000,00 €</p>
@@ -141,11 +141,11 @@ const Finanzen = ({
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0,00 €</p>
                             <input type="range" name='payback_credit' onChange={handleChange}
-                                   value={cycle.payback_credit} max={stock.credit_taken}
+                                   value={isNaN(cycle.payback_credit) ? 0 : cycle.payback_credit} max={stock.credit_taken}
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">{formatter.format(stock.credit_taken)}</p>
                         </div>
-                        <p className="text-center dark:text-white text-xl my-5 font-bold">{formatter.format((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)} Zinsen
+                        <p className="text-center dark:text-white text-xl my-5 font-bold">{formatter.format(((isNaN(stock.credit_taken) ? 0 : stock.credit_taken) + (isNaN(cycle.take_credit) ? 0 : cycle.take_credit) - (isNaN(cycle.payback_credit) ? 0 : cycle.payback_credit)) * scenario.factor_interest_rate)} Zinsen
                             (Darlehn)</p>
                     </div>
                 </div>
