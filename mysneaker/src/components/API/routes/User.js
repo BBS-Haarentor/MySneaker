@@ -1,6 +1,7 @@
 import {MissingArgumentsException} from "../Exceptions/MissingArgumentsException";
 import {WrongInputException} from "../Exceptions/WrongInputException";
 import {UserException} from "../Exceptions/UserException";
+import {RequestException} from "../Exceptions/RequestException";
 
 export default class User {
     constructor(myHeaders) {
@@ -46,6 +47,28 @@ export default class User {
                 throw new UserException("Bitte gebe keine Leeren Felder ab")
             } else {
                 throw new WrongInputException("Falsches Passwort oder Benutzername")
+            }
+        })
+    }
+
+    /**
+     * Get Username from ID Methode with API Request
+     * @author Optischa <fabian.evers2602@gmail.com>
+     * @param {String} userId - User Id
+     * @return async {String|MissingArgumentsException|WrongInputException} Access token or MissingArgumentsException / WrongInputException
+     */
+    async get_user_by_id(userId) {
+        if(userId === ""){
+            throw new MissingArgumentsException("Bitte gebe keine Leeren Felder ab")
+        }
+
+        this.requestOptions.body = null;
+
+        return fetch(process.env.REACT_APP_MY_API_URL + `/user/get_by_id/${userId}`, this.requestOptions).then(res => {
+            if (res.status === 200) {
+                return res;
+            } else if (res.status === 422) {
+                throw new RequestException("Es gibt ein Problem bei der Anfrage")
             }
         })
     }

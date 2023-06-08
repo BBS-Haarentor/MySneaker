@@ -3,11 +3,15 @@ import Swal from 'sweetalert2'
 import MarketShare from './charts/MarketShare'
 import ExpendituresAdvertising from "./charts/ExpendituresAdvertising";
 import ResearchInvest from "./charts/ResearchInvest";
+import API from "../API/API";
 
 const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateGame}) => {
 
     const [companyInfo, setCompanyInfo] = useState([]);
     const [companyData, setCompanyData] = useState([]);
+    const [turnOverSim, setTurnOverSim] = useState([])
+    const [turnOverSimUser, setTurnOverSimUser] = useState([]);
+    const [turnover_check, setTurnOverCheck] = useState(false);
 
     const formatter = new Intl.NumberFormat('de-de', {
         style: 'currency',
@@ -16,6 +20,18 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
     })
 
     useEffect(() => {
+        new API(true).game.turnover_sim(gameId, cycle_index).then(value => {
+            setTurnOverSim(value)
+            return value;
+        }).then((value) => {
+            const list = [...turnOverSimUser]
+            value.forEach(value1 => {
+                new API(true).user.get_user_by_id(value1.company_id).then(value2 => value2.json().then(value3 => {
+                    list.push({...value3})
+                }));
+            })
+            setTurnOverSimUser(list)
+        })
         const requestOptions = {
             method: 'GET',
             headers: myHeaders,
@@ -84,6 +100,77 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
     }
 
     const [tempCompanyData, setTempCompanyData] = useState(companyInfo.map(value => value.name));
+    const [showTurnOverUser, setShowTurnOverUser] = useState(undefined);
+    if (turnover_check) {
+        if(showTurnOverUser === undefined) {
+            return (
+                <>
+                    <h1 className="text-center pb-10 text-[#4fd1c5] text-2xl font-bold">Aktuelle Rechnung in
+                        Spiel {gameId} im Cycle {cycle_index + 1}</h1>
+                    <div className="flex w-full justify-center">
+                        {turnOverSim.map((value, index) => {
+                            const user = turnOverSimUser.filter(value1 => value.company_id === value1.id);
+                            return (
+                                <>
+                                    <div className="w-72 dark:bg-[#28303c] mx-5 rounded-xl shadow-lg cursor-pointer"
+                                         onClick={() => setShowTurnOverUser(value.company_id)}>
+                                        <h1 className="text-center py-5 text-xl">{user.length === 0 ? "" : user[0].name}</h1>
+                                    </div>
+                                </>
+                            )
+                        })}
+                    </div>
+                </>
+            )
+        } else {
+            const user = turnOverSimUser.filter(value1 => showTurnOverUser === value1.id);
+            const turnOverUser = turnOverSim.filter(value => value.company_id === showTurnOverUser)[0];
+            return (
+                <>
+                    <h1 className="text-2xl text-center text-[#4fd1c5] font-bold">{user.length === 0 ? "" : user[0].name}</h1>
+                    <div className="flex justify-center py-5 items-center">
+                        <div className="w-72 dark:bg-[#28303c] mx-5 rounded-xl shadow-lg text-center py-5">
+                            <h1 className="text-center text-xl my-2 font-bold">Informationen</h1>
+                            <p className="my-2">{turnOverUser.stock.sneaker_count} Sneaker Anzahl</p>
+                            <p className="my-2">{turnOverUser.stock.finished_sneaker_count} Fertige Sneaker Anzahl</p>
+                            <p className="my-2">{turnOverUser.stock.paint_count} Farben Anzahl</p>
+                            <p className="my-2">{turnOverUser.stock.employees_count} Mitarbeiter</p>
+                            <p className="my-2">{turnOverUser.stock.tender_sales === null ? "Keine" : turnOverUser.stock.tender_sales} Auschreibungssneaker</p>
+                            <p className="my-2">{turnOverUser.stock.tender_price === null ? "0,00 €" : turnOverUser.stock.tender_price} Auschreibungspreis</p>
+                            <p className="my-2">Ist Insolvent? {turnOverUser.stock.insolvent ? <span className="text-red-500">Ja</span>: <span className="text-green-500">Nein</span>}</p>
+                        </div>
+                        <div className="w-72 dark:bg-[#28303c] mx-5 rounded-xl shadow-lg text-center py-5">
+                            <h1 className="text-center text-xl my-2 font-bold">Kosten/Preise</h1>
+                            <p className="my-2">{formatter.format(turnOverUser.stock.research_budget)} Forschungsbudget</p>
+                            <p className="my-2">{formatter.format(turnOverUser.stock.account_balance)} Kontostand</p>
+                            <p className="my-2">{formatter.format(turnOverUser.stock.credit_taken)} Kredit Aufgenommen</p>
+                            <p className="my-2">{turnOverUser.stock.real_sales} Sneaker Verkauft</p>
+                            <p className="my-2">{formatter.format(turnOverUser.stock.income_from_sales)} Umsatz</p>
+                        </div>
+                        <div className="w-72 dark:bg-[#28303c] mx-5 rounded-xl shadow-lg text-center py-5">
+                            <h1 className="text-center text-xl my-2 font-bold">Maschinen</h1>
+                            <p className="my-2">Maschine 1: {turnOverUser.stock.machine_1_space}</p>
+                            <p className="my-2">Maschine 2: {turnOverUser.stock.machine_2_space}</p>
+                            <p className="my-2">Maschine 3: {turnOverUser.stock.machine_3_space}</p>
+                        </div>
+                    </div>
+                    <h1 className="text-xl text-center text-[#4fd1c5] font-bold">Berechnungen</h1>
+                    <div className="flex w-full flex-wrap justify-center">
+                        {turnOverUser.ledger.map(value => {
+                            return(
+                                <>
+                                    <div className="w-72 dark:bg-[#28303c] m-5 p-5 rounded-xl shadow-lg text-center">
+                                        <h1 className="text-lg font-bold">{value.issuer}</h1>
+                                        <h2 className="font-medium my-2">Anzahl: {value.amount}</h2>
+                                    </div>
+                                </>
+                            )
+                        })}
+                    </div>
+                </>
+            )
+        }
+    }
 
     return (
         <>
@@ -177,8 +264,8 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                         <a className='my-6 w-1/4 mx-5 text-center bg-blue-400 font-bold text-white rounded-3xl shadow-lg p-3'
                            href={'/ler/analytic/' + gameId + '/' + cycle_index} target={"_blank"}>PDF Erzeugen
                         </a>
-                        <button
-                            className='my-6 mx-5 text-center w-1/4 bg-orange-400 font-bold text-white rounded-3xl shadow-lg p-3'>
+                        <button onClick={() => setTurnOverCheck(true)}
+                                className='my-6 mx-5 text-center w-1/4 bg-orange-400 font-bold text-white rounded-3xl shadow-lg p-3'>
                             Rechnungen Überprüfen
                         </button>
                         <button className='my-6 w-1/4 mx-5 bg-red-400 text-white font-bold rounded-3xl shadow-lg p-3'

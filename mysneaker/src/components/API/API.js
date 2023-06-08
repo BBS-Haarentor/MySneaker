@@ -1,14 +1,17 @@
 import Cycle from "./routes/Cycle";
 import User from "./routes/User";
 import Game from "./routes/Game";
+import Cookies from "js-cookie";
 
 
 export default class API {
-    constructor(access_key=null) {
+    constructor(auth=false) {
         const myHeaders = new Headers();
         myHeaders.append('Access-Control-Allow-Origin', '*')
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + access_key)
+        if(auth) {
+            myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
+        }
 
         this._user = new User(myHeaders);
         this._cycle = new Cycle(myHeaders);

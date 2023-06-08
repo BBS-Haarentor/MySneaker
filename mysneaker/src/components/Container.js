@@ -230,7 +230,7 @@ const Container = ({
             raw = JSON.stringify(cycle)
         }
 
-        const newEntry = await new API(Cookies.get("session")).cycle.newEntry(raw, isTeacher);
+        const newEntry = await new API(true).cycle.newEntry(raw, isTeacher);
         if (typeof newEntry === "boolean") {
             await Swal.fire({
                 position: 'top-end',
