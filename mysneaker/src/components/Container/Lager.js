@@ -31,7 +31,7 @@ const Lager = ({ data, cycle,tempData, formatter, handleChange }) => {
                     <BaseContainer title="Fertige Sneaker" imageSrc="/img/img/sneaker.svg"> 
                         <Spacer/>
                             <TextOutput value={data.finished_sneaker_count} text="Sneaker im Lager"/>
-                            <TextOutput value={tempData.overall_production} text="Sneaker werden gekauft"/>
+                            <TextOutput value={tempData.overall_production} text="Sneaker werden Produziert"/>
                             <TextOutput value={data.finished_sneaker_count + tempData.overall_production} text="Sneaker gesamt Verfügbar"/>
                             <TextOutput value={Math.round(tempData.overall_production + cycle.include_from_stock)} text="Sneaker Verbraucht (PLAN)"/>
                         <Spacer/>
