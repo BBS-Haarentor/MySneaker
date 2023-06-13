@@ -24,7 +24,7 @@ const Finanzen = ({
 
     return (
         <>
-            <div className="w-full">
+            <div className="w-full" ref={FinanzenRef}>
                 <h1 className="my-5 text-3xl w-full text-center text-[#4fd1c5] font-bold">Finanzen</h1>
                 <div className="flex justify-center m-2">
                     <div
@@ -149,6 +149,7 @@ const Finanzen = ({
                             (Darlehn)</p>
                     </div>
                 </div>
+                <div id={"finanzen"} className="w-[1px] h-[1px]" />
                 <div className="flex justify-center m2 items-center flex-wrap">
                     <div
                         className="dark:bg-[#1f2733] mx-2 xl:w-[25em] w-full min-h-60 rounded-xl drop-shadow-xl bg-white mb-5">

@@ -6,9 +6,6 @@ import {useEffect} from "react";
 Chart1.register(ArcElement);
 
 const ProductionPlan = ({list}) => {
-    useEffect(() => {
-        console.log(list.map(value => value.value))
-    }, [])
     return (
         <>
             <Pie
@@ -37,12 +34,6 @@ const ProductionPlan = ({list}) => {
                             ],
                             borderWidth: 1,
                         },
-                        // {
-                        //   label: 'Quantity',
-                        //   data: [47, 52, 67, 58, 9, 50],
-                        //   backgroundColor: 'orange',
-                        //   borderColor: 'red',
-                        // },
                     ],
                 }}
                 options={{

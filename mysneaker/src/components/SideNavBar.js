@@ -195,12 +195,13 @@ const SidebarContent = ({userAuth, state, OnClick, token, sidebarInformation}) =
                             <p className='mx-12 px-2 text-[#a0aec0]'>Klasse: {sidebarInformation.grade_name}</p><br/>
                             <p className='mx-12 py-2 px-2 text-[#a0aec0] inline-block'>Szenario: {sidebarInformation.scenario}</p>
                             <Spacer></Spacer>
-                            <NavBarButton text="Lager/Beschaffung" state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Personal" state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Produktion" state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Marketing" state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Absatz" state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Finanzen" state={state} onClick={OnClick}></NavBarButton>
+                            <NavBarButton text="Beschaffung" state={state} id={"beschaffung"} onClick={OnClick}></NavBarButton>
+                            <NavBarButton text="Lager" id={"lager"} state={state} onClick={OnClick}></NavBarButton>
+                            <NavBarButton text="Personal" id={"personal"} state={state} onClick={OnClick}></NavBarButton>
+                            <NavBarButton text="Produktion" id={"produktion"} state={state} onClick={OnClick}></NavBarButton>
+                            <NavBarButton text="Marketing" id={"marketing"} state={state} onClick={OnClick}></NavBarButton>
+                            <NavBarButton text="Absatz" id={"absatz"} state={state} onClick={OnClick}></NavBarButton>
+                            <NavBarButton text="Finanzen" id={"finanzen"} state={state} onClick={OnClick}></NavBarButton>
                             <Spacer></Spacer><NavBarButton text="Logout" state={state}
                                                            onClick={OnClick}></NavBarButton></> : <></>)}
         </>

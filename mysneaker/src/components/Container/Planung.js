@@ -4,7 +4,7 @@ const Planung = ({AbsatzRef, tempData, data, cycle, handleChange}) => {
 
     return (
         <>
-            <div className="w-full">
+            <div className="w-full" ref={AbsatzRef}>
                 <h1 className="my-5 text-3xl w-full text-center text-[#4fd1c5] font-bold">Planung</h1>
                 <div
                     className="flex min-[620px]:justify-center w-full flex-nowrap">

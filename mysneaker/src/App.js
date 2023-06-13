@@ -29,7 +29,7 @@ function App() {
     })
 
     return (
-        <div className="h-screen dark:bg-[#1a202c] bg-[#f7fafc]" onKeyDown={event => console.log(event)}>
+        <div className="h-screen dark:bg-[#1a202c] bg-[#f7fafc]">
             <Router>
                 <Routes>
                     <Route exact path='/' element={<MainPage/>}/>

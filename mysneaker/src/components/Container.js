@@ -8,8 +8,6 @@ import Personal from './Container/Personal';
 import Marketing from './Container/Marketing'
 import Planung from './Container/Planung'
 import VerkaufSoll from './Container/VerkaufSoll'
-import VerkaufIst from './Container/VerkaufIst'
-import Statistik from './Container/Statistik'
 import Finanzen from './Container/Finanzen';
 import DataTemplate from './data.json'
 import API from "./API/API";
@@ -20,7 +18,8 @@ import InformationContainer from "./Container/Information";
 
 const Container = ({
                        ProductionRef,
-                       LagerBeschaffungRef,
+                       LagerRef,
+                       BeschaffungRef,
                        FinanzenRef,
                        MarketingRef,
                        PersonalRef,
@@ -395,23 +394,28 @@ const Container = ({
                 className={'w-full overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center' + (isTeacher ? ' h-full' : 'h-screen')}>
 
                 <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle}
-                             handleChange={handleChange} LagerBeschaffungRef={LagerBeschaffungRef}/>
+                             handleChange={handleChange} LagerBeschaffungRef={BeschaffungRef}/>
+                <div id={"beschaffung"} className="w-[1px] h-[1px]" />
 
-                <Lager data={data.stock} cycle={cycle} formatter={formatter} tempData={tempData}
+                <Lager data={data.stock} LagerRef={LagerRef} cycle={cycle} formatter={formatter} tempData={tempData}
                        handleChange={handleChange}/>
+                <div id={"lager"} className="w-[1px] h-[1px]" />
 
                 <Personal PersonalRef={PersonalRef} cycle={cycle} formatter={formatter} tempData={tempData}
                           handleChange={handleChange} data={data}/>
-
+                <div id={"personal"} className="w-[1px] h-[1px]" />
 
                 <Maschine handleChange={handleChange} ProductionRef={ProductionRef} tempData={tempData}
                           onBuyM2={onBuyM2} cycle={cycle} data={data} onBuyM3={onBuyM3} formatter={formatter}
                           machines={machines}/>
+                <div id={"produktion"} className="w-[1px] h-[1px]" />
 
                 <Marketing MarketingRef={MarketingRef} cycle={cycle} handleChange={handleChange}/>
+                <div id={"marketing"} className="w-[1px] h-[1px]" />
 
                 <Planung AbsatzRef={AbsatzRef} tempData={tempData} data={data} cycle={cycle}
                          handleChange={handleChange}/>
+                <div id={"absatz"} className="w-[1px] h-[1px]" />
 
 
                 <VerkaufSoll
@@ -428,6 +432,7 @@ const Container = ({
                           stock={data.stock} allMaschienenKosten={AllMaschienenKosten} tempData={tempData} cycle={cycle}
                           machine_2_fertigungskostenpp={machines[1].fertigungskostenpp} handleChange={handleChange}
                           machine_3_fertigungskostenpp={machines[2].fertigungskostenpp}/>
+
                 <button
                     className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 h-14 border-gray-200 text-white font-bold"
                     onClick={onSubmit}>Abgeben/Speichern

@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Beschaffung = ({scenario, formatter, cycle, tempData, handleChange, LagerBeschaffungRef}) => {
+const Beschaffung = ({scenario, formatter, cycle, tempData, handleChange, BeschaffungRef}) => {
 
     return (
-        <div className="w-full" ref={LagerBeschaffungRef}>
-            <h1 className="my-5 text-3xl w-full text-center text-[#4fd1c5] font-bold">Einkauf</h1>
+        <div className="w-full" ref={BeschaffungRef}>
+            <h1 className="my-5 text-3xl w-full text-center text-[#4fd1c5] font-bold">Beschaffung</h1>
             <div
                 className="flex overflow-x-auto min-[620px]:justify-center space-x-8 items-center flex-nowrap overflow-x-auto">
                 <div

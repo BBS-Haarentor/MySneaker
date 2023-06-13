@@ -3,11 +3,11 @@ import BaseContainer from '../BaseComponents/BaseContainer'
 import Spacer from '../BaseComponents/Spacer'
 import TextOutput from '../BaseComponents/TextOutput'
 
-const Lager = ({ data, cycle,tempData, formatter, handleChange }) => {
+const Lager = ({LagerRef, data, cycle,tempData, formatter, handleChange }) => {
 
     return (
         <>
-            <div className="w-full">
+            <div className="w-full" ref={LagerRef}>
                 <h1 className="my-5 text-3xl w-full text-center text-[#4fd1c5] font-bold">Lager</h1>
                 <div className="flex overflow-x-auto min-[1250px]:justify-center space-x-8 items-center flex-nowrap overflow-x-auto">
                     <BaseContainer title="Sneaker" imageSrc="/img/img/sneaker.svg"> 

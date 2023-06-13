@@ -11,17 +11,18 @@ const DashBoardPage = () => {
     const MarketingRef = useRef(null);
     const PersonalRef = useRef(null);
     const FinanzenRef = useRef(null);
-    const LagerBeschaffungRef = useRef(null);
+    const LagerRef = useRef(null);
+    const BeschaffungRef = useRef(null);
     const ProductionRef = useRef(null);
     const AbsatzRef = useRef(null);
     const navigate = useNavigate()
     const [refreshSidebar, setRefreshSidebar] = useState(false)
 
-    const [state, setState] = useState((Cookies.get("session") === undefined || Cookies.get("session") === "" ? "Login" : "Lager/Beschaffung"))
+    const [state, setState] = useState((Cookies.get("session") === undefined || Cookies.get("session") === "" ? "Login" : "Beschaffung"))
     const OnClick = (text) => {
         setState(text)
-        if (text === "Lager/Beschaffung") {
-            LagerBeschaffungRef.current?.scrollIntoView({behavior: 'smooth'});
+        if (text === "Beschaffung") {
+            BeschaffungRef.current?.scrollIntoView({behavior: 'smooth'});
         } else if (text === "Personal") {
             PersonalRef.current?.scrollIntoView({behavior: 'smooth'});
         } else if (text === "Produktion") {
@@ -32,6 +33,8 @@ const DashBoardPage = () => {
             AbsatzRef.current?.scrollIntoView({behavior: 'smooth'});
         } else if (text === "Finanzen") {
             FinanzenRef.current?.scrollIntoView({behavior: 'smooth'});
+        }else if (text === "Lager") {
+                LagerRef.current?.scrollIntoView({behavior: 'smooth'});
         } else if (text === "Logout") {
             navigate("/logout")
         }
@@ -92,8 +95,8 @@ const DashBoardPage = () => {
                 <LoginPage updateSidebar={updateSidebar} setRefreshSidebar={setRefreshSidebar}/> :
                 (userAuth.admin ? <AdminPage state={state} OnClick={OnClick}/> : userAuth.teacher ? <LehrerPage/> : userAuth.base ?
                     <Container MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef}
-                               LagerBeschaffungRef={LagerBeschaffungRef} ProductionRef={ProductionRef}
-                               PersonalRef={PersonalRef}/> : <></>)}
+                               BeschaffungRef={BeschaffungRef} ProductionRef={ProductionRef}
+                               PersonalRef={PersonalRef} LagerRef={LagerRef}/> : <></>)}
         </div>
     )
 }
