@@ -82,76 +82,26 @@ const PeriodenListe = () => {
     return (
         <>
             {modal}
-            <div className='h-screen w-screen justify-center flex items-center  flex-wrap overflow-x-hidden'>
+            <div className='h-screen w-screen justify-center flex  flex-wrap overflow-x-hidden'>
                 {scenarios.map((element, index) => {
                     return (
                         <>
                             <div
-                                className="mt-12 p-4 dark:bg-[#1f2733] flex-none dark:text-white xl:col-span-2 shadow-lg rounded-3xl mr-2 mb-2 bg-white overflow-y-auto w-96 h-128 mx-12 z-0"
+                                className="mt-12 p-4 dark:bg-[#1f2733] flex-none dark:text-white xl:col-span-2 shadow-lg rounded-3xl mr-2 mb-2 bg-white overflow-y-auto w-96 h-[400px] mx-12"
                                 key={index}>
                                 <div className="relative">
                                     <div className='text-4xl text-center m-auto text-[#4fd1c5]'>
                                         <p>{new TextEncoder().encode(element.char) - 64}</p>
                                     </div>
                                     <div className="h-[2px] dark:bg-white bg-gray-400 rounded-full"/>
-                                    <p className={"my-3 text-center"}>{element.description}</p>
-                                    <div className="h-[2px] dark:bg-white bg-gray-400 rounded-full"/>
-                                    <div className="w-full flex">
-                                        <button className='p-2 my-5 mx-auto w-5 h-5'
-                                                onClick={() => editScenario(element.char)}>
-
-                                            <svg
-                                                className='fill-yellow-600 hover:fill-yellow-700 h-5 w-5'
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 512 512">
-                                                <path
-                                                    d="M421.7 220.3L188.5 453.4L154.6 419.5L158.1 416H112C103.2 416 96 408.8 96 400V353.9L92.51 357.4C87.78 362.2 84.31 368 82.42 374.4L59.44 452.6L137.6 429.6C143.1 427.7 149.8 424.2 154.6 419.5L188.5 453.4C178.1 463.8 165.2 471.5 151.1 475.6L30.77 511C22.35 513.5 13.24 511.2 7.03 504.1C.8198 498.8-1.502 489.7 .976 481.2L36.37 360.9C40.53 346.8 48.16 333.9 58.57 323.5L291.7 90.34L421.7 220.3zM492.7 58.75C517.7 83.74 517.7 124.3 492.7 149.3L444.3 197.7L314.3 67.72L362.7 19.32C387.7-5.678 428.3-5.678 453.3 19.32L492.7 58.75z"/>
-                                            </svg>
-                                        </button>
+                                    <div className="h-[250px] overflow-x-hidden my-1">
+                                        <p className={"my-3 text-center"}>{element.description}</p>
                                     </div>
-                                </div>
-                            </div>
-                        </>)
-                })}
-            </div>
-        </>
-    )
-
-    return (
-        <>
-            {modal}
-            <div className='h-screen w-full overflow-hidden'>
-                <div
-                    className='mt-12 p-4 dark:bg-[#1f2733] dark:text-white xl:col-span-2 shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
-                    <table className='w-full text-center'>
-                        <thead>
-                        <tr>
-                            <td>Name</td>
-                            <td>Beschreibung</td>
-                            <td>Aktionen</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr className='mb-12'>
-                            <td>
-                                <hr/>
-                            </td>
-                            <td>
-                                <hr/>
-                            </td>
-                            <td>
-                                <hr/>
-                            </td>
-                        </tr>
-                        {scenarios.map(scenario => {
-                            return (
-                                <>
-                                    <tr>
-                                        <td>{new TextEncoder().encode(scenario.char) - 64}</td>
-                                        <td>{scenario.description}</td>
-                                        <td>
-                                            <button className='p-2'
-                                                    onClick={() => editScenario(scenario.char)}>
+                                    <div className="block w-full">
+                                        <div className="h-[2px] dark:bg-white bg-gray-400 rounded-full"/>
+                                        <div className="w-full flex">
+                                            <button className='p-2 my-5 mx-auto w-5 h-5'
+                                                    onClick={() => editScenario(element.char)}>
 
                                                 <svg
                                                     className='fill-yellow-600 hover:fill-yellow-700 h-5 w-5'
@@ -161,18 +111,16 @@ const PeriodenListe = () => {
                                                         d="M421.7 220.3L188.5 453.4L154.6 419.5L158.1 416H112C103.2 416 96 408.8 96 400V353.9L92.51 357.4C87.78 362.2 84.31 368 82.42 374.4L59.44 452.6L137.6 429.6C143.1 427.7 149.8 424.2 154.6 419.5L188.5 453.4C178.1 463.8 165.2 471.5 151.1 475.6L30.77 511C22.35 513.5 13.24 511.2 7.03 504.1C.8198 498.8-1.502 489.7 .976 481.2L36.37 360.9C40.53 346.8 48.16 333.9 58.57 323.5L291.7 90.34L421.7 220.3zM492.7 58.75C517.7 83.74 517.7 124.3 492.7 149.3L444.3 197.7L314.3 67.72L362.7 19.32C387.7-5.678 428.3-5.678 453.3 19.32L492.7 58.75z"/>
                                                 </svg>
                                             </button>
-                                        </td>
-                                    </tr>
-                                </>
-                            )
-                        })}
-                        </tbody>
-                    </table>
-                </div>
-
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>)
+                })}
             </div>
         </>
     )
+
 }
 
 export default PeriodenListe

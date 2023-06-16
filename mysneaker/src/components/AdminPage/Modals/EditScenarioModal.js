@@ -64,6 +64,8 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                     setScenario(element1)
                     setSneaker_Ask(element1.sneaker_ask)
                     setMachine_purchase_allowed(element1.machine_purchase_allowed)
+                    setAdvertisement_allowed(element1.advertisement_allowed)
+                    setResearch_allowed(element1.research_allowed)
                     setSneaker_ask_auction(element1.tender_offer_count)
                     setSneakerBezugspreis(element1.sneaker_price)
                     setColorBezugspreis(element1.paint_price)
@@ -139,54 +141,54 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                     id="my-modal"
                 ></div>
                 <div
-                    className="fixed text-gray-600 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
+                    className="fixed text-gray-600 dark:text-white flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0">
                     <div
-                        className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
+                        className="text-center bg-white dark:bg-[#1f2733] rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-                        <div className="bg-gray-100 rounded-lg">
+                        <div className="">
                             <span className="font-bold block text-xl pt-3 mb-3">Periode ändern</span>
                             <div className='flex flex-col py-5'>
                                 <div className="px-4 py-5 sm:p-6">
                                     <label
-                                        className="block text-sm font-medium text-lg text-gray-700">Beschreibung</label>
+                                        className="block text-sm font-medium text-gray-700 dark:text-gray-100">Beschreibung</label>
                                     <textarea
-                                        className="w-[100%] text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md"
+                                        className="dark:bg-[#1f2733] max-h-72 min-h-[4rem] dark:border-2 text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md"
                                         value={description} onChange={event => setDescription(event.target.value)}></textarea>
                                     <div
                                         className='h-[1px] my-3 bg-gradient-to-r from-transparent via-gray-400 to-transparent w-full m-1'></div>
                                     <div className="grid grid-cols-6 gap-6">
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
-                                                className="block text-sm font-medium mt-2 text-gray-700">Neueinstellungen</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Neueinstellungen</label>
                                             <input type="number" name="reference-price" value={employee_signup_bonus}
                                                 onChange={(e) => setEmployee_signup_bonus(e.target.value)}
                                                 id="reference-price"
-                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
+                                                className="dark:bg-[#1f2733] dark:border-2 text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
-                                                className="block text-sm font-medium mt-2 text-gray-700">Kündigungen</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Kündigungen</label>
                                             <input type="number" name="reference-price" value={employee_count_modifier_permanent}
                                                 onChange={(e) => setEmployee_count_modifier_permanent(e.target.value)}
                                                 id="reference-price"
-                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
+                                                className="text-center dark:bg-[#1f2733] dark:border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
-                                                className="block text-sm font-medium mt-2 text-gray-700">Gehalt</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Gehalt</label>
                                             <input type="number" name="reference-price" value={employee_salary}
                                                 onChange={(e) => setEmployee_salary(e.target.value)}
                                                 id="reference-price"
-                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
+                                                className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
-                                                className="block text-sm font-medium mt-2 text-gray-700">Nebenkosten</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Nebenkosten</label>
                                             <p>
                                                 <input type="number" name="reference-price" value={employee_cost_modfier}
                                                     onChange={(e) => setEmployee_cost_modfier(e.target.value)}
                                                     id="reference-price"
-                                                    className="w-[90%] text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" /> %
+                                                    className="w-[90%] text-center dark:bg-[#1f2733] dark:border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 shadow-md py-2 sm:text-sm border-gray-700 rounded-md" /> %
                                             </p>
                                         </div>
                                     </div>
@@ -195,43 +197,43 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                     <div className="grid grid-cols-6 gap-6">
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
-                                                className="block text-sm font-medium text-lg text-gray-700">Bezugspreis</label>
+                                                className="block text-sm font-medium text-lg text-gray-700 dark:text-gray-100">Bezugspreis</label>
                                             <label
-                                                className="block text-sm font-medium mt-2 text-gray-700">Sneaker</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Sneaker</label>
                                             <input type="number" name="reference-price" value={sneakerBezugspreis}
                                                 onChange={(e) => setSneakerBezugspreis(e.target.value)}
                                                 id="reference-price"
-                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
+                                                className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                             <label
-                                                className="block text-sm font-medium mt-2 text-gray-700">Farbe</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Farbe</label>
                                             <input type="number" name="reference-price" value={colorBezugspreis}
                                                 onChange={(e) => setColorBezugspreis(e.target.value)}
                                                 id="reference-price"
-                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
+                                                className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
 
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
-                                                className="block text-sm font-medium text-lg text-gray-700">Gesamtmenge</label>
+                                                className="block text-sm font-medium text-lg text-gray-700 dark:text-gray-100">Gesamtmenge</label>
                                             <label htmlFor="total-amount"
-                                                className="block text-sm font-medium mt-2 text-gray-700">Nachgefragt</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Nachgefragt</label>
                                             <input type="number" value={sneaker_ask}
                                                 onChange={(e) => setSneaker_Ask(e.target.value)} name="total-amount"
                                                 id="total-amount"
-                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
+                                                className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
                                             <label htmlFor="total-amount"
-                                                className="block text-sm font-medium mt-2 text-gray-700">Ausschreibung</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Ausschreibung</label>
                                             <input type="number" value={sneaker_ask_auction}
                                                 onChange={(e) => setSneaker_ask_auction(e.target.value)}
                                                 name="total-amount-auction" id="total-amount-auction"
-                                                className="text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
+                                                className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
 
                                         <div className="col-span-3 sm:col-span-3">
                                             <label htmlFor="buymachine"
-                                                className="block text-sm font-medium text-gray-700">Maschinen
+                                                className="block text-sm font-medium text-gray-700 dark:text-gray-100">Maschinen
                                                 Kaufen</label>
                                             <input type="checkbox" checked={machine_purchase_allowed}
                                                 onClick={(e) => setMachine_purchase_allowed(e.target.checked)}
@@ -241,7 +243,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
 
                                         <div className="col-span-3 sm:col-span-3">
                                             <label htmlFor="buymachine"
-                                                   className="block text-sm font-medium text-gray-700">Personal Verwaltung</label>
+                                                   className="block text-sm font-medium text-gray-700 dark:text-gray-100">Personal Verwaltung</label>
                                             <input type="checkbox" checked={employee_change_allowed}
                                                    onClick={(e) => setEmployee_change_allowed(e.target.checked)}
                                                    name="buymachine" id="buymachine"
@@ -250,7 +252,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
 
                                         <div className="col-span-3 sm:col-span-3">
                                             <label htmlFor="buymachine"
-                                                   className="block text-sm font-medium text-gray-700">Forschung</label>
+                                                   className="block text-sm font-medium text-gray-700 dark:text-gray-100">Forschung</label>
                                             <input type="checkbox" checked={research_allowed}
                                                    onClick={(e) => setResearch_allowed(e.target.checked)}
                                                    name="buymachine" id="buymachine"
@@ -259,7 +261,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
 
                                         <div className="col-span-3 sm:col-span-3">
                                             <label htmlFor="buymachine"
-                                                   className="block text-sm font-medium text-gray-700">Werbung</label>
+                                                   className="block text-sm font-medium text-gray-700 dark:text-gray-100">Werbung</label>
                                             <input type="checkbox" checked={advertisement_allowed}
                                                    onClick={(e) => setAdvertisement_allowed(e.target.checked)}
                                                    name="buymachine" id="buymachine"

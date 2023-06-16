@@ -21,3 +21,7 @@ body {
     background: rgb(88, 87, 87);
     border-radius: 10px;
 }
+
+.dark .swal2-select option {
+    background: #313131 !important;
+}

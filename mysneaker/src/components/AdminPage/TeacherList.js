@@ -189,7 +189,7 @@ const TeacherList = () => {
         setModal(<>
             <div className="block">
                 <div
-                    className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                    className="fixed inset-0 bg-gray-600 bg-opacity-50 z-20 overflow-y-auto h-full w-full"
                     id="my-modal"
                 ></div>
                 <div
@@ -288,86 +288,6 @@ const TeacherList = () => {
                 < /div>
                 <div
                     className='p-4 m-2 flex justify-center w-[90%] h-80 mx-[5%] overflow-hidden'>
-                    <button
-                        className='inline-block dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'
-                        onClick={() => createTeacher()}>
-                        Lehrer Hinzufügen
-                    </button>
-                </div>
-            </div>
-        </>
-    )
-
-    return (
-        <>
-            <Toaster position={"bottom-center"}/>
-            {modal}
-            <div className='h-screen w-full overflow-hidden'>
-                <div
-                    className='mt-12 p-4 xl:col-span-2 shadow-lg rounded-3xl m-2 dark:bg-[#1f2733] dark:text-white bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12'>
-                    <table className='w-full text-center'>
-                        <tbody>
-                        <tr>
-                            <td>Name</td>
-                            <td>Letzter Login</td>
-                            <td>Aktionen</td>
-                        </tr>
-                        <tr className='mb-12'>
-                            <td>
-                                <hr/>
-                            </td>
-                            <td>
-                                <hr/>
-                            </td>
-                            <td>
-                                <hr/>
-                            </td>
-                        </tr>
-                        {teachers.map(({id, last_login, is_active, name}) => {
-                            let date = new Date(last_login)
-                            return (
-                                <tr>
-                                    <td>{name}</td>
-                                    <td>{("0" + (date.getHours())).slice(-2)}:{("0" + date.getMinutes()).slice(-2)} {("0" + date.getDate()).slice(-2)}.{("0" + (date.getMonth() + 1)).slice(-2)}.{date.getFullYear()}</td>
-                                    <td>
-                                        <button className='p-2' onClick={() => deleteTeacher(id)}>
-                                            <svg className='fill-red-500 hover:fill-red-600 h-5 w-5'
-                                                 xmlns="http://www.w3.org/2000/svg"
-                                                 viewBox="0 0 448 512">
-                                                <path
-                                                    d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM394.8 466.1C393.2 492.3 372.3 512 346.9 512H101.1C75.75 512 54.77 492.3 53.19 466.1L31.1 128H416L394.8 466.1z"/>
-                                            </svg>
-                                        </button>
-                                        {is_active ?
-                                            <button className='p-2'
-                                                    onClick={() => toggleTeacher(id)}>
-                                                <svg
-                                                    className='fill-gray-500 hover:fill-gray-600 h-5 w-5'
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 448 512">
-                                                    <path
-                                                        d="M144 192H384C419.3 192 448 220.7 448 256V448C448 483.3 419.3 512 384 512H64C28.65 512 0 483.3 0 448V256C0 220.7 28.65 192 64 192H80V144C80 64.47 144.5 0 224 0C281.5 0 331 33.69 354.1 82.27C361.7 98.23 354.9 117.3 338.1 124.9C322.1 132.5 303.9 125.7 296.3 109.7C283.4 82.63 255.9 64 224 64C179.8 64 144 99.82 144 144L144 192z"
-                                                    />
-                                                </svg>
-                                            </button> : <button className='p-2'
-                                                                onClick={() => toggleTeacher(id)}>
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                     className='fill-gray-500 hover:fill-gray-600 h-5 w-5'
-                                                     viewBox="0 0 448 512">
-                                                    <path
-                                                        d="M80 192V144C80 64.47 144.5 0 224 0C303.5 0 368 64.47 368 144V192H384C419.3 192 448 220.7 448 256V448C448 483.3 419.3 512 384 512H64C28.65 512 0 483.3 0 448V256C0 220.7 28.65 192 64 192H80zM144 192H304V144C304 99.82 268.2 64 224 64C179.8 64 144 99.82 144 144V192z"/>
-                                                </svg>
-                                            </button>}
-
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                        </tbody>
-                    </table>
-                </div>
-                <div
-                    className='p-4 xl:col-span-2 m-2 flex justify-center snap-start grid-cols-3 w-[90%] h-[30%] mx-12 overflow-hidden'>
                     <button
                         className='inline-block dark:bg-[#1f2733] dark:text-white shadow-lg rounded-3xl m-2 h-32 bg-white w-[82%] my-12'
                         onClick={() => createTeacher()}>
