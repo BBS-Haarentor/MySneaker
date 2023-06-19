@@ -54,7 +54,7 @@ const SpieleListe = () => {
                     value2.map(value3 => {
                         gameList.push(value3);
                         gameList.sort((a, b) => a.id - b.id)
-                        setGames([...gameList, value3])
+                        setGames([...gameList])
                     })
                 })
             })
