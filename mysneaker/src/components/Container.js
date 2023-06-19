@@ -410,7 +410,7 @@ const Container = ({
                           machines={machines}/>
                 <div id={"produktion"} className="w-[1px] h-[1px]" />
 
-                <Marketing MarketingRef={MarketingRef} cycle={cycle} handleChange={handleChange}/>
+                <Marketing MarketingRef={MarketingRef} cycle={cycle} handleChange={handleChange} data={data}/>
                 <div id={"marketing"} className="w-[1px] h-[1px]" />
 
                 <Planung AbsatzRef={AbsatzRef} tempData={tempData} data={data} cycle={cycle}

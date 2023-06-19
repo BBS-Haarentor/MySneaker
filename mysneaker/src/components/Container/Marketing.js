@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Marketing = ({MarketingRef, cycle, handleChange}) => {
+const Marketing = ({MarketingRef, cycle, handleChange, data}) => {
 
     return (
         <>
@@ -15,8 +15,8 @@ const Marketing = ({MarketingRef, cycle, handleChange}) => {
                         <h2 className="my-3 dark:text-white text-center text-xl">Werbung</h2>
                         <div className={"flex justify-center py-4"}>
                             <input min="0" onChange={handleChange} value={cycle.ad_invest}
-                                    name="ad_invest"
-                                    className="w-32 bg-transparent dark:text-white text-center border-2 border-[#4fd1c5] rounded-full"
+                                    name="ad_invest" disabled={!data.scenario.advertisement_allowed}
+                                    className={"w-32 bg-transparent dark:text-white text-center border-2 border-[#4fd1c5] rounded-full" + (data.scenario.advertisement_allowed ? " border-[#4fd1c5]" : " border-[#1f273] dark:bg-[#252e3c]")}
                                     type={"number"}/>
                             <p className={"ml-2 font-bold text-xl dark:text-white"}>€</p>
                         </div>
@@ -30,8 +30,8 @@ const Marketing = ({MarketingRef, cycle, handleChange}) => {
                             der Maschinen</h2>
                         <div className={"flex justify-center py-4"}>
                             <input min="0" onChange={handleChange} value={cycle.research_invest}
-                                    name="research_invest"
-                                    className="w-32 bg-transparent dark:text-white text-center border-2 border-[#4fd1c5] rounded-full"
+                                    name="research_invest" disabled={!data.scenario.research_allowed}
+                                   className={"w-32 bg-transparent dark:text-white text-center border-2 border-[#4fd1c5] rounded-full" + (data.scenario.research_allowed ? " border-[#4fd1c5]" : " border-[#1f273] dark:bg-[#252e3c]")}
                                     type={"number"}/>
                             <p className={"ml-2 font-bold text-xl dark:text-white"}>€</p>
                         </div>

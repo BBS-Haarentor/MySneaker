@@ -162,7 +162,11 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                                     <div className="w-72 dark:bg-[#28303c] m-5 p-5 rounded-xl shadow-lg text-center">
                                         <h1 className="text-lg font-bold">{value.issuer}</h1>
                                         <h2 className="font-medium my-2">Anzahl: {value.amount}</h2>
-                                        <h2 className="font-medium my-2">{Object.keys(value.detail)[0]}: {Object.values(value.detail)[0]}</h2>
+                                        {Object.keys(value.detail).map((value1, index) => {
+                                            return (
+                                                <h2 className="font-medium my-2">{value1}: {Object.values(value.detail)[index]}</h2>
+                                            )
+                                        })}
                                     </div>
                                 </>
                             )

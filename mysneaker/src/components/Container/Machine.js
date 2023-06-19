@@ -32,7 +32,7 @@ export const MachineContainer = ({
             <div
                 className={"p-4 dark:bg-[#1f2733] relative dark:text-white shadow-lg rounded-3xl m-2 bg-white max-[1200px]:w-[45%] max-[612px]:w-[96%] min-[1200px]:w-1/3 h-[500px]" + (hasError ? " border-red-300 border-2" : "")}>
                 <div
-                    className="h-3 absolute border-2 border-[#4ecfc3] rotate-[270deg] box-content flex rounded-full overflow-hidden font-[0.75rem] w-[250px] right-[-50px] top-[250px]">
+                    className="h-3 absolute border-2 border-[#4ecfc3] rotate-[270deg] box-content flex rounded-full overflow-hidden font-[0.75rem] w-[250px] right-[-100px] min-[1700px]:right-[-50px] top-[250px]">
                     <div
                         style={{width: (auslastung: 100) + "%", transition: "all 0.2s ease"}}
                         className={"flex relative flex-col justify-center box-content text-center bg-green-500 rounded-full bg-gradient-to-r" + (auslastung <= 50 ? " from-green-300 to-green-500" : auslastung <= 90 ? " from-green-300 to-orange-500" : " from-green-500 via-orange-600 to-red-600")}

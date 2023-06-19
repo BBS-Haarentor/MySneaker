@@ -14,8 +14,8 @@ const Finanzen = ({
                       machine_2_fertigungskostenpp
                   }) => {
 
-    var SaldoSoll = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(cycle.sales_planned + cycle.tender_offer_count)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2) * 1) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest + cycle.research_invest + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + tempData.real_money + (stock.credit_taken + cycle.take_credit - cycle.payback_credit)
-    var SaldoIst = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(stock.real_sales)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2) * 1) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest + cycle.research_invest + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + stock.income_from_sales + (stock.credit_taken + cycle.take_credit - cycle.payback_credit)
+    var SaldoSoll = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(cycle.sales_planned + cycle.tender_offer_count)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2)) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest + cycle.research_invest + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + tempData.real_money + (stock.credit_taken + cycle.take_credit - cycle.payback_credit)
+    var SaldoIst = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(stock.real_sales)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2)) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest + cycle.research_invest + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + stock.income_from_sales + (stock.credit_taken + cycle.take_credit - cycle.payback_credit)
 
 
     var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
@@ -94,18 +94,18 @@ const Finanzen = ({
                         <div className="w-full flex justify-center">
                             <div>
                                 <input type={"number"} name='take_credit' onChange={(e) => {
-                                    if(e.target.value >= 50000) {
+                                    if(e.target.value >= (50000-stock.credit_taken)) {
                                         handleChange({
                                             target: {
                                                 name: "take_credit",
-                                                value: 50000
+                                                value: 50000-stock.credit_taken
                                             }
                                         })
                                     } else {
                                         handleChange(e)
                                     }
                                 }
-                                } max={50000}
+                                } max={(50000-stock.credit_taken)}
                                        className="text-center dark:text-white mt-5 inline w-56 text-xl dark:bg-transparent font-medium"
                                        value={isNaN(cycle.take_credit) ? "" : cycle.take_credit}/>
                                 <p className="inline font-medium text-xl dark:text-white">€</p>
@@ -114,9 +114,9 @@ const Finanzen = ({
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0,00 €</p>
                             <input type="range" name='take_credit' onChange={handleChange} value={isNaN(cycle.take_credit) ? 0 : cycle.take_credit}
-                                   max={50000}
+                                   max={(50000-stock.credit_taken)}
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
-                            <p className="w-1/5 text-center dark:text-white font-medium text-lg">50.000,00 €</p>
+                            <p className="w-1/5 text-center dark:text-white font-medium text-lg">{formatter.format(50000-stock.credit_taken)}</p>
                         </div>
                         <div className="w-full flex justify-center">
                             <div>
