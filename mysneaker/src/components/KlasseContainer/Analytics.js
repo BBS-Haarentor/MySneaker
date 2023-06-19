@@ -45,7 +45,7 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
             }
         }).then((element2) => {
             element2.forEach(element => {
-                fetch('https://api.mysneaker.my-system.live/api/v1/game/teacher/summary/user/' + element.company_id + '/index/' + cycle_index, requestOptions)
+                fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/teacher/summary/user/' + element.company_id + '/index/' + cycle_index, requestOptions)
                     .then(value => {
                         if (value.status === 200) {
                             value.json().then(element1 => {
