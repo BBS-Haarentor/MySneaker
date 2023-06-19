@@ -394,7 +394,7 @@ const Container = ({
                 className={'w-full overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center' + (isTeacher ? ' h-full' : 'h-screen')}>
 
                 <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle}
-                             handleChange={handleChange} LagerBeschaffungRef={BeschaffungRef}/>
+                                 handleChange={handleChange} BeschaffungRef={BeschaffungRef}/>
                 <div id={"beschaffung"} className="w-[1px] h-[1px]" />
 
                 <Lager data={data.stock} LagerRef={LagerRef} cycle={cycle} formatter={formatter} tempData={tempData}
