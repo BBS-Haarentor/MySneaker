@@ -107,7 +107,7 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                 <>
                     <h1 className="text-center pb-10 text-[#4fd1c5] text-2xl font-bold">Aktuelle Rechnung in
                         Spiel {gameId} im Cycle {cycle_index + 1}</h1>
-                    <div className="flex w-full justify-center">
+                    <div className="flex w-full flex-wrap space-y-2 justify-center">
                         {turnOverSim.map((value, index) => {
                             const user = turnOverSimUser.filter(value1 => value.company_id === value1.id);
                             return (
