@@ -1,4 +1,7 @@
 import React from 'react'
+import BaseContainer from '../BaseComponents/BaseContainer'
+import Spacer from '../BaseComponents/Spacer'
+import TextOutput from '../BaseComponents/TextOutput'
 
 const Finanzen = ({
                       FinanzenRef,
@@ -20,7 +23,14 @@ const Finanzen = ({
 
     var HöheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0
     var HöheKontokorrentkreditIst = SaldoIst < 0 ? SaldoIst : 0
-
+/*
+<BaseContainer title={"Produktion"}>
+    <Spacer/>
+    <TextOutput value={formatter.format(allMaschienenKosten)} text="Maschinenkosten"/>
+    <TextOutput value={formatter.format(allMaschienenKosten + (isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) * (isNaN(scenario.production_cost_per_sneaker1) ? 0 : scenario.production_cost_per_sneaker1) + cycle.planned_production_2 * machine_2_fertigungskostenpp + cycle.planned_production_3 * machine_3_fertigungskostenpp)} text="Produktionskosten"/>
+    <TextOutput value={formatter.format(newMaschienPrize)} text="Maschinenkauf"/>
+</BaseContainer>
+*/
 
     return (
         <>
@@ -151,6 +161,7 @@ const Finanzen = ({
                 </div>
                 <div id={"finanzen"} className="w-[1px] h-[1px]" />
                 <div className="flex justify-center m2 items-center flex-wrap">
+                     
                     <div
                         className="dark:bg-[#1f2733] mx-2 xl:w-[25em] w-full min-h-60 rounded-xl drop-shadow-xl bg-white mb-5">
                         <h1 className="text-center text-[#4fd1c5] text-2xl font-bold py-5">Produktion</h1>
