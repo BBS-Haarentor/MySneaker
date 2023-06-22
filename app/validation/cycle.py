@@ -1,9 +1,76 @@
 import logging
 from app.exception.general import ValidationError
+from app.game_functions.company import Company
 
 from app.schemas.cycle import CycleCreate
 from app.models.scenario import Scenario
 from app.models.stock import Stock
+
+    # ORGA
+    ## game_id: int | None  
+    ## current_cycle_index: int | None
+    ## company_id: int | None
+    
+    # Production
+    ## buy_sneaker: int
+    ## buy_paint: int
+    ## planned_production_1: int
+    ## planned_production_2: int
+    ## planned_production_3: int
+    ## planned_workers_1: int
+    ## planned_workers_2: int
+    ## planned_workers_3: int 
+    ## include_from_stock: int
+    ## sales_planned: int
+    ## sales_bid: float
+    ## tender_offer_price: float
+    ## research_invest: float
+    ## ad_invest: float
+    
+    ## take_credit: float
+    ## payback_credit: float
+    ## new_employees: int
+    ## let_go_employees: int
+    ## buy_new_machine: int
+
+def validate_cycle_new(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None: 
+    
+    validate_cycle_ltzero(cycle=cycle)
+    
+    # company: Company = Company(company_id=cycle.company_id, 
+    #                            cycle=cycle, 
+    #                            stock=stock, 
+    #                            scenario=scenario)
+    
+    validate_cycle_check_scenario(cycle=cycle, scenario=scenario)
+    validate_cycle_production(cycle=cycle, stock=stock)
+    validate_cycle_sales(cycle=cycle, stock=stock)
+    
+    return None
+
+
+def validate_cycle_ltzero(cylce: CycleCreate) -> None:
+    for k, v in cylce.dict(exclude={"game_id", "current_cycle_index", "company_id"}, exclude_none=True).items():
+        if v < 0:
+            raise CycleValidationError(user_message=f"{k} darf nicht < 0 sein.")            
+
+    return None
+
+def validate_cycle_check_scenario(cycle: CycleCreate, scenario: Scenario) -> None:
+    
+    
+    raise NotImplementedError
+
+def validate_cycle_production(cycle: CycleCreate, stock: Stock) -> None:
+    machine_ref: dict = {}
+    Company.__generate_machine_types()
+    Company.__create_machines()
+    
+    raise NotImplementedError
+
+def validate_cycle_sales(cycle: CycleCreate, stock: Stock) -> None:
+    raise NotImplementedError
+
 
 
 def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None:
