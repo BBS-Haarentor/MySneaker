@@ -39,8 +39,8 @@ const CompanyTableRow = ({items}) => {
         <View style={styles.row} key={item.company_id.toString()}>
             <Text style={styles.description}>{item.name}</Text>
             <Text style={styles.qty}>{item.real_sales === null ? 0 : item.real_sales} Stk.</Text>
-            <Text style={styles.rate}>{formatter.format(item.income_from_sales)}</Text>
             <Text style={styles.rate}>{formatter.format(item.sales_bid)}</Text>
+            <Text style={styles.rate}>{formatter.format(item.income_from_sales)}</Text>
         </View>
     )
     return (<Fragment>{rows}</Fragment> )

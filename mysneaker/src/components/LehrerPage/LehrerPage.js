@@ -174,7 +174,7 @@ const LehrerPage = () => {
             <div
               className="text-center dark:bg-[#1f2733] dark:text-white bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-              <span className="font-bold block text-xl mb-3">Spiel Erstellen</span>
+              <span className="font-bold block text-xl mb-3">Spiel erstellen</span>
               <div className='flex flex-col'>
                 <div className='my-6'>
                   <label>Spiel Name</label>

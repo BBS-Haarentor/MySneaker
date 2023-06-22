@@ -74,7 +74,7 @@ export const BuyNewMachine = ({ProductionRef, onBuy}) => {
         <>
             <div className="p-4 dark:bg-[#1f2733] shadow-lg rounded-3xl m-2 bg-white w-1/3"
                  ref={ProductionRef}>
-                <h1 className='text-[#4fd1c5]'>Neue Maschine Kaufen</h1>
+                <h1 className='text-[#4fd1c5]'>Neue Maschine kaufen</h1>
                 <img src="/img/add_maschine.svg" className='h-96 w-64 xl:w-96 my-auto' onClick={onBuy}
                      alt={""}></img>
             </div>

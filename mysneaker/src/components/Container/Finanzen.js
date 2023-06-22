@@ -101,22 +101,32 @@ const Finanzen = ({
                         <h1 className="text-center text-[#4fd1c5] text-xl font-bold">Darlehen</h1>
                         <div className="rounded-full dark:bg-gray-50 bg-gray-500 h-1 w-[90%] mx-auto mt-5 mb-3"/>
                         <h2 className="text-center text-2xl dark:text-white font-bold">{formatter.format(stock.credit_taken)}</h2>
+                        <h1 className="text-center dark:text-white text-xl my-5 font-bold">Aufnehmen</h1>
                         <div className="w-full flex justify-center">
                             <div>
                                 <input type={"number"} name='take_credit' onChange={(e) => {
                                     if(e.target.value >= (50000-stock.credit_taken)) {
-                                        handleChange({
-                                            target: {
-                                                name: "take_credit",
-                                                value: 50000-stock.credit_taken
-                                            }
-                                        })
+                                            handleChange({
+                                                target: {
+                                                    name: "take_credit",
+                                                    value: 50000 - stock.credit_taken
+                                                }
+                                            })
                                     } else {
-                                        handleChange(e)
+                                        if(e.target.value < 0) {
+                                            handleChange({
+                                                target: {
+                                                    name: "take_credit",
+                                                    value: 0
+                                                }
+                                            })
+                                        } else {
+                                            handleChange(e)
+                                        }
                                     }
                                 }
-                                } max={(50000-stock.credit_taken)}
-                                       className="text-center dark:text-white mt-5 inline w-56 text-xl dark:bg-transparent font-medium"
+                                } max={(50000-stock.credit_taken)} min={0}
+                                       className="text-center dark:text-white inline w-56 text-xl dark:bg-transparent font-medium"
                                        value={isNaN(cycle.take_credit) ? "" : cycle.take_credit}/>
                                 <p className="inline font-medium text-xl dark:text-white">€</p>
                             </div>
@@ -128,22 +138,32 @@ const Finanzen = ({
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">{formatter.format(50000-stock.credit_taken)}</p>
                         </div>
+                        <h1 className="text-center dark:text-white text-xl my-5 font-bold">Rückzahlung</h1>
                         <div className="w-full flex justify-center">
                             <div>
-                                <input type={"number"} name='payback_credit' onChange={(e) => {
+                                <input type={"number"} name='payback_credit' min="0" onChange={(e) => {
                                     if(e.target.value >= stock.credit_taken) {
-                                        handleChange({
-                                            target: {
-                                                name: "payback_credit",
-                                                value: stock.credit_taken
-                                            }
-                                        })
+                                            handleChange({
+                                                target: {
+                                                    name: "payback_credit",
+                                                    value: stock.credit_taken
+                                                }
+                                            })
                                     } else {
-                                        handleChange(e)
+                                        if(Number(e.target.value) < 0) {
+                                            handleChange({
+                                                target: {
+                                                    name: "payback_credit",
+                                                    value: 0
+                                                }
+                                            })
+                                        } else {
+                                            handleChange(e)
+                                        }
                                     }
                                 }
                                 } max={stock.credit_taken}
-                                       className="text-center dark:text-white mt-5 inline w-56 text-xl dark:bg-transparent font-medium"
+                                       className="text-center dark:text-white inline w-56 text-xl dark:bg-transparent font-medium"
                                        value={isNaN(cycle.payback_credit) ? "" : cycle.payback_credit}/>
                                 <p className="inline font-medium text-xl dark:text-white">€</p>
                             </div>
@@ -156,7 +176,7 @@ const Finanzen = ({
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">{formatter.format(stock.credit_taken)}</p>
                         </div>
                         <p className="text-center dark:text-white text-xl my-5 font-bold">{formatter.format(((isNaN(stock.credit_taken) ? 0 : stock.credit_taken) + (isNaN(cycle.take_credit) ? 0 : cycle.take_credit) - (isNaN(cycle.payback_credit) ? 0 : cycle.payback_credit)) * scenario.factor_interest_rate)} Zinsen
-                            (Darlehn)</p>
+                            (Darlehen)</p>
                     </div>
                 </div>
                 <div id={"finanzen"} className="w-[1px] h-[1px]" />

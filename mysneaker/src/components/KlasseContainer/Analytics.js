@@ -267,11 +267,11 @@ const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateG
                     </div>
                     <div className="flex flex-row justify-center">
                         <a className='my-6 w-1/4 mx-5 text-center bg-blue-400 font-bold text-white rounded-3xl shadow-lg p-3'
-                           href={'/ler/analytic/' + gameId + '/' + cycle_index} target={"_blank"}>PDF Erzeugen
+                           href={'/ler/analytic/' + gameId + '/' + cycle_index} target={"_blank"}>PDF erzeugen
                         </a>
                         <button onClick={() => setTurnOverCheck(true)}
                                 className='my-6 mx-5 text-center w-1/4 bg-orange-400 font-bold text-white rounded-3xl shadow-lg p-3'>
-                            Rechnungen Überprüfen
+                            Rechnungen überprüfen
                         </button>
                         <button className='my-6 w-1/4 mx-5 bg-red-400 text-white font-bold rounded-3xl shadow-lg p-3'
                                 onClick={() => setBackGame()}>Zu dieser Periode zurückspringen
