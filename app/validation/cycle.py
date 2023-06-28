@@ -36,10 +36,8 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
     
     validate_cycle_ltzero(cycle=cycle)
     validate_cycle_check_scenario(cycle=cycle, scenario=scenario)
-    
-    # TODO: following
     validate_cycle_misc(cycle=cycle, stock=stock)
-    validate_cycle_production(cycle=cycle, stock=stock)
+    validate_cycle_production(cycle=cycle, stock=stock, scenario=scenario)
     validate_cycle_sales(cycle=cycle, stock=stock)
     
     return None
@@ -172,7 +170,8 @@ def validate_cycle_sales(cycle: CycleCreate, stock: Stock) -> None:
         raise CycleValidationError(user_message=f"Der Preis für Sneaker darf nicht über 300.00€ betragen.")
     if cycle.sales_planned > (cycle.include_from_stock + _get_sneaker_consumtion(cycle=cycle)):
         raise CycleValidationError(user_message="Es dürfen nicht mehr Schuhe verkauft werden, als in der Summe produziert und aus dem Lager entnommen werden.") 
-    
+    if cycle.include_from_stock > stock.finished_sneaker_count:
+        raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe aus dem Lager entnommen werden als vorhanden sind.")
     return None
 
 
