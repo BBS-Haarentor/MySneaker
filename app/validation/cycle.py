@@ -90,13 +90,25 @@ def validate_cycle_misc(cycle: CycleCreate, stock: Stock) -> None:
     if (cycle.payback_credit < stock.account_balance):
         raise CycleValidationError(user_message=f"Kreditrückzahlung nicht möglich. Du hast nicht genügend Geld auf dem Konto.")
     
-    # TODO: 
-    # credit payback gleichzeitig mit take? 
-    # research stufen
-    # new machine buy
+    if cycle.payback_credit > 0 and cycle.take_credit > 0:
+        raise CycleValidationError(user_message=f"Gleichzeitige Aufnahme und Abzahlung eines Kredits nicht erlaubt.")
+    if cycle.buy_new_machine not in [0, 1, 2, 3]:
+        raise CycleValidationError(user_message=f"Unerlaubter Maschinentyp bei Kauf")
     
-    raise NotImplementedError
-
+    # research stufen
+    new_research_investment = stock.research_budget + cycle.research_invest
+    research_steps = [2500, 5000, 7500, 10000, 12500]
+    next_research_step = 12500
+    for s in research_steps:
+        if s >= stock.research_budget and s < next_research_step:
+            next_research_step = s
+            
+    if new_research_investment > next_research_step:
+        raise CycleValidationError(user_message=f"Das Forschungsinvestment ist begrenzt auf die nächste Forschungsstufe: {next_research_step} €")
+    
+    return None
+    
+    
 def validate_cycle_production(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None:
     
     #resources check
@@ -108,23 +120,23 @@ def validate_cycle_production(cycle: CycleCreate, stock: Stock, scenario: Scenar
         raise CycleValidationError(user_message=f"Es sind nicht genügend Mitarbeiter vorhanden.")
 
     #workers check
-    if cycle.planned_production_1 / scenario.employee_production_capacity == cycle.planned_workers_1:
+    if cycle.planned_production_1 / scenario.employee_production_capacity > cycle.planned_workers_1:
         raise CycleValidationError(user_message=f"Es wurden verfältschte Daten übermittelt.")
-    if cycle.planned_production_2 / scenario.employee_production_capacity == cycle.planned_workers_2:
+    if cycle.planned_production_2 / scenario.employee_production_capacity > cycle.planned_workers_2:
         raise CycleValidationError(user_message=f"Es wurden verfältschte Daten übermittelt.")
-    if cycle.planned_production_3 / scenario.employee_production_capacity == cycle.planned_workers_3:
+    if cycle.planned_production_3 / scenario.employee_production_capacity > cycle.planned_workers_3:
         raise CycleValidationError(user_message=f"Es wurden verfältschte Daten übermittelt.")
 
     #production check
     if stock.machine_1_space != 0:
         if scenario["machine_production_capacity"+stock.machine_1_space] < cycle.planned_production_1:
-            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt.")
+            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt. Maschinenplatz 1")
     if stock.machine_2_space != 0:
-        if scenario["machine_production_capacity"+stock.machine_1_space] < cycle.planned_production_1:
-            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt.")
+        if scenario["machine_production_capacity"+stock.machine_2_space] < cycle.planned_production_2:
+            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt. Maschinenplatz 2")
     if stock.machine_3_space != 0:
-        if scenario["machine_production_capacity"+stock.machine_1_space] < cycle.planned_production_1:
-            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt.")
+        if scenario["machine_production_capacity"+stock.machine_3_space] < cycle.planned_production_3:
+            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt. Maschinenplatz 3")
     return None
 
 
@@ -132,7 +144,7 @@ def _are_resources_available(cycle: CycleCreate, stock: Stock, scenario: Scenari
     sneker = _get_sneaker(cycle=cycle, stock=stock)
     paint = _get_paint(cycle=cycle, stock=stock)
 
-    sneker_consumtion = _get_sneaker_consumtion(cycle=cycle, scenario=scenario)
+    sneker_consumtion = _get_sneaker_consumtion(cycle=cycle)
     paint_consumtion = _get_paint_consumtion(cycle=cycle, scenario=scenario)
 
     return sneker >= sneker_consumtion and paint >= paint_consumtion
@@ -143,7 +155,7 @@ def _get_employees_consumtion(cycle: CycleCreate, scenario: Scenario) -> int:
 def _get_paint_consumtion(cycle: CycleCreate, scenario: Scenario) -> int:
     return (cycle.planned_production_1 + cycle.planned_production_2 + cycle.planned_production_3) * 2
 
-def _get_sneaker_consumtion(cycle: CycleCreate, scenario: Scenario) -> int:
+def _get_sneaker_consumtion(cycle: CycleCreate) -> int:
     return cycle.planned_production_1 + cycle.planned_production_2 + cycle.planned_production_3
 
 def _get_sneaker(cycle: CycleCreate, stock: Stock) -> int:
@@ -154,12 +166,14 @@ def _get_paint(cycle: CycleCreate, stock: Stock) -> int:
 
 
 def validate_cycle_sales(cycle: CycleCreate, stock: Stock) -> None:
-    # TODO: 
-    # Ausschreibung
-    # verkaufszahl schuhe
-    # verkaufspreis <= 300
+    if cycle.tender_offer_price > 300.00:
+        raise CycleValidationError(user_message=f"Der Preis für Sneaker in der Ausschreibung darf nicht über 300.00€ betragen.")
+    if cycle.sales_bid > 300.00:
+        raise CycleValidationError(user_message=f"Der Preis für Sneaker darf nicht über 300.00€ betragen.")
+    if cycle.sales_planned > (cycle.include_from_stock + _get_sneaker_consumtion(cycle=cycle)):
+        raise CycleValidationError(user_message="Es dürfen nicht mehr Schuhe verkauft werden, als in der Summe produziert und aus dem Lager entnommen werden.") 
     
-    raise NotImplementedError
+    return None
 
 
 
