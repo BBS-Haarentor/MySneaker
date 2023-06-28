@@ -43,7 +43,7 @@ def validate_cycle_new(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> 
     #                            scenario=scenario)
     
     validate_cycle_check_scenario(cycle=cycle, scenario=scenario)
-    validate_cycle_production(cycle=cycle, stock=stock)
+    validate_cycle_production(cycle=cycle, stock=stock,scenario=scenario)
     validate_cycle_sales(cycle=cycle, stock=stock)
     
     return None
@@ -71,14 +71,62 @@ def validate_cycle_check_scenario(cycle: CycleCreate, scenario: Scenario) -> Non
     
     raise NotImplementedError
 
-def validate_cycle_production(cycle: CycleCreate, stock: Stock) -> None:
-    machine_ref: dict = {}
-    Company.__generate_machine_types()
-    Company.__create_machines()
+def validate_cycle_production(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None:
     
-    raise NotImplementedError
+    #resources check
+    employees_consumtion = _get_employees_consumtion(cycle=cycle, scenario=scenario)
 
-def validate_cycle_sales(cycle: CycleCreate, stock: Stock) -> None:
+    if _are_resources_available(cycle=cycle, stock=stock, scenario=scenario):
+        raise CycleValidationError(user_message=f"Es sind nicht genügend Ressourcen vorhanden.")
+    if stock.employees_count < employees_consumtion:
+        raise CycleValidationError(user_message=f"Es sind nicht genügend Mitarbeiter vorhanden.")
+
+    #workers check
+    if cycle.planned_production_1 / scenario.employee_production_capacity == cycle.planned_workers_1:
+        raise CycleValidationError(user_message=f"Es wurden verfältschte Daten übermittelt.")
+    if cycle.planned_production_2 / scenario.employee_production_capacity == cycle.planned_workers_2:
+        raise CycleValidationError(user_message=f"Es wurden verfältschte Daten übermittelt.")
+    if cycle.planned_production_3 / scenario.employee_production_capacity == cycle.planned_workers_3:
+        raise CycleValidationError(user_message=f"Es wurden verfältschte Daten übermittelt.")
+
+    #production check
+    if stock.machine_1_space != 0:
+        if scenario["machine_production_capacity"+stock.machine_1_space] < cycle.planned_production_1:
+            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt.")
+    if stock.machine_2_space != 0:
+        if scenario["machine_production_capacity"+stock.machine_1_space] < cycle.planned_production_1:
+            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt.")
+    if stock.machine_3_space != 0:
+        if scenario["machine_production_capacity"+stock.machine_1_space] < cycle.planned_production_1:
+            raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt.")
+    return None
+
+
+def _are_resources_available(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> bool:
+    sneker = _get_sneaker(cycle=cycle, stock=stock)
+    paint = _get_paint(cycle=cycle, stock=stock)
+
+    sneker_consumtion = _get_sneaker_consumtion(cycle=cycle, scenario=scenario)
+    paint_consumtion = _get_paint_consumtion(cycle=cycle, scenario=scenario)
+
+    return sneker >= sneker_consumtion and paint >= paint_consumtion
+
+def _get_employees_consumtion(cycle: CycleCreate, scenario: Scenario) -> int:
+    return cycle.planned_workers_1 + cycle.planned_workers_2 + cycle.planned_workers_3
+
+def _get_paint_consumtion(cycle: CycleCreate, scenario: Scenario) -> int:
+    return (cycle.planned_production_1 + cycle.planned_production_2 + cycle.planned_production_3) * 2
+
+def _get_sneaker_consumtion(cycle: CycleCreate, scenario: Scenario) -> int:
+    return cycle.planned_production_1 + cycle.planned_production_2 + cycle.planned_production_3
+
+def _get_sneaker(cycle: CycleCreate, stock: Stock) -> int:
+    return cycle.buy_sneaker + stock.sneaker_count
+
+def _get_paint(cycle: CycleCreate, stock: Stock) -> int:
+    return cycle.buy_paint + stock.paint_count
+
+def validate_cycle_sales(cycle: CycleCreate, stock: Stock,) -> None:
     raise NotImplementedError
 
 
