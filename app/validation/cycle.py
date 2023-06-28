@@ -29,7 +29,7 @@ parameter_translation: dict = {
 }
 
 
-def validate_cycle_new(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None: 
+def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None: 
     
     if stock.insolvent:
         raise CycleValidationError(user_message="Dein Unternehmen ist insolvent. Du darfst keine Abgabe mehr machen. :(")
@@ -176,8 +176,8 @@ def validate_cycle_sales(cycle: CycleCreate, stock: Stock) -> None:
     return None
 
 
-
-def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None:
+#deprecated
+def validate_cycle_old(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None:
     if cycle.buy_sneaker < 0:
         raise CycleValidationError(
             user_message="Es können nicht weniger als 0 Sneaker gekauft werden.")
