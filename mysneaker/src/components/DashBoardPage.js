@@ -1,8 +1,8 @@
-import SideNavBar from "./SideNavBar"
+import SideNavBar from "./Sidebar/SideNavBar"
 import {useState, useEffect, useRef} from "react";
-import LoginPage from "./LoginPage";
+import LoginPage from "./Authentication/LoginPage";
 import LehrerPage from "./LehrerPage/LehrerPage";
-import Container from "./Container";
+import Dashboard from "./StudentDashboard/Dashboard";
 import Cookies from "js-cookie";
 import AdminPage from "./AdminPage/AdminPage";
 import {useNavigate} from 'react-router-dom';
@@ -94,7 +94,7 @@ const DashBoardPage = () => {
             {state === "Login" ?
                 <LoginPage updateSidebar={updateSidebar} setRefreshSidebar={setRefreshSidebar}/> :
                 (userAuth.admin ? <AdminPage state={state} OnClick={OnClick}/> : userAuth.teacher ? <LehrerPage/> : userAuth.base ?
-                    <Container MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef}
+                    <Dashboard MarketingRef={MarketingRef} FinanzenRef={FinanzenRef} AbsatzRef={AbsatzRef}
                                BeschaffungRef={BeschaffungRef} ProductionRef={ProductionRef}
                                PersonalRef={PersonalRef} LagerRef={LagerRef}/> : <></>)}
         </div>
