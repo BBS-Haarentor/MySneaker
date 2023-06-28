@@ -57,7 +57,17 @@ def validate_cycle_ltzero(cylce: CycleCreate) -> None:
     return None
 
 def validate_cycle_check_scenario(cycle: CycleCreate, scenario: Scenario) -> None:
+    if scenario.employee_change_allowed:
+        pass
     
+    if scenario.machine_purchase_allowed and (cycle.buy_new_machine != 0 or cycle.buy_new_machine != None):
+        raise CycleValidationError(user_message=f"Maschinenkauf ist zum jetzigen Zeitpunkt nicht erlaubt.")      
+
+    if scenario.research_allowed:
+        pass
+     
+    if scenario.advertisement_allowed:
+        pass
     
     raise NotImplementedError
 
