@@ -3,8 +3,8 @@ import {useParams} from 'react-router-dom';
 import {useState, useEffect, useRef} from "react";
 import QRCodeStyling from "qr-code-styling";
 import Cookies from 'js-cookie';
-import SideNavBar from '../SideNavBar'
-import KlasseContainer from './KlasseContainer';
+import SideNavBar from '../Sidebar/SideNavBar'
+import KlasseContainer from './KlasseContainer/KlasseContainer';
 import {useNavigate} from 'react-router-dom';
 
 const KlassenDetailPage = () => {
@@ -84,7 +84,7 @@ const KlassenDetailPage = () => {
                 let json = await res.json();
                 setGame(json)
             }
-        }).catch(error => {
+        }).catch(() => {
 
         })
     }
@@ -101,7 +101,7 @@ const KlassenDetailPage = () => {
                     let json = await element.json();
                     setCompanies(json)
                 }
-            }).catch(error => {
+            }).catch(() => {
 
             })
     }
@@ -133,11 +133,11 @@ const KlassenDetailPage = () => {
                                 <div
                                     className="text-center bg-white rounded-xl shadow-2xl p-6 sm:w-8/12 mx-10 ">
 
-                                    <div class="hero container max-w-screen-lg mx-auto p-5">
+                                    <div className="hero container max-w-screen-lg mx-auto p-5">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              id="Capa_1" x="0px" y="0px" viewBox="0 0 507.506 507.506"
                                              fill="currentColor"
-                                             class="mx-auto h-32 text-green-400"
+                                             className="mx-auto h-32 text-green-400"
                                              height="512">
                                             <g>
                                                 <path
@@ -193,10 +193,7 @@ const KlassenDetailPage = () => {
                         </div>
                     </>)
                 }
-                return
             })
-
-
     }
 
 
@@ -207,16 +204,13 @@ const KlassenDetailPage = () => {
         myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
         myHeaders.append("Access-Control-Allow-Origin", "*")
 
-        var requestOptions = {
+        const requestOptions = {
             method: 'PUT',
             headers: myHeaders,
             mode: 'cors',
         };
 
         fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/activate_signup/' + id, requestOptions)
-            .then(async (element) => {
-                return
-            })
         if (!register) {
             setRegister(true)
         } else {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from "react";
-import { TagsInput } from "./../Utils/InputTags/index";
+import { TagsInput } from "../Game2048/InputTags/index";
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom';
 
@@ -10,15 +10,14 @@ const LehrerPage = () => {
   const [showModal, setShowModal] = useState(false)
   const [createGameName, setCreateGameName] = useState("")
   const [companiesVerify, setCompaniesVerify] = useState([])
-  const [createGameScenarioOrder, setCreateGameScenarioOrder] = useState("")
   const [selected, setSelected] = useState([]);
 
   const getGames = () => {
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
 
-    var requestOptions = {
+    const requestOptions = {
       method: 'GET',
       headers: myHeaders,
       redirect: 'follow'
@@ -51,11 +50,11 @@ const LehrerPage = () => {
   }, [])
 
   const getCompaniesVerify = () => {
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
 
-    var requestOptions = {
+    const requestOptions = {
       method: 'GET',
       headers: myHeaders,
       redirect: 'follow'
@@ -80,7 +79,7 @@ const LehrerPage = () => {
 
   const onCreateGame = () => {
     if (createGameName && selected.length > 0) {
-      var myHeaders = new Headers();
+      const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
 
@@ -89,14 +88,14 @@ const LehrerPage = () => {
         return String.fromCharCode(Number(value)+64)
       });
 
-      var raw = JSON.stringify({
+      const raw = JSON.stringify({
         "grade_name": createGameName,
         "is_active": true,
         "scenario_order": selectedMapChars.join(""),
         "signup_enabled": false
       });
 
-      var requestOptions = {
+      const requestOptions = {
         method: 'POST',
         headers: myHeaders,
         redirect: 'follow',
@@ -117,15 +116,14 @@ const LehrerPage = () => {
     }
     setShowModal(false)
     setCreateGameName("")
-    setCreateGameScenarioOrder("")
   }
 
   const deleteUser = (id) => {
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
 
-    var requestOptions = {
+    const requestOptions = {
       method: 'DELETE',
       headers: myHeaders,
       redirect: 'follow'
@@ -139,11 +137,11 @@ const LehrerPage = () => {
   }
 
   const activeUser = (id) => {
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + Cookies.get("session"))
 
-    var requestOptions = {
+    const requestOptions = {
       method: 'PUT',
       headers: myHeaders,
       redirect: 'follow'
