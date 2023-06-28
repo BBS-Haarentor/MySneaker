@@ -30,7 +30,7 @@ class Company():
         self.cycle = cycle
         self.stock = stock
         self.scenario = scenario
-        self.machine_types = self.__generate_machine_types()
+        self.machine_types = self.__generate_machine_types(scenario=scenario)
         self.machines = self.__create_machines(stock=stock, cycle=cycle)
         
         internal_stock: StockPersistent = StockPersistent.parse_obj(stock)
@@ -48,31 +48,31 @@ class Company():
     
     
     
-    def __generate_machine_types(self) -> dict:
+    def __generate_machine_types(self, scenario: Scenario) -> dict:
         types_dict = {}
         types_dict[1] = {"name": "SneakerBox200",
-                    "purchase_cost" : self.scenario.machine_purchase_cost1,
-                    "production_capacity": self.scenario.machine_production_capacity1,
-                    "maintainance_cost": self.scenario.machine_maintainance_cost1,
-                    "production_cost_per_sneaker": self.scenario.production_cost_per_sneaker1,
-                    "employee_production_capacity": self.scenario.employee_production_capacity,
-                    "employee_max": self.scenario.machine_employee_max
+                    "purchase_cost" : scenario.machine_purchase_cost1,
+                    "production_capacity": scenario.machine_production_capacity1,
+                    "maintainance_cost": scenario.machine_maintainance_cost1,
+                    "production_cost_per_sneaker": scenario.production_cost_per_sneaker1,
+                    "employee_production_capacity": scenario.employee_production_capacity,
+                    "employee_max": scenario.machine_employee_max
                     }
         types_dict[2] = {"name": "SneakerBox500",
-                    "purchase_cost" : self.scenario.machine_purchase_cost2,
-                    "production_capacity": self.scenario.machine_production_capacity2,
-                    "maintainance_cost": self.scenario.machine_maintainance_cost2,
-                    "production_cost_per_sneaker": self.scenario.production_cost_per_sneaker2,
-                    "employee_production_capacity": self.scenario.employee_production_capacity,
-                    "employee_max": self.scenario.machine_employee_max
+                    "purchase_cost" : scenario.machine_purchase_cost2,
+                    "production_capacity": scenario.machine_production_capacity2,
+                    "maintainance_cost": scenario.machine_maintainance_cost2,
+                    "production_cost_per_sneaker": scenario.production_cost_per_sneaker2,
+                    "employee_production_capacity": scenario.employee_production_capacity,
+                    "employee_max": scenario.machine_employee_max
                     }
         types_dict[3] = {"name": "SneakerBox1000",
-                    "purchase_cost" : self.scenario.machine_purchase_cost3,
-                    "production_capacity": self.scenario.machine_production_capacity3,
-                    "maintainance_cost": self.scenario.machine_maintainance_cost3,
-                    "production_cost_per_sneaker": self.scenario.production_cost_per_sneaker3,
-                    "employee_production_capacity": self.scenario.employee_production_capacity,
-                    "employee_max": self.scenario.machine_employee_max
+                    "purchase_cost" : scenario.machine_purchase_cost3,
+                    "production_capacity": scenario.machine_production_capacity3,
+                    "maintainance_cost": scenario.machine_maintainance_cost3,
+                    "production_cost_per_sneaker": scenario.production_cost_per_sneaker3,
+                    "employee_production_capacity": scenario.employee_production_capacity,
+                    "employee_max": scenario.machine_employee_max
                     }
         
         return types_dict
@@ -114,10 +114,6 @@ class Company():
             machines.append(machine)
         
         return machines 
-
-    def __create_machine(int) -> Machine:
-        
-        return 
 
 
     def pay_interest(self) -> None:
