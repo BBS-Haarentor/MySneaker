@@ -43,9 +43,9 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
     return None
 
 
-def validate_cycle_ltzero(cylce: CycleCreate) -> None:
+def validate_cycle_ltzero(cycle: CycleCreate) -> None:
     user_msg = ""
-    for k, v in cylce.dict(exclude={"game_id", "current_cycle_index", "company_id"}, exclude_none=True).items():
+    for k, v in cycle.dict(exclude={"game_id", "current_cycle_index", "company_id"}, exclude_none=True).items():
         if v < 0:
             user_msg += f"{parameter_translation[k]} darf nicht < 0 sein.\n"
             #raise CycleValidationError(user_message=f"{parameter_translation[k]} darf nicht < 0 sein.") 
