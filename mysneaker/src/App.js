@@ -4,16 +4,15 @@ import MainPage from './components/MainPage';
 import Tutorial from './components/tutorial';
 import LehrerPage from './components/LehrerPage/LehrerPage';
 import KlassenDetailPage from './components/LehrerPage/KlassenDetailPage'
-import RegisterPage from './components/RegisterPage';
-import Logout from './components/Utils/Logout';
+import RegisterPage from './components/Authentication/RegisterPage';
+import Logout from './components/Sidebar/Logout';
 import {useEffect} from 'react';
 import PageNotFound from "./components/PageNotFound";
-import Game2048 from './components/Utils/Game2048'
-import AnalyticPDF from "./components/KlasseContainer/PDF/AnalyticPDF";
+import Game2048 from './components/Game2048/Game2048'
+import AnalyticPDF from "./components/LehrerPage/KlasseContainer/PDF/AnalyticPDF";
 
 
-function App() {
-
+const App = () => {
     useEffect(() => {
         if (localStorage.getItem('color-theme')) {
             document.documentElement.classList.add(localStorage.getItem('color-theme'));
