@@ -112,7 +112,7 @@ def validate_cycle_production(cycle: CycleCreate, stock: Stock, scenario: Scenar
     #resources check
     employees_consumtion = _get_employees_consumtion(cycle=cycle, scenario=scenario)
 
-    if _are_resources_available(cycle=cycle, stock=stock, scenario=scenario):
+    if not _are_resources_available(cycle=cycle, stock=stock, scenario=scenario):
         raise CycleValidationError(user_message=f"Es sind nicht genügend Ressourcen vorhanden.")
     if stock.employees_count < employees_consumtion:
         raise CycleValidationError(user_message=f"Es sind nicht genügend Mitarbeiter vorhanden.")
@@ -139,13 +139,13 @@ def validate_cycle_production(cycle: CycleCreate, stock: Stock, scenario: Scenar
 
 
 def _are_resources_available(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> bool:
-    sneker = _get_sneaker(cycle=cycle, stock=stock)
+    sneaker = _get_sneaker(cycle=cycle, stock=stock)
     paint = _get_paint(cycle=cycle, stock=stock)
 
     sneker_consumtion = _get_sneaker_consumtion(cycle=cycle)
     paint_consumtion = _get_paint_consumtion(cycle=cycle, scenario=scenario)
 
-    return sneker >= sneker_consumtion and paint >= paint_consumtion
+    return sneaker >= sneker_consumtion and paint >= paint_consumtion
 
 def _get_employees_consumtion(cycle: CycleCreate, scenario: Scenario) -> int:
     return cycle.planned_workers_1 + cycle.planned_workers_2 + cycle.planned_workers_3
