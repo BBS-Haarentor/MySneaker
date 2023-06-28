@@ -6,43 +6,39 @@ from app.schemas.cycle import CycleCreate
 from app.models.scenario import Scenario
 from app.models.stock import Stock
 
-    # ORGA
-    ## game_id: int | None  
-    ## current_cycle_index: int | None
-    ## company_id: int | None
-    
-    # Production
-    ## buy_sneaker: int
-    ## buy_paint: int
-    ## planned_production_1: int
-    ## planned_production_2: int
-    ## planned_production_3: int
-    ## planned_workers_1: int
-    ## planned_workers_2: int
-    ## planned_workers_3: int 
-    ## include_from_stock: int
-    ## sales_planned: int
-    ## sales_bid: float
-    ## tender_offer_price: float
-    ## research_invest: float
-    ## ad_invest: float
-    
-    ## take_credit: float
-    ## payback_credit: float
-    ## new_employees: int
-    ## let_go_employees: int
-    ## buy_new_machine: int
+parameter_translation: dict = {
+    "buy_sneaker": "Einkauf Sneaker",
+    "buy_paint": "Einkauf Farbe",
+    "planned_production_1": "Geplante Produktion an Maschine 1",
+    "planned_production_2": "Geplante Produktion an Maschine 2",
+    "planned_production_3": "Geplante Produktion an Maschine 3",
+    "planned_workers_1": "Geplante Mitarbeiterzahl an Maschine 1",
+    "planned_workers_2": "Geplante Mitarbeiterzahl an Maschine 2",
+    "planned_workers_3": "Geplante Mitarbeiterzahl an Maschine 3",
+    "include_from_stock": "Entnahme aus Lager",
+    "sales_planned": "Verkaufsstückzahl",
+    "sales_bid": "Verkaufspreis",
+    "tender_offer_price": "Verkaufspreis Ausschreibung",
+    "research_invest": "Forschungsinvestment",
+    "ad_invest": "Werbeinvestment",
+    "take_credit": "Kreditaufnahme",
+    "payback_credit": "Kreditrückzahlung",
+    "new_employees": "Neueinstellungen",
+    "let_go_employees": "Kündigungen",
+    "buy_new_machine": "Maschinenneukauf"
+}
+
 
 def validate_cycle_new(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None: 
     
+    if stock.insolvent:
+        raise CycleValidationError(user_message="Dein Unternehmen ist insolvent. Du darfst keine Abgabe mehr machen. :(")
+    
     validate_cycle_ltzero(cycle=cycle)
-    
-    # company: Company = Company(company_id=cycle.company_id, 
-    #                            cycle=cycle, 
-    #                            stock=stock, 
-    #                            scenario=scenario)
-    
     validate_cycle_check_scenario(cycle=cycle, scenario=scenario)
+    
+    # TODO: following
+    validate_cycle_misc(cycle=cycle, stock=stock)
     validate_cycle_production(cycle=cycle, stock=stock)
     validate_cycle_sales(cycle=cycle, stock=stock)
     
@@ -50,26 +46,57 @@ def validate_cycle_new(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> 
 
 
 def validate_cycle_ltzero(cylce: CycleCreate) -> None:
+    user_msg = ""
     for k, v in cylce.dict(exclude={"game_id", "current_cycle_index", "company_id"}, exclude_none=True).items():
         if v < 0:
-            raise CycleValidationError(user_message=f"{k} darf nicht < 0 sein.")            
+            user_msg += f"{parameter_translation[k]} darf nicht < 0 sein.\n"
+            #raise CycleValidationError(user_message=f"{parameter_translation[k]} darf nicht < 0 sein.") 
+    if user_msg != "":
+        raise CycleValidationError(user_message=user_msg)    
 
     return None
 
 def validate_cycle_check_scenario(cycle: CycleCreate, scenario: Scenario) -> None:
-    if scenario.employee_change_allowed:
-        pass
-    
-    if scenario.machine_purchase_allowed and (cycle.buy_new_machine != 0 or cycle.buy_new_machine != None):
+    if (not scenario.employee_change_allowed) and (
+        cycle.new_employees != 0
+        or cycle.new_employees != None
+        or cycle.let_go_employees != 0
+        or cycle.let_go_employees != None
+    ):
+        raise CycleValidationError(
+            user_message=f"Kündigungen und Neueinstellungen sind zum jetzigen Zeitpunkt nicht erlaubt."
+        )
+        
+    if (not scenario.machine_purchase_allowed) and (cycle.buy_new_machine != 0 or cycle.buy_new_machine != None):
         raise CycleValidationError(user_message=f"Maschinenkauf ist zum jetzigen Zeitpunkt nicht erlaubt.")      
 
-    if scenario.research_allowed:
-        pass
+    if (not scenario.research_allowed) and (cycle.research_invest != 0 or cycle.research_invest != None):
+        raise CycleValidationError(user_message=f"Forschungsinvestment ist zum jetzigen Zeitpunkt nicht erlaubt.")      
      
-    if scenario.advertisement_allowed:
-        pass
+    if (not scenario.advertisement_allowed) and (cycle.ad_invest != 0 or cycle.ad_invest != None):
+        raise CycleValidationError(user_message=f"Werbeinvestment ist zum jetzigen Zeitpunkt nicht erlaubt.")      
+
+    
+    return None
+
+
+def validate_cycle_misc(cycle: CycleCreate, stock: Stock) -> None:
+    # kreditaufnahme
+    if (cycle.take_credit + stock.credit_taken) > 50_000.00:
+        raise CycleValidationError(user_message=f"Kreditaufnahme nicht möglich. Kreditlimit liegt bei 50000.00 €")
+    # kreditrückzahlung
+    if (cycle.payback_credit > stock.credit_taken):
+        raise CycleValidationError(user_message=f"Kreditrückzahlung nicht möglich. Du kannst nicht mehr zurückzahlen als du aufgenommen hast.")
+    if (cycle.payback_credit < stock.account_balance):
+        raise CycleValidationError(user_message=f"Kreditrückzahlung nicht möglich. Du hast nicht genügend Geld auf dem Konto.")
+    
+    # TODO: 
+    # credit payback gleichzeitig mit take? 
+    # research stufen
+    # new machine buy
     
     raise NotImplementedError
+
 
 def validate_cycle_production(cycle: CycleCreate, stock: Stock) -> None:
     machine_ref: dict = {}
@@ -78,7 +105,13 @@ def validate_cycle_production(cycle: CycleCreate, stock: Stock) -> None:
     
     raise NotImplementedError
 
+
 def validate_cycle_sales(cycle: CycleCreate, stock: Stock) -> None:
+    # TODO: 
+    # Ausschreibung
+    # verkaufszahl schuhe
+    # verkaufspreis <= 300
+    
     raise NotImplementedError
 
 
