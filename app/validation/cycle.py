@@ -85,7 +85,7 @@ def validate_cycle_misc(cycle: CycleCreate, stock: Stock) -> None:
     # kreditrückzahlung
     if (cycle.payback_credit > stock.credit_taken):
         raise CycleValidationError(user_message=f"Kreditrückzahlung nicht möglich. Du kannst nicht mehr zurückzahlen als du aufgenommen hast.")
-    if (cycle.payback_credit < stock.account_balance):
+    if (cycle.payback_credit > stock.account_balance):
         raise CycleValidationError(user_message=f"Kreditrückzahlung nicht möglich. Du hast nicht genügend Geld auf dem Konto.")
     
     if cycle.payback_credit > 0 and cycle.take_credit > 0:
