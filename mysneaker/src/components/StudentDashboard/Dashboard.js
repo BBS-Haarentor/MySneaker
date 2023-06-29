@@ -1,6 +1,5 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Beschaffung from './components/Beschaffung'
-import {useState, useEffect} from "react";
 import Cookies from "js-cookie";
 import Swal from 'sweetalert2'
 import Lager from './components/Lager';
@@ -216,21 +215,19 @@ const Dashboard = ({
 
     const fetchData = async (requestOptions, isTeacherBoolean) => {
         const res = await fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/game/" + (isTeacherBoolean ? "teacher/summary/user/" + userId + "/index/" + cycle_index : 'student/my_summary'), requestOptions)
-        const data = await res.json()
-
-        return data
+        return await res.json()
     }
 
     const onSubmit = async () => {
-        let raw = "";
+        let raw;
         if (isTeacher) {
             raw = JSON.stringify({...cycle, current_cycle_index: cycle_index, company_id: userId, game_id: game_id})
         } else {
             raw = JSON.stringify(cycle)
         }
 
-        const newEntry = await new API(true).cycle.newEntry(raw, isTeacher);
-        if (typeof newEntry === "boolean") {
+        try {
+            await new API(true).cycle.newEntry(raw, isTeacher);
             await Swal.fire({
                 position: 'top-end',
                 icon: 'success',
@@ -238,12 +235,12 @@ const Dashboard = ({
                 showConfirmButton: false,
                 timer: 1500
             })
-        } else {
+        } catch (e) {
             await Swal.fire({
                 position: 'top-end',
                 icon: 'error',
                 title: 'Es ist ein Fehler aufgetreten',
-                text: newEntry.user_message,
+                text: e.message.user_message,
                 showConfirmButton: false,
                 timer: 3000
             })
