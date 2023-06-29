@@ -2,7 +2,7 @@ import TeacherList from './TeacherList'
 import PeriodenListe from './PeriodenListe'
 import SpieleListe from "./SpieleListe";
 
-const AdminPage = ({OnClick, state}) => {
+const AdminPage = ({state}) => {
 
     return (
         <>
