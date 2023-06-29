@@ -1,10 +1,10 @@
 import {useState} from "react";
 import Cookies from "js-cookie";
-import API from '../../lib/API/API'
-import {MissingArgumentsException} from "../../lib/API/Exceptions/MissingArgumentsException";
-import {WrongInputException} from "../../lib/API/Exceptions/WrongInputException";
+import API from '../../lib/API/src/API'
+import {MissingArgumentsException} from "../../lib/API/src/Exceptions/MissingArgumentsException";
+import {WrongInputException} from "../../lib/API/src/Exceptions/WrongInputException";
 import {useNavigate} from 'react-router-dom';
-import {UserException} from "../../lib/API/Exceptions/UserException";
+import {UserException} from "../../lib/API/src/Exceptions/UserException";
 
 const LoginPage = ({updateSidebar, setRefreshSidebar}) => {
     const [userName, setUserName] = useState('')

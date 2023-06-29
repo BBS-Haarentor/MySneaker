@@ -3,7 +3,7 @@ import Swal from 'sweetalert2'
 import MarketShare from './charts/MarketShare'
 import ExpendituresAdvertising from "./charts/ExpendituresAdvertising";
 import ResearchInvest from "./charts/ResearchInvest";
-import API from "../../../lib/API/API";
+import API from "../../../lib/API/src/API";
 
 const Analytics = ({myHeaders, gameId, cycle_index, current_cycle_index, updateGame}) => {
 

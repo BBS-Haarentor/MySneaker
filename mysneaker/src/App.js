@@ -2,14 +2,14 @@ import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import DashBoardPage from './components/DashBoardPage';
 import MainPage from './components/MainPage';
 import Tutorial from './components/tutorial';
-import LehrerPage from './components/LehrerPage/LehrerPage';
-import KlassenDetailPage from './components/LehrerPage/KlassenDetailPage'
+import LehrerPage from './components/LehrerDashboard/LehrerPage';
+import KlassenDetailPage from './components/LehrerDashboard/KlassenDetailPage'
 import RegisterPage from './components/Authentication/RegisterPage';
 import Logout from './components/Sidebar/Logout';
 import {useEffect} from 'react';
 import PageNotFound from "./components/PageNotFound";
 import Game2048 from './components/Game2048/Game2048'
-import AnalyticPDF from "./components/LehrerPage/KlasseContainer/PDF/AnalyticPDF";
+import AnalyticPDF from "./components/LehrerDashboard/KlasseContainer/PDF/AnalyticPDF";
 
 
 const App = () => {

@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 import toast, {Toaster} from 'react-hot-toast';
+import Men from '../../assets/img/person/men.svg';
+import Woman from '../../assets/img/person/woman.svg';
 
 const TeacherList = () => {
 
@@ -239,14 +241,14 @@ const TeacherList = () => {
                     className="flex justify-center items-center flex-row flex-wrap mt-20">
                     {teachers.map(({id, last_login, is_active, name}) => {
                         let date = new Date(last_login)
-                        var answers = ["men", "woman"]
+                        var answers = [Men, Woman]
                         var index = Math.floor(Math.random() * answers.length);
 
                         return (
                             <>
                                 <div
                                     className="dark:bg-[#1f2733] flex-shrink-0 w-72 min-h-60 rounded-xl min-[364px]:mr-5 drop-shadow-xl bg-white mb-5">
-                                    <img src={"/img/img/" + answers[index] + ".svg"} alt="Sneaker" className="w-40 h-50 mx-auto my-5"/>
+                                    <img src={answers[index]} alt="Sneaker" className="w-40 h-50 mx-auto my-5"/>
                                     <h1 className="text-[#4fd1c5] text-center text-2xl font-medium">{name}</h1>
                                     <p className="font-medium text-xl text-center dark:text-white mt-10">Letzter
                                         Login</p>

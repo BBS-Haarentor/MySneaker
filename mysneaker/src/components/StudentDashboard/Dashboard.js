@@ -10,7 +10,7 @@ import Planung from './components/Planung'
 import VerkaufSoll from './components/VerkaufSoll'
 import Finanzen from './components/Finanzen';
 import DataTemplate from './utils/data.json'
-import API from "../../lib/API/API";
+import API from "../../lib/API/src/API";
 import toast, {Toaster} from 'react-hot-toast';
 import {Maschine} from "./components/Machine";
 import InformationContainer from "./components/Information";

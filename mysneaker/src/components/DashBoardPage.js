@@ -1,10 +1,10 @@
 import SideNavBar from "./Sidebar/SideNavBar"
 import {useState, useEffect, useRef} from "react";
 import LoginPage from "./Authentication/LoginPage";
-import LehrerPage from "./LehrerPage/LehrerPage";
+import LehrerPage from "./LehrerDashboard/LehrerPage";
 import Dashboard from "./StudentDashboard/Dashboard";
 import Cookies from "js-cookie";
-import AdminPage from "./AdminPage/AdminPage";
+import AdminPage from "./AdminDashboard/AdminPage";
 import {useNavigate} from 'react-router-dom';
 
 const DashBoardPage = () => {

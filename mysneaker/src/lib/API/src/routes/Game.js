@@ -14,6 +14,36 @@ export default class Game {
     }
 
     /**
+     * Create a game API Request
+     * @author Optischa <fabian.evers2602@gmail.com>
+     * @param {String} grade_name - Game name
+     * @param {String[]} scenario_order - Scenario order
+     * @return async {Object|MissingArgumentsException} Object with Data or MissingArgumentsException
+     */
+    async create(grade_name, scenario_order: String[]) {
+        if (grade_name === "" || scenario_order === "") {
+            throw new MissingArgumentsException("Bitte gebe keine Leeren Felder ab")
+        }
+
+        ["" + grade_name]()
+
+        this.requestOptions.method = "POST";
+        this.requestOptions.body = JSON.stringify({
+            "grade_name": grade_name,
+            "is_active": true,
+            "scenario_order": scenario_order,
+            "signup_enabled": false
+        });
+
+        return fetch(process.env.REACT_APP_MY_API_URL + `/api/v1/game/create`, this.requestOptions).then(async res => {
+            return {
+                error: res.status !== 201,
+                data: await res.json()
+            }
+        })
+    }
+
+    /**
      * Turnover Test Methode with API Request
      * @author Optischa <fabian.evers2602@gmail.com>
      * @param {String} gameId - Game ID from the game
