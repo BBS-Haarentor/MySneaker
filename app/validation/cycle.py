@@ -127,13 +127,13 @@ def validate_cycle_production(cycle: CycleCreate, stock: Stock, scenario: Scenar
 
     #production check
     if stock.machine_1_space != 0:
-        if scenario["machine_production_capacity"+str(stock.machine_1_space)] < cycle.planned_production_1:
+        if scenario.dict().items()["machine_production_capacity"+str(stock.machine_1_space)] < cycle.planned_production_1:
             raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt. Maschinenplatz 1")
     if stock.machine_2_space != 0:
-        if scenario["machine_production_capacity"+str(stock.machine_2_space)] < cycle.planned_production_2:
+        if scenario.dict().items()["machine_production_capacity"+str(stock.machine_2_space)] < cycle.planned_production_2:
             raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt. Maschinenplatz 2")
     if stock.machine_3_space != 0:
-        if scenario["machine_production_capacity"+str(stock.machine_3_space)] < cycle.planned_production_3:
+        if scenario.dict().items()["machine_production_capacity"+str(stock.machine_3_space)] < cycle.planned_production_3:
             raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe produziert werden als die Maschine hergibt. Maschinenplatz 3")
     return None
 
