@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from "react";
 import ProductionPlan from "../charts/ProductionPlan";
-import BaseContainer from '../baseComponents/BaseContainer'
-import Spacer from '../baseComponents/Spacer'
-import TextOutput from '../baseComponents/TextOutput'
 
 const InformationContainer = ({formatter, data, cycle, tempData, AllMaschienenKosten}) => {
     const [chartData, setChartData] = useState([]);
