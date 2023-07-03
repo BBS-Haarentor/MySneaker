@@ -86,7 +86,7 @@ const VerkaufSoll = ({cycle, data, tempData, formatter, handleChange}) => {
                         <h2 className={"mt-3 mb-1 dark:text-white text-center text-xl font-bold"}>Preis</h2>
                         <div className="w-full flex justify-center">
                             <div>
-                                <input type={"number"} name='tender_offer_price' onChange={(e) => {
+                                <input type={"number"} disabled={(data.scenario.tender_offer_count === 0 || (cycle.tender_offer_count === 0 && cycle.tender_offer_price === 0))} name='tender_offer_price' onChange={(e) => {
                                     if(e.target.value >= 300) {
                                         handleChange({
                                             target: {
@@ -106,7 +106,7 @@ const VerkaufSoll = ({cycle, data, tempData, formatter, handleChange}) => {
                         </div>
                         <div className="flex flex-row flex-nowrap">
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">0,00 €</p>
-                            <input type="range" name='tender_offer_price' onChange={handleChange} disabled={data.scenario.tender_offer_count === 0} value={cycle.tender_offer_price}
+                            <input type="range" name='tender_offer_price' onChange={handleChange} disabled={(data.scenario.tender_offer_count === 0 || (cycle.tender_offer_count === 0 && cycle.tender_offer_price === 0))} value={cycle.tender_offer_price}
                                    max={300}
                                    className="w-3/5 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-3"/>
                             <p className="w-1/5 text-center dark:text-white font-medium text-lg">300,00 €</p>

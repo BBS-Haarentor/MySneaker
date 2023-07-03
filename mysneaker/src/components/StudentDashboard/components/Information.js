@@ -20,7 +20,7 @@ const InformationContainer = ({formatter, data, cycle, tempData, AllMaschienenKo
             },
             {
                 name: "Personalkosten",
-                value: cycle.employees_count * (500 * (data.scenario.employee_cost_modfier))
+                value: cycle.employees_count * (data.scenario.employee_salary * (tempData.employees_cost_in_p))
             }
         ])
     }, [tempData])
@@ -50,12 +50,12 @@ const InformationContainer = ({formatter, data, cycle, tempData, AllMaschienenKo
                         <h2 className="text-center text-xl font-medium dark:text-white mb-2">Umsatz</h2>
                         <p className="text-center text-lg font-medium dark:text-white mb-5">{formatter.format((cycle.sales_planned * cycle.sales_bid))}</p>
                         <h2 className="text-center text-xl font-medium dark:text-white mb-2">Gesamtkosten</h2>
-                        <p className="text-center text-lg font-medium dark:text-white mb-5">{formatter.format((cycle.employees_count * (500 * (data.scenario.employee_cost_modfier)) + AllMaschienenKosten + ((isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost) + (isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost))) + data.scenario.production_cost_per_sneaker1 * tempData.overall_production)}</p>
+                        <p className="text-center text-lg font-medium dark:text-white mb-5">{formatter.format((cycle.employees_count * (data.scenario.employee_salary * (tempData.employees_cost_in_p)) + AllMaschienenKosten + ((isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost) + (isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost))) + data.scenario.production_cost_per_sneaker1 * tempData.overall_production)}</p>
                         <div className="h-[2px] rounded-full dark:bg-white bg-gray-400 w-[90%] mx-auto my-5"/>
                         <h2 className="text-center text-xl font-medium dark:text-white mb-2">Gesamt Gewinn</h2>
-                        <p className="text-center text-lg font-medium dark:text-white mb-5">{formatter.format((cycle.sales_planned * cycle.sales_bid) - ((cycle.employees_count * (500 * (data.scenario.employee_cost_modfier)) + AllMaschienenKosten + ((isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost) + (isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost))) + data.scenario.production_cost_per_sneaker1 * tempData.overall_production))}</p>
+                        <p className="text-center text-lg font-medium dark:text-white mb-5">{formatter.format((cycle.sales_planned * cycle.sales_bid) - ((cycle.employees_count * (data.scenario.employee_salary * (tempData.employees_cost_in_p)) + AllMaschienenKosten + ((isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost) + (isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost))) + data.scenario.production_cost_per_sneaker1 * tempData.overall_production))}</p>
                         <h2 className="text-center text-xl font-medium dark:text-white mb-2">Gewinn pro Sneaker</h2>
-                        <p className="text-center text-lg font-medium dark:text-white mb-5">{formatter.format(tempData.overall_production !== 0 ? cycle.sales_bid - (((cycle.employees_count * (500 * (data.scenario.employee_cost_modfier)) + (tempData.sneaker_cost + tempData.paint_cost) + AllMaschienenKosten) / tempData.overall_production) + data.scenario.production_cost_per_sneaker1) : 0)}</p>
+                        <p className="text-center text-lg font-medium dark:text-white mb-5">{formatter.format(tempData.overall_production !== 0 ? cycle.sales_bid - (((cycle.employees_count * (data.scenario.employee_salary * (tempData.employees_cost_in_p)) + (tempData.sneaker_cost + tempData.paint_cost) + AllMaschienenKosten) / tempData.overall_production) + data.scenario.production_cost_per_sneaker1) : 0)}</p>
                     </div>
                     <div
                         className={"dark:bg-[#1f2733] mx-2 xl:w-96 w-full min-h-60 rounded-xl drop-shadow-xl bg-white mb-5"}>
@@ -63,7 +63,7 @@ const InformationContainer = ({formatter, data, cycle, tempData, AllMaschienenKo
                         <div className="max-h-[50vh] mx-auto">
                             <ProductionPlan list={chartData}/>
                         </div>
-                        <p className="text-center text-xl font-bold my-5 dark:text-white">{formatter.format(((isNaN(cycle.employees_count) ? 0 : cycle.employees_count) * (500 * (data.scenario.employee_cost_modfier)) + AllMaschienenKosten + ((isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost) + (isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost))) + data.scenario.production_cost_per_sneaker1 * tempData.overall_production)}</p>
+                        <p className="text-center text-xl font-bold my-5 dark:text-white">{formatter.format(((isNaN(cycle.employees_count) ? 0 : cycle.employees_count) * (data.scenario.employee_salary * (tempData.employees_cost_in_p)) + AllMaschienenKosten + ((isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost) + (isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost))) + data.scenario.production_cost_per_sneaker1 * tempData.overall_production)}</p>
                     </div>
                 </div>
             </div>

@@ -75,12 +75,21 @@ const Personal = ({PersonalRef, formatter, data, cycle, tempData, handleChange})
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  onClick={() => {
                                      if (data.scenario.employee_change_allowed) {
-                                         handleChange({
-                                             target: {
-                                                 name: "let_go_employees",
-                                                 value: cycle.let_go_employees + 1
-                                             }
-                                         })
+                                        if(cycle.employees_count > cycle.let_go_employees+1) {
+                                            handleChange({
+                                                target: {
+                                                    name: "let_go_employees",
+                                                    value: cycle.let_go_employees + 1
+                                                }
+                                            })                                        
+                                        } else {
+                                            handleChange({
+                                                target: {
+                                                    name: "let_go_employees",
+                                                    value: cycle.employees_count
+                                                }
+                                            })
+                                        }
                                      }
                                  }
                                  }
@@ -91,7 +100,18 @@ const Personal = ({PersonalRef, formatter, data, cycle, tempData, handleChange})
                             </svg>
                             <input
                                 className={"border-2 mx-5 text-center dark:text-white rounded-full w-16 dark:bg-[#1f2733]" + (data.scenario.employee_change_allowed ? " border-[#4fd1c5]" : " border-[#1f273] dark:bg-[#252e3c]")}
-                                min="0" name='let_go_employees' type="number" onChange={handleChange}
+                                min="0" name='let_go_employees' type="number" onChange={value => {
+                                    if(cycle.employees_count > value.target.value) {
+                                        handleChange(value)
+                                    } else {
+                                        handleChange({
+                                            target: {
+                                                name: "let_go_employees",
+                                                value: cycle.employees_count
+                                            }
+                                        })
+                                    }
+                                }} max={cycle.employees_count}
                                 value={cycle.let_go_employees} disabled={!data.scenario.employee_change_allowed}/>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  onClick={() => {

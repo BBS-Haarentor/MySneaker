@@ -204,8 +204,13 @@ const Dashboard = ({
                         delete dataFromServer.cycle.game_id
                         delete dataFromServer.cycle.company_id
                         dataFromServer.cycle.employees_count = dataFromServer.stock.employees_count
-                        dataFromServer.cycle.tender_offer_count = 0
-                        dataFromServer.cycle.tender_offer_price = 0
+                        if(dataFromServer.cycle.tender_offer_count === undefined) {
+                            if(dataFromServer.cycle.tender_offer_price !== 0) {
+                                dataFromServer.cycle.tender_offer_count = dataFromServer.scenario.tender_offer_count
+                            } else {
+                                dataFromServer.cycle.tender_offer_count = 0
+                            }
+                        }
                         setCycle(dataFromServer.cycle)
                     }
                     getData()
@@ -394,7 +399,7 @@ const Dashboard = ({
                                  handleChange={handleChange} BeschaffungRef={BeschaffungRef}/>
                 <div id={"beschaffung"} className="w-[1px] h-[1px]" />
 
-                <Lager data={data.stock} LagerRef={LagerRef} cycle={cycle} formatter={formatter} tempData={tempData}
+                <Lager data={data.stock} LagerRef={LagerRef} cycle={cycle} scenario= {data.scenario} formatter={formatter} tempData={tempData}
                        handleChange={handleChange}/>
                 <div id={"lager"} className="w-[1px] h-[1px]" />
 

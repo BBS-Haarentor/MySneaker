@@ -159,7 +159,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                     <div className="grid grid-cols-6 gap-6">
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
-                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Neueinstellungen</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Neueinstellungsbonus</label>
                                             <input type="number" name="reference-price" value={employee_signup_bonus}
                                                 onChange={(e) => setEmployee_signup_bonus(e.target.value)}
                                                 id="reference-price"
@@ -167,7 +167,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
-                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Kündigungen</label>
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Personalbestand</label>
                                             <input type="number" name="reference-price" value={employee_count_modifier_permanent}
                                                 onChange={(e) => setEmployee_count_modifier_permanent(e.target.value)}
                                                 id="reference-price"

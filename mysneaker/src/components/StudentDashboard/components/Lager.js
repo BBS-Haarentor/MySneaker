@@ -5,7 +5,7 @@ import TextOutput from '../baseComponents/TextOutput'
 import Sneaker from '../../../assets/img/container/sneaker.svg';
 import Paint from '../../../assets/img/container/paint.svg';
 
-const Lager = ({LagerRef, data, cycle,tempData, formatter }) => {
+const Lager = ({LagerRef, data, cycle,scenario,tempData, formatter }) => {
 
     return (
         <>
@@ -35,7 +35,7 @@ const Lager = ({LagerRef, data, cycle,tempData, formatter }) => {
                             <TextOutput value={data.finished_sneaker_count} text="Sneaker im Lager"/>
                             <TextOutput value={tempData.overall_production} text="Sneaker werden Produziert"/>
                             <TextOutput value={data.finished_sneaker_count + tempData.overall_production} text="Sneaker gesamt Verfügbar"/>
-                            <TextOutput value={Math.round(tempData.overall_production + cycle.include_from_stock)} text="Sneaker Verbraucht (PLAN)"/>
+                            <TextOutput value={cycle.sales_planned + cycle.tender_offer_count} text="Sneaker Verbraucht (PLAN)"/>
                         <Spacer/>
                             <TextOutput value={data.finished_sneaker_count +tempData.overall_production - Math.round(cycle.sales_planned + cycle.tender_offer_count)} text="Sneaker im Lager (PLAN)"/>
                     </BaseContainer>
@@ -47,24 +47,24 @@ const Lager = ({LagerRef, data, cycle,tempData, formatter }) => {
                         <img src={Sneaker} alt="Sneaker" className="w-40 h-50 mx-auto my-5"/>
                         <h1 className="text-[#4fd1c5] text-center text-2xl font-medium">Sneaker</h1>
                         <div className="w-[90%] h-[2px] rounded-full dark:bg-white bg-black m-auto my-2"></div>
-                        <p className="my-2 text-center dark:text-white text-xl">4,00€ pro Stück</p>
-                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format(((data.sneaker_count + (isNaN(cycle.buy_sneaker) ? 0 : cycle.buy_sneaker)) - tempData.overall_production) * 4)} Lagerkosten (PLAN)</p>
-                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format((data.sneaker_count +(isNaN(cycle.buy_sneaker) ? 0 : cycle.buy_sneaker) - tempData.overall_production) * 4)} Lagerkosten (IST)</p>
+                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format(scenario.storage_fee_sneaker)} pro Stück</p>
+                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format(((data.sneaker_count + (isNaN(cycle.buy_sneaker) ? 0 : cycle.buy_sneaker)) - tempData.overall_production) * scenario.storage_fee_sneaker)} Lagerkosten (PLAN)</p>
+                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format((data.sneaker_count +(isNaN(cycle.buy_sneaker) ? 0 : cycle.buy_sneaker) - tempData.overall_production) * scenario.storage_fee_sneaker)} Lagerkosten (IST)</p>
                     </div>
                     <div className="dark:bg-[#1f2733] flex-shrink-0 w-72 min-h-60 rounded-xl max-[620px]:mx-5 drop-shadow-xl bg-white mb-5">
                         <img src={Paint} alt="Sneaker" className="w-40 h-36 mx-auto my-5"/>
                         <h1 className="text-[#4fd1c5] text-center text-2xl font-medium">Farben</h1>
                         <div className="w-[90%] h-[2px] rounded-full dark:bg-white bg-black m-auto my-2"></div>
-                        <p className="my-2 text-center dark:text-white text-xl">1,00€ pro Stück</p>
-                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format(((data.paint_count + (isNaN(cycle.buy_paint) ? 0 : cycle.buy_paint)) - tempData.overall_production * 2))} Lagerkosten (PLAN)</p>
-                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format((data.paint_count + (isNaN(cycle.buy_paint) ? 0 : cycle.buy_paint) - tempData.overall_production * 2))} Lagerkosten (IST)</p>
+                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format(scenario.storage_fee_paint)} pro Stück</p>
+                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format(((data.paint_count + (isNaN(cycle.buy_paint) ? 0 : cycle.buy_paint)) - tempData.overall_production * 2)*scenario.storage_fee_paint)} Lagerkosten (PLAN)</p>
+                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format((data.paint_count + (isNaN(cycle.buy_paint) ? 0 : cycle.buy_paint) - tempData.overall_production * 2)*scenario.storage_fee_paint)} Lagerkosten (IST)</p>
                     </div>
                     <div className="dark:bg-[#1f2733] flex-shrink-0 w-72 min-h-60 rounded-xl max-[620px]:mx-5 drop-shadow-xl bg-white mb-5">
                         <img src={Sneaker} alt="Sneaker" className="w-40 h-50 mx-auto my-5"/>
                         <h1 className="text-[#4fd1c5] text-center text-2xl font-medium">Fertige Sneaker</h1>
                         <div className="w-[90%] h-[2px] rounded-full dark:bg-white bg-black m-auto my-2"></div>
-                        <p className="my-2 text-center dark:text-white text-xl">8,00€ pro Stück</p>
-                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format((data.finished_sneaker_count + tempData.overall_production - Math.round((cycle.sales_planned + cycle.tender_offer_count)))* 8)} Lagerkosten (PLAN)</p>
+                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format(scenario.storage_fee_finished_sneaker)} pro Stück</p>
+                        <p className="my-2 text-center dark:text-white text-xl">{formatter.format((data.finished_sneaker_count + tempData.overall_production - Math.round((cycle.sales_planned + cycle.tender_offer_count)))* scenario.storage_fee_finished_sneaker)} Lagerkosten (PLAN)</p>
                         <p className="my-2 text-center dark:text-white text-xl">{formatter.format((data.finished_sneaker_count + tempData.overall_production) * 8)} Lagerkosten (IST)</p>
                     </div>
                 </div>
