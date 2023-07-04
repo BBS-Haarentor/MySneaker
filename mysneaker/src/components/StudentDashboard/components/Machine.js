@@ -11,7 +11,8 @@ export const MachineContainer = ({
                                      tempData,
                                      workersAvailable,
                                      overallCost,
-                                     workers_name
+                                     workers_name,
+                                     employee_production_capacity
                                  }) => {
 
     useEffect(() => {
@@ -19,7 +20,7 @@ export const MachineContainer = ({
         handleChange({
             target: {
                 name: workers_name,
-                value: Math.ceil((isNaN(planned_production) ? 0 : planned_production) / 20)
+                value: Math.ceil((isNaN(planned_production) ? 0 : planned_production) / employee_production_capacity)
             }
         })
     }, [planned_production])
@@ -59,7 +60,7 @@ export const MachineContainer = ({
                 </div>
                 <h2 className={"mt-7 mb-5 text-center text-xl font-bold" + (workersAvailable ? "" : " text-red-300")}>Benötigte
                     Mitarbeiter</h2>
-                <p className={"text-center font-semibold text-lg"}>{Math.ceil((isNaN(planned_production) ? 0 : planned_production) / 20)}</p>
+                <p className={"text-center font-semibold text-lg"}>{Math.ceil((isNaN(planned_production) ? 0 : planned_production) / employee_production_capacity)}</p>
                 <h2 className={"mt-7 mb-5 text-center text-xl font-bold"}>Gesamtkosten Produktion</h2>
                 <p className={"text-center font-semibold text-lg"}>{overallCost}</p>
                 <div className={"absolute w-full bottom-5 pr-4"}>
@@ -132,9 +133,10 @@ export const Maschine = ({
                                           handleChange={handleChange} workers_name={"planned_workers_1"}
                                           planned_production={cycle.planned_production_1}
                                           planned_production_name={"planned_production_1"} tempData={tempData}
-                                          hasError={!(cycle.planned_workers_1 === Math.ceil((isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers)}
-                                          workersAvailable={cycle.planned_workers_1 === parseInt(Math.ceil((isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) / 20)) && cycle.employees_count >= tempData.overall_workers}
-                                          overallCost={formatter.format(data.scenario.machine_maintainance_cost1 + data.scenario.production_cost_per_sneaker1 * (isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1))}/>
+                                          hasError={!(cycle.planned_workers_1 === Math.ceil((isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) / data.scenario.employee_production_capacity) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers)}
+                                          workersAvailable={cycle.planned_workers_1 === parseInt(Math.ceil((isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) / data.scenario.employee_production_capacity)) && cycle.employees_count >= tempData.overall_workers}
+                                          overallCost={formatter.format(data.scenario.machine_maintainance_cost1 + data.scenario.production_cost_per_sneaker1 * (isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1))}
+                                          employee_production_capacity={data.scenario.employee_production_capacity}/>
                         : <BuyNewMachine ProductionRef={ProductionRef} onBuy={null}/>}
 
                     {data.stock.machine_2_space !== 0 ?
@@ -142,9 +144,10 @@ export const Maschine = ({
                                           handleChange={handleChange} workers_name={"planned_workers_2"}
                                           planned_production={cycle.planned_production_2}
                                           planned_production_name={"planned_production_2"} tempData={tempData}
-                                          hasError={!(cycle.planned_workers_2 === Math.ceil((isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2) / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers)}
-                                          workersAvailable={cycle.planned_workers_2 === parseInt(Math.ceil((isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2) / 20)) && cycle.employees_count >= tempData.overall_workers}
-                                          overallCost={formatter.format(machines[1].costpp + machines[1].fertigungskostenpp * (isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2))}/>
+                                          hasError={!(cycle.planned_workers_2 === Math.ceil((isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2) / data.scenario.employee_production_capacity) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers)}
+                                          workersAvailable={cycle.planned_workers_2 === parseInt(Math.ceil((isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2) / data.scenario.employee_production_capacity)) && cycle.employees_count >= tempData.overall_workers}
+                                          overallCost={formatter.format(machines[1].costpp + machines[1].fertigungskostenpp * (isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2))}
+                                          employee_production_capacity={data.scenario.employee_production_capacity}/>
                         : cycle.buy_new_machine !== 0 ?
                             <NewMachineBuyed ProductionRef={ProductionRef}/> : data.scenario.machine_purchase_allowed ?
                                 <BuyNewMachine ProductionRef={ProductionRef} onBuy={onBuyM2}/> :
@@ -155,9 +158,10 @@ export const Maschine = ({
                                           handleChange={handleChange} workers_name={"planned_workers_3"}
                                           planned_production={cycle.planned_production_3}
                                           planned_production_name={"planned_production_3"} tempData={tempData}
-                                          hasError={!(cycle.planned_workers_3 === Math.ceil((isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3) / 20) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers)}
-                                          workersAvailable={cycle.planned_workers_3 === parseInt(Math.ceil((isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3) / 20)) && cycle.employees_count >= tempData.overall_workers}
-                                          overallCost={formatter.format(machines[2].costpp + machines[2].fertigungskostenpp * (isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3))}/>
+                                          hasError={!(cycle.planned_workers_3 === Math.ceil((isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3) / data.scenario.employee_production_capacity) && tempData.max_production >= tempData.overall_production && cycle.employees_count >= tempData.overall_workers)}
+                                          workersAvailable={cycle.planned_workers_3 === parseInt(Math.ceil((isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3) / data.scenario.employee_production_capacity)) && cycle.employees_count >= tempData.overall_workers}
+                                          overallCost={formatter.format(machines[2].costpp + machines[2].fertigungskostenpp * (isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3))}
+                                          employee_production_capacity={data.scenario.employee_production_capacity}/>
                         : data.stock.machine_2_space === 0 ?
                             <></> : cycle.buy_new_machine !== 0 ?
                                 <NewMachineBuyed ProductionRef={ProductionRef}/> : data.stock.machine_2_space === 0 ?

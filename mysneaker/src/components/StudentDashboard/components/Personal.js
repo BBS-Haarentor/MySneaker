@@ -17,7 +17,7 @@ const Personal = ({PersonalRef, formatter, data, cycle, tempData, handleChange})
                             MA</p>
                         <p className="my-2 dark:text-white text-xl text-center">{parseInt(cycle.employees_count) + (isNaN(cycle.new_employees) ? 0 : cycle.new_employees) - (isNaN(cycle.let_go_employees) ? 0 : cycle.let_go_employees)} MA
                             nächste Periode</p>
-                        <p className="my-2 dark:text-white text-xl text-center">20 Sneaker Grundkapazität je MA</p>
+                        <p className="my-2 dark:text-white text-xl text-center">{data.scenario.employee_production_capacity} Sneaker Grundkapazität je MA</p>
                         <div className="w-[90%] h-[2px] rounded-full dark:bg-white bg-black m-auto my-2"></div>
                         <p className="my-2 dark:text-white text-xl text-center">{cycle.employees_count - (parseInt(cycle.planned_workers_1) + parseInt(cycle.planned_workers_2) + parseInt(cycle.planned_workers_3))} MA
                             Verfügbar</p>
@@ -27,7 +27,7 @@ const Personal = ({PersonalRef, formatter, data, cycle, tempData, handleChange})
                         <img src={PersonalImage} alt="Paint" className="w-40 h-36 mx-auto my-5"/>
                         <h1 className="text-[#4fd1c5] text-center text-2xl font-medium">Personal</h1>
                         <p className="my-2 dark:text-white text-xl text-center">Neueinstellungen</p>
-                        <p className="my-2 dark:text-white text-xl text-center">100,00 € pro Mitarbeiter</p>
+                        <p className="my-2 dark:text-white text-xl text-center">{formatter.format(data.scenario.employee_signup_bonus)} pro Mitarbeiter</p>
                         <div className="flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  onClick={() => {
