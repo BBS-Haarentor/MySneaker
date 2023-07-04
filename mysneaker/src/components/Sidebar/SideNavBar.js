@@ -60,10 +60,11 @@ const SideNavBar = ({OnClick, state, refreshSidebar}) => {
                                 fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/student/my_game', requestOptions).then(async (element1) => {
                                     if (element1.status === 200) {
                                         let json = await element1.json()
+                                        const scenario = new TextEncoder().encode(json.scenario_order[json.current_cycle_index]) - 64
                                         setSidebarInformation({
                                             teacher: json.teacher_name,
                                             grade_name: json.grade_name,
-                                            scenario: new TextEncoder().encode(json.scenario_order[json.current_cycle_index]) - 64,
+                                            scenario: scenario === -64 ? "Ende" : scenario,
                                         })
                                     }
                                 })
@@ -194,14 +195,22 @@ const SidebarContent = ({userAuth, state, OnClick, token, sidebarInformation}) =
                             <p className='mx-12 px-2 py-2 text-[#a0aec0]'>Lehrer: {sidebarInformation.teacher}</p><br/>
                             <p className='mx-12 px-2 text-[#a0aec0]'>Klasse: {sidebarInformation.grade_name}</p><br/>
                             <p className='mx-12 py-2 px-2 text-[#a0aec0] inline-block'>Szenario: {sidebarInformation.scenario}</p>
-                            <Spacer></Spacer>
-                            <NavBarButton text="Beschaffung" state={state} id={"beschaffung"} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Lager" id={"lager"} state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Personal" id={"personal"} state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Produktion" id={"produktion"} state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Marketing" id={"marketing"} state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Absatz" id={"absatz"} state={state} onClick={OnClick}></NavBarButton>
-                            <NavBarButton text="Finanzen" id={"finanzen"} state={state} onClick={OnClick}></NavBarButton>
+                            {sidebarInformation.scenario !== "Ende" ? <>
+                                <Spacer></Spacer>
+                                <NavBarButton text="Beschaffung" state={state} id={"beschaffung"}
+                                              onClick={OnClick}></NavBarButton>
+                                <NavBarButton text="Lager" id={"lager"} state={state} onClick={OnClick}></NavBarButton>
+                                <NavBarButton text="Personal" id={"personal"} state={state}
+                                              onClick={OnClick}></NavBarButton>
+                                <NavBarButton text="Produktion" id={"produktion"} state={state}
+                                              onClick={OnClick}></NavBarButton>
+                                <NavBarButton text="Marketing" id={"marketing"} state={state}
+                                              onClick={OnClick}></NavBarButton>
+                                <NavBarButton text="Absatz" id={"absatz"} state={state}
+                                              onClick={OnClick}></NavBarButton>
+                                <NavBarButton text="Finanzen" id={"finanzen"} state={state}
+                                              onClick={OnClick}></NavBarButton>
+                            </> : <></>}
                             <Spacer></Spacer><NavBarButton text="Logout" state={state}
                                                            onClick={OnClick}></NavBarButton></> : <></>)}
         </>

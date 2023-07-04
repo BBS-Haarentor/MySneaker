@@ -30,6 +30,7 @@ const Dashboard = ({
 
     const [data, setData] = useState(DataTemplate)
     const [isTeacher, setIsTeacher] = useState(false);
+    const [gameFinished, setGameFinished] = useState(true);
 
     const [cycle, setCycle] = useState({
         "ad_invest": 0,
@@ -97,16 +98,18 @@ const Dashboard = ({
     })
 
     useEffect(() => {
-        setTempData({
-            "sneaker_cost": data.scenario.sneaker_price * cycle.buy_sneaker,
-            "paint_cost": data.scenario.paint_price * cycle.buy_paint,
-            "overall_production": (isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) + (isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2) + (isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3),
-            "employees_cost_in_p": data.scenario.employee_cost_modfier + 1,
-            "overall_workers": cycle.planned_workers_1 + cycle.planned_workers_2 + cycle.planned_workers_3,
-            "max_production": (data.stock.sneaker_count + cycle.buy_sneaker) > parseInt((data.stock.paint_count + cycle.buy_paint) / 2) ? parseInt((data.stock.paint_count + cycle.buy_paint) / 2) : (data.stock.sneaker_count + cycle.buy_sneaker),
-            "real_money": cycle.sales_planned * cycle.sales_bid + cycle.tender_offer_count * cycle.tender_offer_price,
-            "overall_cost_production": (data.scenario.machine_maintainance_cost1 + data.scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (machines[1].costpp + machines[1].fertigungskostenpp * cycle.planned_production_2) + (machines[2].costpp + machines[2].fertigungskostenpp * cycle.planned_production_3)
-        })
+        try {
+            setTempData({
+                "sneaker_cost": data.scenario.sneaker_price * cycle.buy_sneaker,
+                "paint_cost": data.scenario.paint_price * cycle.buy_paint,
+                "overall_production": (isNaN(cycle.planned_production_1) ? 0 : cycle.planned_production_1) + (isNaN(cycle.planned_production_2) ? 0 : cycle.planned_production_2) + (isNaN(cycle.planned_production_3) ? 0 : cycle.planned_production_3),
+                "employees_cost_in_p": data.scenario.employee_cost_modfier + 1,
+                "overall_workers": cycle.planned_workers_1 + cycle.planned_workers_2 + cycle.planned_workers_3,
+                "max_production": (data.stock.sneaker_count + cycle.buy_sneaker) > parseInt((data.stock.paint_count + cycle.buy_paint) / 2) ? parseInt((data.stock.paint_count + cycle.buy_paint) / 2) : (data.stock.sneaker_count + cycle.buy_sneaker),
+                "real_money": cycle.sales_planned * cycle.sales_bid + cycle.tender_offer_count * cycle.tender_offer_price,
+                "overall_cost_production": (data.scenario.machine_maintainance_cost1 + data.scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (machines[1].costpp + machines[1].fertigungskostenpp * cycle.planned_production_2) + (machines[2].costpp + machines[2].fertigungskostenpp * cycle.planned_production_3)
+            })
+        } catch (error) {}
     }, [data, cycle])
 
 
@@ -159,6 +162,7 @@ const Dashboard = ({
                     const getData = async () => {
                         setIsTeacher(body.replaceAll("\"", "").toLowerCase() === "teacher")
                         const dataFromServer = await fetchData(requestOptions, body.replaceAll("\"", "").toLowerCase() === "teacher")
+                        setGameFinished(dataFromServer.gameFinished)
                         if (dataFromServer.cycle === null) {
                             dataFromServer.cycle = defaultCycle
                         }
@@ -387,61 +391,72 @@ const Dashboard = ({
         minimumFractionDigits: 2
     })
 
-    return (
-        <>
-            {modalBuyMaschine}
-            {modalConfirm}
-            <Toaster position={"bottom-center"}/>
-            <div
-                className={'w-full overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center' + (isTeacher ? ' h-full' : 'h-screen')}>
+    if(gameFinished) {
+        return (
+            <>
 
-                <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle}
+            </>
+        )
+    } else {
+        return (
+            <>
+                {modalBuyMaschine}
+                {modalConfirm}
+                <Toaster position={"bottom-center"}/>
+                <div
+                    className={'w-full overflow-x-hidde overflow-y-auto flex flex-wrap flex-row justify-center' + (isTeacher ? ' h-full' : 'h-screen')}>
+
+                    <Beschaffung scenario={data.scenario} formatter={formatter} tempData={tempData} cycle={cycle}
                                  handleChange={handleChange} BeschaffungRef={BeschaffungRef}/>
-                <div id={"beschaffung"} className="w-[1px] h-[1px]" />
+                    <div id={"beschaffung"} className="w-[1px] h-[1px]"/>
 
-                <Lager data={data.stock} LagerRef={LagerRef} cycle={cycle} scenario= {data.scenario} formatter={formatter} tempData={tempData}
-                       handleChange={handleChange}/>
-                <div id={"lager"} className="w-[1px] h-[1px]" />
+                    <Lager data={data.stock} LagerRef={LagerRef} cycle={cycle} scenario={data.scenario}
+                           formatter={formatter} tempData={tempData}
+                           handleChange={handleChange}/>
+                    <div id={"lager"} className="w-[1px] h-[1px]"/>
 
-                <Personal PersonalRef={PersonalRef} cycle={cycle} formatter={formatter} tempData={tempData}
-                          handleChange={handleChange} data={data}/>
-                <div id={"personal"} className="w-[1px] h-[1px]" />
+                    <Personal PersonalRef={PersonalRef} cycle={cycle} formatter={formatter} tempData={tempData}
+                              handleChange={handleChange} data={data}/>
+                    <div id={"personal"} className="w-[1px] h-[1px]"/>
 
-                <Maschine handleChange={handleChange} ProductionRef={ProductionRef} tempData={tempData}
-                          onBuyM2={onBuyM2} cycle={cycle} data={data} onBuyM3={onBuyM3} formatter={formatter}
-                          machines={machines}/>
-                <div id={"produktion"} className="w-[1px] h-[1px]" />
+                    <Maschine handleChange={handleChange} ProductionRef={ProductionRef} tempData={tempData}
+                              onBuyM2={onBuyM2} cycle={cycle} data={data} onBuyM3={onBuyM3} formatter={formatter}
+                              machines={machines}/>
+                    <div id={"produktion"} className="w-[1px] h-[1px]"/>
 
-                <Marketing MarketingRef={MarketingRef} cycle={cycle} handleChange={handleChange} data={data}/>
-                <div id={"marketing"} className="w-[1px] h-[1px]" />
+                    <Marketing MarketingRef={MarketingRef} cycle={cycle} handleChange={handleChange} data={data}/>
+                    <div id={"marketing"} className="w-[1px] h-[1px]"/>
 
-                <Planung AbsatzRef={AbsatzRef} tempData={tempData} data={data} cycle={cycle}
-                         handleChange={handleChange}/>
-                <div id={"absatz"} className="w-[1px] h-[1px]" />
+                    <Planung AbsatzRef={AbsatzRef} tempData={tempData} data={data} cycle={cycle}
+                             handleChange={handleChange}/>
+                    <div id={"absatz"} className="w-[1px] h-[1px]"/>
 
 
-                <VerkaufSoll
-                    formatter={formatter}
-                    data={data}
-                    cycle={cycle}
-                    tempData={tempData}
-                    handleChange={handleChange}/>
+                    <VerkaufSoll
+                        formatter={formatter}
+                        data={data}
+                        cycle={cycle}
+                        tempData={tempData}
+                        handleChange={handleChange}/>
 
-                <InformationContainer formatter={formatter} data={data} cycle={cycle} tempData={tempData} AllMaschienenKosten={AllMaschienenKosten}/>
+                    <InformationContainer formatter={formatter} data={data} cycle={cycle} tempData={tempData}
+                                          AllMaschienenKosten={AllMaschienenKosten}/>
 
-                <Finanzen FinanzenRef={FinanzenRef} formatter={formatter}
-                          newMaschienPrize={newMaschienPrize} scenario={data.scenario}
-                          stock={data.stock} allMaschienenKosten={AllMaschienenKosten} tempData={tempData} cycle={cycle}
-                          machine_2_fertigungskostenpp={machines[1].fertigungskostenpp} handleChange={handleChange}
-                          machine_3_fertigungskostenpp={machines[2].fertigungskostenpp}/>
+                    <Finanzen FinanzenRef={FinanzenRef} formatter={formatter}
+                              newMaschienPrize={newMaschienPrize} scenario={data.scenario}
+                              stock={data.stock} allMaschienenKosten={AllMaschienenKosten} tempData={tempData}
+                              cycle={cycle}
+                              machine_2_fertigungskostenpp={machines[1].fertigungskostenpp} handleChange={handleChange}
+                              machine_3_fertigungskostenpp={machines[2].fertigungskostenpp}/>
 
-                <button
-                    className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 h-14 border-gray-200 text-white font-bold"
-                    onClick={onSubmit}>Abgeben/Speichern
-                </button>
-            </div>
-        </>
-    )
+                    <button
+                        className="px-4 right-0 m-4 py-4 text-sm bg-[#4fd1c5] rounded-xl border transition-colors duration-150 h-14 border-gray-200 text-white font-bold"
+                        onClick={onSubmit}>Abgeben/Speichern
+                    </button>
+                </div>
+            </>
+        )
+    }
 }
 
 export default Dashboard

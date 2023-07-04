@@ -73,9 +73,15 @@ class PlayerInfoStudent(SQLModel):
 class Summary(SQLModel):
     cycle: Cycle | None
     stock: Stock | None
-    scenario: Scenario | None   
-    
-    
+    scenario: Scenario | None
+    gameFinished: bool | None
+
+
+class GameFinishStudent:
+    stocks: list[Stock] | None
+    place: int | None
+
+
 class TurnoverDetailsPlayer(SQLModel):
     company_id: int
     # company_name: str

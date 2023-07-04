@@ -1,5 +1,5 @@
-import logging
 from types import NoneType
+from typing import List, Dict
 from unittest import result
 from fastapi import HTTPException
 from sqlmodel import select
@@ -24,7 +24,7 @@ from app.schemas.game import (
     GamePost,
     PlayerInfo,
     Summary,
-    TurnoverDetailsPlayer,
+    TurnoverDetailsPlayer, GameFinishStudent,
 )
 
 
@@ -196,9 +196,9 @@ class GameService:
             )
             for c in turnover.companies
         ]
-        
+
         return details
-        
+
     async def execute_turnover(self, game_id: int) -> int:
         game: Game = await self.game_repo.read(id=game_id)
         current_index: int = game.current_cycle_index
@@ -215,6 +215,29 @@ class GameService:
         game.current_cycle_index += 1
         game: Game = await self.game_repo.update(update_data=game)
         return game.current_cycle_index
+
+    async def calculate_winners(self, game_id: int) -> list[Stock]:
+        game: Game = await self.game_repo.read(id=game_id)
+        current_index: int = game.current_cycle_index - 1
+        users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
+        stocks: list[Stock] = []
+        for user in users:
+            stock: Stock = await self.stock_repo.get_stock_by_user_and_index(index=current_index, user_id=user.id)
+            stocks.append(stock)
+        sorted_stock = sorted(stocks, key=lambda item: item.account_balance, reverse=True)
+        return sorted_stock
+
+    async def user_period_info(self, game_id: int, user_id: int):
+        game: Game = await self.game_repo.read(id=game_id)
+        stocks: list[Stock] = []
+        for x in range(len(game.scenario_order)):
+            stocks.append(await self.stock_repo.get_stock_by_user_and_index(user_id=user_id, index=x))
+        winners = await self.calculate_winners(game_id=game_id)
+        place_number: int = 0
+        for x in range(len(winners)):
+            if winners[x].company_id == user_id:
+                place_number = x+1
+        return {"stocks": stocks, "place": place_number}
 
     async def set_back_cycle_index(self, game_id: int, new_index: int) -> int:
         game: Game = await self.game_repo.read(id=game_id)
@@ -239,7 +262,7 @@ class GameService:
         updated_game: Game = await self.game_repo.update(update_data=game)
         return updated_game.current_cycle_index
 
-    async def summarize(self, game_id: int, index: int, user_id: int) -> Summary:
+    async def summarize(self, game_id: int, index: int, user_id: int) -> Summary | dict[str, bool]:
         game: Game = await self.game_repo.read(id=game_id)
         try:
             cycle: Cycle = await self.cycle_repo.read_cycle_by_user_and_index(
@@ -255,10 +278,13 @@ class GameService:
         except StockNotFoundError:
             stock = None
             pass
-        scenario: Scenario = await self.scenario_repo.read_by_char(
-            game.scenario_order[index]
-        )
-        return Summary(cycle=cycle, stock=stock, scenario=scenario)
+        try:
+            scenario: Scenario = await self.scenario_repo.read_by_char(
+                game.scenario_order[index]
+            )
+            return Summary(cycle=cycle, stock=stock, scenario=scenario, gameFinished=False)
+        except IndexError:
+            return Summary(cycle=None, stock=None, scenario=None, gameFinished=True)
 
 
 class GameServiceError(ServiceError):
