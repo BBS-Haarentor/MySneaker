@@ -44,6 +44,23 @@ export default class Game {
     }
 
     /**
+     * Get finished data
+     * @author Optischa <fabian.evers2602@gmail.com>
+     * @return async {Object|MissingArgumentsException} Object with Data
+     */
+    async getFinishedDataForStudent() {
+        this.requestOptions.method = "GET";
+        this.requestOptions.body = null;
+
+        return fetch(process.env.REACT_APP_MY_API_URL + `/api/v1/game/student/finished`, this.requestOptions).then(async res => {
+            return {
+                error: res.status !== 200,
+                data: await res.json()
+            }
+        })
+    }
+
+    /**
      * Turnover Test Methode with API Request
      * @author Optischa <fabian.evers2602@gmail.com>
      * @param {String} gameId - Game ID from the game

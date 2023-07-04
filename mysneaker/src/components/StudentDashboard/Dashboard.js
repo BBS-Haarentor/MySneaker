@@ -13,6 +13,7 @@ import API from "../../lib/API/src/API";
 import toast, {Toaster} from 'react-hot-toast';
 import {Maschine} from "./components/Machine";
 import InformationContainer from "./components/Information";
+import PeriodeOverview from "./charts/PeriodeOverview";
 
 
 const Dashboard = ({
@@ -109,7 +110,8 @@ const Dashboard = ({
                 "real_money": cycle.sales_planned * cycle.sales_bid + cycle.tender_offer_count * cycle.tender_offer_price,
                 "overall_cost_production": (data.scenario.machine_maintainance_cost1 + data.scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (machines[1].costpp + machines[1].fertigungskostenpp * cycle.planned_production_2) + (machines[2].costpp + machines[2].fertigungskostenpp * cycle.planned_production_3)
             })
-        } catch (error) {}
+        } catch (error) {
+        }
     }, [data, cycle])
 
 
@@ -208,8 +210,8 @@ const Dashboard = ({
                         delete dataFromServer.cycle.game_id
                         delete dataFromServer.cycle.company_id
                         dataFromServer.cycle.employees_count = dataFromServer.stock.employees_count
-                        if(dataFromServer.cycle.tender_offer_count === undefined) {
-                            if(dataFromServer.cycle.tender_offer_price !== 0) {
+                        if (dataFromServer.cycle.tender_offer_count === undefined) {
+                            if (dataFromServer.cycle.tender_offer_price !== 0) {
                                 dataFromServer.cycle.tender_offer_count = dataFromServer.scenario.tender_offer_count
                             } else {
                                 dataFromServer.cycle.tender_offer_count = 0
@@ -265,7 +267,7 @@ const Dashboard = ({
         BuymaschineModal()
     }
 
-    const [availableMachine, setAvailableMachine] = useState(
+    const availableMachine =
         [
             {
                 id: 1,
@@ -291,7 +293,7 @@ const Dashboard = ({
                 price_per_Periode: 8000,
                 price_per_unit: 40
             }
-        ])
+        ]
 
     const BuymaschineModal = () => {
         setModalBuyMaschine(<>
@@ -391,10 +393,12 @@ const Dashboard = ({
         minimumFractionDigits: 2
     })
 
-    if(gameFinished) {
+    if (gameFinished) {
         return (
             <>
-
+                <div className="w-full my-auto">
+                    <PeriodeOverview/>
+                </div>
             </>
         )
     } else {
