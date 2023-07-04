@@ -129,6 +129,14 @@ class Turnover():
         lowest_price_company.result_stock.tender_sales = self.scenario.tender_offer_count
         lowest_price_company.result_stock.tender_price = lowest_price_company.cycle.tender_offer_price
         
+        
+        # move sneakers from not awarded companies to storage
+        non_winning_companies = [c for c in self.companies if (c.company_id != lowest_price_company.company_id) and (c.cycle.tender_offer_price > 0.0)]
+        
+        for nw in non_winning_companies:
+            nw.result_stock.finished_sneaker_count += self.scenario.tender_offer_count
+            nw._for_sale -= self.scenario.tender_offer_count
+        
         return None
     
     

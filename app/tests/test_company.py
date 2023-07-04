@@ -45,8 +45,8 @@ class TestCompany(unittest.TestCase):
         self.company.result_stock.paint_count = 300
         self.company.result_stock.sneaker_count = 150
         
-        #self.company.cycle.include_from_stock = 100
-        self.company.cycle.sales_planned = 200
+        self.company.cycle.include_from_stock = 100
+        #self.company.cycle.sales_planned = 200
         
         logging.warning(f"{len(self.company.machines)}")
         self.company.machines[0].planned_production = 100
@@ -71,8 +71,8 @@ class TestCompany(unittest.TestCase):
         self.company.result_stock.paint_count = 300
         self.company.result_stock.sneaker_count = 150
         
-        #self.company.cycle.include_from_stock = 100
-        self.company.cycle.sales_planned = 200
+        self.company.cycle.include_from_stock = 100
+        #self.company.cycle.sales_planned = 200
 
         logging.warning(f"{len(self.company.machines)}")
         self.company.machines[0].planned_production = 100
@@ -93,7 +93,9 @@ class TestCompany(unittest.TestCase):
         return None
     
     def test_produce_sneaker_all_machines(self) -> None:
-        self.company.cycle.sales_planned = 1000
+        #self.company.cycle.sales_planned = 1730
+        self.company.result_stock.finished_sneaker_count = 30
+        self.company.cycle.include_from_stock = 30
         self.company.machines = []
         self.company.result_stock.sneaker_count = 1720
         self.company.result_stock.paint_count = 3410
@@ -118,7 +120,7 @@ class TestCompany(unittest.TestCase):
         
         self.company.produce_sneakers()
         
-        self.assertEqual(self.company._for_sale, 1000)
+        self.assertEqual(self.company._for_sale, 1730)
         
         self.assertIsInstance(self.company.ledger[0], Invoice)
         self.assertEqual(self.company.ledger[0].amount, 
@@ -129,6 +131,8 @@ class TestCompany(unittest.TestCase):
         
         self.assertEqual(self.company.result_stock.paint_count, 10)
         self.assertEqual(self.company.result_stock.sneaker_count, 20)
+        
+        self.assertEqual(self.company.result_stock.finished_sneaker_count, 0)
 
         
         return None

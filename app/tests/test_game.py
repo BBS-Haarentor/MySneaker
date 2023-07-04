@@ -425,6 +425,39 @@ class TestTurnover(unittest.TestCase):
         
         return None
     
+    def test_for_sale_correctly_filled(self) -> None:
+        self.turnover.companies[0].cycle.include_from_stock = 20
+        self.turnover.companies[1].cycle.include_from_stock = 30
+        self.turnover.scenario.tender_offer_count = 100
+        
+        for c in self.turnover.companies:
+            c.produce_sneakers()
+        
+        self.assertEqual(320, self.turnover.companies[0]._for_sale)
+        self.assertEqual(130, self.turnover.companies[1]._for_sale)
+        
+        return None
+    
+    def test_tender_offer_two_compete_loser_sneaker_in_storage(self) -> None:
+        self.turnover.companies[0].cycle.tender_offer_price = 10.0
+        self.turnover.companies[1].cycle.tender_offer_price = 20.0
+        
+        self.turnover.companies[0]._for_sale = 120
+        self.turnover.companies[1]._for_sale = 150
+        
+        self.scenario.tender_offer_count = 100
+        
+        self.turnover.sell_sneaker_tender()
+        
+        
+        self.assertEqual(20, self.turnover.companies[0]._for_sale)
+        self.assertEqual(50, self.turnover.companies[1]._for_sale)
+        
+        self.assertEqual(100, self.turnover.companies[0].result_stock.tender_sales)
+        self.assertIsInstance(self.turnover.companies[1].result_stock.tender_sales, NoneType)
+        
+        return None
+    
 
 if __name__ == "__main__":
     unittest.main()

@@ -38,8 +38,8 @@ def validate_cycle(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None
     validate_cycle_check_scenario(cycle=cycle, scenario=scenario)
     validate_cycle_misc(cycle=cycle, stock=stock)
     validate_cycle_production(cycle=cycle, stock=stock, scenario=scenario)
-    validate_cycle_sales(cycle=cycle, stock=stock)
-
+    validate_cycle_sales(cycle=cycle, stock=stock, scenario=scenario)
+    
     return None
 
 
@@ -171,7 +171,7 @@ def _get_paint(cycle: CycleCreate, stock: Stock) -> int:
     return cycle.buy_paint + stock.paint_count
 
 
-def validate_cycle_sales(cycle: CycleCreate, stock: Stock) -> None:
+def validate_cycle_sales(cycle: CycleCreate, stock: Stock, scenario: Scenario) -> None:
     if cycle.tender_offer_price > 300.00:
         raise CycleValidationError(
             user_message=f"Der Preis für Sneaker in der Ausschreibung darf nicht über 300.00€ betragen.")
@@ -181,8 +181,9 @@ def validate_cycle_sales(cycle: CycleCreate, stock: Stock) -> None:
         raise CycleValidationError(
             user_message="Es dürfen nicht mehr Schuhe verkauft werden, als in der Summe produziert und aus dem Lager entnommen werden.")
     if cycle.include_from_stock > stock.finished_sneaker_count:
-        raise CycleValidationError(
-            user_message=f"Es können nicht mehr Schuhe aus dem Lager entnommen werden als vorhanden sind.")
+        raise CycleValidationError(user_message=f"Es können nicht mehr Schuhe aus dem Lager entnommen werden als vorhanden sind.")
+    if cycle.tender_offer_price > 0.0 and (cycle.sales_planned + scenario.tender_offer_count) > (cycle.include_from_stock + _get_sneaker_consumtion(cycle=cycle)):
+        raise CycleValidationError(user_message="Ausschreibung und Normalverkäufe sind in der Summe mehr als produziert und aus dem Lager entnommen werden.")
     return None
 
 

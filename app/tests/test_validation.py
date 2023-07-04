@@ -119,7 +119,7 @@ def test_stock():
 
 def test_validate_cycle_ltzero(test_cycle_ltzero):
     with pytest.raises(CycleValidationError):
-        validate_cycle_ltzero(cylce=test_cycle_ltzero)
+        validate_cycle_ltzero(cycle=test_cycle_ltzero)
     
 
 
