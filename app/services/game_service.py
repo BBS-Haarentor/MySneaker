@@ -218,7 +218,7 @@ class GameService:
 
     async def calculate_winners(self, game_id: int) -> list[Stock]:
         game: Game = await self.game_repo.read(id=game_id)
-        current_index: int = game.current_cycle_index - 1
+        current_index: int = game.current_cycle_index
         users: list[User] = await self.user_repo.get_users_by_game(game_id=game_id)
         stocks: list[Stock] = []
         for user in users:

@@ -4,8 +4,19 @@ import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 import Analytics from './Analytics';
 import {useNavigate} from "react-router-dom";
+import API from "../../../lib/API/src/API";
 
-const KlasseContainer = ({updateCompany, select, setSelect, setSelectCompanie, companyId, game, gameId, updateGame}) => {
+const KlasseContainer = ({
+                             updateCompany,
+                             select,
+                             setSelect,
+                             setSelectCompanie,
+                             companyId,
+                             game,
+                             gameId,
+                             updateGame,
+                             companys
+                         }) => {
 
     const [modal, setModal] = useState();
     const [selectCycleIndex, setSelectCycleIndex] = useState();
@@ -304,6 +315,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, setSelectCompanie, c
     } else {
 
         const menues = () => {
+
             switch (select) {
                 case "main":
                     if (myGame !== undefined) {
@@ -331,9 +343,13 @@ const KlasseContainer = ({updateCompany, select, setSelect, setSelectCompanie, c
                                             d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM31.1 128H416V448C416 483.3 387.3 512 352 512H95.1C60.65 512 31.1 483.3 31.1 448V128zM111.1 208V432C111.1 440.8 119.2 448 127.1 448C136.8 448 143.1 440.8 143.1 432V208C143.1 199.2 136.8 192 127.1 192C119.2 192 111.1 199.2 111.1 208zM207.1 208V432C207.1 440.8 215.2 448 223.1 448C232.8 448 240 440.8 240 432V208C240 199.2 232.8 192 223.1 192C215.2 192 207.1 199.2 207.1 208zM304 208V432C304 440.8 311.2 448 320 448C328.8 448 336 440.8 336 432V208C336 199.2 328.8 192 320 192C311.2 192 304 199.2 304 208z"/>
                                     </svg>
                                 </div>
-                                <img src="/img/teacher_empty.svg" className='h-96 w-96 m-4 mx-auto'
-                                     alt="No Data"></img>
-                                <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
+                                {myGame.scenario_order.length === myGame.current_cycle_index ? <>
+                                    <Leaderboard gameId={gameId} companys={companys}/>
+                                </> : <>
+                                    <img src="/img/teacher_empty.svg" className='h-96 w-96 m-4 mx-auto'
+                                         alt="No Data"></img>
+                                    <h1 className='text-[#4fd1c5] text-center w-full text-xl font-bold'>No Data</h1>
+                                </>}
                             </>
                         )
                     } else {
@@ -358,6 +374,83 @@ const KlasseContainer = ({updateCompany, select, setSelect, setSelectCompanie, c
 
         return (menues())
     }
+}
+
+const Leaderboard = ({gameId, companys}) => {
+    const [leaderboard, setLeaderboard] = useState([]);
+
+    useEffect(() => {
+        new API(true).game.getLeaderboard(gameId).then(value => {
+            if (!value.error) {
+                setLeaderboard(value.data)
+            }
+        })
+    }, [])
+
+    const formatter = new Intl.NumberFormat('de-de', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 2
+    })
+
+    if(leaderboard.length === 0) {
+        return (<></>)
+    }
+
+    return (
+        <>
+            <div className="flex w-full h-full justify-center items-center flex-col">
+                <div className="dark:bg-[#4fd1c5] h-64 rounded-t-2xl xl:w-[50%] max-xl:w-[90%]">
+                    <div className="flex flex-row flex-nowrap justify-between w-full h-full">
+                        <div className="h-full flex flex-col justify-end mx-5 w-1/4">
+                            <div className="h-[40%] relative justify-center w-full">
+                                <div className="bg-[#bf8970] w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">3</div>
+                                <div className="dark:bg-[#1a202c] h-[100%] rounded-t-2xl w-full b-0">
+                                    <h1 className="text-center pt-5 text-xl">{leaderboard[2] !== undefined ? companys.filter(value1 => value1.id === leaderboard[2].company_id)[0].name : ""}</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="h-full flex flex-col justify-end mx-5 w-1/4">
+                            <div className="h-[60%] relative justify-center w-full">
+                                <p className="bg-[#ffd700] text-black w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">1</p>
+                                <div className="dark:bg-[#1a202c] h-[100%] rounded-t-2xl w-full b-0">
+                                    <h1 className="text-center pt-5 text-xl">{leaderboard[0] !== undefined ? companys.filter(value1 => value1.id === leaderboard[0].company_id)[0].name : ""}</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="h-full flex flex-col justify-end mx-5 w-1/4">
+                            <div className="h-[50%] relative justify-center w-full">
+                                <p className="bg-[#c0c0c0] w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">2</p>
+                                <div className="dark:bg-[#1a202c] h-[100%] rounded-t-2xl w-full b-0">
+                                    <h1 className="text-center pt-5 text-xl">{leaderboard[1] !== undefined ? companys.filter(value1 => value1.id === leaderboard[1].company_id)[0].name : ""}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-[#28303c] h-12 xl:w-[50%] max-xl:w-[90%]">
+                    <h1 className="dark:text-white text-center text-2xl my-3 font-bold">Leaderboard</h1>
+                </div>
+                {leaderboard.map((value, index) => {
+                    return (
+                        <>
+                            <div
+                                className="dark:bg-[#28303c] flex flex-row justify-between items-center py-4 px-5 xl:w-[50%] max-xl:w-[90%]">
+                                <div className="flex flex-row justify-center">
+                                    <div className="w-8 h-8 rounded-full flex bg-indigo-500">
+                                        <h1 className="mx-auto my-auto text-lg">{index + 1}</h1>
+                                    </div>
+                                    <h2 className="mt-1 px-5">{companys.filter(value1 => value1.id === value.company_id)[0].name}</h2>
+                                </div>
+                                <p>{formatter.format(value.account_balance)}</p>
+                            </div>
+                        </>
+                    )
+                })}
+                <div className="dark:bg-[#28303c] h-8 rounded-b-2xl xl:w-[50%] max-xl:w-[90%]"/>
+            </div>
+        </>
+    )
 }
 
 export default KlasseContainer

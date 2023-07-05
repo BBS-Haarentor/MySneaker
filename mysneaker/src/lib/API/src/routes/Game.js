@@ -61,6 +61,24 @@ export default class Game {
     }
 
     /**
+     * Get leaderboard for teacher
+     * @author Optischa <fabian.evers2602@gmail.com>
+     * @param {String} game_id - Game name
+     * @return async {Object|MissingArgumentsException} Object with Data
+     */
+    async getLeaderboard(game_id) {
+        this.requestOptions.method = "GET";
+        this.requestOptions.body = null;
+
+        return fetch(process.env.REACT_APP_MY_API_URL + `/api/v1/game/teacher/leaderboard/${game_id}`, this.requestOptions).then(async res => {
+            return {
+                error: res.status !== 200,
+                data: await res.json()
+            }
+        })
+    }
+
+    /**
      * Turnover Test Methode with API Request
      * @author Optischa <fabian.evers2602@gmail.com>
      * @param {String} gameId - Game ID from the game

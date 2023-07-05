@@ -265,7 +265,7 @@ const KlassenDetailPage = () => {
                     <div
                         className='mt-12 p-4 xl:col-span-2 dark:bg-[#1f2733] dark:border-[#282d3c] dark:text-white  shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12 overflow-x-hidden'>
 
-                        <KlasseContainer updateCompany={updateCompany} select={select} setSelect={setSelect}
+                        <KlasseContainer updateCompany={updateCompany} companys={companies} select={select} setSelect={setSelect}
                                          companyId={selectCompanie !== null ? selectCompanie.id : null} setSelectCompanie={setSelectCompanie} gameId={id}
                                          game={game} updateGame={updateGame}/>
 
