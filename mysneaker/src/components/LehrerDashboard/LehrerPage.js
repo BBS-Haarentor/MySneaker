@@ -109,6 +109,8 @@ const LehrerPage = () => {
               window.location.href = "/"
               break;
             default:
+              setCreateGameName("");
+              setSelected([])
               break;
           }
           getGames()
@@ -176,7 +178,7 @@ const LehrerPage = () => {
               <div className='flex flex-col'>
                 <div className='my-6'>
                   <label>Spiel Name</label>
-                  <input type='text' className="w-[100%] dark:text-white p-2 dark:bg-[#1f2733] dark:border-[#282d3c] border-[#4fd1c5] border-solid border-2 rounded-2xl " onChange={(e) => setCreateGameName(e.target.value)} placeholder="Spiel 1" required />
+                  <input type='text' className="w-[100%] dark:text-white p-2 dark:bg-[#1f2733] dark:border-[#282d3c] border-[#4fd1c5] border-solid border-2 rounded-2xl " value={createGameName} onChange={(e) => setCreateGameName(e.target.value)} placeholder="Spiel 1" required />
                 </div>
                 <div className='my-6'>
                   <TagsInput

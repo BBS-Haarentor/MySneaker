@@ -3,11 +3,13 @@ import Dashboard from '../../StudentDashboard/Dashboard';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 import Analytics from './Analytics';
+import {useNavigate} from "react-router-dom";
 
-const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_cycle_index, gameId, updateGame}) => {
+const KlasseContainer = ({updateCompany, select, setSelect, setSelectCompanie, companyId, game, gameId, updateGame}) => {
 
     const [modal, setModal] = useState();
     const [selectCycleIndex, setSelectCycleIndex] = useState();
+    const navigate = useNavigate();
 
     let changePassword = ""
     let changePasswordRepeat = ""
@@ -21,10 +23,9 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
 
     useEffect(() => {
         updateGameData();
-    }, [])
+    }, [game])
 
     const updateGameData = () => {
-        updateGame();
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
@@ -92,10 +93,8 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                     'Spiel Gelöscht!',
                     'Sie haben das Spiel Erfolgreich gelöscht',
                     'success'
-                ).then(data => {
-                    if (data.isConfirmed) {
-                        navigator('/dashboard');
-                    }
+                ).then(() => {
+                    navigate('/dashboard');
                 })
             } else {
                 element.json().then((element1) => {
@@ -144,6 +143,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                     fetch(process.env.REACT_APP_MY_API_URL + '/user/delete/' + companyId, requestOptions).then((element) => {
                         if (element.status === 200) {
                             updateCompany()
+                            setSelectCompanie(null)
                             setSelect("main")
                             Swal.fire(
                                 'Benutzer Gelöscht!',
@@ -291,7 +291,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                             }
                             }>Zurück
                         </button>
-                        <Dashboard cycle_index={current_cycle_index} game_id={gameId} userId={companyId}/>
+                        <Dashboard cycle_index={game.current_cycle_index} game_id={gameId} userId={companyId}/>
                     </div>)
 
                 default:
@@ -347,7 +347,7 @@ const KlasseContainer = ({updateCompany, select, setSelect, companyId, current_c
                             onClick={() => setSelect("main")}>Zurück
                         </button>
                         <Analytics myHeaders={myHeaders} gameId={gameId} cycle_index={selectCycleIndex}
-                                   current_cycle_index={current_cycle_index} updateGame={updateGameData}/>
+                                   current_cycle_index={game.current_cycle_index} updateGame={updateGame}/>
                     </>)
 
                 default:

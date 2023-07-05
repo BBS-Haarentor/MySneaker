@@ -72,7 +72,7 @@ const KlassenDetailPage = () => {
 
         updateGame();
 
-    }, [url]);
+    }, []);
 
     const updateGame = () => {
         const requestOptions = {
@@ -89,17 +89,19 @@ const KlassenDetailPage = () => {
         })
     }
 
-    const updateCompany = async () => {
-        var requestOptions = {
+    const updateCompany = () => {
+        const requestOptions = {
             method: 'GET',
             headers: myHeaders,
         };
 
-        await fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_all_users_for_game/' + id, requestOptions)
+        fetch(process.env.REACT_APP_MY_API_URL + '/api/v1/game/get_all_users_for_game/' + id, requestOptions)
             .then(async (element) => {
                 if(element.status === 202) {
                     let json = await element.json();
                     setCompanies(json)
+                } else {
+                    setCompanies([])
                 }
             }).catch(() => {
 
@@ -264,8 +266,8 @@ const KlassenDetailPage = () => {
                         className='mt-12 p-4 xl:col-span-2 dark:bg-[#1f2733] dark:border-[#282d3c] dark:text-white  shadow-lg rounded-3xl m-2 bg-white overflow-y-auto justify-center snap-start grid-cols-1 w-[90%] h-[60%] mx-12 overflow-x-hidden'>
 
                         <KlasseContainer updateCompany={updateCompany} select={select} setSelect={setSelect}
-                                         companyId={selectCompanie !== null ? selectCompanie.id : null} gameId={id}
-                                         current_cycle_index={game.current_cycle_index} updateGame={updateGame}/>
+                                         companyId={selectCompanie !== null ? selectCompanie.id : null} setSelectCompanie={setSelectCompanie} gameId={id}
+                                         game={game} updateGame={updateGame}/>
 
 
                     </div>
