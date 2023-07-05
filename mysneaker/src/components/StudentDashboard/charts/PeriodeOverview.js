@@ -74,13 +74,6 @@ const PeriodeOverview = () => {
                     </div>
                     <div
                         className="xl:w-[30%] m-5 lg:w-[75%] py-1 w-1/2 block shadow-lg rounded-xl max-sm:w-full min-h-[0rem] max-h-[25rem] dark:bg-[#1f2733]">
-                        <h1 className="text-center dark:text-white font-bold text-2xl my-2">Sneaker Produktion</h1>
-                        <div className="h-auto mx-auto">
-                            <SneakerProductionChart finishedData={finishedData}/>
-                        </div>
-                    </div>
-                    <div
-                        className="xl:w-[30%] m-5 lg:w-[75%] py-1 w-1/2 block shadow-lg rounded-xl max-sm:w-full min-h-[0rem] max-h-[25rem] dark:bg-[#1f2733]">
                         <h1 className="text-center dark:text-white font-bold text-2xl my-2">Forschung Budget</h1>
                         <div className="h-auto mx-auto">
                             <ResearchBudgetChart finishedData={finishedData}/>
@@ -135,28 +128,6 @@ const AccountBalanceChart = ({finishedData}) => {
     )
 }
 
-const SneakerProductionChart = ({finishedData}) => {
-    return (
-        <>
-            <Line className="mx-auto w-[80%] h-auto"
-                  data={{
-                      labels: finishedData.stocks.map(value => value.current_cycle_index + 1),
-                      datasets: [
-                          {
-                              label: 'In Euro',
-                              data: finishedData.stocks.map(value => value.finished_sneaker_count),
-                              borderColor: [
-                                  'rgba(54, 162, 235, 1)',
-                              ],
-                              borderWidth: 1,
-                          },
-                      ],
-                  }}
-                  options={options}/>
-        </>
-    )
-}
-
 const ResearchBudgetChart = ({finishedData}) => {
     return (
         <>
@@ -187,7 +158,7 @@ const EmployeesChart = ({finishedData}) => {
                       labels: finishedData.stocks.map(value => value.current_cycle_index + 1),
                       datasets: [
                           {
-                              label: 'In Euro',
+                              label: 'Mitarbeiter',
                               data: finishedData.stocks.map(value => value.employees_count),
                               borderColor: [
                                   'rgba(54, 162, 235, 1)',
