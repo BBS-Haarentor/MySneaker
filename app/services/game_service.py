@@ -230,7 +230,7 @@ class GameService:
     async def user_period_info(self, game_id: int, user_id: int):
         game: Game = await self.game_repo.read(id=game_id)
         stocks: list[Stock] = []
-        for x in range(len(game.scenario_order)):
+        for x in range(len(game.scenario_order)+1):
             stocks.append(await self.stock_repo.get_stock_by_user_and_index(user_id=user_id, index=x))
         winners = await self.calculate_winners(game_id=game_id)
         place_number: int = 0
