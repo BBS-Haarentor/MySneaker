@@ -405,7 +405,7 @@ const Leaderboard = ({gameId, companys}) => {
                         <div className="h-full flex flex-col justify-end mx-5 w-1/4">
                             <div className="h-[40%] relative justify-center w-full">
                                 <div className="bg-[#bf8970] w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">3</div>
-                                <div className="dark:bg-[#1a202c] bg-white h-[100%] rounded-t-2xl w-full b-0">
+                                <div className="dark:bg-[#1a202c] bg-[#f7fafc] h-[100%] rounded-t-2xl w-full b-0">
                                     <h1 className="text-center pt-5 text-xl">{leaderboard[2] !== undefined ? companys.filter(value1 => value1.id === leaderboard[2].company_id)[0].name : ""}</h1>
                                 </div>
                             </div>
@@ -413,22 +413,22 @@ const Leaderboard = ({gameId, companys}) => {
                         <div className="h-full flex flex-col justify-end mx-5 w-1/4">
                             <div className="h-[60%] relative justify-center w-full">
                                 <p className="bg-[#ffd700] text-black w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">1</p>
-                                <div className="dark:bg-[#1a202c] bg-white h-[100%] rounded-t-2xl w-full b-0">
-                                    <h1 className="text-center pt-5 text-xl">{leaderboard[0] !== undefined ? companys.filter(value1 => value1.id === leaderboard[0].company_id)[0].name : ""}</h1>
+                                <div className="dark:bg-[#1a202c] bg-[#f7fafc] h-[100%] rounded-t-2xl w-full b-0">
+                                    <h1 className="text-center pt-5  text-xl">{leaderboard[0] !== undefined ? companys.filter(value1 => value1.id === leaderboard[0].company_id)[0].name : ""}</h1>
                                 </div>
                             </div>
                         </div>
                         <div className="h-full flex flex-col justify-end mx-5 w-1/4">
                             <div className="h-[50%] relative justify-center w-full">
                                 <p className="bg-[#c0c0c0] w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">2</p>
-                                <div className="dark:bg-[#1a202c] bg-white h-[100%] rounded-t-2xl w-full b-0">
+                                <div className="dark:bg-[#1a202c] bg-[#f7fafc] h-[100%] rounded-t-2xl w-full b-0">
                                     <h1 className="text-center pt-5 text-xl">{leaderboard[1] !== undefined ? companys.filter(value1 => value1.id === leaderboard[1].company_id)[0].name : ""}</h1>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="dark:bg-[#28303c] h-12 xl:w-[50%] max-xl:w-[90%]">
+                <div className="dark:bg-[#28303c]  h-12 xl:w-[50%] max-xl:w-[90%] ">
                     <h1 className="dark:text-white text-center text-2xl my-3 font-bold">Leaderboard</h1>
                 </div>
                 {leaderboard.map((value, index) => {
@@ -438,7 +438,7 @@ const Leaderboard = ({gameId, companys}) => {
                                 className="dark:bg-[#28303c] flex flex-row justify-between items-center py-4 px-5 xl:w-[50%] max-xl:w-[90%]">
                                 <div className="flex flex-row justify-center">
                                     <div className="w-8 h-8 rounded-full flex bg-indigo-500">
-                                        <h1 className="mx-auto my-auto text-lg">{index + 1}</h1>
+                                        <h1 className="mx-auto text-white my-auto text-lg">{index + 1}</h1>
                                     </div>
                                     <h2 className="mt-1 px-5">{companys.filter(value1 => value1.id === value.company_id)[0].name}</h2>
                                 </div>
