@@ -280,8 +280,17 @@ class Company():
             _total_produced_sneakers += m.produce_sneaker()
             _total_production_cost += m.calculate_prod_cost()
         
-        self._for_sale = self.cycle.include_from_stock + _total_produced_sneakers
-        self.result_stock.finished_sneaker_count -= self.cycle.include_from_stock
+        _total_sneaker: int = self.result_stock.finished_sneaker_count + _total_produced_sneakers
+        
+        # expect sales_planned to be correct because of cycle validation
+        self._for_sale = self.cycle.sales_planned
+        if self.cycle.tender_offer_price > 0.0:
+            self._for_sale += self.scenario.tender_offer_count
+        
+        self.result_stock.finished_sneaker_count = _total_sneaker - self._for_sale
+        
+        # self._for_sale = self.cycle.include_from_stock + _total_produced_sneakers
+        # self.result_stock.finished_sneaker_count -= self.cycle.include_from_stock
         
         self.result_stock.paint_count -= (2 * _total_produced_sneakers)
         self.result_stock.sneaker_count -= _total_produced_sneakers
