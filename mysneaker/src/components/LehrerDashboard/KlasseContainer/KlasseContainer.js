@@ -400,12 +400,12 @@ const Leaderboard = ({gameId, companys}) => {
     return (
         <>
             <div className="flex w-full h-full justify-center items-center flex-col">
-                <div className="dark:bg-[#4fd1c5] h-64 rounded-t-2xl xl:w-[50%] max-xl:w-[90%]">
+                <div className="bg-[#4fd1c5] h-64 rounded-t-2xl xl:w-[50%] max-xl:w-[90%]">
                     <div className="flex flex-row flex-nowrap justify-between w-full h-full">
                         <div className="h-full flex flex-col justify-end mx-5 w-1/4">
                             <div className="h-[40%] relative justify-center w-full">
                                 <div className="bg-[#bf8970] w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">3</div>
-                                <div className="dark:bg-[#1a202c] h-[100%] rounded-t-2xl w-full b-0">
+                                <div className="dark:bg-[#1a202c] bg-white h-[100%] rounded-t-2xl w-full b-0">
                                     <h1 className="text-center pt-5 text-xl">{leaderboard[2] !== undefined ? companys.filter(value1 => value1.id === leaderboard[2].company_id)[0].name : ""}</h1>
                                 </div>
                             </div>
@@ -413,7 +413,7 @@ const Leaderboard = ({gameId, companys}) => {
                         <div className="h-full flex flex-col justify-end mx-5 w-1/4">
                             <div className="h-[60%] relative justify-center w-full">
                                 <p className="bg-[#ffd700] text-black w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">1</p>
-                                <div className="dark:bg-[#1a202c] h-[100%] rounded-t-2xl w-full b-0">
+                                <div className="dark:bg-[#1a202c] bg-white h-[100%] rounded-t-2xl w-full b-0">
                                     <h1 className="text-center pt-5 text-xl">{leaderboard[0] !== undefined ? companys.filter(value1 => value1.id === leaderboard[0].company_id)[0].name : ""}</h1>
                                 </div>
                             </div>
@@ -421,14 +421,14 @@ const Leaderboard = ({gameId, companys}) => {
                         <div className="h-full flex flex-col justify-end mx-5 w-1/4">
                             <div className="h-[50%] relative justify-center w-full">
                                 <p className="bg-[#c0c0c0] w-8 h-8 text-center absolute top-[-1rem] right-0 left-0 mx-auto rounded-full text-2xl">2</p>
-                                <div className="dark:bg-[#1a202c] h-[100%] rounded-t-2xl w-full b-0">
+                                <div className="dark:bg-[#1a202c] bg-white h-[100%] rounded-t-2xl w-full b-0">
                                     <h1 className="text-center pt-5 text-xl">{leaderboard[1] !== undefined ? companys.filter(value1 => value1.id === leaderboard[1].company_id)[0].name : ""}</h1>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="bg-[#28303c] h-12 xl:w-[50%] max-xl:w-[90%]">
+                <div className="dark:bg-[#28303c] h-12 xl:w-[50%] max-xl:w-[90%]">
                     <h1 className="dark:text-white text-center text-2xl my-3 font-bold">Leaderboard</h1>
                 </div>
                 {leaderboard.map((value, index) => {
@@ -447,7 +447,7 @@ const Leaderboard = ({gameId, companys}) => {
                         </>
                     )
                 })}
-                <div className="dark:bg-[#28303c] h-8 rounded-b-2xl xl:w-[50%] max-xl:w-[90%]"/>
+                <div className="dark:bg-[#28303c] shadow-lg h-8 rounded-b-2xl xl:w-[50%] max-xl:w-[90%]"/>
             </div>
         </>
     )

@@ -396,7 +396,7 @@ const Dashboard = ({
     if (gameFinished) {
         return (
             <>
-                <div className="w-full my-auto">
+                <div className="w-full my-auto h-full overflow-y-auto">
                     <PeriodeOverview/>
                 </div>
             </>
@@ -434,7 +434,6 @@ const Dashboard = ({
                     <Planung AbsatzRef={AbsatzRef} tempData={tempData} data={data} cycle={cycle}
                              handleChange={handleChange}/>
                     <div id={"absatz"} className="w-[1px] h-[1px]"/>
-
 
                     <VerkaufSoll
                         formatter={formatter}

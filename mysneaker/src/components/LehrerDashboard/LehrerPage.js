@@ -199,8 +199,8 @@ const LehrerPage = () => {
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-2 w-screen h-screen'>
-          <div className='shadow-lg dark:bg-[#1f2733] dark:text-white bg-white w-[90%] h-[90%] rounded-3xl overflow-y-auto my-auto mx-12'>
+        <div className='flex flex-row flex-wrap justify-center w-full h-screen'>
+          <div className='shadow-lg dark:bg-[#1f2733] dark:text-white bg-white max-xl:w-[90%] xl:w-[50%] h-[90%] rounded-3xl overflow-y-auto my-auto mx-12'>
             {data.map((element, index) => {
               return (
                 <div key={index} onClick={() => navigate('/ler/' + element.id)}>
@@ -213,7 +213,7 @@ const LehrerPage = () => {
                 </div>)
             })}
           </div>
-          <div className='flex flex-col justify-center self-center'>
+          <div className='max-xl:w-full xl:w-[40%] max-xl:pb-5 flex flex-col justify-center self-center'>
             <button className='my-6 dark:bg-[#1f2733] dark:text-white mx-16 bg-white rounded-3xl shadow-lg p-4' onClick={() => onClickRegister()}>Spiel Erstellen</button>
             <div className=' shadow-lg dark:bg-[#1f2733] dark:text-white bg-white rounded-3xl mx-16 my-auto overflow-y-auto
           h-96'>
