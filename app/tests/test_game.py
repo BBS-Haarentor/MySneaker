@@ -426,15 +426,25 @@ class TestTurnover(unittest.TestCase):
         return None
     
     def test_for_sale_correctly_filled(self) -> None:
+        self.turnover.companies[0].result_stock.finished_sneaker_count = 20
+        self.turnover.companies[1].result_stock.finished_sneaker_count = 40
         self.turnover.companies[0].cycle.include_from_stock = 20
         self.turnover.companies[1].cycle.include_from_stock = 30
         self.turnover.scenario.tender_offer_count = 100
+        self.turnover.companies[0].cycle.sales_planned = 220
+        self.turnover.companies[1].cycle.sales_planned = 30
+        
         
         for c in self.turnover.companies:
             c.produce_sneakers()
         
         self.assertEqual(320, self.turnover.companies[0]._for_sale)
         self.assertEqual(130, self.turnover.companies[1]._for_sale)
+        
+        self.assertEqual(0, self.turnover.companies[0].result_stock.finished_sneaker_count)
+        self.assertEqual(10, self.turnover.companies[1].result_stock.finished_sneaker_count)
+        
+        
         
         return None
     

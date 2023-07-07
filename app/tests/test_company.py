@@ -46,7 +46,7 @@ class TestCompany(unittest.TestCase):
         self.company.result_stock.sneaker_count = 150
         
         self.company.cycle.include_from_stock = 100
-        #self.company.cycle.sales_planned = 200
+        self.company.cycle.sales_planned = 200
         
         logging.warning(f"{len(self.company.machines)}")
         self.company.machines[0].planned_production = 100
@@ -72,7 +72,7 @@ class TestCompany(unittest.TestCase):
         self.company.result_stock.sneaker_count = 150
         
         self.company.cycle.include_from_stock = 100
-        #self.company.cycle.sales_planned = 200
+        self.company.cycle.sales_planned = 200
 
         logging.warning(f"{len(self.company.machines)}")
         self.company.machines[0].planned_production = 100
@@ -93,7 +93,7 @@ class TestCompany(unittest.TestCase):
         return None
     
     def test_produce_sneaker_all_machines(self) -> None:
-        #self.company.cycle.sales_planned = 1730
+        self.company.cycle.sales_planned = 1730
         self.company.result_stock.finished_sneaker_count = 30
         self.company.cycle.include_from_stock = 30
         self.company.machines = []
