@@ -59,13 +59,15 @@ class UserService():
     
     
     async def create_teacher(self, create_data: UserPostElevated) -> int:
+        create_data.hashed_pw = hash_pw(create_data.unhashed_pw)
+        create_data.unhashed_pw = ""
         try:
-            user: User = await self.user_repo.create(create_data=create_data)
+            user_id: int = await self.user_repo.create(create_data=create_data)
         except IntegrityError:
             raise UserServiceError(detail=f"attempted teacher-User creation on already taken username {create_data.name}",
                                    user_message="Dieser Nutzername ist bereits vergeben. Bitte wähle einen anderen.") # Validation
-        await self.teacher_repo.create(create_data=TeacherGroup(user_id=user.id))
-        return user.id
+        await self.teacher_repo.create(create_data=TeacherGroup(user_id=user_id))
+        return user_id
     
     
     
