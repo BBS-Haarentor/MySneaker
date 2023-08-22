@@ -81,7 +81,8 @@ class Turnover():
             c.update_employee_count()
             c.update_research()
             c.take_credit()
-            c.payback_credit()    
+            c.payback_credit()
+            c.pay_credit_interest()
             
         logging.warning(f"\nGroup calc start\n\n")
         # do group stuff

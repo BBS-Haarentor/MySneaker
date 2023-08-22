@@ -142,6 +142,14 @@ class Company():
         self.result_stock.credit_taken = round(result, 2)
         return None
 
+    def pay_credit_interest(self) -> None:
+        credit_interest = self.result_stock.credit_taken * self.scenario.factor_interest_rate
+        tx: Transaction = create_transaction(amount=- credit_interest,
+                                             company_id=self.company_id,
+                                             detail={"_credit_interest": credit_interest})
+        self.add_tx([tx])
+        return None
+
     def _check_account_balance(self) -> None:
         if self.result_stock.account_balance < 0:
             self.result_stock.credit_taken += abs(self.result_stock.account_balance)
