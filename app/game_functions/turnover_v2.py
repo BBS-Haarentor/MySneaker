@@ -7,7 +7,6 @@ from app.game_functions.utils import Transaction, create_transaction
 from app.models.cycle import Cycle
 from app.models.stock import Stock
 from app.models.scenario import Scenario
-from app.schemas.stock import StockCreate, StockPersistent
 
 
 class Turnover():
@@ -74,6 +73,7 @@ class Turnover():
             c.stock_up()
             c.do_inventory()
             c.pay_employees()
+            c.pay_employees_cost_modfier()
             c.produce_sneakers()
             c.pay_interest()
             c.pay_machine_maintenance()

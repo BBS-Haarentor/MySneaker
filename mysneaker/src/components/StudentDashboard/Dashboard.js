@@ -443,7 +443,7 @@ const Dashboard = ({
                         handleChange={handleChange}/>
 
                     <InformationContainer formatter={formatter} data={data} cycle={cycle} tempData={tempData}
-                                          AllMaschienenKosten={AllMaschienenKosten}/>
+                                          AllMaschienenKosten={AllMaschienenKosten} scenario={data.scenario}/>
 
                     <Finanzen FinanzenRef={FinanzenRef} formatter={formatter}
                               newMaschienPrize={newMaschienPrize} scenario={data.scenario}
