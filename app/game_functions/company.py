@@ -254,10 +254,10 @@ class Company():
         # self.result_stock.paint_count = self.stock.paint_count
         # self.result_stock.finished_sneaker_count = self.stock.finished_sneaker_count
 
-        _storage_fee_paint: float = round(self.stock.paint_count * self.scenario.storage_fee_paint, 2)
-        _storage_fee_sneaker: float = round(self.stock.sneaker_count * self.scenario.storage_fee_sneaker, 2)
+        _storage_fee_paint: float = round(self.result_stock.paint_count * self.scenario.storage_fee_paint, 2)
+        _storage_fee_sneaker: float = round(self.result_stock.sneaker_count * self.scenario.storage_fee_sneaker, 2)
         _storage_fee_finished_sneaker: float = round(
-            self.stock.finished_sneaker_count * self.scenario.storage_fee_finished_sneaker, 2)
+            self.result_stock.finished_sneaker_count * self.scenario.storage_fee_finished_sneaker, 2)
         tx3: Transaction = create_transaction(amount=- _storage_fee_paint, company_id=self.company_id,
                                               detail={"_storage_fee_paint": _storage_fee_paint})
         tx4: Transaction = create_transaction(amount=- _storage_fee_sneaker, company_id=self.company_id,

@@ -71,7 +71,6 @@ class Turnover():
         # do single stuff
         for c in self.companies:
             c.stock_up()
-            c.do_inventory()
             c.pay_employees()
             c.pay_employees_cost_modfier()
             c.produce_sneakers()
@@ -91,6 +90,7 @@ class Turnover():
         
         
         for c in self.companies:
+            c.do_inventory()
             c.process_transactions()
             c.tidy_shelves()
             c.update_dead()
