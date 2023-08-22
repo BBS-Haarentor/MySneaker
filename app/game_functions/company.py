@@ -164,7 +164,8 @@ class Company():
         return None
 
     def pay_employees_cost_modfier(self) -> None:
-        _employee_incidentals: float = round((self.scenario.employee_cost_modfier * self.stock.employees_count), 2)
+        _employee_incidentals: float = round((self.scenario.employee_salary * self.stock.employees_count)
+                                             * self.scenario.employee_cost_modfier, 2)
         tx: Transaction = create_transaction(amount=- _employee_incidentals,
                                              company_id=self.company_id,
                                              detail={"_employee_incidentals": _employee_incidentals})
