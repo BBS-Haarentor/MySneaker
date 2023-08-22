@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 const Finanzen = ({
                       FinanzenRef,
@@ -17,6 +17,9 @@ const Finanzen = ({
     const SaldoSoll = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(cycle.sales_planned + cycle.tender_offer_count)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2)) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest + cycle.research_invest + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + tempData.real_money + (stock.credit_taken + cycle.take_credit - cycle.payback_credit);
     const SaldoIst = stock.account_balance - (tempData.paint_cost + tempData.sneaker_cost + (((stock.finished_sneaker_count + tempData.overall_production - Math.round(stock.real_sales)) * 8)) + (((stock.sneaker_count + cycle.buy_paint) - tempData.overall_production * 2)) + (((stock.sneaker_count + cycle.buy_sneaker) - tempData.overall_production) * 4) + allMaschienenKosten + (scenario.production_cost_per_sneaker2 * cycle.planned_production_2) + (scenario.production_cost_per_sneaker1 * cycle.planned_production_1) + (scenario.production_cost_per_sneaker3 * cycle.planned_production_3) + parseFloat(newMaschienPrize) + (cycle.new_employees * 100) + (cycle.employees_count * (500 * (scenario.employee_cost_modfier))) + cycle.ad_invest + cycle.research_invest + ((stock.credit_taken + cycle.take_credit - cycle.payback_credit) * scenario.factor_interest_rate)) + stock.income_from_sales + (stock.credit_taken + cycle.take_credit - cycle.payback_credit);
 
+    useEffect(() => {
+        console.log(((isNaN(stock.credit_taken) ? 0 : stock.credit_taken)) * scenario.factor_interest_rate)
+    }, [])
 
     const HoeheKontokorrentkreditSoll = SaldoSoll < 0 ? SaldoSoll : 0;
     const hoeheKontokorrentkreditIst = SaldoIst < 0 ? SaldoIst : 0;
@@ -251,7 +254,7 @@ const Finanzen = ({
                     <div
                         className="dark:bg-[#1f2733] flex-shrink-0 xl:w-96 w-full min-h-60 rounded-xl max-[1250px]:mx-5 drop-shadow-xl bg-white mb-5">
                         <h2 className="text-[#4fd1c5] text-center text-xl pt-5 font-bold">Plan Kontostand</h2>
-                        <p className="text-center pt-2 pb-5 dark:text-white text-lg font-bold">{formatter.format(stock.account_balance + cycle.take_credit - cycle.payback_credit - ((isNaN(stock.credit_taken) ? 0 : stock.credit_taken) + (isNaN(cycle.take_credit) ? 0 : cycle.take_credit) - (isNaN(cycle.payback_credit) ? 0 : cycle.payback_credit)) * scenario.factor_interest_rate - ((cycle.employees_count * (scenario.employee_salary * (tempData.employees_cost_in_p)) + allMaschienenKosten + ((isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost) + (isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost))) + scenario.production_cost_per_sneaker1 * tempData.overall_production) + (((stock.sneaker_count + (isNaN(cycle.buy_sneaker) ? 0 : cycle.buy_sneaker)) - tempData.overall_production) * 4) + ((stock.finished_sneaker_count + tempData.overall_production - Math.round((cycle.sales_planned + cycle.tender_offer_count)))* 8) + (((stock.paint_count + (isNaN(cycle.buy_paint) ? 0 : cycle.buy_paint)) - tempData.overall_production * 2)))}</p>
+                        <p className="text-center pt-2 pb-5 dark:text-white text-lg font-bold">{formatter.format(stock.account_balance + ((isNaN(cycle.sales_planned) ? 0 : cycle.sales_planned) * (isNaN(cycle.sales_bid) ? 0 : cycle.sales_bid)) + cycle.take_credit - cycle.payback_credit - ((isNaN(stock.credit_taken) ? 0 : stock.credit_taken)) * scenario.factor_interest_rate - ((cycle.employees_count * (scenario.employee_salary * (tempData.employees_cost_in_p)) + allMaschienenKosten + ((isNaN(tempData.sneaker_cost) ? 0 : tempData.sneaker_cost) + (isNaN(tempData.paint_cost) ? 0 : tempData.paint_cost))) + scenario.production_cost_per_sneaker1 * tempData.overall_production) + (((stock.sneaker_count + (isNaN(cycle.buy_sneaker) ? 0 : cycle.buy_sneaker)) - tempData.overall_production) * 4) + ((stock.finished_sneaker_count + tempData.overall_production - Math.round((cycle.sales_planned + cycle.tender_offer_count)))* 8) + (((stock.paint_count + (isNaN(cycle.buy_paint) ? 0 : cycle.buy_paint)) - tempData.overall_production * 2)))}</p>
                     </div>
                 </div>
             </div>
