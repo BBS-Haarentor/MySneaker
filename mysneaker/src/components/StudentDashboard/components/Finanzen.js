@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 const Finanzen = ({
                       FinanzenRef,
@@ -29,24 +29,6 @@ const Finanzen = ({
     let SaldoPLAN = stock.account_balance + Umsatze - (Werkstoffkosten + Fertigungskosten +  Maschinenkosten + Personalkosten + Lagerkosten  + Werbekosten + Rationalisierung)
 
     let KontostandPLAN = SaldoPLAN - Zinsen
-
-    let account_balance = stock.account_balance
-    console.log({
-        account_balance,
-        Werkstoffkosten,
-        Fertigungskosten,
-        Maschinenkosten,
-        Personalkosten,
-        Lagerkosten,
-        Zinsen,
-        Umsatze,
-        Werbekosten,
-        Rationalisierung,
-    })
-
-    useEffect(() => {
-        console.log(((isNaN(stock.credit_taken) ? 0 : stock.credit_taken)) * scenario.factor_interest_rate)
-    }, [])
 
     /*
     <BaseContainer title={"Produktion"}>
