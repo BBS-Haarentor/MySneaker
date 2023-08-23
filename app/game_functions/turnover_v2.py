@@ -7,7 +7,6 @@ from app.game_functions.utils import Transaction, create_transaction
 from app.models.cycle import Cycle
 from app.models.stock import Stock
 from app.models.scenario import Scenario
-from app.schemas.stock import StockCreate, StockPersistent
 
 
 class Turnover():
@@ -72,8 +71,8 @@ class Turnover():
         # do single stuff
         for c in self.companies:
             c.stock_up()
-            c.do_inventory()
             c.pay_employees()
+            c.pay_employees_cost_modfier()
             c.produce_sneakers()
             c.pay_interest()
             c.pay_machine_maintenance()
@@ -81,8 +80,8 @@ class Turnover():
             c.update_employee_count()
             c.update_research()
             c.take_credit()
-            c.payback_credit()    
-            
+            c.payback_credit()
+
         logging.warning(f"\nGroup calc start\n\n")
         # do group stuff
         self.sell_sneaker_tender()
@@ -91,6 +90,7 @@ class Turnover():
         
         
         for c in self.companies:
+            c.do_inventory()
             c.process_transactions()
             c.tidy_shelves()
             c.update_dead()
