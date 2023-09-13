@@ -52,6 +52,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
     const [employee_cost_modfier, setEmployee_cost_modfier] = useState(scenario.employee_cost_modfier * 100);
     const [employee_salary, setEmployee_salary] = useState(scenario.employee_salary);
     const [employee_count_modifier_permanent, setEmployee_count_modifier_permanent] = useState(scenario.employee_count_modifier_permanent);
+    const [employee_production_capacity, setEmployee_production_capacity] = useState(scenario.employee_production_capacity);
 
     useEffect(() => {
         const requestOptions = {
@@ -75,6 +76,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                     setEmployee_salary(element1.employee_salary)
                     setEmployee_count_modifier_permanent(element1.employee_count_modifier_permanent)
                     setEmployee_change_allowed(element1.employee_change_allowed)
+                    setEmployee_production_capacity(element1.employee_production_capacity)
                     
                 })
             }
@@ -96,6 +98,7 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
         scenario.employee_change_allowed = employee_change_allowed;
         scenario.advertisement_allowed = advertisement_allowed;
         scenario.research_allowed = research_allowed;
+        scenario.employee_production_capacity = parseInt(employee_production_capacity);
 
 
         var raw = JSON.stringify(scenario);
@@ -189,6 +192,16 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                                     onChange={(e) => setEmployee_cost_modfier(e.target.value)}
                                                     id="reference-price"
                                                     className="w-[90%] text-center dark:bg-[#1f2733] dark:border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 shadow-md py-2 sm:text-sm border-gray-700 rounded-md" /> %
+                                            </p>
+                                        </div>
+                                        <div className="col-span-6 sm:col-span-3">
+                                            <label
+                                                className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Grundkapazität je MA</label>
+                                            <p>
+                                                <input type="number" name="reference-price" value={employee_production_capacity}
+                                                    onChange={(e) => setEmployee_production_capacity(e.target.value)}
+                                                    id="reference-price"
+                                                    className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                             </p>
                                         </div>
                                     </div>
