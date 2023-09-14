@@ -3,56 +3,7 @@ import Swal from 'sweetalert2'
 
 const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) => {
 
-    const [scenario, setScenario] = useState({
-        "char": "string",
-        "advertisement_allowed": false,
-        "research_allowed": false,
-        "description": "string",
-        "sneaker_price": 20,
-        "paint_price": 10,
-        "storage_fee_sneaker": 4,
-        "storage_fee_paint": 1,
-        "storage_fee_finished_sneaker": 8,
-        "employee_change_allowed": false,
-        "employee_count_modifier_temporary": 0, // Ist Krank etc.
-        "employee_count_modifier_permanent": 0, // Ist wieder zurück
-        "factor_interest_rate": 0.04,
-        "employee_salary": 400,
-        "employee_signup_bonus": 100,
-        "employee_production_capacity": 10,
-        "employee_cost_modfier": 0,
-        "sneaker_ask": 400,
-        "factor_ad_take": 0.1,
-        "tender_offer_count": 1,
-        "machine_purchase_allowed": false,
-        "machine_purchase_cost1": 12000,
-        "machine_purchase_cost2": 25000,
-        "machine_purchase_cost3": 45000,
-        "machine_production_capacity1": 200,
-        "machine_production_capacity2": 500,
-        "machine_production_capacity3": 1000,
-        "machine_employee_max": 10,
-        "machine_maintainance_cost1": 4000,
-        "machine_maintainance_cost2": 6000,
-        "machine_maintainance_cost3": 8000,
-        "production_cost_per_sneaker1": 60,
-        "production_cost_per_sneaker2": 50,
-        "production_cost_per_sneaker3": 40
-    });
-    const [sneaker_ask, setSneaker_Ask] = useState(0);
-    const [machine_purchase_allowed, setMachine_purchase_allowed] = useState(scenario.machine_purchase_allowed);
-    const [advertisement_allowed, setAdvertisement_allowed] = useState(scenario.advertisement_allowed);
-    const [research_allowed, setResearch_allowed] = useState(scenario.research_allowed);
-    const [employee_change_allowed, setEmployee_change_allowed] = useState(scenario.employee_change_allowed);
-    const [sneakerBezugspreis, setSneakerBezugspreis] = useState(scenario.sneaker_price);
-    const [colorBezugspreis, setColorBezugspreis] = useState(scenario.paint_price);
-    const [sneaker_ask_auction, setSneaker_ask_auction] = useState(scenario.tender_offer_count);
-    const [description, setDescription] = useState(scenario.description);
-    const [employee_signup_bonus, setEmployee_signup_bonus] = useState(scenario.employee_signup_bonus);
-    const [employee_cost_modfier, setEmployee_cost_modfier] = useState(scenario.employee_cost_modfier * 100);
-    const [employee_salary, setEmployee_salary] = useState(scenario.employee_salary);
-    const [employee_count_modifier_permanent, setEmployee_count_modifier_permanent] = useState(scenario.employee_count_modifier_permanent);
-    const [employee_production_capacity, setEmployee_production_capacity] = useState(scenario.employee_production_capacity);
+    const [scenario, setScenario] = useState({})
 
     useEffect(() => {
         const requestOptions = {
@@ -63,50 +14,24 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
             if (element.status === 200) {
                 element.json().then((element1) => {
                     setScenario(element1)
-                    setSneaker_Ask(element1.sneaker_ask)
-                    setMachine_purchase_allowed(element1.machine_purchase_allowed)
-                    setAdvertisement_allowed(element1.advertisement_allowed)
-                    setResearch_allowed(element1.research_allowed)
-                    setSneaker_ask_auction(element1.tender_offer_count)
-                    setSneakerBezugspreis(element1.sneaker_price)
-                    setColorBezugspreis(element1.paint_price)
-                    setDescription(element1.description)
-                    setEmployee_signup_bonus(element1.employee_signup_bonus)
-                    setEmployee_cost_modfier(element1.employee_cost_modfier * 100)
-                    setEmployee_salary(element1.employee_salary)
-                    setEmployee_count_modifier_permanent(element1.employee_count_modifier_permanent)
-                    setEmployee_change_allowed(element1.employee_change_allowed)
-                    setEmployee_production_capacity(element1.employee_production_capacity)
-                    
+ 
                 })
             }
         })
     }, [])
-
+    const isNumber = (n) =>  { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+    const handleChange = (e) => {
+        setScenario((prev) => ({...prev, [e.target.name]: !isNaN(e.target.checked) ? e.target.checked : isNumber(e.target.value) ? parseInt(e.target.value) : e.target.value}))
+    }
+    const handleChangePercent = (e) => {
+        setScenario((prev) => ({...prev, [e.target.name]: parseInt(e.target.value)/100}))
+    }
     const saveScenario = () => {
-
-        scenario.sneaker_ask = parseInt(sneaker_ask);
-        scenario.machine_purchase_allowed = machine_purchase_allowed;
-        scenario.sneaker_price = parseInt(sneakerBezugspreis)
-        scenario.paint_price = parseInt(colorBezugspreis)
-        scenario.tender_offer_count = parseInt(sneaker_ask_auction)
-        scenario.employee_signup_bonus = parseInt(employee_signup_bonus)
-        scenario.employee_cost_modfier = parseFloat(employee_cost_modfier / 100)
-        scenario.employee_salary = parseInt(employee_salary)
-        scenario.description = description;
-        scenario.employee_count_modifier_permanent = parseInt(employee_count_modifier_permanent)
-        scenario.employee_change_allowed = employee_change_allowed;
-        scenario.advertisement_allowed = advertisement_allowed;
-        scenario.research_allowed = research_allowed;
-        scenario.employee_production_capacity = parseInt(employee_production_capacity);
-
-
-        var raw = JSON.stringify(scenario);
 
         const requestOptions = {
             method: 'PUT',
             headers: myHeaders,
-            body: raw
+            body: JSON.stringify(scenario)
         };
         fetch(process.env.REACT_APP_MY_API_URL + "/api/v1/scenario/edit", requestOptions).then((element) => {
             if (element.status === 202) {
@@ -156,31 +81,32 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                         className="block text-sm font-medium text-gray-700 dark:text-gray-100">Beschreibung</label>
                                     <textarea
                                         className="dark:bg-[#1f2733] max-h-72 min-h-[4rem] dark:border-2 text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md"
-                                        value={description} onChange={event => setDescription(event.target.value)}></textarea>
+                                        value={scenario.description} onChange={handleChange} name='description'
+                                        ></textarea>
                                     <div
                                         className='h-[1px] my-3 bg-gradient-to-r from-transparent via-gray-400 to-transparent w-full m-1'></div>
                                     <div className="grid grid-cols-6 gap-6">
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Neueinstellungsbonus</label>
-                                            <input type="number" name="reference-price" value={employee_signup_bonus}
-                                                onChange={(e) => setEmployee_signup_bonus(e.target.value)}
+                                            <input type="number" value={scenario.employee_signup_bonus}
+                                                onChange={handleChange} name='employee_signup_bonus'
                                                 id="reference-price"
                                                 className="dark:bg-[#1f2733] dark:border-2 text-center mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Personalbestand</label>
-                                            <input type="number" name="reference-price" value={employee_count_modifier_permanent}
-                                                onChange={(e) => setEmployee_count_modifier_permanent(e.target.value)}
+                                            <input type="number" value={scenario.employee_count_modifier_permanent}
+                                                onChange={handleChange} name='employee_count_modifier_permanent'
                                                 id="reference-price"
                                                 className="text-center dark:bg-[#1f2733] dark:border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
                                             <label
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Gehalt</label>
-                                            <input type="number" name="reference-price" value={employee_salary}
-                                                onChange={(e) => setEmployee_salary(e.target.value)}
+                                            <input type="number" value={scenario.employee_salary}
+                                                onChange={handleChange} name='employee_salary'
                                                 id="reference-price"
                                                 className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                         </div>
@@ -188,8 +114,8 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                             <label
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Nebenkosten</label>
                                             <p>
-                                                <input type="number" name="reference-price" value={employee_cost_modfier}
-                                                    onChange={(e) => setEmployee_cost_modfier(e.target.value)}
+                                                <input type="number" value={scenario.employee_cost_modfier * 100}
+                                                   onChange={handleChangePercent} name='employee_cost_modfier'
                                                     id="reference-price"
                                                     className="w-[90%] text-center dark:bg-[#1f2733] dark:border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 shadow-md py-2 sm:text-sm border-gray-700 rounded-md" /> %
                                             </p>
@@ -198,8 +124,8 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                             <label
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Grundkapazität je MA</label>
                                             <p>
-                                                <input type="number" name="reference-price" value={employee_production_capacity}
-                                                    onChange={(e) => setEmployee_production_capacity(e.target.value)}
+                                                <input type="number" value={scenario.employee_production_capacity}
+                                                    onChange={handleChange} name='employee_production_capacity'
                                                     id="reference-price"
                                                     className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                             </p>
@@ -213,14 +139,14 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                                 className="block text-sm font-medium text-lg text-gray-700 dark:text-gray-100">Bezugspreis</label>
                                             <label
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Sneaker</label>
-                                            <input type="number" name="reference-price" value={sneakerBezugspreis}
-                                                onChange={(e) => setSneakerBezugspreis(e.target.value)}
+                                            <input type="number" value={scenario.sneaker_price}
+                                                onChange={handleChange} name='sneaker_price'
                                                 id="reference-price"
                                                 className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
                                             <label
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Farbe</label>
-                                            <input type="number" name="reference-price" value={colorBezugspreis}
-                                                onChange={(e) => setColorBezugspreis(e.target.value)}
+                                            <input type="number" value={scenario.paint_price}
+                                                onChange={handleChange} name='paint_price'
                                                 id="reference-price"
                                                 className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md py-2 sm:text-sm border-gray-700 rounded-md" />
 
@@ -231,15 +157,15 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                                 className="block text-sm font-medium text-lg text-gray-700 dark:text-gray-100">Gesamtmenge</label>
                                             <label htmlFor="total-amount"
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Nachgefragt</label>
-                                            <input type="number" value={sneaker_ask}
-                                                onChange={(e) => setSneaker_Ask(e.target.value)} name="total-amount"
+                                            <input type="number" value={scenario.sneaker_ask}
+                                                onChange={handleChange} name='sneaker_ask'
                                                 id="total-amount"
                                                 className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
                                             <label htmlFor="total-amount"
                                                 className="block text-sm font-medium mt-2 text-gray-700 dark:text-gray-100">Ausschreibung</label>
-                                            <input type="number" value={sneaker_ask_auction}
-                                                onChange={(e) => setSneaker_ask_auction(e.target.value)}
-                                                name="total-amount-auction" id="total-amount-auction"
+                                            <input type="number" value={scenario.tender_offer_count}
+                                                onChange={handleChange} name='tender_offer_count'
+                                                id="total-amount-auction"
                                                 className="text-center mt-1 dark:bg-[#1f2733] dark:border-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 shadow-md sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
@@ -248,36 +174,36 @@ const EditScenarioModal = ({ setModal, updateScenarioList, char, myHeaders }) =>
                                             <label htmlFor="buymachine"
                                                 className="block text-sm font-medium text-gray-700 dark:text-gray-100">Maschinen
                                                 Kaufen</label>
-                                            <input type="checkbox" checked={machine_purchase_allowed}
-                                                onClick={(e) => setMachine_purchase_allowed(e.target.checked)}
-                                                name="buymachine" id="buymachine"
+                                            <input type="checkbox" checked={scenario.machine_purchase_allowed}
+                                                 onChange={handleChange} name='machine_purchase_allowed'
+                                                id="buymachine"
                                                 className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
                                         <div className="col-span-3 sm:col-span-3">
                                             <label htmlFor="buymachine"
                                                    className="block text-sm font-medium text-gray-700 dark:text-gray-100">Personal Verwaltung</label>
-                                            <input type="checkbox" checked={employee_change_allowed}
-                                                   onClick={(e) => setEmployee_change_allowed(e.target.checked)}
-                                                   name="buymachine" id="buymachine"
+                                            <input type="checkbox" checked={scenario.employee_change_allowed}
+                                                    onChange={handleChange} name='employee_change_allowed'
+                                                    id="buymachine"
                                                    className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
                                         <div className="col-span-3 sm:col-span-3">
                                             <label htmlFor="buymachine"
                                                    className="block text-sm font-medium text-gray-700 dark:text-gray-100">Forschung</label>
-                                            <input type="checkbox" checked={research_allowed}
-                                                   onClick={(e) => setResearch_allowed(e.target.checked)}
-                                                   name="buymachine" id="buymachine"
+                                            <input type="checkbox" checked={scenario.research_allowed}
+                                                    onChange={handleChange} name='research_allowed'
+                                                    id="buymachine"
                                                    className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
                                         <div className="col-span-3 sm:col-span-3">
                                             <label htmlFor="buymachine"
                                                    className="block text-sm font-medium text-gray-700 dark:text-gray-100">Werbung</label>
-                                            <input type="checkbox" checked={advertisement_allowed}
-                                                   onClick={(e) => setAdvertisement_allowed(e.target.checked)}
-                                                   name="buymachine" id="buymachine"
+                                            <input type="checkbox" checked={scenario.advertisement_allowed}
+                                                    onChange={handleChange} name='advertisement_allowed'
+                                                    id="buymachine"
                                                    className="mt-1 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
                                         </div>
 
