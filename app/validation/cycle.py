@@ -78,8 +78,8 @@ def validate_cycle_check_scenario(cycle: CycleCreate, scenario: Scenario) -> Non
 
 def validate_cycle_misc(cycle: CycleCreate, stock: Stock) -> None:
     # kreditaufnahme
-    if (cycle.take_credit + stock.credit_taken) > 50_000.00:
-        raise CycleValidationError(user_message=f"Kreditaufnahme nicht möglich. Kreditlimit liegt bei 50000.00 €")
+    if (cycle.take_credit + stock.credit_taken) > 200_000.00:
+        raise CycleValidationError(user_message=f"Kreditaufnahme nicht möglich. Kreditlimit liegt bei 200000.00 €")
     # kreditrückzahlung
     if cycle.payback_credit > stock.credit_taken:
         raise CycleValidationError(
