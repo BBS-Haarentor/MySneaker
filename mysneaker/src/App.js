@@ -10,6 +10,7 @@ import {useEffect} from 'react';
 import PageNotFound from "./components/PageNotFound";
 import Game2048 from './components/Game2048/Game2048'
 import AnalyticPDF from "./components/LehrerDashboard/KlasseContainer/PDF/AnalyticPDF";
+import {useSelector} from "react-redux";
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
             }
         }
     })
+    const {user} = useSelector(state => state.user);
 
     return (
         <div className="h-screen dark:bg-[#1a202c] bg-[#f7fafc]">
