@@ -1,0 +1,9 @@
+{
+  "name": "eslint-config-custom",
+  "license": "MIT",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "eslint-config-turbo": "^1.10.12"
+  }
+}

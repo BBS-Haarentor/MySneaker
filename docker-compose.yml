@@ -2,17 +2,17 @@ version: '3'
 
 services:
   frontend:
-    build: ./mysneaker/
+    build: ./apps/frontend/
     volumes:
-      - .:/mysneaker/
+      - .:/apps/frontend/
     ports:
       - 80:80
 
   api:
-    build: .
+    build: ./apps/backend/
     command: uvicorn app.entrypoint:api --host 0.0.0.0 --reload
     volumes:
-      - .:/app
+      - .:/apps/backend/app
     ports:
       - 8008:8000
     depends_on:
@@ -23,6 +23,8 @@ services:
     image: postgres:14.2-alpine
     volumes:
       - postgres_data_storage:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
     expose:
       - 5432
     environment:
