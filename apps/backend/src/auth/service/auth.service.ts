@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { from, Observable } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import {IUser} from "../../user/models/user.interface";
 import { compare, hash } from "bcrypt";
@@ -14,7 +13,7 @@ export class AuthService {
 
   async generateJwt(user: IUser, expiresIn: string): Promise<string> {
     return await this.jwtService.signAsync(
-            { user },
+            { id: user.id },
             {
               expiresIn: expiresIn,
             },
@@ -37,7 +36,7 @@ export class AuthService {
       secret: this.configService.get('JWT_SECRET'),
     });
     if (payload.user) {
-      return payload.user.id;
+      return payload.id;
     }
   }
 }

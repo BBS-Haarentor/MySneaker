@@ -52,8 +52,8 @@ export class UserService {
       user.password,
     );
 
+
     if (passwordsMatches) {
-      const userEntity = await this.findOne(user.id);
       return await this.authService.generateJwt(
         user,
         loginUserDto.thirtyDaysLogin !== null &&

@@ -39,3 +39,7 @@ yarn-error.log*
 .idea
 .env
 .coverage
+
+*/dist
+/apps/backend/node_modules/
+/apps/backend/dist/
