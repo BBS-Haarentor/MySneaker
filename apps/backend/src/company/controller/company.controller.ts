@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { CompanyService } from "../service/company.service";
 import { Role } from "../../auth/roles/role.enum";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
@@ -60,5 +60,29 @@ export class CompanyController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createCompany(@Req() req, @Body() createCompanyDto: CreateCompanyDto, @Param('gameId') gameId: number) {
     return await this.companyService.createCompany(req.user.id, createCompanyDto, gameId);
+  }
+
+  @Post('join/:companyId')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    status: 200,
+    description: 'Join company',
+  })
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async joinCompany(@Req() req, @Param('companyId') companyId: number) {
+    return await this.companyService.joinCompany(req.user.id, companyId);
+  }
+
+  @Delete('leave/:gameId')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    status: 200,
+    description: 'Leave company',
+  })
+  @Roles(Role.USER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async leaveCompany(@Req() req, @Param('gameId') gameId: number) {
+    return await this.companyService.leaveCompany(req.user.id, gameId);
   }
 }

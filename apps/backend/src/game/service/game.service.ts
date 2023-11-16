@@ -70,11 +70,12 @@ export class GameService {
 
   async updateGame(body: UpdateGameDto, id: number) {}
 
-  async deleteGame(gameId: number, id) {
+  async deleteGame(gameId: number, id: number) {
     const game = await this.gameRepository.findOne({
       where: {
         id: gameId,
       },
+      relations: ['teacher'],
     });
     if (!game) {
       throw new HttpException('Game not found', 404);
@@ -85,6 +86,17 @@ export class GameService {
     await this.gameRepository.remove(game);
     return {
       message: 'Game deleted successfully',
+    };
+  }
+
+  async addUserToGame(gameId: number, userId: number) {
+    const userEntity = this.gameUserRepository.create({
+      game: { id: gameId },
+      user: { id: userId },
+    });
+    await this.gameUserRepository.save(userEntity);
+    return {
+      message: 'User added to game successfully',
     };
   }
 }

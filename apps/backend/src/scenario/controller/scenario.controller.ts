@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ScenarioService } from '../service/scenario.service';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -58,6 +58,18 @@ export class ScenarioController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   async getScenarioById(@Param('id') id: number) {
     return await this.scenarioService.getScenarioById(id);
+  }
+
+  @Put(':id')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    status: 200,
+    description: 'Update scenario by id',
+  })
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async updateScenarioById(@Param('id') id: number, @Body() scenario: CreateScenarioDto) {
+    return await this.scenarioService.updateScenarioById(id, scenario);
   }
 
   @Delete(':id')

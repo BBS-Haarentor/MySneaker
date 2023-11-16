@@ -3,10 +3,9 @@ import {
     Entity,
     JoinColumn,
     JoinTable,
-    ManyToMany,
-    OneToMany,
-    PrimaryGeneratedColumn
-} from "typeorm";
+    ManyToMany, ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ScenarioEntity } from "../../scenario/models/scenario.entity";
 import { UserEntity } from "../../user/models/user.entity";
 
@@ -37,8 +36,8 @@ export class GameEntity {
     @Column()
     description: string;
 
-    @OneToMany(() => UserEntity, user => user.id)
-    @JoinColumn({name: "user_id"})
+    @ManyToOne(() => UserEntity, user => user.id)
+    @JoinColumn({name: "teacher_id"})
     teacher: UserEntity;
 
     @Column({

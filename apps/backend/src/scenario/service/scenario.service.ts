@@ -56,7 +56,10 @@ export class ScenarioService {
     }
   }
 
-  createRepo(scenarioData: Array<any>) {
-    return this.scenarioRepository.create(scenarioData);
+  async updateScenarioById(id: number, scenario: CreateScenarioDto) {
+    await this.scenarioRepository.update(id, scenario);
+    return {
+      message: 'Scenario updated successfully',
+    }
   }
 }

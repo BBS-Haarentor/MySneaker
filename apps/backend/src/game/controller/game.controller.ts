@@ -22,6 +22,16 @@ export class GameController {
     return await this.gameService.createNewGame(body, req.user.id);
   }
 
+  @Post('add/:gameId/:userId')
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Add user to game' })
+  @Roles(Role.TEACHER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async addUserToGame(@Param('gameId') gameId: number, @Param('userId') userId: number) {
+    return await this.gameService.addUserToGame(gameId, userId);
+  }
+
+
   @Put()
   @ApiBearerAuth()
   @ApiResponse({ status: 200, description: 'Update game' })
@@ -57,5 +67,4 @@ export class GameController {
   async deleteGame(@Req() req, @Param('gameId') gameId: number) {
     return await this.gameService.deleteGame(gameId, req.user.id);
   }
-
 }
