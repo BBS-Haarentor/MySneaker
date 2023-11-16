@@ -16,6 +16,7 @@ import { CompanyModule } from './company/company.module';
 import { ScenarioEntity } from "./scenario/models/scenario.entity";
 import { CycleEntity } from "./cycle/models/cycle.entity";
 import { StockEntity } from "./stock/models/stock.entity";
+import { MachineEntity } from './scenario/models/machine.entity';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { StockEntity } from "./stock/models/stock.entity";
         ScenarioEntity,
         CycleEntity,
         StockEntity,
+        MachineEntity,
       ],
       synchronize: true,
     }),

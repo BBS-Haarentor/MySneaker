@@ -67,4 +67,13 @@ export class GameController {
   async deleteGame(@Req() req, @Param('gameId') gameId: number) {
     return await this.gameService.deleteGame(gameId, req.user.id);
   }
+
+  @Post('turnon/:gameId')
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Turn on game' })
+  @Roles(Role.TEACHER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async turnOnGame(@Param('gameId') gameId: number, @Req() req) {
+    return await this.gameService.turnover(gameId, req.user.id);
+  }
 }

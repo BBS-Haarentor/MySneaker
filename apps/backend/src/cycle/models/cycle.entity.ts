@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CompanyEntity } from "../../company/models/company.entity";
 
 @Entity()
@@ -9,7 +9,7 @@ export class CycleEntity {
   @Column()
   current_cycle_index: number;
 
-  @OneToMany(() => CompanyEntity, company => company.id)
+  @ManyToOne(() => CompanyEntity, company => company.id)
   @JoinColumn({name: "company_id"})
   company: CompanyEntity;
 
@@ -67,6 +67,8 @@ export class CycleEntity {
   @Column()
   let_go_employees: number;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   buy_new_machine: number;
 }

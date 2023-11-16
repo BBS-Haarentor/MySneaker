@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from '@nestjs/common';
 import { GameEntity } from '../models/game.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -50,6 +50,7 @@ export class GameService {
       where: {
         id: id,
       },
+      relations: ['scenarios', 'teacher'],
     });
   }
 
@@ -106,8 +107,62 @@ export class GameService {
 
   async turnover(gameId: number, userId: number) {
     const game = await this.getGameById(gameId);
-    const cycles = await this.cycleService.getGameCyclesFromIndex(gameId, game.cycle_index);
-    const stocks = await this.stockService.getStockByGameIdAndCycleIndex(gameId, game.cycle_index);
+    console.log('game:', game);
+    const cycles = await this.cycleService.getGameCyclesFromIndex(
+      gameId,
+      game.cycle_index,
+    );
+    const stocks = await this.stockService.getStockByGameIdAndCycleIndex(
+      gameId,
+      game.cycle_index,
+    );
+    const scenario = game.scenarios[game.cycle_index];
 
+    const cyclesSort = cycles.sort((a, b) => a.id - b.id);
+    const stocksSort = stocks.sort((a, b) => a.id - b.id);
+
+    let newCycles = cyclesSort;
+    let newStocks = stocksSort;
+
+    // buy stock
+    for (let i = 0; i < cyclesSort.length; i++) {
+      let currentCycle = cyclesSort[i];
+      let currentStock = stocksSort[i];
+      let newStock = newStocks[i];
+      //buy sneaker
+      newStock.sneaker_count += currentCycle.buy_sneaker;
+      newStock.account_balance -=
+        currentCycle.buy_sneaker * scenario.sneaker_price;
+      //buy paint
+      newStock.paint_count += currentCycle.buy_paint;
+      newStock.account_balance -=
+        currentCycle.buy_paint * scenario.sneaker_price;
+
+      //pay employee
+      newStock.account_balance -=
+        scenario.employee_salary * currentStock.employees_count;
+      newStock.account_balance -=
+        scenario.employee_salary *
+        currentStock.employees_count *
+        scenario.employee_cost_modfier;
+
+      //TODO: Maschienen logic machen
+
+      newStock.employees_count +=
+        currentCycle.new_employees - currentCycle.let_go_employees;
+
+      let research_levels = [1,0.9, 0.82, 0.76, 0.72, 0.7];
+      newStock.research_budget += currentCycle.research_invest;
+      newStock.research_production_modifier = research_levels[Math.floor(currentStock.research_budget/2500)]
+
+      newStock.credit_taken += currentCycle.take_credit
+      newStock.account_balance += currentCycle.take_credit
+      newStock.credit_taken -= currentCycle.payback_credit
+      newStock.account_balance -= currentCycle.payback_credit
+    }
+
+    console.log('cyclesSort:', cyclesSort);
+    console.log('stocksSort:', stocksSort);
+    console.log('scenario:', scenario);
   }
 }

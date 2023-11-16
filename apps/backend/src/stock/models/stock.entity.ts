@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CompanyEntity } from '../../company/models/company.entity';
 
 @Entity()
@@ -6,7 +6,7 @@ export class StockEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => CompanyEntity, company => company.id)
+  @ManyToOne(() => CompanyEntity, company => company.id)
   @JoinColumn({name: "company_id"})
   company: CompanyEntity;
 

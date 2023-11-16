@@ -4,16 +4,31 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ScenarioSeed } from '../database/scenario.seed';
 import { CreateScenarioDto } from "../models/dto/CreateScenario.dto";
+import { MachineEntity } from '../models/machine.entity';
+import { CreateMachineDto } from '../models/dto/CreateMachine.dto';
 
 @Injectable()
 export class ScenarioService {
   constructor(
     @InjectRepository(ScenarioEntity)
     private scenarioRepository: Repository<ScenarioEntity>,
+    @InjectRepository(MachineEntity)
+    private machineRepository: Repository<MachineEntity>,
   ) {}
 
   async getScenarios() {
     return await this.scenarioRepository.find();
+  }
+
+  async createMachine(createMachineDto: CreateMachineDto) {
+    await this.machineRepository.save(createMachineDto);
+    return {
+      message: 'Machine created successfully',
+    }
+  }
+
+  async getMachines() {
+    return await this.machineRepository.find();
   }
 
   async getScenarioById(id: number) {
