@@ -6,6 +6,8 @@ import { CreateGameDto } from '../models/dto/CreateGame.dto';
 import { GameUserEntity } from '../models/gameUser.entity';
 import { ScenarioService } from '../../scenario/service/scenario.service';
 import { UpdateGameDto } from '../models/dto/UpdateGame.dto';
+import { CycleService } from '../../cycle/service/cycle.service';
+import { StockService } from '../../stock/service/stock.service';
 
 @Injectable()
 export class GameService {
@@ -15,6 +17,8 @@ export class GameService {
     @InjectRepository(GameUserEntity)
     private gameUserRepository: Repository<GameUserEntity>,
     private scenarioService: ScenarioService,
+    private readonly cycleService: CycleService,
+    private readonly stockService: StockService,
   ) {}
 
   async createNewGame(createGameDto: CreateGameDto, userId: number) {
@@ -98,5 +102,12 @@ export class GameService {
     return {
       message: 'User added to game successfully',
     };
+  }
+
+  async turnover(gameId: number, userId: number) {
+    const game = await this.getGameById(gameId);
+    const cycles = await this.cycleService.getGameCyclesFromIndex(gameId, game.cycle_index);
+    const stocks = await this.stockService.getStockByGameIdAndCycleIndex(gameId, game.cycle_index);
+
   }
 }

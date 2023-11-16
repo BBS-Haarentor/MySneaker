@@ -9,6 +9,7 @@ import { CycleEntity } from "./models/cycle.entity";
     TypeOrmModule.forFeature([CycleEntity])
   ],
   controllers: [CycleController],
-  providers: [CycleService]
+  providers: [CycleService],
+  exports: [CycleService],
 })
 export class CycleModule {}

@@ -7,6 +7,8 @@ import { GameUserEntity } from './models/gameUser.entity';
 import { CompanyEntity } from "../company/models/company.entity";
 import { UserModule } from "../user/user.module";
 import { ScenarioModule } from "../scenario/scenario.module";
+import { CycleModule } from '../cycle/cycle.module';
+import { StockModule } from '../stock/stock.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { ScenarioModule } from "../scenario/scenario.module";
     ]),
     UserModule,
     ScenarioModule,
+    CycleModule,
+    StockModule,
   ],
   providers: [GameService],
   controllers: [GameController],

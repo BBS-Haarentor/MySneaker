@@ -13,4 +13,14 @@ export class StockService {
   async getAllStocks() {
     return await this.stockRepository.find();
   }
+
+  async getStockByGameIdAndCycleIndex(gameId: number, cycle_index: number) {
+    return await this.stockRepository.find({
+      where: {
+        company: { game: { id: gameId } },
+        current_cycle_index: cycle_index,
+      },
+      relations: ['company', 'company.game'],
+    });
+  }
 }

@@ -11,6 +11,7 @@ import { UserModule } from "../user/user.module";
     UserModule
   ],
   controllers: [StockController],
-  providers: [StockService]
+  providers: [StockService],
+  exports: [StockService],
 })
 export class StockModule {}
