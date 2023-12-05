@@ -1,4 +1,4 @@
-import BasicButton from '../components/BasicButton';
+import BasicButton from '../components/button/BasicButton';
 import {useNavigate} from 'react-router-dom';
 
 const HomePage = () => {
@@ -17,8 +17,8 @@ const HomePage = () => {
           </div>
         </div>
         <div className="lg:w-1/2 w-full max-lg:mt-5 relative flex items-center justify-center">
-          <div className="flex flex-col">
-            <BasicButton text={"Anmelden"} className="my-2" onClick={() => navigate('/singin')}/>
+          <div className="flex flex-col w-80">
+            <BasicButton text={"Anmelden"} className="my-2" onClick={() => navigate('/signin')}/>
             <BasicButton text={"Registrieren"} className="my-2" onClick={() => navigate('/signup')}/>
           </div>
         </div>
