@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { CompanyService } from "../service/company.service";
-import { Role } from "../../auth/roles/role.enum";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { Roles } from "../../auth/roles/roles.decorator";
 import { RolesGuard } from "../../auth/guards/roles.guard";
 import { JwtAuthGuard } from "../../auth/guards/jwt-auth.guard";
 import { CreateCompanyDto } from "../models/dto/CreateCompany.dto";
+import { Role } from '../../auth/roles/role.interface';
 
 @ApiTags('company')
 @Controller('company')

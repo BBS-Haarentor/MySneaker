@@ -1,0 +1,10 @@
+{
+  "name": "assets",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  }
+}

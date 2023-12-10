@@ -2,7 +2,7 @@ import React from "react";
 
 interface BasicButtonProps {
     text: string;
-    onClick: () => void;
+    onClick?: () => void;
     disabled?: boolean;
     className?: string;
     type?: "button" | "submit" | "reset";

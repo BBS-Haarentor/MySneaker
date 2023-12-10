@@ -3,11 +3,11 @@ import { GameService } from '../service/game.service';
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateGameDto } from '../models/dto/CreateGame.dto';
 import { Roles } from '../../auth/roles/roles.decorator';
-import { Role } from '../../auth/roles/role.enum';
 import { RolesGuard } from "../../auth/guards/roles.guard";
 import { JwtAuthGuard } from "../../auth/guards/jwt-auth.guard";
 import { IGame } from "../models/game.interface";
 import { UpdateGameDto } from "../models/dto/UpdateGame.dto";
+import { Role } from '../../auth/roles/role.interface';
 
 @ApiTags('game')
 @Controller('game')
