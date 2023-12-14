@@ -1,9 +1,11 @@
 const UserSettings = () => {
-  return (
-    <>
-      <h1>User Settings</h1>
-    </>
-  )
+    return (
+        <>
+            <div className="w-full">
+                <h1>User Settings</h1>
+            </div>
+        </>
+    )
 }
 
 export default UserSettings;

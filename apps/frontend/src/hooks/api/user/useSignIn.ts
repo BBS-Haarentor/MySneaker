@@ -1,4 +1,4 @@
-import { UseMutateFunction, useMutation, useQueryClient } from 'react-query';
+import { UseMutateFunction, useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -46,10 +46,14 @@ export function useSignIn(): IUseSignIn {
       onSuccess: (data) => {
         // TODO: save the user in the state
         console.log(data)
-        navigate('/');
+        navigate('/dashboard');
       },
       onError: (error) => {
         if (error instanceof ResponseError) {
+          if(error.message !== undefined) {
+            toast.error("Opps...");
+            return;
+          }
           toast.error(error.message);
         }
       }
