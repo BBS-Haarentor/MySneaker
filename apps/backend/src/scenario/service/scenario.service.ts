@@ -30,6 +30,18 @@ export class ScenarioService {
   async getMachines() {
     return await this.machineRepository.find();
   }
+  async getMachineById(id : number) {
+    const machine = await this.machineRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!machine) {
+      throw new HttpException('Machine not found', 404);
+    }
+    return machine;
+  }
+
 
   async getScenarioById(id: number) {
     const scenario = await this.scenarioRepository.findOne({

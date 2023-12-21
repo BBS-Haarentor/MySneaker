@@ -12,13 +12,13 @@ import { StockService } from '../../stock/service/stock.service';
 @Injectable()
 export class GameService {
   constructor(
-    @InjectRepository(GameEntity)
-    private gameRepository: Repository<GameEntity>,
-    @InjectRepository(GameUserEntity)
-    private gameUserRepository: Repository<GameUserEntity>,
-    private scenarioService: ScenarioService,
-    private readonly cycleService: CycleService,
-    private readonly stockService: StockService,
+      @InjectRepository(GameEntity)
+      private gameRepository: Repository<GameEntity>,
+      @InjectRepository(GameUserEntity)
+      private gameUserRepository: Repository<GameUserEntity>,
+      private scenarioService: ScenarioService,
+      private readonly cycleService: CycleService,
+      private readonly stockService: StockService,
   ) {}
 
   async createNewGame(createGameDto: CreateGameDto, userId: number) {
@@ -26,7 +26,7 @@ export class GameService {
     const scenarios = [];
     createGameDto.scenarios.map((scenarioId) => {
       const scenario = scenariosDb.find(
-        (scenario) => scenario.id === parseInt(scenarioId),
+          (scenario) => scenario.id === parseInt(scenarioId),
       );
       scenarios.push(scenario);
     });
@@ -109,60 +109,141 @@ export class GameService {
     const game = await this.getGameById(gameId);
     console.log('game:', game);
     const cycles = await this.cycleService.getGameCyclesFromIndex(
-      gameId,
-      game.cycle_index,
+        gameId,
+        game.cycle_index,
     );
     const stocks = await this.stockService.getStockByGameIdAndCycleIndex(
-      gameId,
-      game.cycle_index,
+        gameId,
+        game.cycle_index,
     );
     const scenario = game.scenarios[game.cycle_index];
 
-    const cyclesSort = cycles.sort((a, b) => a.id - b.id);
-    const stocksSort = stocks.sort((a, b) => a.id - b.id);
-
-    let newCycles = cyclesSort;
-    let newStocks = stocksSort;
+    const companys = cycles.map((cycle)=>{
+        let stock = stocks.find((stock)=> {stock.company === cycle.company})
+        return {
+          id: cycle.company,
+          cycle: cycle,
+          stock: stock,
+          newStock: stock,
+        }
+    })
 
     // buy stock
-    for (let i = 0; i < cyclesSort.length; i++) {
-      let currentCycle = cyclesSort[i];
-      let currentStock = stocksSort[i];
-      let newStock = newStocks[i];
+    companys.map((company)=>{
+      //TODO: Rework to infinite machines
+      let machines = [];
+      machines.push( this.scenarioService.getMachineById(company.stock.machine_1_space));
+      machines.push( this.scenarioService.getMachineById(company.stock.machine_2_space));
+      machines.push( this.scenarioService.getMachineById(company.stock.machine_3_space));
+
       //buy sneaker
-      newStock.sneaker_count += currentCycle.buy_sneaker;
-      newStock.account_balance -=
-        currentCycle.buy_sneaker * scenario.sneaker_price;
+      company.newStock.sneaker_count += company.cycle.buy_sneaker;
+      company.newStock.account_balance -=
+          company.cycle.buy_sneaker * scenario.sneaker_price;
       //buy paint
-      newStock.paint_count += currentCycle.buy_paint;
-      newStock.account_balance -=
-        currentCycle.buy_paint * scenario.sneaker_price;
+      company.newStock.paint_count += company.cycle.buy_paint;
+      company.newStock.account_balance -=
+          company.cycle.buy_paint * scenario.sneaker_price;
 
       //pay employee
-      newStock.account_balance -=
-        scenario.employee_salary * currentStock.employees_count;
-      newStock.account_balance -=
-        scenario.employee_salary *
-        currentStock.employees_count *
-        scenario.employee_cost_modfier;
+      company.newStock.account_balance -=
+          scenario.employee_salary * company.stock.employees_count;
+      company.newStock.account_balance -=
+          scenario.employee_salary *
+          company.stock.employees_count *
+          scenario.employee_cost_modfier;
 
-      //TODO: Maschienen logic machen
+      //TODO: Maschienen logic rework auf infinite machines (DB changes)
+      company.newStock.finished_sneaker_count += company.cycle.planned_production_1;
+      company.newStock.finished_sneaker_count += company.cycle.planned_production_2;
+      company.newStock.finished_sneaker_count += company.cycle.planned_production_3;
 
-      newStock.employees_count +=
-        currentCycle.new_employees - currentCycle.let_go_employees;
+      for (let j = 0; j < machines.length; j++) {
+        let machine = machines[j];
+        let plannedProduction = company.cycle["planned_production_" + (j+1)];
+        if (machine){
+          company.newStock.account_balance -= machine.maintainance_cost;
+          company.newStock.account_balance -= machine.production_cost_per_sneaker * plannedProduction;
+          company.newStock.finished_sneaker_count += plannedProduction;
+          company.newStock.paint_count -= plannedProduction * 2;
+          company.newStock.sneaker_count -= plannedProduction;
+        }
+      }
+
+      if (company.cycle.buy_new_machine){
+
+        company.newStock.account_balance -= machines.filter((m)=>
+            company.cycle.buy_new_machine === m.id)[0].purchase_cost;
+        if (!company.stock.machine_2_space){
+          company.newStock.machine_2_space = company.cycle.buy_new_machine;
+        }else if (!company.stock.machine_3_space){
+          company.newStock.machine_3_space = company.cycle.buy_new_machine;
+        }
+
+      }
+
+
+      company.newStock.employees_count +=
+          company.cycle.new_employees - company.cycle.let_go_employees;
+
+      company.newStock.account_balance -= company.cycle.ad_invest;
 
       let research_levels = [1,0.9, 0.82, 0.76, 0.72, 0.7];
-      newStock.research_budget += currentCycle.research_invest;
-      newStock.research_production_modifier = research_levels[Math.floor(currentStock.research_budget/2500)]
+      company.newStock.research_budget += company.cycle.research_invest;
+      company.newStock.research_production_modifier = research_levels[Math.floor(company.stock.research_budget/2500)]
 
-      newStock.credit_taken += currentCycle.take_credit
-      newStock.account_balance += currentCycle.take_credit
-      newStock.credit_taken -= currentCycle.payback_credit
-      newStock.account_balance -= currentCycle.payback_credit
-    }
+      company.newStock.credit_taken += company.cycle.take_credit
+      company.newStock.account_balance += company.cycle.take_credit
+      company.newStock.credit_taken -= company.cycle.payback_credit
+      company.newStock.account_balance -= company.cycle.payback_credit
+      if (company.stock.credit_taken > 0){
+        company.newStock.account_balance -= company.stock.credit_taken * scenario.factor_interest_rate
+      }
 
-    console.log('cyclesSort:', cyclesSort);
-    console.log('stocksSort:', stocksSort);
+      //TODO: make function for this
+    })
+    
+
+    //TODO: make deep copy
+    /*let tempCycles = JSON.parse(JSON.stringify(newCycles));
+    let raminingSales = scenario.sneaker_ask;
+    let adPropotion = raminingSales * 0.10;
+    if (tempCycles.find((c) => c.ad_invest > 0) !== undefined) {
+        let sum = 0;
+        let relavantCycles = tempCycles.filter((c) => c.ad_invest > 0);
+        relavantCycles.forEach((c) => {
+             sum += c.ad_invest;
+        });
+
+        relavantCycles.forEach((c) => {
+            let company.stock = company.newStocks.find((s) => s.company.id === c.company.id);
+            let company.cycle = newCycles.find((s) => s.company.id === c.company.id);
+            company.stock.account_balance += (c.ad_invest / sum) * adPropotion * company.cycle.sales_bid;
+        });
+
+    }*/
+
+
+
+
+
+    //TODO sales
+
+
+    // after sales
+    companys.map((company)=>{
+      let machines = [];
+      machines.push(this.scenarioService.getMachineById(company.stock.machine_1_space));
+      machines.push(this.scenarioService.getMachineById(company.stock.machine_2_space));
+      machines.push(this.scenarioService.getMachineById(company.stock.machine_3_space));
+
+      company.newStock.account_balance -= company.newStock.sneaker_count * scenario.storage_fee_sneaker;
+      company.newStock.account_balance -= company.newStock.paint_count * scenario.storage_fee_paint;
+      company.newStock.account_balance -= company.newStock.finished_sneaker_count * scenario.storage_fee_finished_sneaker;
+    })
+
+
+    console.log('companys:', companys)
     console.log('scenario:', scenario);
   }
 }
