@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('./assets/fonts/Nunito.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+* {
+    font-family: 'Nunito', -apple-system, sans-serif;
+}
+

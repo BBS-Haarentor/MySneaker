@@ -3,9 +3,9 @@ import { ScenarioService } from '../service/scenario.service';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../../auth/roles/roles.decorator';
-import { Role } from '../../auth/roles/role.enum';
 import { RolesGuard } from "../../auth/guards/roles.guard";
 import { CreateScenarioDto } from "../models/dto/CreateScenario.dto";
+import { Role } from '../../auth/roles/role.interface';
 
 @ApiTags('scenario')
 @Controller('scenario')

@@ -6,7 +6,8 @@ import { CreateUserDto } from '../models/dto/CreateUser.dto';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { UserEntity } from '../models/user.entity';
 import { IUser } from '../models/user.interface';
-import { Role } from '../../auth/roles/role.enum';
+import { Role } from '../../auth/roles/role.interface';
+import { ILogin } from '../models/login.interface';
 
 @Injectable()
 export class UserService {
@@ -32,7 +33,7 @@ export class UserService {
     };
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<string> {
+  async login(loginUserDto: LoginUserDto): Promise<ILogin> {
     const user = await this.findUserByUsername(loginUserDto.username);
     if(!user)
       throw new HttpException(
@@ -54,13 +55,25 @@ export class UserService {
 
 
     if (passwordsMatches) {
-      return await this.authService.generateJwt(
+      const jwt = await this.authService.generateJwt(
         user,
         loginUserDto.thirtyDaysLogin !== null &&
         loginUserDto.thirtyDaysLogin
           ? '30d'
           : '1d',
       );
+
+      return {
+        user: {
+          role: user.role,
+          status: user.status,
+          username: user.username,
+          id: user.id,
+        },
+        access_token: jwt,
+        token_type: 'jwt',
+        expires_in: 10000
+      }
     } else {
       throw new HttpException(
         'login.emailOrPasswordIncorrect',
@@ -84,7 +97,7 @@ export class UserService {
   private async findUserByUsername(username: string): Promise<IUser> {
     return await this.userRepository.findOne({
       where: { username: username },
-      select: ['id', 'username', 'status', 'password'],
+      select: ['id', 'username', 'status', 'password', 'role'],
     });
   }
 

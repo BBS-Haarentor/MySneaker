@@ -5,9 +5,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Role } from '../../auth/roles/role.enum';
 import { hash } from "bcrypt";
 import { HttpException, HttpStatus } from "@nestjs/common";
+import { Role } from '../../auth/roles/role.interface';
 
 @Entity()
 export class UserEntity {
