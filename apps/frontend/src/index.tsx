@@ -18,6 +18,7 @@ import UserSettings from "./pages/dashboard/userSettings";
 import { ToastContainer } from "react-toastify";
 import "./ReactToastify.css";
 import { QueryClient, QueryClientProvider } from 'react-query';
+import GamePage from "./pages/dashboard/gamePage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
         index: true,
         path: "",
         element: <DashboardUser />,
+      },
+      {
+        path: "game/:gameId",
+        element: <GamePage/>
       },
       {
         path: "teacher",
