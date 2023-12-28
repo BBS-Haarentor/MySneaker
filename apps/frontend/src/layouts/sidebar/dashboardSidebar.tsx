@@ -43,7 +43,7 @@ const DashboardSidebar = () => {
 
       <aside
         className={
-          "flex flex-col w-64 h-[100svh] px-4 py-8 overflow-y-auto border-r rtl:border-r-0 rtl:border-l dark:border-gray-700 dark:bg-primary-dark" + (sidebarToggle ? " max-[900px]:absolute" : " max-[900px]:hidden min-[900px]:flex")
+          "flex flex-col w-64 h-[100svh] px-4 py-8 overflow-y-auto border-r rtl:border-r-0 rtl:border-l dark:border-gray-700 dark:bg-primary-dark" + (sidebarToggle ? " max-[900px]:absolute z-10" : " max-[900px]:hidden min-[900px]:flex")
         }
       >
         <Link to="/">

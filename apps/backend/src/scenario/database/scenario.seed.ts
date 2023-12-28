@@ -1,4 +1,4 @@
-import { IScenario } from '../models/scenario.interface';
+import { IScenario } from 'types';
 
 export const ScenarioSeed: IScenario[] = [
   {

@@ -244,9 +244,9 @@ export class GameService {
     let sum = participatingCompaniesAddSales.reduce((partialSum, a) => partialSum + a.cycle.ad_invest, 0);
     let raminingSales = scenario.sneaker_ask;
     let adPropotion = raminingSales * 0.10;
-    raminingSales - adPropotion
+    raminingSales -= adPropotion
     participatingCompaniesAddSales.map((company)=>{
-      let sales = company.cycle.ad_invest / sum  * adPropotion
+      let sales = Math.round(company.cycle.ad_invest / sum  * adPropotion)
       if (company.cycle.sales_planned >= sales){
         //TODO make function the else dose the same with other value
         company.newStock.finished_sneaker_count -= sales

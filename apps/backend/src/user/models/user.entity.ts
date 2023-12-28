@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { hash } from "bcrypt";
 import { HttpException, HttpStatus } from "@nestjs/common";
-import { Role } from '../../auth/roles/role.interface';
+import { Role } from '../../auth/roles/role.enum';
 
 @Entity()
 export class UserEntity {

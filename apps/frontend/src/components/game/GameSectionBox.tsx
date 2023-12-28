@@ -1,22 +1,21 @@
-import React from "react";
+import React from 'react';
 
 interface GameSectionBoxComponentProps {
-    children: React.ReactNode;
-    hasError?: boolean
+  children: React.ReactNode;
+  hasError?: boolean
+  className: string;
 }
 
-const GameSectionBoxComponent: React.FC<GameSectionBoxComponentProps> = ({children, hasError = false}) => {
-    return (
-        <>
-            <div
-                className="flex min-[620px]:justify-center flex-wrap">
-                <div
-                    className={"dark:bg-[#1f2733] mx-2 xl:w-96 w-full min-h-60 rounded-xl drop-shadow-xl bg-white mb-5" + (hasError ? " border-2 border-red-400" : "")}>
-                    {children}
-                </div>
-            </div>
-        </>
-    )
+
+const GameSectionBoxComponent: React.FC<GameSectionBoxComponentProps> = ({children, hasError, className}) => {
+  return (
+    <>
+      <div
+        className={`dark:bg-[#1f2733] mx-2 min-h-60 rounded-lg flex-shrink-0 drop-shadow-xl bg-white mb-5 ${className}` + (hasError ? " border-2 border-red-400" : "")}>
+        {children}
+      </div>
+    </>
+  )
 }
 
 export default GameSectionBoxComponent;

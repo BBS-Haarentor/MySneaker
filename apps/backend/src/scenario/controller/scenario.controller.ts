@@ -5,8 +5,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../../auth/roles/roles.decorator';
 import { RolesGuard } from "../../auth/guards/roles.guard";
 import { CreateScenarioDto } from "../models/dto/CreateScenario.dto";
-import { Role } from '../../auth/roles/role.interface';
-
+import { Role } from '../../auth/roles/role.enum';
 @ApiTags('scenario')
 @Controller('scenario')
 export class ScenarioController {

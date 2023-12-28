@@ -7,7 +7,7 @@ import { RolesGuard } from "../../auth/guards/roles.guard";
 import { JwtAuthGuard } from "../../auth/guards/jwt-auth.guard";
 import { IGame } from "../models/game.interface";
 import { UpdateGameDto } from "../models/dto/UpdateGame.dto";
-import { Role } from '../../auth/roles/role.interface';
+import { Role } from '../../auth/roles/role.enum';
 
 @ApiTags('game')
 @Controller('game')

@@ -18,8 +18,8 @@ import { UserService } from '../service/user.service';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/roles/roles.decorator';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Role } from '../../auth/roles/role.interface';
-import { IUser } from '../models/user.interface';
+import { IUser } from 'types';
+import { Role } from '../../auth/roles/role.enum';
 import { IUserValidation } from '../models/userValidation.interface';
 
 @ApiTags('user')

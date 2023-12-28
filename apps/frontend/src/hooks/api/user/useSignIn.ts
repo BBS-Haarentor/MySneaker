@@ -1,6 +1,9 @@
 import { UseMutateFunction, useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../../features/slice/user/userSlice';
+import { ILogin } from 'types';
 
 interface IUser {
   id: number;
@@ -9,14 +12,14 @@ interface IUser {
   status: string;
 }
 
-interface User {
+export interface User {
   user: IUser,
   access_token: string,
   token_type: string,
   expires_in: number
 }
 
-async function signIn(username: string, password: string): Promise<User> {
+async function signIn(username: string, password: string): Promise<ILogin> {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/user/login`, {
     method: 'POST',
     headers: {
@@ -30,22 +33,23 @@ async function signIn(username: string, password: string): Promise<User> {
   return await response.json();
 }
 
-type IUseSignIn = UseMutateFunction<User, unknown, {
+type IUseSignIn = UseMutateFunction<ILogin, unknown, {
   username: string;
   password: string;
 }, unknown>
 
 export function useSignIn(): IUseSignIn {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { mutate: signInMutation } = useMutation<User, unknown, { username: string, password: string }, unknown>(
+  const { mutate: signInMutation } = useMutation<ILogin, unknown, { username: string, password: string }, unknown>(
     ({
        username,
        password
      }) => signIn(username, password), {
-      onSuccess: (data) => {
+      onSuccess: (data: ILogin) => {
         // TODO: save the user in the state
-        console.log(data)
+        dispatch(setUser(data))
         navigate('/dashboard');
       },
       onError: (error) => {

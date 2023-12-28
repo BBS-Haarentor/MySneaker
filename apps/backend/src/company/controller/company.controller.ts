@@ -5,7 +5,7 @@ import { Roles } from "../../auth/roles/roles.decorator";
 import { RolesGuard } from "../../auth/guards/roles.guard";
 import { JwtAuthGuard } from "../../auth/guards/jwt-auth.guard";
 import { CreateCompanyDto } from "../models/dto/CreateCompany.dto";
-import { Role } from '../../auth/roles/role.interface';
+import { Role } from '../../auth/roles/role.enum';
 
 @ApiTags('company')
 @Controller('company')

@@ -5,9 +5,8 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { UserEntity } from '../models/user.entity';
-import { IUser } from '../models/user.interface';
-import { Role } from '../../auth/roles/role.interface';
-import { ILogin } from '../models/login.interface';
+import { ILogin, IUser } from 'types';
+import { Role } from '../../auth/roles/role.enum';
 
 @Injectable()
 export class UserService {
