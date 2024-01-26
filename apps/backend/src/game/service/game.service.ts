@@ -211,28 +211,6 @@ export class GameService {
     })
 
 
-
-
-//TODO: make deep copy
-    /*let tempCycles = JSON.parse(JSON.stringify(newCycles));
-    let raminingSales = scenario.sneaker_ask;
-    let adPropotion = raminingSales * 0.10;
-    if (tempCycles.find((c) => c.ad_invest > 0) !== undefined) {
-        let sum = 0;
-        let relavantCycles = tempCycles.filter((c) => c.ad_invest > 0);
-        relavantCycles.forEach((c) => {
-             sum += c.ad_invest;
-        });
-
-        relavantCycles.forEach((c) => {
-            let company.stock = company.newStocks.find((s) => s.company.id === c.company.id);
-            let company.cycle = newCycles.find((s) => s.company.id === c.company.id);
-            company.stock.account_balance += (c.ad_invest / sum) * adPropotion * company.cycle.sales_bid;
-        });
-
-    }*/
-
-
 //TenderSales
     let participatingCompaniesTenderSales = companys.filter((company)=> company.cycle.tender_offer_price > 0)
     let winnerCompany = participatingCompaniesTenderSales.sort((a,b)=> a.cycle.tender_offer_price - b.cycle.tender_offer_price)[0]
@@ -275,6 +253,28 @@ export class GameService {
 
 
 //TODO sales
+    let sortedCompanys = companys.sort((a,b)=> a.cycle.sales_bid - b.cycle.sales_bid)
+    let prices = sortedCompanys.map((c)=>{
+      return c.cycle.sales_bid
+    })
+    prices.map((price)=>{
+      let batched_companys = companys.filter((companys)=> companys.cycle.sales_bid === price)
+      if (batched_companys.length === 1){
+        if (raminingSales >= batched_companys[0].cycle.sales_planned){
+            raminingSales -=  batched_companys[0].cycle.sales_planned
+            batched_companys[0].newStock.account_balance += batched_companys[0].cycle.sales_planned * batched_companys[0].cycle.sales_bid
+            batched_companys[0].newStock.real_sales += batched_companys[0].cycle.sales_planned
+        }else{
+          raminingSales = 0
+          batched_companys[0].newStock.account_balance += raminingSales * batched_companys[0].cycle.sales_bid
+          batched_companys[0].newStock.real_sales +=raminingSales
+        }
+      }
+      else{
+        //TODO the gift fuction schreien
+      }
+      
+    })
 
 
 // after sales
