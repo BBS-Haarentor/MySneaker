@@ -1,5 +1,6 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { ILogin } from "types";
+import {ILogin, IUser} from "types";
+import Cookies from 'js-cookie';
 
 interface AppState extends ILogin {}
 
@@ -19,13 +20,23 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateUser: (state: Draft<AppState>, action: PayloadAction<string>) => {},
-    setUser: (state: Draft<AppState>, action: PayloadAction<ILogin>) => {
-      console.log(action)
+    updateUser: (state: Draft<AppState>, action: PayloadAction<IUser>) => {
+      state.user = action.payload;
     },
+    setUser: (state: Draft<AppState>, action: PayloadAction<ILogin>) => {
+      console.log(action.payload)
+      state = action.payload;
+      console.log(state)
+      Cookies.set('access_token', action.payload.access_token)
+    },
+    logout: (state: Draft<AppState>) =>  {
+      state = initialState;
+      Cookies.remove('access_token');
+      console.debug("Access Token remove and logout finished")
+    }
   },
 });
 
-export const { updateUser, setUser } = userSlice.actions;
+export const { updateUser, setUser, logout } = userSlice.actions;
 
 export default userSlice.reducer;

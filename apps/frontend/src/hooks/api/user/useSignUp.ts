@@ -19,8 +19,8 @@ export interface User {
   expires_in: number
 }
 
-async function signIn(username: string, password: string): Promise<ILogin> {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}/user/login`, {
+async function signUp(username: string, password: string): Promise<ILogin> {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -30,18 +30,18 @@ async function signIn(username: string, password: string): Promise<ILogin> {
     throw new ResponseError("Error during communication with the api", undefined)
   })
 
-  if (response.status !== 200)
+  if (response.status !== 201)
     throw new ResponseError((await response.json()).message, response);
 
   return await response.json();
 }
 
-type IUseSignIn = UseMutateFunction<ILogin, unknown, {
+type IUseSignUp = UseMutateFunction<ILogin, unknown, {
   username: string;
   password: string;
 }, unknown>
 
-export function useSignIn(): IUseSignIn {
+export function useSignUp(): IUseSignUp {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -49,12 +49,11 @@ export function useSignIn(): IUseSignIn {
     ({
        username,
        password
-     }) => signIn(username, password), {
+     }) => signUp(username, password), {
       onSuccess: (data: ILogin) => {
         // TODO: save the user in the state
-        dispatch(setUser(data))
-        toast.success('Login erfolgreich')
-        navigate('/dashboard');
+        toast.success('Benutzer erfolgreich erstellt')
+        navigate('/signin');
       },
       onError: (error) => {
         if (error instanceof ResponseError) {

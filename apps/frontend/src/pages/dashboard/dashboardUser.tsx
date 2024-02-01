@@ -1,28 +1,25 @@
-import GameBoxComponent from "../../components/game/GameBox";
+import {useSelector} from "react-redux";
+
 
 const DashboardUser = () => {
+    const {user} = useSelector((state: any) => state.user);
+
+    console.log(user)
+
     return (
         <>
             <div className="w-full">
-                <h1 className={"ml-5 mt-10 text-2xl font-bold"}>Moin, User</h1>
+                <h1 className={"ml-5 mt-10 text-2xl font-bold"}>Moin, {user.username}</h1>
 
-                <div className={"flex py-5 flex-row flex-wrap w-full px-5"}>
-                    <div className={"lg:w-1/2 w-full"}>
-                        <h1 className={"text-xl"}>Meine Aktiven Spiele</h1>
-                        <div className="flex flex-row flex-wrap mt-5">
-                            <GameBoxComponent game={{
-                                cycle_index: 1,
-                                description: "",
-                                name: "FA3A-B",
-                                status: "",
-                                id: 0,
-                            }}/>
-                        </div>
+                <div className={"flex py-5 flex-row flex-wrap w-full px-5 space-x-5 lg:flex-nowrap"}>
+                    <div className="w-1/3 min-h-[5rem] rounded-lg bg-secondary-dark">
+
                     </div>
-                    <div className={"lg:w-1/2 w-full"}>
-                        <h1 className={"text-xl"}>Neuigkeiten</h1>
-                        <div className="flex flex-row flex-wrap mt-5">
-                        </div>
+                    <div className="w-1/3 min-h-[5rem] rounded-lg bg-secondary-dark">
+
+                    </div>
+                    <div className="w-1/3 min-h-[5rem] rounded-lg bg-secondary-dark">
+
                     </div>
                 </div>
             </div>
