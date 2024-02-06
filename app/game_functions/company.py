@@ -151,7 +151,7 @@ class Company():
 
     def update_dead(self) -> None:
         self._check_account_balance()
-        if self.result_stock.credit_taken > 50_000:
+        if self.result_stock.credit_taken > 200_000:
             self.result_stock.insolvent = True
         return None
 
