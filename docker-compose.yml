@@ -1,13 +1,6 @@
 version: '3'
 
 services:
-  frontend:
-    build: ./mysneaker/
-    volumes:
-      - .:/mysneaker/
-    ports:
-      - 80:80
-
   api:
     build: .
     command: uvicorn app.entrypoint:api --host 0.0.0.0 --reload
