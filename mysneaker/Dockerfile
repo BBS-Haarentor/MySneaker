@@ -1,6 +1,6 @@
 # build environment
 FROM node:18-alpine3.16 as builder
-WORKDIR /mysneaker
+WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 RUN npm install
