@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/mysneaker/
     ports:
-      - 80:80
+      - 51002:80
       
   api:
     build: .
