@@ -12,6 +12,7 @@ services:
       - proxy-network
 
   mysneaker-api:
+    env_file: stack.env
     build: .
     command: uvicorn app.entrypoint:api --host 0.0.0.0 --reload
     restart: unless-stopped
